@@ -30,5 +30,5 @@ jobs:
       - name: Aguardar o docker-compose
         run: sleep 120
 
-      - name: Verificar o server
+      - name: Verificar o build
         run: curl http://0.0.0.0:3000/
