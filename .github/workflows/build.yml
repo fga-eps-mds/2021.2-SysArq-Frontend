@@ -1,0 +1,34 @@
+name: Compilação
+
+on:
+  push:
+    branches:
+      - main
+      - devel
+  pull_request:
+    branches:
+      - main
+      - devel
+
+jobs:
+  build:
+    name: Verificar Compilação
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Conferir repositório
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Evita clones rasos
+
+      - name: Criar arquivo .env
+        run: touch .env
+
+      - name: Executar docker-compose up
+        run: sudo docker-compose up -d
+
+      - name: Aguardar o docker-compose
+        run: sleep 120
+
+      - name: Verificar o server
+        run: curl http://0.0.0.0:3000/
