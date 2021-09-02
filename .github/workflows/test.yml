@@ -1,4 +1,4 @@
-name: Compilação
+name: Testes
 
 on:
   push:
@@ -11,8 +11,8 @@ on:
       - devel
 
 jobs:
-  build:
-    name: Verificar Compilação
+  test:
+    name: Verificar Testes
     runs-on: ubuntu-latest
 
     steps:
@@ -24,11 +24,5 @@ jobs:
       - name: Criar arquivo .env
         run: touch .env
 
-      - name: Executar docker-compose up
-        run: sudo docker-compose up -d
-
-      - name: Aguardar o docker-compose
-        run: sleep 120
-
-      - name: Verificar o server
-        run: curl http://0.0.0.0:3000/
+      - name: Executar pytest  
+        run: sudo docker-compose run app yarn test --coverage --watchAll=false
