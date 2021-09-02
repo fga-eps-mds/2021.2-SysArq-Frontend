@@ -15,6 +15,10 @@ test("renders with React.StrictMode, App and root div", () => {
 
     require("./index.js")
 
-    expect(ReactDOM.render).toHaveBeenCalledWith(<App />, root)
+    expect(ReactDOM.render).toHaveBeenCalledWith(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>, root
+    )
 
 })

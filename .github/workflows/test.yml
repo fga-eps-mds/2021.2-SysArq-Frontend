@@ -24,5 +24,10 @@ jobs:
       - name: Criar arquivo .env
         run: touch .env
 
-      - name: Executar pytest  
+      - name: Executar teste 
         run: sudo docker-compose run app yarn test --coverage --watchAll=false
+
+      - name: "Upload coverage to Codecov"
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
