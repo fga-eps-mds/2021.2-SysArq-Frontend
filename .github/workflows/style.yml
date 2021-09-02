@@ -1,0 +1,31 @@
+name: Estilo
+
+on:
+  push:
+    branches:
+      - main
+      - devel
+  pull_request:
+    branches:
+      - main
+      - devel
+
+jobs:
+  check_style:
+    name: Verificar Estilo de Código
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Conferir repositório
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Evita clones rasos
+
+      - name: Criar arquivo .env
+        run: touch .env
+
+      - name: Executar checagem do Prettier
+        run: sudo docker-compose run app yarn checkFormat
+
+      - name: Executar checagem do ESLint
+        run: sudo docker-compose run app yarn lint

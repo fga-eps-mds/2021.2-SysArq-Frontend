@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+
+    command: yarn start
+
+    env_file:
+      - ./.env
+
+    volumes:
+      - ./sysarq:/code
+      - /code/node_modules
+
+      # o primeiro volume garante que as alterações realizadas no projeto sejam propagadas no container
+      # o segundo volume garante que o node_modules criado dentro do container no build não seja sobrescrito por um node_modules que exista no projeto
+
+    ports:
+      - "3000:3000"
