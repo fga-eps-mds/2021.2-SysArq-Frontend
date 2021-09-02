@@ -26,3 +26,6 @@ jobs:
 
       - name: Executar checagem do prettier
         run: sudo docker-compose run app yarn checkFormat
+
+      - name: Executar checagem do eslint
+        run: sudo docker-compose run app yarn lint
