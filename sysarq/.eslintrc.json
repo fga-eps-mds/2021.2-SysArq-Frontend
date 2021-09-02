@@ -18,6 +18,6 @@
 		"react/jsx-filename-extension": [1, { "extensions": [".js"] }],
 
 		// Desabilitar a necessidade de import React em todo arquivo do projeto
-		"react/react-in-jsx-scope": "warn"
+		"react/react-in-jsx-scope": "off"
 	}
 }

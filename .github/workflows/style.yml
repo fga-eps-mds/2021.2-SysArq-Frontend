@@ -24,8 +24,8 @@ jobs:
       - name: Criar arquivo .env
         run: touch .env
 
-      - name: Executar checagem do prettier
+      - name: Executar checagem do Prettier
         run: sudo docker-compose run app yarn checkFormat
 
-      - name: Executar checagem do eslint
+      - name: Executar checagem do ESLint
         run: sudo docker-compose run app yarn lint
