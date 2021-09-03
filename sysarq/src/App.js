@@ -1,24 +1,35 @@
-import logo from "./logo.svg";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Navbar, Container, Nav } from "react-bootstrap";
+
+import Home from "./pages/Home";
+import FieldsRegister from "./pages/FieldsRegister";
+
 import "./App.css";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
 	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
-		</div>
+		<Router>
+			<Navbar bg="dark" variant="dark">
+				<Container>
+					<Nav className="me-auto">
+						<Nav.Link href="/">Home</Nav.Link>
+						<Nav.Link href="/fields-register">Cadastro de Campos</Nav.Link>
+					</Nav>
+				</Container>
+			</Navbar>
+
+			<Switch>
+				<Route exact path="/">
+					<Home />
+				</Route>
+				<Route path="/fields-register">
+					<FieldsRegister />
+				</Route>
+			</Switch>
+		</Router>
 	);
 }
 
