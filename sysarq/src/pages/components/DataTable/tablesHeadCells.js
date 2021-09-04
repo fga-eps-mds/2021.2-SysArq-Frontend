@@ -88,6 +88,80 @@ const headCellsPublicWorker = [
 	},
 ];
 
+const headCellsUnity = [
+	{
+		id: "name_of_unity",
+		numeric: false,
+		padding: "normal",
+		label: "Nome da Unidade",
+	},
+
+	{
+		id: "unity_abbreviation",
+		numeric: false,
+		padding: "normal",
+		label: "Sigla da Unidade",
+	},
+
+	{
+		id: "administrative_bond",
+		numeric: false,
+		padding: "normal",
+		label: "Vínculo Administrativo",
+	},
+
+	{
+		id: "bond_abbreviation",
+		numeric: false,
+		padding: "normal",
+		label: "Sigla do Vínculo",
+	},
+
+	{
+		id: "type_of_unity",
+		numeric: false,
+		padding: "normal",
+		label: "Tipo de Unidade",
+	},
+
+	{
+		id: "municipality",
+		numeric: false,
+		padding: "normal",
+		label: "Município",
+	},
+
+	{
+		id: "telephone_number",
+		numeric: true,
+		padding: "normal",
+		label: "Telefone",
+	},
+
+	{
+		id: "note",
+		numeric: false,
+		padding: "normal",
+		label: "Observações",
+	},
+];
+
+const headCellsDocumentType = [
+	{
+		id: "document_name",
+		numeric: false,
+		padding: "normal",
+		label: "Nome do Documento",
+	},
+
+	{
+		id: "temporality",
+		numeric: true,
+		padding: "normal",
+		label: "Temporalidade",
+	},
+];
+
 const tableHeadCells = (url) => {
 	let headCells = [];
 
@@ -97,6 +171,10 @@ const tableHeadCells = (url) => {
 		headCells = headCellsBoxAbbreviation;
 	} else if (url === "public_worker/") {
 		headCells = headCellsPublicWorker;
+	} else if (url === "unity/") {
+		headCells = headCellsUnity;
+	} else if (url === "document_type/") {
+		headCells = headCellsDocumentType;
 	}
 	return headCells;
 };

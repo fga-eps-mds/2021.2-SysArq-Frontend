@@ -9,11 +9,12 @@ import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
 import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
 import PublicWorker from "./pages/FieldsRegister/PublicWorker";
+import DocumentType from "./pages/FieldsRegister/DocumentType";
+import Unity from "./pages/FieldsRegister/Unity";
 
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-
 
 function App() {
 	return (
@@ -43,6 +44,12 @@ function App() {
 					</Route>
 					<Route path="/fields-register/public-worker">
 						<PublicWorker />
+					</Route>
+					<Route path="/fields-register/unity">
+						<Unity />
+					</Route>
+					<Route path="/fields-register/document-type">
+						<DocumentType />
 					</Route>
 				</Route>
 			</Switch>
