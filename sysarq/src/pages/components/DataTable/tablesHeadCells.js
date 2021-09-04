@@ -46,7 +46,7 @@ const headCellsBoxAbbreviation = [
 
 const headCellsPublicWorker = [
 	{
-		id: "nome",
+		id: "name",
 		numeric: false,
 		padding: "normal",
 		label: "Nome",
@@ -67,7 +67,7 @@ const headCellsPublicWorker = [
 	},
 
 	{
-		id: "class-worker",
+		id: "class_worker",
 		numeric: false,
 		padding: "normal",
 		label: "Classe",
@@ -91,11 +91,11 @@ const headCellsPublicWorker = [
 const tableHeadCells = (url) => {
 	let headCells = [];
 
-	if (url === "document_subject") {
+	if (url === "document_subject/") {
 		headCells = headCellsDocumentSubject;
-	} else if (url === "box_abbreviation") {
+	} else if (url === "box_abbreviation/") {
 		headCells = headCellsBoxAbbreviation;
-	} else if (url === "public_worker") {
+	} else if (url === "public_worker/") {
 		headCells = headCellsPublicWorker;
 	}
 	return headCells;
