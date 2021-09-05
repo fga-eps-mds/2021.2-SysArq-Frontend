@@ -85,7 +85,7 @@ function getComparator(order, orderBy) {
 		: (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-const DataTable = ({ url }) => {
+const DataTable = ({ url, title }) => {
 	const classes = useStyles();
 
 	const [headCells, setHeadCells] = React.useState([]);
@@ -142,7 +142,7 @@ const DataTable = ({ url }) => {
 			<Paper className={classes.paper}>
 				<Toolbar className={classes.root}>
 					<Typography className={classes.title} variant="h6" component="div">
-						Assunto do Documento
+						{title}
 					</Typography>
 						<Tooltip title="Adicionar">
           					<IconButton aria-label="adicionar">
@@ -220,6 +220,7 @@ const DataTable = ({ url }) => {
 
 DataTable.propTypes = {
 	url: PropTypes.string.isRequired,
+	title: PropTypes.string.isRequired,
 };
 
 export default DataTable;

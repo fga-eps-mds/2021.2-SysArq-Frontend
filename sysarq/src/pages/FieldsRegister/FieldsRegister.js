@@ -24,7 +24,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-assunto"
 							title="Assunto do Documento"
-							createUrl=""
+							createUrl="/fields-register/create-document-subject"
 							listUrl="/fields-register/document-subject"
 						/>
 					</Grid>
@@ -61,6 +61,14 @@ export default function FieldsRegister() {
 							icon="icone-assunto"
 							title="Tipo de Documento"
 							createUrl=""
+							listUrl="/fields-register/document-type"
+						/>
+					</Grid>
+					<Grid item xs={12} sm={6} md={3}>
+						<MenuCard
+							icon="icone-assunto"
+							title="Status"
+							createUrl="/fields-register/create-status"
 							listUrl="/fields-register/document-type"
 						/>
 					</Grid>

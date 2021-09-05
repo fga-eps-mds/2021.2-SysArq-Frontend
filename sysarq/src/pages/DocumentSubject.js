@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function Cadastro() {
+export default function CreateDocumentSubject() {
 	const [documentSubject, setDocumentSubject] = useState("");
 	const [temporality, setTemporality] = useState(0);
 	const classes = useStyles();
@@ -45,7 +45,7 @@ export default function Cadastro() {
 
 	return (
 		<div>
-			<h1>Assunto do Documento</h1>
+			<h1>Assunto do Lorenzo</h1>
 			<TextField
 				className={classes.fields}
 				onChange={onChangeDocumentSubject}
