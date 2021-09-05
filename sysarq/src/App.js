@@ -11,7 +11,7 @@ import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
 import PublicWorker from "./pages/FieldsRegister/PublicWorker";
 import DocumentType from "./pages/FieldsRegister/DocumentType";
 import Unity from "./pages/FieldsRegister/Unity";
-import CreateDocumentSubject from "./pages/DocumentSubject";
+import CreateDocumentSubject from "./pages/CreateDocumentSubject";
 import CreateStatus from "./pages/Status";
 import CreateBoxAbbreviation from "./pages/CreateBoxAbbreviation";
 import CreateDocumentType from "./pages/CreateDocumentType";

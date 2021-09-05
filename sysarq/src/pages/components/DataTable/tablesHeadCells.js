@@ -167,15 +167,10 @@ const headCellsShelf = [
 		id: "number",
 		numeric: true,
 		padding: "normal",
-		label: "Estante"
+		label: "Estante",
 	},
 
-	{
-		id: "number",
-		numeric: true,
-		padding: "normal",
-		label: "Prateleira"
-	},
+
 ];
 
 const tableHeadCells = (url) => {
