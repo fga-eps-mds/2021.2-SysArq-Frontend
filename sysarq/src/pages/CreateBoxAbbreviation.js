@@ -13,11 +13,12 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function Cadastro() {
+export default function CreateBoxAbbreviation() {
 	const [number, setNumber] = useState("");
 	const [abbreviation, setAbbreviation] = useState("");
 	const [name, setName] = useState("");
 	const [year, setBondYear] = useState("");
+
 	const classes = useStyles();
 
 	const onClick = () => {
@@ -39,46 +40,54 @@ export default function Cadastro() {
 			.then(() => {});
 	};
 
-	const onChangeDocumentSubject = (event) => {
-		setDocumentSubject(event.target.value);
+	const onChangeNumber = (event) => {
+		setNumber(event.target.value);
 	};
 
-	const onChangeTemporality = (event) => {
-		setTemporality(event.target.value);
+	const onChangeAbrevviation = (event) => {
+		setAbbreviation(event.target.value);
+	};
+
+	const onChangeName = (event) => {
+		setName(event.target.value);
+	};
+
+	const onChangeYear = (event) => {
+		setBondYear(event.target.value);
 	};
 
 	return (
 		<div>
-			<h1>Assunto do Documento</h1>
+			<h1>Sigla da Caixa</h1>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeDocumentSubject}
+				onChange={onChangeNumber}
 				type="number"
-				value={documentSubject}
+				value={number}
 				label="Número da caixa"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeDocumentSubject}
+				onChange={onChangeAbrevviation}
 				type="abbreviation"
-				value={documentSubject}
+				value={abbreviation}
 				label="Sigla da caixa"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
+				onChange={onChangeName}
 				type="name"
-				value={temporality}
+				value={name}
 				placeholder="Nome completo"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
+				onChange={onChangeYear}
 				type="year"
-				value={temporality}
+				value={year}
 				placeholder="Ano"
 				variant="filled"
 			/>
@@ -86,7 +95,7 @@ export default function Cadastro() {
 			<Button
 				onClick={onClick}
 				style={{ marginTop: "20px" }}
-				variant="county"
+				variant="contained"
 				color="primary"
 			>
 				Salvar

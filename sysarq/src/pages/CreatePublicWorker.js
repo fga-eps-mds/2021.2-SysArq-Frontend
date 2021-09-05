@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function Cadastro() {
+export default function CreatePublicWorker() {
 	const [publicWorkerName, setpublicWorkerName] = useState("");
 	const [cpf, setCpf] = useState("");
 	const [office, setOffice] = useState("");
@@ -26,9 +26,10 @@ export default function Cadastro() {
 	const onClick = () => {
 		axios
 			.post("http://0.0.0.0:8002/public_worker/", {
-				publicWOrkerName: name,
+				name: publicWorkerName,
 				cpf,
-				classWorker: class_worker,
+				office,
+				class_worker: classWorker,
 				capacity,
 				county,
 			})
@@ -43,12 +44,28 @@ export default function Cadastro() {
 			.then(() => {});
 	};
 
-	const onChangeDocumentSubject = (event) => {
-		setDocumentSubject(event.target.value);
+	const onChangePulicWorkerName = (event) => {
+		setpublicWorkerName(event.target.value);
 	};
 
-	const onChangeTemporality = (event) => {
-		setTemporality(event.target.value);
+	const onChangeCpf = (event) => {
+		setCpf(event.target.value);
+	};
+
+	const onChangeOffice = (event) => {
+		setOffice(event.target.value);
+	};
+
+	const onChangeClassWorker = (event) => {
+		setClassWorker(event.target.value);
+	};
+
+	const onChangeCapacity = (event) => {
+		setCapacity(event.target.value);
+	};
+
+	const onChangeCounty = (event) => {
+		setCounty(event.target.value);
 	};
 
 	return (
@@ -56,49 +73,49 @@ export default function Cadastro() {
 			<h1>Assunto do Documento</h1>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeDocumentSubject}
-				type="publicWorkerName"
-				value={documentSubject}
+				onChange={onChangePulicWorkerName}
+				type="public_worker_name"
+				value={publicWorkerName}
 				label="Nome do servidor"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
+				onChange={onChangeCpf}
 				type="cpf"
-				value={temporality}
+				value={cpf}
 				placeholder="CPF do servidor"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
+				onChange={onChangeOffice}
 				type="office"
-				value={temporality}
+				value={office}
 				placeholder="Cargo do servidor"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
-				type="classWorker"
-				value={temporality}
+				onChange={onChangeClassWorker}
+				type="class_worker"
+				value={classWorker}
 				placeholder="Classe do servidor"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
+				onChange={onChangeCapacity}
 				type="capacity"
-				value={temporality}
+				value={capacity}
 				placeholder="Lotaçao do servidor"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
+				onChange={onChangeCounty}
 				type="county"
-				value={temporality}
+				value={county}
 				placeholder="Município do servidor"
 				variant="filled"
 			/>
@@ -106,7 +123,7 @@ export default function Cadastro() {
 			<Button
 				onClick={onClick}
 				style={{ marginTop: "20px" }}
-				variant="county"
+				variant="contained"
 				color="primary"
 			>
 				Salvar

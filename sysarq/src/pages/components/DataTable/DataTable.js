@@ -144,11 +144,11 @@ const DataTable = ({ url, title }) => {
 					<Typography className={classes.title} variant="h6" component="div">
 						{title}
 					</Typography>
-						<Tooltip title="Adicionar">
-          					<IconButton aria-label="adicionar">
-            					<AddIcon />
-          					</IconButton>
-        				</Tooltip>
+					<Tooltip title="Adicionar">
+						<IconButton aria-label="adicionar">
+							<AddIcon />
+						</IconButton>
+					</Tooltip>
 				</Toolbar>
 				<TableContainer>
 					<Table className={classes.table} size="medium">

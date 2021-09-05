@@ -33,7 +33,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-assunto"
 							title="Sigla da Caixa"
-							createUrl=""
+							createUrl="create-box-abbreviation"
 							listUrl="/fields-register/box-abbreviation"
 						/>
 					</Grid>
@@ -42,7 +42,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-assunto"
 							title="Servidor"
-							createUrl=""
+							createUrl="create-public-worker"
 							listUrl="/fields-register/public-worker"
 						/>
 					</Grid>
@@ -51,7 +51,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-assunto"
 							title="Unidade"
-							createUrl=""
+							createUrl="create-unity"
 							listUrl="/fields-register/unity"
 						/>
 					</Grid>
@@ -60,7 +60,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-assunto"
 							title="Tipo de Documento"
-							createUrl=""
+							createUrl="create-document-type"
 							listUrl="/fields-register/document-type"
 						/>
 					</Grid>

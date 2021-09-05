@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function Cadastro() {
+export default function CreateUnity() {
 	const [unityName, setUnityName] = useState("");
 	const [unityAbbreviation, setUnityAbbreviation] = useState("");
 	const [administrativeBond, setAdiministrativeBond] = useState("");
@@ -28,12 +28,12 @@ export default function Cadastro() {
 	const onClick = () => {
 		axios
 			.post("http://0.0.0.0:8002/unity/", {
-				unityName: name_of_unity,
-				unityAbbreviation: unity_abbreviation,
-				administrativeBond: administrative_bond,
-				unityType: type_of_unity,
-				municipality,
-				telephoneNumber: telephoneNUmber,
+				name_of_unity: unityName,
+				unity_abbreviation: unityAbbreviation,
+				administrative_bond: administrativeBond,
+				bond_abbreviation: bondAbbreviation,
+				type_of_unity: unityType,
+				telephone_number: telephoneNumber,
 				county,
 			})
 			.then((response) => {
@@ -47,12 +47,36 @@ export default function Cadastro() {
 			.then(() => {});
 	};
 
-	const onChangeDocumentSubject = (event) => {
-		setDocumentSubject(event.target.value);
+	const onChangeUnityName = (event) => {
+		setUnityName(event.target.value);
 	};
 
-	const onChangeTemporality = (event) => {
-		setTemporality(event.target.value);
+	const onChangeUnityAbbreviation = (event) => {
+		setUnityAbbreviation(event.target.value);
+	};
+
+	const onChangeAdministrativeBond = (event) => {
+		setAdiministrativeBond(event.target.value);
+	};
+
+	const onChangeBondAbbreviation = (event) => {
+		setBondAbbreviation(event.target.value);
+	};
+
+	const onChangeUnityType = (event) => {
+		setUnityType(event.target.value);
+	};
+
+	const onChangeCounty = (event) => {
+		setCounty(event.target.value);
+	};
+
+	const onChangeTelephoneNumber = (event) => {
+		setTelephoneNumber(event.target.value);
+	};
+
+	const onChangeNote = (event) => {
+		setNote(event.target.value);
 	};
 
 	return (
@@ -60,73 +84,72 @@ export default function Cadastro() {
 			<h1>Assunto do Documento</h1>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeDocumentSubject}
-				type="unityName"
-				value={documentSubject}
+				onChange={onChangeUnityName}
+				type="unity_name"
+				value={unityName}
 				label="Nome da unidade"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeDocumentSubject}
-				type="unityAbbreviation"
-				value={documentSubject}
+				onChange={onChangeUnityAbbreviation}
+				type="unity_abbreviation"
+				value={unityAbbreviation}
 				label="Sigla da unidade"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
-				type="administrativeBond"
-				value={temporality}
+				onChange={onChangeAdministrativeBond}
+				type="administrative_bond"
+				value={administrativeBond}
 				placeholder="Vinculo administrativo"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
+				onChange={onChangeBondAbbreviation}
+				type="bond_abbreviation"
+				value={bondAbbreviation}
+				placeholder="Sigla do Vínculo"
+				variant="filled"
+			/>
+			<TextField
+				className={classes.fields}
+				onChange={onChangeUnityType}
 				type="unityType"
-				value={temporality}
+				value={unityType}
 				placeholder="Tipo de unidade"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
+				onChange={onChangeCounty}
 				type="county"
-				value={temporality}
+				value={county}
 				placeholder="Município"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
-				type="capacity"
-				value={temporality}
-				placeholder="Lotaçao do servidor"
+				onChange={onChangeTelephoneNumber}
+				type="telephone_number"
+				value={telephoneNumber}
+				placeholder="Número de Telefone"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
-				type="telephoneNumber"
-				value={temporality}
-				placeholder="Número do telefone"
-				variant="filled"
-			/>
-			<TextField
-				className={classes.fields}
-				onChange={onChangeTemporality}
+				onChange={onChangeNote}
 				type="note"
-				value={temporality}
+				value={note}
 				placeholder="Observações"
 				variant="filled"
 			/>
-
 			<Button
 				onClick={onClick}
 				style={{ marginTop: "20px" }}
-				variant="county"
+				variant="contained"
 				color="primary"
 			>
 				Salvar

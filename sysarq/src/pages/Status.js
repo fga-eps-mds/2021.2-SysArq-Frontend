@@ -3,20 +3,19 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import React, { useState } from "react";
 
-
 const useStyles = makeStyles({
-    fields: {
-        marginTop: 20,
-        marginBotton: 20,
-        display: 'block'
-    }
-})
+	fields: {
+		marginTop: 20,
+		marginBotton: 20,
+		display: "block",
+	},
+});
 
 export default function CreateStatus() {
 	const [status, setStatus] = useState("ARQUIVADO");
-    const [sentFrom, setSentFrom] = useState("");
-    const [requestedDocument, setRequestedDocument] = useState("");
-    const [sendDate, setSendDate] = useState("");
+	const [sentFrom, setSentFrom] = useState("");
+	const [requestedDocument, setRequestedDocument] = useState("");
+	const [sendDate, setSendDate] = useState("");
 	const classes = useStyles();
 
 	const onChangeStatus = (event) => {
@@ -51,24 +50,22 @@ export default function CreateStatus() {
 			.then(() => {});
 	};
 
-
 	return (
 		<div>
-		<h1>Status</h1>
+			<h1>Status</h1>
 
-		<select
-			className={classes.fields}
-			label="Status"
-			onChange={onChangeStatus}
-		>
-			<option>ARQUIVADO</option>
-			<option>DESARQUIVADO</option>
-		</select>
+			<select
+				className={classes.fields}
+				label="Status"
+				onChange={onChangeStatus}
+			>
+				<option>ARQUIVADO</option>
+				<option>DESARQUIVADO</option>
+			</select>
 
-		{
-			status === "DESARQUIVADO" && (
+			{status === "DESARQUIVADO" && (
 				<div>
-				<input
+					<input
 						onChange={onChangeSentFrom}
 						type="unity_that_forwarded"
 						value={sentFrom}
@@ -90,17 +87,16 @@ export default function CreateStatus() {
 						variant="filed"
 					/>
 				</div>
-			)
-		}
+			)}
 
-		<Button
-			onClick={onClick}
-			style={{ marginTop: "20px" }}
-			variant="contained"
-			color="primary"
-		>
-			Salvar
-		</Button>
-		</div> 
+			<Button
+				onClick={onClick}
+				style={{ marginTop: "20px" }}
+				variant="contained"
+				color="primary"
+			>
+				Salvar
+			</Button>
+		</div>
 	);
 }

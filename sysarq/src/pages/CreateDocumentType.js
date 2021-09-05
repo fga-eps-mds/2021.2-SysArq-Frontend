@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function Cadastro() {
+export default function CreateDocumentType() {
 	const [documentName, setDocumentName] = useState("");
 	const [temporality, setTemporality] = useState(0);
 	const classes = useStyles();
@@ -21,7 +21,7 @@ export default function Cadastro() {
 	const onClick = () => {
 		axios
 			.post("http://0.0.0.0:8002/document_type/", {
-				subject_name: document_name,
+				document_name: documentName,
 				temporality,
 			})
 			.then((response) => {
@@ -36,7 +36,7 @@ export default function Cadastro() {
 	};
 
 	const onChangeDocumentName = (event) => {
-		setDocumentSubject(event.target.value);
+		setDocumentName(event.target.value);
 	};
 
 	const onChangeTemporality = (event) => {
@@ -48,9 +48,9 @@ export default function Cadastro() {
 			<h1>Assunto do Documento</h1>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeDocumentSubject}
-				type="documentName"
-				value={documentSubject}
+				onChange={onChangeDocumentName}
+				type="document_name"
+				value={documentName}
 				label="Nome do documento"
 				variant="filled"
 			/>

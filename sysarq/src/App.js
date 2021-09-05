@@ -13,6 +13,10 @@ import DocumentType from "./pages/FieldsRegister/DocumentType";
 import Unity from "./pages/FieldsRegister/Unity";
 import CreateDocumentSubject from "./pages/DocumentSubject";
 import CreateStatus from "./pages/Status";
+import CreateBoxAbbreviation from "./pages/CreateBoxAbbreviation";
+import CreateDocumentType from "./pages/CreateDocumentType";
+import CreatePublicWorker from "./pages/CreatePublicWorker";
+import CreateUnity from "./pages/CreateUnity";
 
 import "./App.css";
 
@@ -59,6 +63,18 @@ function App() {
 					<Route path="/fields-register/create-status">
 						<CreateStatus />
 					</Route>
+				</Route>
+				<Route path="/create-public-worker">
+					<CreatePublicWorker />
+				</Route>
+				<Route path="/create-document-type">
+					<CreateDocumentType />
+				</Route>
+				<Route path="/create-unity">
+					<CreateUnity />
+				</Route>
+				<Route path="/create-box-abbreviation">
+					<CreateBoxAbbreviation />
 				</Route>
 			</Switch>
 		</Router>
