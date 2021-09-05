@@ -45,7 +45,7 @@ export default function CreateDocumentSubject() {
 
 	return (
 		<div>
-			<h1>Assunto do Lorenzo</h1>
+			<h1>Assunto do Lorenzo up</h1>
 			<TextField
 				className={classes.fields}
 				onChange={onChangeDocumentSubject}

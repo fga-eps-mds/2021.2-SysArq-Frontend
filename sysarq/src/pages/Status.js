@@ -1,4 +1,4 @@
-import { Button, TextField } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import React, { useState } from "react";
@@ -68,24 +68,21 @@ export default function CreateStatus() {
 		{
 			status === "DESARQUIVADO" && (
 				<div>
-				<TextField
-						className={classes.fields}
+				<input
 						onChange={onChangeSentFrom}
 						type="unity_that_forwarded"
 						value={sentFrom}
 						placeholder="Eviado por"
 						variant="filed"
 					/>
-					<TextField
-						className={classes.fields}
+					<input
 						onChange={onChangeRequestedDocument}
 						type="document_requested"
 						value={requestedDocument}
 						placeholder="Documento que solicito o desarquivamento"
 						variant="filed"
 					/>
-					<TextField
-						className={classes.fields}
+					<input
 						onChange={onChangeSendDate}
 						type="send_date"
 						value={sendDate}
