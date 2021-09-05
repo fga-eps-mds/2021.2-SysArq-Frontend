@@ -170,7 +170,12 @@ const headCellsShelf = [
 		label: "Estante",
 	},
 
-
+	{
+		id: "number",
+		numeric: true,
+		padding: "normal",
+		label: "Prateleira",
+	},
 ];
 
 const tableHeadCells = (url) => {

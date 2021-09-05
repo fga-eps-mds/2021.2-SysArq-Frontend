@@ -11,6 +11,7 @@ import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
 import PublicWorker from "./pages/FieldsRegister/PublicWorker";
 import DocumentType from "./pages/FieldsRegister/DocumentType";
 import Unity from "./pages/FieldsRegister/Unity";
+import Shelf from "./pages/FieldsRegister/Shelf";
 import CreateDocumentSubject from "./pages/CreateDocumentSubject";
 import CreateStatus from "./pages/Status";
 import CreateBoxAbbreviation from "./pages/CreateBoxAbbreviation";
@@ -60,6 +61,9 @@ function App() {
 					</Route>
 					<Route path="/fields-register/document-type">
 						<DocumentType />
+					</Route>
+					<Route path="/fields-register/shelf">
+						<Shelf />
 					</Route>
 					<Route path="/fields-register/create-status">
 						<CreateStatus />
