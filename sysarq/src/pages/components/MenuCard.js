@@ -16,7 +16,7 @@ import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import DescriptionIcon from "@material-ui/icons/Description";
 import HomeWorkIcon from "@material-ui/icons/HomeWork";
 import ArchiveIcon from "@material-ui/icons/Archive";
-import AllInboxIcon from '@material-ui/icons/AllInbox';
+import AllInboxIcon from "@material-ui/icons/AllInbox";
 
 const useStyles = makeStyles(() => ({
 	card: {
@@ -61,7 +61,7 @@ const Icon = ({ iconName, title }) => {
 	} else if (iconName === "icone-assunto" && title === "Status") {
 		icon = <ArchiveIcon className={classes.icon} />;
 	} else if (iconName === "icone-assunto" && title === "Estante e Prateleira") {
-		icon = <AllInboxIcon className={classes.icon} />
+		icon = <AllInboxIcon className={classes.icon} />;
 	}
 
 	return icon;

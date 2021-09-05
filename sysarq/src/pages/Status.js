@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 
 export default function CreateStatus() {
 	const [status, setStatus] = useState("ARQUIVADO");
-	const [eliminated, setEliminated] = useState("ELIMINADO")
+	const [eliminated, setEliminated] = useState("ELIMINADO");
 	const [sentFrom, setSentFrom] = useState("");
 	const [requestedDocument, setRequestedDocument] = useState("");
 	const [sendDate, setSendDate] = useState("");
@@ -39,7 +39,7 @@ export default function CreateStatus() {
 		axios
 			.post("http://0.0.0.0:8002/status/", {
 				filed: status === "ARQUIVADO",
-				eliminated: eliminated ==="ELIMINADO",
+				eliminated: eliminated === "ELIMINADO",
 				unity_that_forwarded: sentFrom,
 				document_requested: requestedDocument,
 				send_date: sendDate,

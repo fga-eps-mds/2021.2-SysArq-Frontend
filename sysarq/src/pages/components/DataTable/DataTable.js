@@ -224,4 +224,3 @@ DataTable.propTypes = {
 };
 
 export default DataTable;
- 
