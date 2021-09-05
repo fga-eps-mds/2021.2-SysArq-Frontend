@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import AllInboxIcon from "@material-ui/icons/AllInbox";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -12,10 +11,12 @@ import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
 import CardActionArea from "@material-ui/core/CardActionArea";
 
-// import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-// import SubjectIcon from '@material-ui/icons/Subject';
-// import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import SubjectIcon from '@material-ui/icons/Subject';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import DescriptionIcon from '@material-ui/icons/Description';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import ArchiveIcon from '@material-ui/icons/Archive';
 
 const useStyles = makeStyles(() => ({
 	card: {
@@ -42,14 +43,35 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
-const Icon = ({ iconName }) => {
+const Icon = ({ iconName, title }) => {
 	const classes = useStyles();
 
 	let icon = "";
 
-	if (iconName === "icone-assunto") {
-		icon = <AllInboxIcon className={classes.icon} />;
+	if (iconName === "icone-assunto" && title==="Assunto do Documento") {
+		icon = <SubjectIcon className={classes.icon} />;
 	}
+
+	else if (iconName === "icone-assunto" && title==="Sigla da Caixa") {
+		icon = <LocalOfferIcon className={classes.icon} />;
+	}
+
+	else if (iconName === "icone-assunto" && title==="Servidor") {
+		icon = <PersonOutlineIcon className={classes.icon} />;
+	}
+
+	else if (iconName === "icone-assunto" && title==="Unidade") {
+		icon = <HomeWorkIcon className={classes.icon} />;
+	}
+
+	else if (iconName === "icone-assunto" && title==="Tipo de Documento") {
+		icon = <DescriptionIcon className={classes.icon} />;
+	}
+
+	else if (iconName === "icone-assunto" && title==="Status") {
+		icon = <ArchiveIcon className={classes.icon} />;
+	}
+	
 	return icon;
 };
 
@@ -60,7 +82,7 @@ const MenuCard = ({ icon, title, createUrl, listUrl }) => {
 		<Card className={classes.card}>
 			<CardActionArea className={classes.content} href={listUrl}>
 				<CardContent>
-					<Icon iconName={icon} />
+					<Icon iconName={icon} title={title}/>
 					<Typography
 						align="center"
 						fontFamily="Monospace"

@@ -69,7 +69,7 @@ export default function FieldsRegister() {
 							icon="icone-assunto"
 							title="Status"
 							createUrl="/fields-register/create-status"
-							listUrl="/fields-register/document-type"
+							listUrl="/fields-register/status"
 						/>
 					</Grid>
 				</Grid>
