@@ -28,7 +28,7 @@ export default function CreateUnity() {
 	const onClick = () => {
 		axios
 			.post("http://0.0.0.0:8002/unity/", {
-				name_of_unity: unityName,
+				unity_name: unityName,
 				unity_abbreviation: unityAbbreviation,
 				administrative_bond: administrativeBond,
 				bond_abbreviation: bondAbbreviation,

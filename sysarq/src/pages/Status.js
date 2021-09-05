@@ -13,6 +13,7 @@ const useStyles = makeStyles({
 
 export default function CreateStatus() {
 	const [status, setStatus] = useState("ARQUIVADO");
+	const [eliminated, setEliminated] = useState("ELIMINADO")
 	const [sentFrom, setSentFrom] = useState("");
 	const [requestedDocument, setRequestedDocument] = useState("");
 	const [sendDate, setSendDate] = useState("");
@@ -20,6 +21,9 @@ export default function CreateStatus() {
 
 	const onChangeStatus = (event) => {
 		setStatus(event.target.value);
+	};
+	const onChangeEliminated = (event) => {
+		setEliminated(event.target.value);
 	};
 	const onChangeSentFrom = (event) => {
 		setSentFrom(event.target.value);
@@ -34,7 +38,8 @@ export default function CreateStatus() {
 	const onClick = () => {
 		axios
 			.post("http://0.0.0.0:8002/status/", {
-				filed: status,
+				filed: status === "ARQUIVADO",
+				eliminated: eliminated ==="ELIMINADO",
 				unity_that_forwarded: sentFrom,
 				document_requested: requestedDocument,
 				send_date: sendDate,
@@ -61,6 +66,15 @@ export default function CreateStatus() {
 			>
 				<option>ARQUIVADO</option>
 				<option>DESARQUIVADO</option>
+			</select>
+
+			<select
+				className={classes.fields}
+				label="Eliminado ?"
+				onChange={onChangeEliminated}
+			>
+				<option>ATIVO</option>
+				<option>ELIMINADO</option>
 			</select>
 
 			{status === "DESARQUIVADO" && (

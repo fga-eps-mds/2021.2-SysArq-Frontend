@@ -21,7 +21,8 @@ export default function CreateShelf() {
 	const onClick = () => {
 		axios
 			.post("http://0.0.0.0:8002/shelfE/", {
-				number: numberE,
+				shelfe: numberE,
+				shelfp: numberP,
 			})
 			.then((response) => {
 				// eslint-disable-next-line
