@@ -17,6 +17,7 @@ import CreateBoxAbbreviation from "./pages/CreateBoxAbbreviation";
 import CreateDocumentType from "./pages/CreateDocumentType";
 import CreatePublicWorker from "./pages/CreatePublicWorker";
 import CreateUnity from "./pages/CreateUnity";
+import CreateShelf from "./pages/CreateShelf";
 
 import "./App.css";
 
@@ -75,6 +76,9 @@ function App() {
 				</Route>
 				<Route path="/create-box-abbreviation">
 					<CreateBoxAbbreviation />
+				</Route>
+				<Route path="/create-shelf">
+					<CreateShelf />
 				</Route>
 			</Switch>
 		</Router>

@@ -13,15 +13,15 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function Cadastro() {
-	const [numberE, setNumberE] = useState("");
+export default function CreateShelf() {
+	const [numberE, setNumberE] = useState(0);
 	const [numberP, setNumberP] = useState(0);
 	const classes = useStyles();
 
 	const onClick = () => {
 		axios
 			.post("http://0.0.0.0:8002/shelfE/", {
-				numberE: number,
+				number: numberE,
 			})
 			.then((response) => {
 				// eslint-disable-next-line
@@ -34,7 +34,7 @@ export default function Cadastro() {
 			.then(() => {});
 		axios
 			.post("http://0.0.0.0:8002/shelfP/", {
-				numberP: number,
+				number: numberP,
 			})
 			.then((response) => {
 				// eslint-disable-next-line
@@ -47,31 +47,31 @@ export default function Cadastro() {
 			.then(() => {});
 	};
 
-	const onChangeDocumentName = (event) => {
-		setDocumentSubject(event.target.value);
+	const onChangeNumberE = (event) => {
+		setNumberE(event.target.value);
 	};
 
-	const onChangeTemporality = (event) => {
-		setTemporality(event.target.value);
+	const onChangeNumberP = (event) => {
+		setNumberP(event.target.value);
 	};
 
 	return (
 		<div>
-			<h1>Assunto do Documento</h1>
+			<h1>Estante e Prateleira</h1>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeDocumentSubject}
+				onChange={onChangeNumberE}
 				type="shelfE"
-				value={documentSubject}
+				value={numberE}
 				label="Estante"
 				variant="filled"
 			/>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeTemporality}
+				onChange={onChangeNumberP}
 				type="shelfP"
-				value={temporality}
-				placeholder="Prateleira"
+				value={numberP}
+				label="Prateleira"
 				variant="filled"
 			/>
 			<Button

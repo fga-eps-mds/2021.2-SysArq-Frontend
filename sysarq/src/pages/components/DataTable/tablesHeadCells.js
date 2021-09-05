@@ -162,6 +162,22 @@ const headCellsDocumentType = [
 	},
 ];
 
+const headCellsShelf = [
+	{
+		id: "number",
+		numeric: true,
+		padding: "normal",
+		label: "Estante"
+	},
+
+	{
+		id: "number",
+		numeric: true,
+		padding: "normal",
+		label: "Prateleira"
+	},
+];
+
 const tableHeadCells = (url) => {
 	let headCells = [];
 
@@ -175,6 +191,8 @@ const tableHeadCells = (url) => {
 		headCells = headCellsUnity;
 	} else if (url === "document_type/") {
 		headCells = headCellsDocumentType;
+	} else if (url === "shelf/") {
+		headCells = headCellsShelf;
 	}
 	return headCells;
 };

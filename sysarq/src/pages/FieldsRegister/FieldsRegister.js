@@ -64,12 +64,22 @@ export default function FieldsRegister() {
 							listUrl="/fields-register/document-type"
 						/>
 					</Grid>
+
 					<Grid item xs={12} sm={6} md={3}>
 						<MenuCard
 							icon="icone-assunto"
 							title="Status"
 							createUrl="/fields-register/create-status"
 							listUrl="/fields-register/status"
+						/>
+					</Grid>
+
+					<Grid item xs={12} sm={6} md={3}>
+						<MenuCard
+							icon="icone-assunto"
+							title="Estante e Prateleira"
+							createUrl="/create-shelf"
+							listUrl="/fields-register/shelf"
 						/>
 					</Grid>
 				</Grid>
