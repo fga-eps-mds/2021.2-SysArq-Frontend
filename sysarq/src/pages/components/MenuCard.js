@@ -50,17 +50,17 @@ const Icon = ({ iconName, title }) => {
 
 	if (iconName === "icone-assunto" && title === "Assunto do Documento") {
 		icon = <SubjectIcon className={classes.icon} />;
-	} else if (iconName === "icone-assunto" && title === "Sigla da Caixa") {
+	} else if (iconName === "icone-sigla-da-caixa" && title === "Sigla da Caixa") {
 		icon = <LocalOfferIcon className={classes.icon} />;
-	} else if (iconName === "icone-assunto" && title === "Servidor") {
+	} else if (iconName === "icone-servidor" && title === "Servidor") {
 		icon = <PersonOutlineIcon className={classes.icon} />;
-	} else if (iconName === "icone-assunto" && title === "Unidade") {
+	} else if (iconName === "icone-unidade" && title === "Unidade") {
 		icon = <HomeWorkIcon className={classes.icon} />;
-	} else if (iconName === "icone-assunto" && title === "Tipo de Documento") {
+	} else if (iconName === "icone-tipo-de-documento" && title === "Tipo de Documento") {
 		icon = <DescriptionIcon className={classes.icon} />;
-	} else if (iconName === "icone-assunto" && title === "Status") {
+	} else if (iconName === "icone-status" && title === "Status") {
 		icon = <ArchiveIcon className={classes.icon} />;
-	} else if (iconName === "icone-assunto" && title === "Estante e Prateleira") {
+	} else if (iconName === "icone-estante-prateleira" && title === "Estante e Prateleira") {
 		icon = <AllInboxIcon className={classes.icon} />;
 	}
 

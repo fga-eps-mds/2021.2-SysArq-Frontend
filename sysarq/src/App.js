@@ -12,13 +12,14 @@ import PublicWorker from "./pages/FieldsRegister/PublicWorker";
 import DocumentType from "./pages/FieldsRegister/DocumentType";
 import Unity from "./pages/FieldsRegister/Unity";
 import Shelf from "./pages/FieldsRegister/Shelf";
-import CreateDocumentSubject from "./pages/CreateDocumentSubject";
-import CreateStatus from "./pages/Status";
-import CreateBoxAbbreviation from "./pages/CreateBoxAbbreviation";
-import CreateDocumentType from "./pages/CreateDocumentType";
-import CreatePublicWorker from "./pages/CreatePublicWorker";
-import CreateUnity from "./pages/CreateUnity";
-import CreateShelf from "./pages/CreateShelf";
+import Status from "./pages/FieldsRegister/Status";
+import CreateDocumentSubject from "./pages/FieldsRegister/CreateDocumentSubject";
+import CreateStatus from "./pages/FieldsRegister/CreateStatus";
+import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation";
+import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
+import CreatePublicWorker from "./pages/FieldsRegister/CreatePublicWorker";
+import CreateUnity from "./pages/FieldsRegister/CreateUnity";
+import CreateShelf from "./pages/FieldsRegister/CreateShelf";
 
 import "./App.css";
 
@@ -47,9 +48,6 @@ function App() {
 					<Route path="/fields-register/document-subject">
 						<DocumentSubject />
 					</Route>
-					<Route path="/fields-register/create-document-subject">
-						<CreateDocumentSubject />
-					</Route>
 					<Route path="/fields-register/box-abbreviation">
 						<BoxAbbreviation />
 					</Route>
@@ -65,24 +63,30 @@ function App() {
 					<Route path="/fields-register/shelf">
 						<Shelf />
 					</Route>
-					<Route path="/fields-register/create-status">
-						<CreateStatus />
+					<Route path="/fields-register/status">
+						<Status />
 					</Route>
-				</Route>
-				<Route path="/create-public-worker">
-					<CreatePublicWorker />
-				</Route>
-				<Route path="/create-document-type">
-					<CreateDocumentType />
-				</Route>
-				<Route path="/create-unity">
-					<CreateUnity />
 				</Route>
 				<Route path="/create-box-abbreviation">
 					<CreateBoxAbbreviation />
 				</Route>
+				<Route path="/create-document-subject">
+					<CreateDocumentSubject />
+				</Route>
+				<Route path="/create-document-type">
+					<CreateDocumentType />
+				</Route>
+				<Route path="/create-public-worker">
+					<CreatePublicWorker />
+				</Route>
 				<Route path="/create-shelf">
 					<CreateShelf />
+				</Route>
+				<Route path="/create-status">
+					<CreateStatus />
+				</Route>
+				<Route path="/create-unity">
+					<CreateUnity />
 				</Route>
 			</Switch>
 		</Router>

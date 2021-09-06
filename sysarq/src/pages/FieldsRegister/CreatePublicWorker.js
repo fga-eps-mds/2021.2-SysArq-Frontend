@@ -1,9 +1,11 @@
+import React, { useState } from "react";
+
 import { Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import React, { useState } from "react";
-
 import axios from "axios";
+
+const hostApi = process.env.REACT_APP_URL_API_PUBLIC_WORKER;
 
 const useStyles = makeStyles({
 	fields: {
@@ -25,7 +27,7 @@ export default function CreatePublicWorker() {
 
 	const onClick = () => {
 		axios
-			.post("http://0.0.0.0:8002/public_worker/", {
+			.post(hostApi, {
 				name: publicWorkerName,
 				cpf,
 				office,
@@ -33,15 +35,10 @@ export default function CreatePublicWorker() {
 				capacity,
 				county,
 			})
-			.then((response) => {
-				// eslint-disable-next-line
-				console.log("RESPOSTA", response);
+			.then(() => {
 			})
-			.catch((error) => {
-				// eslint-disable-next-line
-				console.log("ERROR", error.response);
+			.catch(() => {
 			})
-			.then(() => {});
 	};
 
 	const onChangePulicWorkerName = (event) => {

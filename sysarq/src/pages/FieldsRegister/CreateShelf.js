@@ -1,9 +1,12 @@
+import React, { useState } from "react";
+
 import { Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import React, { useState } from "react";
-
 import axios from "axios";
+
+const hostApiShelfE = process.env.REACT_APP_URL_API_SHELF_E
+const hostApiShelfP = process.env. REACT_APP_URL_API_SHELF_P
 
 const useStyles = makeStyles({
 	fields: {
@@ -20,33 +23,23 @@ export default function CreateShelf() {
 
 	const onClick = () => {
 		axios
-			.post("http://0.0.0.0:8002/shelfE/", {
+			.post(hostApiShelfE, {
 				shelfe: numberE,
 				shelfp: numberP,
 			})
-			.then((response) => {
-				// eslint-disable-next-line
-				console.log("RESPOSTA", response);
+			.then(() => {
 			})
-			.catch((error) => {
-				// eslint-disable-next-line
-				console.log("ERROR", error.response);
+			.catch(() => {
 			})
-			.then(() => {});
 
 		axios
-			.post("http://0.0.0.0:8002/shelfP/", {
+			.post(hostApiShelfP, {
 				number: numberP,
 			})
-			.then((response) => {
-				// eslint-disable-next-line
-				console.log("RESPOSTA", response);
+			.then(() => {
 			})
-			.catch((error) => {
-				// eslint-disable-next-line
-				console.log("ERROR", error.response);
+			.catch(() => {
 			})
-			.then(() => {});
 	};
 
 	const onChangeNumberE = (event) => {

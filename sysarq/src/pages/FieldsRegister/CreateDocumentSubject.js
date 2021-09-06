@@ -1,9 +1,11 @@
+import React, { useState } from "react";
+
 import { Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import React, { useState } from "react";
-
 import axios from "axios";
+
+const hostApi = process.env.REACT_APP_URL_API_DOCUMENT_SUBJECT;
 
 const useStyles = makeStyles({
 	fields: {
@@ -13,30 +15,25 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function CreateDocumentType() {
-	const [documentName, setDocumentName] = useState("");
+export default function CreateDocumentSubject() {
+	const [documentSubject, setDocumentSubject] = useState("");
 	const [temporality, setTemporality] = useState(0);
 	const classes = useStyles();
 
 	const onClick = () => {
 		axios
-			.post("http://0.0.0.0:8002/document_type/", {
-				document_name: documentName,
+			.post(hostApi, {
+				subject_name: documentSubject,
 				temporality,
 			})
-			.then((response) => {
-				// eslint-disable-next-line
-				console.log("RESPOSTA", response);
+			.then(() => {
 			})
-			.catch((error) => {
-				// eslint-disable-next-line
-				console.log("ERROR", error.response);
+			.catch(() => {
 			})
-			.then(() => {});
 	};
 
-	const onChangeDocumentName = (event) => {
-		setDocumentName(event.target.value);
+	const onChangeDocumentSubject = (event) => {
+		setDocumentSubject(event.target.value);
 	};
 
 	const onChangeTemporality = (event) => {
@@ -48,10 +45,10 @@ export default function CreateDocumentType() {
 			<h1>Assunto do Documento</h1>
 			<TextField
 				className={classes.fields}
-				onChange={onChangeDocumentName}
-				type="document_name"
-				value={documentName}
-				label="Nome do documento"
+				onChange={onChangeDocumentSubject}
+				type="document_subject"
+				value={documentSubject}
+				label="Assunto do documento"
 				variant="filled"
 			/>
 			<TextField

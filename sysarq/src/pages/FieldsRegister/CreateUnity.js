@@ -1,9 +1,11 @@
+import React, { useState } from "react";
+
 import { Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import React, { useState } from "react";
-
 import axios from "axios";
+
+const hostApi = process.env.REACT_APP_URL_API_UNITY;
 
 const useStyles = makeStyles({
 	fields: {
@@ -27,7 +29,7 @@ export default function CreateUnity() {
 
 	const onClick = () => {
 		axios
-			.post("http://0.0.0.0:8002/unity/", {
+			.post(hostApi, {
 				unity_name: unityName,
 				unity_abbreviation: unityAbbreviation,
 				administrative_bond: administrativeBond,
@@ -36,15 +38,10 @@ export default function CreateUnity() {
 				telephone_number: telephoneNumber,
 				county,
 			})
-			.then((response) => {
-				// eslint-disable-next-line
-				console.log("RESPOSTA", response);
+			.then(() => {
 			})
-			.catch((error) => {
-				// eslint-disable-next-line
-				console.log("ERROR", error.response);
+			.catch(() => {
 			})
-			.then(() => {});
 	};
 
 	const onChangeUnityName = (event) => {

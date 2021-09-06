@@ -1,7 +1,11 @@
+import React, { useState } from "react";
+
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+
 import axios from "axios";
-import React, { useState } from "react";
+
+const hostApi = process.env.REACT_APP_URL_API_STATUS;
 
 const useStyles = makeStyles({
 	fields: {
@@ -37,22 +41,17 @@ export default function CreateStatus() {
 
 	const onClick = () => {
 		axios
-			.post("http://0.0.0.0:8002/status/", {
+			.post(hostApi, {
 				filed: status === "ARQUIVADO",
 				eliminated: eliminated === "ELIMINADO",
 				unity_that_forwarded: sentFrom,
 				document_requested: requestedDocument,
 				send_date: sendDate,
 			})
-			.then((response) => {
-				// eslint-disable-next-line
-				console.log("RESPOSTA", response);
+			.then(() => {
 			})
-			.catch((error) => {
-				// eslint-disable-next-line
-				console.log("ERROR", error.response);
+			.catch(() => {
 			})
-			.then(() => {});
 	};
 
 	return (

@@ -24,14 +24,14 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-assunto"
 							title="Assunto do Documento"
-							createUrl="/fields-register/create-document-subject"
+							createUrl="/create-document-subject"
 							listUrl="/fields-register/document-subject"
 						/>
 					</Grid>
 
 					<Grid item xs={12} sm={6} md={3}>
 						<MenuCard
-							icon="icone-assunto"
+							icon="icone-sigla-da-caixa"
 							title="Sigla da Caixa"
 							createUrl="create-box-abbreviation"
 							listUrl="/fields-register/box-abbreviation"
@@ -40,7 +40,7 @@ export default function FieldsRegister() {
 
 					<Grid item xs={12} sm={6} md={3}>
 						<MenuCard
-							icon="icone-assunto"
+							icon="icone-servidor"
 							title="Servidor"
 							createUrl="create-public-worker"
 							listUrl="/fields-register/public-worker"
@@ -49,7 +49,7 @@ export default function FieldsRegister() {
 
 					<Grid item xs={12} sm={6} md={3}>
 						<MenuCard
-							icon="icone-assunto"
+							icon="icone-unidade"
 							title="Unidade"
 							createUrl="create-unity"
 							listUrl="/fields-register/unity"
@@ -58,7 +58,7 @@ export default function FieldsRegister() {
 
 					<Grid item xs={12} sm={6} md={3}>
 						<MenuCard
-							icon="icone-assunto"
+							icon="icone-tipo-de-documento"
 							title="Tipo de Documento"
 							createUrl="create-document-type"
 							listUrl="/fields-register/document-type"
@@ -67,16 +67,16 @@ export default function FieldsRegister() {
 
 					<Grid item xs={12} sm={6} md={3}>
 						<MenuCard
-							icon="icone-assunto"
+							icon="icone-status"
 							title="Status"
-							createUrl="/fields-register/create-status"
-							listUrl="/fields-register/status"
+							createUrl="/create-status"
+							listUrl="/fields-register/status" 
 						/>
 					</Grid>
 
 					<Grid item xs={12} sm={6} md={3}>
 						<MenuCard
-							icon="icone-assunto"
+							icon="icone-estante-prateleira"
 							title="Estante e Prateleira"
 							createUrl="/create-shelf"
 							listUrl="/fields-register/shelf"
