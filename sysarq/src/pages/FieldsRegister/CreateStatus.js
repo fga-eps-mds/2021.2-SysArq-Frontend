@@ -48,10 +48,8 @@ export default function CreateStatus() {
 				document_requested: requestedDocument,
 				send_date: sendDate,
 			})
-			.then(() => {
-			})
-			.catch(() => {
-			})
+			.then(() => {})
+			.catch(() => {});
 	};
 
 	return (

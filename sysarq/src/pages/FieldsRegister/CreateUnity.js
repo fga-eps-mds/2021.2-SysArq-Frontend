@@ -38,10 +38,8 @@ export default function CreateUnity() {
 				telephone_number: telephoneNumber,
 				county,
 			})
-			.then(() => {
-			})
-			.catch(() => {
-			})
+			.then(() => {})
+			.catch(() => {});
 	};
 
 	const onChangeUnityName = (event) => {

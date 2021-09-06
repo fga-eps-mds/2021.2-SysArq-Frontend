@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-
 import axios from "axios";
 
 const hostApi = process.env.REACT_APP_URL_API_DOCUMENT_TYPE;
@@ -27,10 +26,8 @@ export default function CreateDocumentType() {
 				document_name: documentName,
 				temporality,
 			})
-			.then(() => {
-			})
-			.catch(() => {
-			})
+			.then(() => {})
+			.catch(() => {});
 	};
 
 	const onChangeDocumentName = (event) => {

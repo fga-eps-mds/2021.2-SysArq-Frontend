@@ -31,10 +31,8 @@ export default function CreateBoxAbbreviation() {
 				name,
 				year,
 			})
-			.then(() => {
-			})
-			.catch(() => {
-			})
+			.then(() => {})
+			.catch(() => {});
 	};
 
 	const onChangeNumber = (event) => {

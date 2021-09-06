@@ -35,10 +35,8 @@ export default function CreatePublicWorker() {
 				capacity,
 				county,
 			})
-			.then(() => {
-			})
-			.catch(() => {
-			})
+			.then(() => {})
+			.catch(() => {});
 	};
 
 	const onChangePulicWorkerName = (event) => {

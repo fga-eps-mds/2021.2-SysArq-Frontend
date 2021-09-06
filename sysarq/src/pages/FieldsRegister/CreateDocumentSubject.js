@@ -26,10 +26,8 @@ export default function CreateDocumentSubject() {
 				subject_name: documentSubject,
 				temporality,
 			})
-			.then(() => {
-			})
-			.catch(() => {
-			})
+			.then(() => {})
+			.catch(() => {});
 	};
 
 	const onChangeDocumentSubject = (event) => {

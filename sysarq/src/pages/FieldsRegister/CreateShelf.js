@@ -5,8 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
 
-const hostApiShelfE = process.env.REACT_APP_URL_API_SHELF_E
-const hostApiShelfP = process.env. REACT_APP_URL_API_SHELF_P
+const hostApiShelfE = process.env.REACT_APP_URL_API_SHELF_E;
+const hostApiShelfP = process.env.REACT_APP_URL_API_SHELF_P;
 
 const useStyles = makeStyles({
 	fields: {
@@ -27,19 +27,15 @@ export default function CreateShelf() {
 				shelfe: numberE,
 				shelfp: numberP,
 			})
-			.then(() => {
-			})
-			.catch(() => {
-			})
+			.then(() => {})
+			.catch(() => {});
 
 		axios
 			.post(hostApiShelfP, {
 				number: numberP,
 			})
-			.then(() => {
-			})
-			.catch(() => {
-			})
+			.then(() => {})
+			.catch(() => {});
 	};
 
 	const onChangeNumberE = (event) => {
