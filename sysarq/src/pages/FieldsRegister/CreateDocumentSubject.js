@@ -42,22 +42,25 @@ export default function CreateDocumentSubject() {
 		<div>
 			<h1>Assunto do Documento</h1>
 			<TextField
+				id="nome-do-documento-input"
 				className={classes.fields}
 				onChange={onChangeDocumentSubject}
 				type="document_subject"
 				value={documentSubject}
-				label="Assunto do documento"
+				label="Nome do documento"
 				variant="filled"
 			/>
 			<TextField
+				id="temporalidade-input"
 				className={classes.fields}
 				onChange={onChangeTemporality}
-				type="temporality"
+				type="number"
+				label="Temporalidade"
 				value={temporality}
-				placeholder="Temporalidade"
 				variant="filled"
 			/>
 			<Button
+				data-testid="click"
 				onClick={onClick}
 				style={{ marginTop: "20px" }}
 				variant="contained"

@@ -57,26 +57,29 @@ export default function CreateStatus() {
 			<h1>Status</h1>
 
 			<select
+				data-testid="statusID"
 				className={classes.fields}
 				label="Status"
 				onChange={onChangeStatus}
 			>
 				<option>ARQUIVADO</option>
-				<option>DESARQUIVADO</option>
+				<option value="DESARQUIVADO">DESARQUIVADO</option>
 			</select>
 
 			<select
+				data-testid="eliminado"
 				className={classes.fields}
 				label="Eliminado ?"
 				onChange={onChangeEliminated}
 			>
 				<option>ATIVO</option>
-				<option>ELIMINADO</option>
+				<option value="ELIMINADO">ELIMINADO</option>
 			</select>
 
 			{status === "DESARQUIVADO" && (
 				<div>
 					<input
+						data-testid="enviado-por"
 						onChange={onChangeSentFrom}
 						type="unity_that_forwarded"
 						value={sentFrom}
@@ -84,6 +87,7 @@ export default function CreateStatus() {
 						variant="filed"
 					/>
 					<input
+						data-testid="requisitado"
 						onChange={onChangeRequestedDocument}
 						type="document_requested"
 						value={requestedDocument}
@@ -91,6 +95,7 @@ export default function CreateStatus() {
 						variant="filed"
 					/>
 					<input
+						data-testid="data-envio"
 						onChange={onChangeSendDate}
 						type="send_date"
 						value={sendDate}
@@ -101,6 +106,7 @@ export default function CreateStatus() {
 			)}
 
 			<Button
+				data-testid="click"
 				onClick={onClick}
 				style={{ marginTop: "20px" }}
 				variant="contained"

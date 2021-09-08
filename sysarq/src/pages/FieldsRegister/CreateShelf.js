@@ -50,6 +50,7 @@ export default function CreateShelf() {
 		<div>
 			<h1>Estante e Prateleira</h1>
 			<TextField
+				id="estante-input"
 				className={classes.fields}
 				onChange={onChangeNumberE}
 				type="shelfE"
@@ -58,6 +59,7 @@ export default function CreateShelf() {
 				variant="filled"
 			/>
 			<TextField
+				id="prateleira-input"
 				className={classes.fields}
 				onChange={onChangeNumberP}
 				type="shelfP"
@@ -66,6 +68,7 @@ export default function CreateShelf() {
 				variant="filled"
 			/>
 			<Button
+				data-testid="click"
 				onClick={onClick}
 				style={{ marginTop: "20px" }}
 				variant="contained"

@@ -65,8 +65,9 @@ export default function CreatePublicWorker() {
 
 	return (
 		<div>
-			<h1>Assunto do Documento</h1>
+			<h1>Servidor</h1>
 			<TextField
+				id="nome-do-servidor-input"
 				className={classes.fields}
 				onChange={onChangePulicWorkerName}
 				type="public_worker_name"
@@ -75,47 +76,53 @@ export default function CreatePublicWorker() {
 				variant="filled"
 			/>
 			<TextField
+				id="cpf-do-servidor-input"
 				className={classes.fields}
 				onChange={onChangeCpf}
 				type="cpf"
 				value={cpf}
-				placeholder="CPF do servidor"
+				label="CPF do servidor"
 				variant="filled"
 			/>
 			<TextField
+				id="cargo-do-servidor-input"
 				className={classes.fields}
 				onChange={onChangeOffice}
 				type="office"
 				value={office}
-				placeholder="Cargo do servidor"
+				label="Cargo do servidor"
 				variant="filled"
 			/>
 			<TextField
+				id="classe-do-servidor-input"
 				className={classes.fields}
 				onChange={onChangeClassWorker}
 				type="class_worker"
 				value={classWorker}
-				placeholder="Classe do servidor"
+				label="Classe do servidor"
 				variant="filled"
 			/>
 			<TextField
+				id="lotacao-do-servidor-input"
 				className={classes.fields}
 				onChange={onChangeCapacity}
 				type="capacity"
 				value={capacity}
-				placeholder="Lotaçao do servidor"
+				label="Lotação do servidor"
 				variant="filled"
 			/>
 			<TextField
+				id="municipio-do-servidor-input"
 				className={classes.fields}
 				onChange={onChangeCounty}
 				type="county"
 				value={county}
-				placeholder="Município do servidor"
+				label="Município do servidor"
 				variant="filled"
 			/>
 
 			<Button
+				data-testid="click"
 				onClick={onClick}
 				style={{ marginTop: "20px" }}
 				variant="contained"

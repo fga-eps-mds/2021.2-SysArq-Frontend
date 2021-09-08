@@ -76,8 +76,9 @@ export default function CreateUnity() {
 
 	return (
 		<div>
-			<h1>Assunto do Documento</h1>
+			<h1>Unidade</h1>
 			<TextField
+				id="nome-da-unidade-input"
 				className={classes.fields}
 				onChange={onChangeUnityName}
 				type="unity_name"
@@ -86,6 +87,7 @@ export default function CreateUnity() {
 				variant="filled"
 			/>
 			<TextField
+				id="sigla-da-unidade-input"
 				className={classes.fields}
 				onChange={onChangeUnityAbbreviation}
 				type="unity_abbreviation"
@@ -94,54 +96,61 @@ export default function CreateUnity() {
 				variant="filled"
 			/>
 			<TextField
+				id="vinculo-administrativo-input"
 				className={classes.fields}
 				onChange={onChangeAdministrativeBond}
 				type="administrative_bond"
 				value={administrativeBond}
-				placeholder="Vinculo administrativo"
+				label="Vínculo administrativo"
 				variant="filled"
 			/>
 			<TextField
+				id="sigla-do-vinculo-input"
 				className={classes.fields}
 				onChange={onChangeBondAbbreviation}
 				type="bond_abbreviation"
 				value={bondAbbreviation}
-				placeholder="Sigla do Vínculo"
+				label="Sigla do vínculo"
 				variant="filled"
 			/>
 			<TextField
+				id="tipo-de-unidade-input"
 				className={classes.fields}
 				onChange={onChangeUnityType}
 				type="unityType"
 				value={unityType}
-				placeholder="Tipo de unidade"
+				label="Tipo de unidade"
 				variant="filled"
 			/>
 			<TextField
+				id="municipio-input"
 				className={classes.fields}
 				onChange={onChangeCounty}
 				type="county"
 				value={county}
-				placeholder="Município"
+				label="Município"
 				variant="filled"
 			/>
 			<TextField
+				id="numero-de-telefone-input"
 				className={classes.fields}
 				onChange={onChangeTelephoneNumber}
 				type="telephone_number"
 				value={telephoneNumber}
-				placeholder="Número de Telefone"
+				label="Número de telefone"
 				variant="filled"
 			/>
 			<TextField
+				id="observacoes-input"
 				className={classes.fields}
 				onChange={onChangeNote}
 				type="note"
 				value={note}
-				placeholder="Observações"
+				label="Observações"
 				variant="filled"
 			/>
 			<Button
+				data-testid="click"
 				onClick={onClick}
 				style={{ marginTop: "20px" }}
 				variant="contained"

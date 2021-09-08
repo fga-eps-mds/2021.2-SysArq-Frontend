@@ -97,6 +97,7 @@ const MenuCard = ({ icon, title, createUrl, listUrl }) => {
 			</CardActionArea>
 			<CardActions>
 				<Button
+					data-testid="click-criar"
 					className={classes.button}
 					href={createUrl}
 					size="small"
@@ -105,6 +106,7 @@ const MenuCard = ({ icon, title, createUrl, listUrl }) => {
 					Criar
 				</Button>
 				<Button
+					data-testid="click-listar"
 					className={classes.button}
 					href={listUrl}
 					size="small"

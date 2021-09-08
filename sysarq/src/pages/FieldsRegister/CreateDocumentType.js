@@ -40,24 +40,27 @@ export default function CreateDocumentType() {
 
 	return (
 		<div>
-			<h1>Assunto do Documento</h1>
+			<h1>Tipo de Documento</h1>
 			<TextField
+				id="nome-do-documento-input"
 				className={classes.fields}
 				onChange={onChangeDocumentName}
 				type="document_name"
 				value={documentName}
-				label="Nome do documento"
+				label="Nome do Documento"
 				variant="filled"
 			/>
 			<TextField
+				id="temporalidade-input"
 				className={classes.fields}
 				onChange={onChangeTemporality}
-				type="temporality"
+				type="number"
 				value={temporality}
-				placeholder="Temporalidade"
+				label="Temporalidade"
 				variant="filled"
 			/>
 			<Button
+				data-testid="click"
 				onClick={onClick}
 				style={{ marginTop: "20px" }}
 				variant="contained"

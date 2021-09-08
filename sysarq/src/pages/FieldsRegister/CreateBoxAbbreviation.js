@@ -55,6 +55,7 @@ export default function CreateBoxAbbreviation() {
 		<div>
 			<h1>Sigla da Caixa</h1>
 			<TextField
+				id="numero-da-caixa-input"
 				className={classes.fields}
 				onChange={onChangeNumber}
 				type="number"
@@ -63,6 +64,7 @@ export default function CreateBoxAbbreviation() {
 				variant="filled"
 			/>
 			<TextField
+				id="sigla-da-caixa-input"
 				className={classes.fields}
 				onChange={onChangeAbrevviation}
 				type="abbreviation"
@@ -71,23 +73,26 @@ export default function CreateBoxAbbreviation() {
 				variant="filled"
 			/>
 			<TextField
+				id="nome-completo-input"
 				className={classes.fields}
 				onChange={onChangeName}
 				type="name"
 				value={name}
-				placeholder="Nome completo"
+				label="Nome completo"
 				variant="filled"
 			/>
 			<TextField
+				id="ano-input"
 				className={classes.fields}
 				onChange={onChangeYear}
 				type="year"
 				value={year}
-				placeholder="Ano"
+				label="Ano"
 				variant="filled"
 			/>
 
 			<Button
+				data-testid="click"
 				onClick={onClick}
 				style={{ marginTop: "20px" }}
 				variant="contained"
