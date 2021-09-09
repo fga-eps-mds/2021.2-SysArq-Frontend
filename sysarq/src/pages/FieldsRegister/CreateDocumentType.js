@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
 
-const hostApi = `${process.env.REACT_APP_URL_API}/document_type`;
+const hostApi = `${process.env.REACT_APP_URL_API}document_type`;
 
 const useStyles = makeStyles({
 	fields: {
