@@ -5,8 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
 
-const hostApi = process.env.REACT_APP_URL_API_BOX_ABBREVIATION;
-
+const hostApi = `${process.env.REACT_APP_URL_API}/box_abbreviation`;
 const useStyles = makeStyles({
 	fields: {
 		marginTop: 20,

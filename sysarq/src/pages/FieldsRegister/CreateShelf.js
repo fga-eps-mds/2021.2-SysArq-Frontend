@@ -5,8 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
 
-const hostApiShelfE = process.env.REACT_APP_URL_API_SHELF_E;
-const hostApiShelfP = process.env.REACT_APP_URL_API_SHELF_P;
+const hostApiShelfE = `${process.env.REACT_APP_URL_API}/shelfE`;
+const hostApiShelfP = `${process.env.REACT_APP_URL_API}/shelfP`;
 
 const useStyles = makeStyles({
 	fields: {
