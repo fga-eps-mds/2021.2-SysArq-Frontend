@@ -37,6 +37,9 @@ describe("Ensure that the shelf input fields exist", () => {
 	});
 });
 
+const hostApiShelfE = `${process.env.REACT_APP_URL_API}shelfE`;
+const hostApiShelfP = `${process.env.REACT_APP_URL_API}shelfP`;
+
 describe("Teste do botão", () => {
 	it("Botão de salvar", () => {
 		let mock = new MockAdapter(axios);
@@ -46,11 +49,11 @@ describe("Teste do botão", () => {
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
 
-		mock.onPost("http://0.0.0.0:8002/shelfE").reply(function () {
+		mock.onPost(hostApiShelfE).reply(function () {
 			return [201];
 		});
 
-		mock.onPost("http://0.0.0.0:8002/shelfP").reply(function () {
+		mock.onPost(hostApiShelfP).reply(function () {
 			return [201];
 		});
 

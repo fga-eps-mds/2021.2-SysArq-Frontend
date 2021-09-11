@@ -81,6 +81,8 @@ describe("Ensure server input fields exist", () => {
 	});
 });
 
+const hostApi = `${process.env.REACT_APP_URL_API}public_worker`;
+
 describe("Button test", () => {
 	it("Save button", () => {
 		let mock = new MockAdapter(axios);
@@ -90,7 +92,7 @@ describe("Button test", () => {
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
 
-		mock.onPost("http://0.0.0.0:8002/public_worker").reply(function () {
+		mock.onPost(hostApi).reply(function () {
 			return [201];
 		});
 

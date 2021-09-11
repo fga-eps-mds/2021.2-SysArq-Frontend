@@ -77,6 +77,8 @@ describe("Ensure that input fields when unarchived are selected exist", () => {
 	});
 });
 
+const hostApi = `${process.env.REACT_APP_URL_API}status`;
+
 describe("Button test", () => {
 	it("Save button", () => {
 		let mock = new MockAdapter(axios);
@@ -86,7 +88,7 @@ describe("Button test", () => {
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
 
-		mock.onPost("http://0.0.0.0:8002/status").reply(function () {
+		mock.onPost(hostApi).reply(function () {
 			return [201];
 		});
 

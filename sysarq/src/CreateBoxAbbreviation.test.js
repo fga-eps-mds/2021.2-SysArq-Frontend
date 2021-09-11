@@ -59,6 +59,8 @@ describe("Ensure that the input fields of the box abbreviation exist", () => {
 	});
 });
 
+const hostApi = `${process.env.REACT_APP_URL_API}box_abbreviation`;
+
 describe("Button test", () => {
 	it("Save button", () => {
 		let mock = new MockAdapter(axios);
@@ -68,7 +70,7 @@ describe("Button test", () => {
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
 
-		mock.onPost("http://0.0.0.0:8002/box_abbreviation").reply(function () {
+		mock.onPost(hostApi).reply(function () {
 			return [201];
 		});
 

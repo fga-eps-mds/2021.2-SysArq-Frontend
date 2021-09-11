@@ -112,6 +112,8 @@ describe("Button test", () => {
 	});
 });
 
+const hostApi = `${process.env.REACT_APP_URL_API}unity`;
+
 describe("Teste do botão", () => {
 	it("Botão de salvar", () => {
 		let mock = new MockAdapter(axios);
@@ -121,7 +123,7 @@ describe("Teste do botão", () => {
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
 
-		mock.onPost("http://0.0.0.0:8002/unity").reply(function () {
+		mock.onPost(hostApi).reply(function () {
 			return [201];
 		});
 
