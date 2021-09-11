@@ -2,17 +2,19 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
-describe('Main component', () => {
-	it('Show page title', () => {
+describe("Main component", () => {
+	it("Show page title", () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Unidade")).toBeInTheDocument();
 	});
 });
 
-describe('Ensure unit input fields exist', () => {
-	it('Unit name', () => {
+describe("Ensure unit input fields exist", () => {
+	it("Unit name", () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Nome da unidade")).toBeInTheDocument();
@@ -23,7 +25,7 @@ describe('Ensure unit input fields exist', () => {
 		expect(valor == "20º Delegacia de Polícia").toBe(true);
 	});
 
-	it('Unit abbreviation', () => {
+	it("Unit abbreviation", () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Sigla da unidade")).toBeInTheDocument();
@@ -34,7 +36,7 @@ describe('Ensure unit input fields exist', () => {
 		expect(valor == "20º DP").toBe(true);
 	});
 
-	it('Administrative bond', () => {
+	it("Administrative bond", () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Vínculo administrativo")).toBeInTheDocument();
@@ -45,7 +47,7 @@ describe('Ensure unit input fields exist', () => {
 		expect(valor == "Jurídico").toBe(true);
 	});
 
-	it('Abbreviation bond', () => {
+	it("Abbreviation bond", () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Sigla do vínculo")).toBeInTheDocument();
@@ -56,7 +58,7 @@ describe('Ensure unit input fields exist', () => {
 		expect(valor == "VJA").toBe(true);
 	});
 
-	it('Unit type', () => {
+	it("Unit type", () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Tipo de unidade")).toBeInTheDocument();
@@ -67,7 +69,7 @@ describe('Ensure unit input fields exist', () => {
 		expect(valor == "Administrativa").toBe(true);
 	});
 
-	it('Municipality', () => {
+	it("Municipality", () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Município")).toBeInTheDocument();
@@ -78,7 +80,7 @@ describe('Ensure unit input fields exist', () => {
 		expect(valor == "Abadiânia").toBe(true);
 	});
 
-	it('Phone number', () => {
+	it("Phone number", () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Número de telefone")).toBeInTheDocument();
@@ -89,7 +91,7 @@ describe('Ensure unit input fields exist', () => {
 		expect(valor == "912398734").toBe(true);
 	});
 
-	it('Comments', () => {
+	it("Comments", () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Observações")).toBeInTheDocument();
@@ -101,11 +103,39 @@ describe('Ensure unit input fields exist', () => {
 	});
 });
 
-describe('Button test', () => {
-	it('Save button', () => {
+describe("Button test", () => {
+	it("Save button", () => {
 		render(<CreateUnity />);
 
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
+	});
+});
+
+describe("Teste do botão", () => {
+	it("Botão de salvar", () => {
+		let mock = new MockAdapter(axios);
+
+		render(<CreateUnity />);
+
+		const click = screen.getByTestId("click");
+		expect(fireEvent.click(click)).toBe(true);
+
+		mock.onPost(`${process.env.REACT_APP_API_URL}/unity`).reply(function () {
+			return [201];
+		});
+
+		expect(mock.history.post.length).toBe(1);
+		expect(mock.history.post[0].data).toBe(
+			JSON.stringify({
+				unity_name: "",
+				unity_abbreviation: "",
+				administrative_bond: "",
+				bond_abbreviation: "",
+				type_of_unity: "",
+				telephone_number: "",
+				county: "",
+			})
+		);
 	});
 });

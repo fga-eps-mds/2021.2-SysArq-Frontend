@@ -2,17 +2,19 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
-describe('Main component', () => {
-	it('Show page title', () => {
+describe("Main component", () => {
+	it("Show page title", () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
 	});
 });
 
-describe('Ensure that the input fields of the box abbreviation exist', () => {
-	it('box number', () => {
+describe("Ensure that the input fields of the box abbreviation exist", () => {
+	it("box number", () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Número da caixa")).toBeInTheDocument();
@@ -23,7 +25,7 @@ describe('Ensure that the input fields of the box abbreviation exist', () => {
 		expect(valor == "10").toBe(true);
 	});
 
-	it('box abbreviation', () => {
+	it("box abbreviation", () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Sigla da caixa")).toBeInTheDocument();
@@ -34,7 +36,7 @@ describe('Ensure that the input fields of the box abbreviation exist', () => {
 		expect(valor == "PC-GO").toBe(true);
 	});
 
-	it('Full name', () => {
+	it("Full name", () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Nome completo")).toBeInTheDocument();
@@ -45,7 +47,7 @@ describe('Ensure that the input fields of the box abbreviation exist', () => {
 		expect(valor == "Polícia Civil do Goias").toBe(true);
 	});
 
-	it('Year', () => {
+	it("Year", () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Ano")).toBeInTheDocument();
@@ -57,11 +59,24 @@ describe('Ensure that the input fields of the box abbreviation exist', () => {
 	});
 });
 
-describe('Button test', () => {
-	it('Save button', () => {
+describe("Button test", () => {
+	it("Save button", () => {
+		let mock = new MockAdapter(axios);
+
 		render(<CreateBoxAbbreviation />);
 
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
+
+		mock
+			.onPost(`${process.env.REACT_APP_API_URL}/box_abbreviation`)
+			.reply(function () {
+				return [201];
+			});
+
+		expect(mock.history.post.length).toBe(1);
+		expect(mock.history.post[0].data).toBe(
+			JSON.stringify({ number: "", abbreviation: "", name: "", year: "" })
+		);
 	});
 });

@@ -2,16 +2,18 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
-describe('Main component', () => {
-	it('Show page title', () => {
+describe("Main component", () => {
+	it("Show page title", () => {
 		render(<CreateShelf />);
 
 		expect(screen.getByText("Estante e Prateleira")).toBeInTheDocument();
 	});
 });
 
-describe('Ensure that the shelf input fields exist', () => {
+describe("Ensure that the shelf input fields exist", () => {
 	it("Estante", () => {
 		render(<CreateShelf />);
 
@@ -35,11 +37,27 @@ describe('Ensure that the shelf input fields exist', () => {
 	});
 });
 
-describe('Button test', () => {
-	it('Save button', () => {
+describe("Teste do botão", () => {
+	it("Botão de salvar", () => {
+		let mock = new MockAdapter(axios);
+
 		render(<CreateShelf />);
 
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
+
+		mock.onPost(`${process.env.REACT_APP_API_URL}/shelfE`).reply(function () {
+			return [201];
+		});
+
+		mock.onPost(`${process.env.REACT_APP_API_URL}/shelfP`).reply(function () {
+			return [201];
+		});
+
+		expect(mock.history.post.length).toBe(2);
+		expect(mock.history.post[0].data).toBe(
+			JSON.stringify({ shelfe: 0, shelfp: 0 })
+		);
+		expect(mock.history.post[1].data).toBe(JSON.stringify({ number: 0 }));
 	});
 });

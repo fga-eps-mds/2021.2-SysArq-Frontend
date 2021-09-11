@@ -2,16 +2,18 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateDocumentSubject from "./pages/FieldsRegister/CreateDocumentSubject";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
-describe('Main component', () => {
-	it('Show page title', () => {
+describe("Main component", () => {
+	it("Show page title", () => {
 		render(<CreateDocumentSubject />);
 
 		expect(screen.getByText("Assunto do Documento")).toBeInTheDocument();
 	});
 });
 
-describe('Ensure that the document subject input fields exist', () => {
+describe("Ensure that the document subject input fields exist", () => {
 	it("Full name", () => {
 		render(<CreateDocumentSubject />);
 
@@ -23,7 +25,7 @@ describe('Ensure that the document subject input fields exist', () => {
 		expect(valor == "Novo Processo").toBe(true);
 	});
 
-	it('Temporality', () => {
+	it("Temporality", () => {
 		render(<CreateDocumentSubject />);
 
 		expect(screen.getByText("Temporalidade")).toBeInTheDocument();
@@ -35,11 +37,24 @@ describe('Ensure that the document subject input fields exist', () => {
 	});
 });
 
-describe('Button test', () => {
-	it('Save button', () => {
+describe("Button test", () => {
+	it("Save button", () => {
+		let mock = new MockAdapter(axios);
+
 		render(<CreateDocumentSubject />);
 
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
+
+		mock
+			.onPost(`${process.env.REACT_APP_API_URL}/document_subject`)
+			.reply(function () {
+				return [201];
+			});
+
+		expect(mock.history.post.length).toBe(1);
+		expect(mock.history.post[0].data).toBe(
+			JSON.stringify({ subject_name: "", temporality: 0 })
+		);
 	});
 });

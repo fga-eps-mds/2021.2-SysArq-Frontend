@@ -2,17 +2,19 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateStatus from "./pages/FieldsRegister/CreateStatus";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
-describe('Main component', () => {
-	it('Show page title', () => {
+describe("Main component", () => {
+	it("Show page title", () => {
 		render(<CreateStatus />);
 
 		expect(screen.getByText("Status")).toBeInTheDocument();
 	});
 });
 
-describe('Ensure that input fields when unarchived are selected exist', () => {
-	it('Status', () => {
+describe("Ensure that input fields when unarchived are selected exist", () => {
+	it("Status", () => {
 		const { getByTestId, getAllByTestId } = render(<CreateStatus />);
 		fireEvent.change(getByTestId("statusID"), {
 			target: { value: "DESARQUIVADO" },
@@ -21,7 +23,7 @@ describe('Ensure that input fields when unarchived are selected exist', () => {
 		expect(options[0].value).toBe("DESARQUIVADO");
 	});
 
-	it('Eliminated ?', () => {
+	it("Eliminated ?", () => {
 		const { getByTestId, getAllByTestId } = render(<CreateStatus />);
 		fireEvent.change(getByTestId("eliminado"), {
 			target: { value: "ELIMINADO" },
@@ -30,8 +32,8 @@ describe('Ensure that input fields when unarchived are selected exist', () => {
 		expect(options[0].value).toBe("ELIMINADO");
 	});
 
-	describe('Ensure that input fields when UNARCHIVED exist', () => {
-		it('Sent by', () => {
+	describe("Ensure that input fields when UNARCHIVED exist", () => {
+		it("Sent by", () => {
 			const { getByTestId, getAllByTestId } = render(<CreateStatus />);
 			fireEvent.change(getByTestId("statusID"), {
 				target: { value: "DESARQUIVADO" },
@@ -45,7 +47,7 @@ describe('Ensure that input fields when unarchived are selected exist', () => {
 			expect(valor == "João").toBe(true);
 		});
 
-		it('Document that requested the unarchive', () => {
+		it("Document that requested the unarchive", () => {
 			const { getByTestId, getAllByTestId } = render(<CreateStatus />);
 			fireEvent.change(getByTestId("statusID"), {
 				target: { value: "DESARQUIVADO" },
@@ -59,7 +61,7 @@ describe('Ensure that input fields when unarchived are selected exist', () => {
 			expect(valor == "Documento 1").toBe(true);
 		});
 
-		it('Send date', () => {
+		it("Send date", () => {
 			const { getByTestId, getAllByTestId } = render(<CreateStatus />);
 			fireEvent.change(getByTestId("statusID"), {
 				target: { value: "DESARQUIVADO" },
@@ -75,11 +77,28 @@ describe('Ensure that input fields when unarchived are selected exist', () => {
 	});
 });
 
-describe('Button test', () => {
-	it('Save button', () => {
+describe("Button test", () => {
+	it("Save button", () => {
+		let mock = new MockAdapter(axios);
+
 		render(<CreateStatus />);
 
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
+
+		mock.onPost(`${process.env.REACT_APP_API_URL}/status`).reply(function () {
+			return [201];
+		});
+
+		expect(mock.history.post.length).toBe(1);
+		expect(mock.history.post[0].data).toBe(
+			JSON.stringify({
+				filed: true,
+				eliminated: true,
+				unity_that_forwarded: "",
+				document_requested: "",
+				send_date: "",
+			})
+		);
 	});
 });

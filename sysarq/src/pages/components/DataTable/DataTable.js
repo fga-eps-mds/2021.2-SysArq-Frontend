@@ -98,8 +98,7 @@ const DataTable = ({ url, title }) => {
 	useEffect(() => {
 		setHeadCells(tableHeadCells(url));
 
-		Api
-			.get(hostApi + url)
+		Api.get(hostApi + url)
 			.then((response) => {
 				setRows(response.data);
 			})
