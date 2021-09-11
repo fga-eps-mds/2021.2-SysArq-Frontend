@@ -22,8 +22,6 @@ import tableHeadCells from "./tablesHeadCells";
 
 import Api from "../../../Api";
 
-const hostApi = process.env.REACT_APP_URL_API;
-
 const useStyles = makeStyles((theme) => ({
 	title: {
 		fontWeight: "bold",
@@ -98,7 +96,7 @@ const DataTable = ({ url, title }) => {
 	useEffect(() => {
 		setHeadCells(tableHeadCells(url));
 
-		Api.get(hostApi + url)
+		Api.get(url)
 			.then((response) => {
 				setRows(response.data);
 			})

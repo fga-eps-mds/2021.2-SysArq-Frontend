@@ -3,8 +3,8 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import MenuCard from "./pages/components/MenuCard";
 
-describe("Teste do botão", () => {
-	it("Botão de salvar", () => {
+describe("Button test", () => {
+	it("Save button", () => {
 		render(
 			<MenuCard
 				icon="icone-assunto"
@@ -19,7 +19,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Assunto do Documento")).toBeInTheDocument();
 	});
 
-	it("Botão de listar", () => {
+	it("List button", () => {
 		render(
 			<MenuCard
 				icon="icone-assunto"
@@ -34,7 +34,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Assunto do Documento")).toBeInTheDocument();
 	});
 
-	it("Botão de salvar sigla", () => {
+	it("Save abbreviation button", () => {
 		render(
 			<MenuCard
 				icon="icone-sigla-da-caixa"
@@ -49,7 +49,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
 	});
 
-	it("Botão de listar sigla", () => {
+	it("Abbreviation list button", () => {
 		render(
 			<MenuCard
 				icon="icone-sigla-da-caixa"
@@ -64,7 +64,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
 	});
 
-	it("Botão de salvar servidor", () => {
+	it("Save server button", () => {
 		render(
 			<MenuCard
 				icon="icone-servidor"
@@ -79,7 +79,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Servidor")).toBeInTheDocument();
 	});
 
-	it("Botão de listar servidor", () => {
+	it("List server button", () => {
 		render(
 			<MenuCard
 				icon="icone-servidor"
@@ -94,7 +94,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Servidor")).toBeInTheDocument();
 	});
 
-	it("Botão de salvar unidade", () => {
+	it("Unit save button", () => {
 		render(
 			<MenuCard
 				icon="icone-unidade"
@@ -109,7 +109,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Unidade")).toBeInTheDocument();
 	});
 
-	it("Botão de listar unidade", () => {
+	it("List unit button", () => {
 		render(
 			<MenuCard
 				icon="icone-servidor"
@@ -124,7 +124,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Unidade")).toBeInTheDocument();
 	});
 
-	it("Botão de salvar tipo de documento", () => {
+	it("Save document type button", () => {
 		render(
 			<MenuCard
 				icon="icone-tipo-de-documento"
@@ -139,7 +139,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Tipo de Documento")).toBeInTheDocument();
 	});
 
-	it("Botão de listar tipo de documento", () => {
+	it("List Document Type Button", () => {
 		render(
 			<MenuCard
 				icon="icone-tipo-de-documento"
@@ -154,7 +154,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Tipo de Documento")).toBeInTheDocument();
 	});
 
-	it("Botão de salvar status", () => {
+	it("Save status button", () => {
 		render(
 			<MenuCard
 				icon="icone-status"
@@ -169,7 +169,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Status")).toBeInTheDocument();
 	});
 
-	it("Botão de listar status", () => {
+	it("List status button", () => {
 		render(
 			<MenuCard
 				icon="icone-status"
@@ -184,7 +184,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Status")).toBeInTheDocument();
 	});
 
-	it("Botão de salvar estante e prateleira", () => {
+	it("Bookshelf and shelf save button", () => {
 		render(
 			<MenuCard
 				icon="icone-estante-prateleira"
@@ -199,7 +199,7 @@ describe("Teste do botão", () => {
 		expect(screen.getByText("Estante e Prateleira")).toBeInTheDocument();
 	});
 
-	it("Botão de listar estante e prateleira", () => {
+	it("List shelf and shelf button", () => {
 		render(
 			<MenuCard
 				icon="icone-estante-prateleira"

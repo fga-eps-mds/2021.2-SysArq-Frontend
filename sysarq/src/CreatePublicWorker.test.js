@@ -91,7 +91,7 @@ describe("Button test", () => {
 		expect(fireEvent.click(click)).toBe(true);
 
 		mock
-			.onPost(`${process.env.REACT_APP_API_URL}/public_worker`)
+			.onPost("http://0.0.0.0:8002/public_worker")
 			.reply(function () {
 				return [201];
 			});

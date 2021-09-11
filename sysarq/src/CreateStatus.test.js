@@ -86,7 +86,7 @@ describe("Button test", () => {
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
 
-		mock.onPost(`${process.env.REACT_APP_API_URL}/status`).reply(function () {
+		mock.onPost("http://0.0.0.0:8002/status").reply(function () {
 			return [201];
 		});
 

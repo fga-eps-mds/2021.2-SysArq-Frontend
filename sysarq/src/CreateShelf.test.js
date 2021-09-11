@@ -46,11 +46,11 @@ describe("Teste do botão", () => {
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
 
-		mock.onPost(`${process.env.REACT_APP_API_URL}/shelfE`).reply(function () {
+		mock.onPost("http://0.0.0.0:8002/shelfE").reply(function () {
 			return [201];
 		});
 
-		mock.onPost(`${process.env.REACT_APP_API_URL}/shelfP`).reply(function () {
+		mock.onPost("http://0.0.0.0:8002/shelfP").reply(function () {
 			return [201];
 		});
 

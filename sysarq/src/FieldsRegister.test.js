@@ -1,6 +1,6 @@
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 
-import { render, RenderResult } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 describe("<FieldsRegister/>", () => {
 	let documentBody;

@@ -49,7 +49,7 @@ describe("Button test", () => {
 		expect(fireEvent.click(click)).toBe(true);
 
 		mock
-			.onPost(`${process.env.REACT_APP_API_URL}/document_type`)
+			.onPost("http://0.0.0.0:8002/document_type")
 			.reply(function () {
 				return [201];
 			});

@@ -69,7 +69,7 @@ describe("Button test", () => {
 		expect(fireEvent.click(click)).toBe(true);
 
 		mock
-			.onPost(`${process.env.REACT_APP_API_URL}/box_abbreviation`)
+			.onPost("http://0.0.0.0:8002/box_abbreviation")
 			.reply(function () {
 				return [201];
 			});
