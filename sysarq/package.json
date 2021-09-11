@@ -39,9 +39,8 @@
 	},
 	"jest": {
 		"coverageReporters": [
-			"lcov" 
+			"lcov"
 		],
-
 		"coveragePathIgnorePatterns": [
 			"reportWebVitals.js"
 		],

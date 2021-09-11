@@ -90,11 +90,9 @@ describe("Button test", () => {
 		const click = screen.getByTestId("click");
 		expect(fireEvent.click(click)).toBe(true);
 
-		mock
-			.onPost("http://0.0.0.0:8002/public_worker")
-			.reply(function () {
-				return [201];
-			});
+		mock.onPost("http://0.0.0.0:8002/public_worker").reply(function () {
+			return [201];
+		});
 
 		expect(mock.history.post.length).toBe(1);
 		expect(mock.history.post[0].data).toBe(
