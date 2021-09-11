@@ -14,48 +14,35 @@ describe("Main component", () => {
 });
 
 describe("Ensure that the input fields of the box abbreviation exist", () => {
-	it("box number", () => {
+	it("box number, box abbreviation, full name and year", () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Número da caixa")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Número da caixa");
-		fireEvent.change(input, { target: { value: "10" } });
-		const valor = screen.getByLabelText("Número da caixa").value;
-		expect(valor == "10").toBe(true);
-	});
-
-	it("box abbreviation", () => {
-		render(<CreateBoxAbbreviation />);
-
 		expect(screen.getByText("Sigla da caixa")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Sigla da caixa");
-		fireEvent.change(input, { target: { value: "PC-GO" } });
-		const valor = screen.getByLabelText("Sigla da caixa").value;
-		expect(valor == "PC-GO").toBe(true);
-	});
-
-	it("Full name", () => {
-		render(<CreateBoxAbbreviation />);
-
 		expect(screen.getByText("Nome completo")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Nome completo");
-		fireEvent.change(input, { target: { value: "Polícia Civil do Goias" } });
-		const valor = screen.getByLabelText("Nome completo").value;
-		expect(valor == "Polícia Civil do Goias").toBe(true);
-	});
-
-	it("Year", () => {
-		render(<CreateBoxAbbreviation />);
-
 		expect(screen.getByText("Ano")).toBeInTheDocument();
 
-		const input = screen.getByLabelText("Ano");
-		fireEvent.change(input, { target: { value: "2021" } });
-		const valor = screen.getByLabelText("Ano").value;
-		expect(valor == "2021").toBe(true);
+		const inputBoxNumner = screen.getByLabelText("Número da caixa");
+		fireEvent.change(inputBoxNumner, { target: { value: "10" } });
+		const valorBoxNumber = screen.getByLabelText("Número da caixa").value;
+		expect(valorBoxNumber === "10").toBe(true);
+
+		const inputBoxAbbreviation = screen.getByLabelText("Sigla da caixa");
+		fireEvent.change(inputBoxAbbreviation, { target: { value: "PC-GO" } });
+		const valorBoxAbbreviation = screen.getByLabelText("Sigla da caixa").value;
+		expect(valorBoxAbbreviation === "PC-GO").toBe(true);
+
+		const inputFullName = screen.getByLabelText("Nome completo");
+		fireEvent.change(inputFullName, {
+			target: { value: "Polícia Civil do Goias" },
+		});
+		const valorFullName = screen.getByLabelText("Nome completo").value;
+		expect(valorFullName === "Polícia Civil do Goias").toBe(true);
+
+		const inputYear = screen.getByLabelText("Ano");
+		fireEvent.change(inputYear, { target: { value: "2021" } });
+		const valorYear = screen.getByLabelText("Ano").value;
+		expect(valorYear === "2021").toBe(true);
 	});
 });
 
@@ -63,7 +50,7 @@ const hostApi = `${process.env.REACT_APP_URL_API}box_abbreviation`;
 
 describe("Button test", () => {
 	it("Save button", () => {
-		let mock = new MockAdapter(axios);
+		const mock = new MockAdapter(axios);
 
 		render(<CreateBoxAbbreviation />);
 

@@ -6,8 +6,10 @@ import { render, fireEvent, screen, within } from "@testing-library/react";
 
 import DataTable from "./pages/components/DataTable/DataTable";
 
+const hostApi = `${process.env.REACT_APP_URL_API}document_subject`;
+
 const server = setupServer(
-	rest.get("http://0.0.0.0:8002/document_subject/", async (req, res, ctx) => {
+	rest.get(hostApi, async (req, res, ctx) => {
 		return res(
 			ctx.json([
 				{ id: 1, subject_name: "teste", temporality: 1 },

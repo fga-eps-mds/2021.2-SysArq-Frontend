@@ -14,70 +14,50 @@ describe("Main component", () => {
 });
 
 describe("Ensure server input fields exist", () => {
-	it("server name", () => {
+	it("name, CPF, class, office, municipality and position", () => {
 		render(<CreatePublicWorker />);
 
 		expect(screen.getByText("Nome do servidor")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Nome do servidor");
-		fireEvent.change(input, { target: { value: "João" } });
-		const valor = screen.getByLabelText("Nome do servidor").value;
-		expect(valor == "João").toBe(true);
-	});
-
-	it("Server CPF", () => {
-		render(<CreatePublicWorker />);
-
 		expect(screen.getByText("CPF do servidor")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("CPF do servidor");
-		fireEvent.change(input, { target: { value: "12345678912" } });
-		const valor = screen.getByLabelText("CPF do servidor").value;
-		expect(valor == "12345678912").toBe(true);
-	});
-
-	it("Server position", () => {
-		render(<CreatePublicWorker />);
-
 		expect(screen.getByText("Cargo do servidor")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Cargo do servidor");
-		fireEvent.change(input, { target: { value: "Supervisor" } });
-		const valor = screen.getByLabelText("Cargo do servidor").value;
-		expect(valor == "Supervisor").toBe(true);
-	});
-
-	it("Server class", () => {
-		render(<CreatePublicWorker />);
-
 		expect(screen.getByText("Classe do servidor")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Classe do servidor");
-		fireEvent.change(input, { target: { value: "Administrativo" } });
-		const valor = screen.getByLabelText("Classe do servidor").value;
-		expect(valor == "Administrativo").toBe(true);
-	});
-
-	it("Server stocking", () => {
-		render(<CreatePublicWorker />);
-
 		expect(screen.getByText("Lotação do servidor")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Lotação do servidor");
-		fireEvent.change(input, { target: { value: "Numérica" } });
-		const valor = screen.getByLabelText("Lotação do servidor").value;
-		expect(valor == "Numérica").toBe(true);
-	});
-
-	it("Server municipality", () => {
-		render(<CreatePublicWorker />);
-
 		expect(screen.getByText("Município do servidor")).toBeInTheDocument();
 
-		const input = screen.getByLabelText("Município do servidor");
-		fireEvent.change(input, { target: { value: "Abadiânia" } });
-		const valor = screen.getByLabelText("Município do servidor").value;
-		expect(valor == "Abadiânia").toBe(true);
+		const inputServerName = screen.getByLabelText("Nome do servidor");
+		fireEvent.change(inputServerName, { target: { value: "João" } });
+		const valorServerName = screen.getByLabelText("Nome do servidor").value;
+		expect(valorServerName === "João").toBe(true);
+
+		const inputCPF = screen.getByLabelText("CPF do servidor");
+		fireEvent.change(inputCPF, { target: { value: "12345678912" } });
+		const valorCPF = screen.getByLabelText("CPF do servidor").value;
+		expect(valorCPF === "12345678912").toBe(true);
+
+		const inputServerPosition = screen.getByLabelText("Cargo do servidor");
+		fireEvent.change(inputServerPosition, { target: { value: "Supervisor" } });
+		const valorServerPosition =
+			screen.getByLabelText("Cargo do servidor").value;
+		expect(valorServerPosition === "Supervisor").toBe(true);
+
+		const inputServerClass = screen.getByLabelText("Classe do servidor");
+		fireEvent.change(inputServerClass, { target: { value: "Administrativo" } });
+		const valorServerClass = screen.getByLabelText("Classe do servidor").value;
+		expect(valorServerClass === "Administrativo").toBe(true);
+
+		const inputServerStocking = screen.getByLabelText("Lotação do servidor");
+		fireEvent.change(inputServerStocking, { target: { value: "Numérica" } });
+		const valorServerStocking = screen.getByLabelText(
+			"Lotação do servidor"
+		).value;
+		expect(valorServerStocking === "Numérica").toBe(true);
+
+		const inputMunicipality = screen.getByLabelText("Município do servidor");
+		fireEvent.change(inputMunicipality, { target: { value: "Abadiânia" } });
+		const valorMunicipality = screen.getByLabelText(
+			"Município do servidor"
+		).value;
+		expect(valorMunicipality === "Abadiânia").toBe(true);
 	});
 });
 
@@ -85,7 +65,7 @@ const hostApi = `${process.env.REACT_APP_URL_API}public_worker`;
 
 describe("Button test", () => {
 	it("Save button", () => {
-		let mock = new MockAdapter(axios);
+		const mock = new MockAdapter(axios);
 
 		render(<CreatePublicWorker />);
 

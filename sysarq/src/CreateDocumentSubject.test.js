@@ -14,26 +14,21 @@ describe("Main component", () => {
 });
 
 describe("Ensure that the document subject input fields exist", () => {
-	it("Full name", () => {
+	it("Full name and temporality", () => {
 		render(<CreateDocumentSubject />);
 
 		expect(screen.getByText("Nome do documento")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Nome do documento");
-		fireEvent.change(input, { target: { value: "Novo Processo" } });
-		const valor = screen.getByLabelText("Nome do documento").value;
-		expect(valor == "Novo Processo").toBe(true);
-	});
-
-	it("Temporality", () => {
-		render(<CreateDocumentSubject />);
-
 		expect(screen.getByText("Temporalidade")).toBeInTheDocument();
 
-		const input = screen.getByLabelText("Temporalidade");
-		fireEvent.change(input, { target: { value: "2021" } });
-		const valor = screen.getByLabelText("Temporalidade").value;
-		expect(valor == "2021").toBe(true);
+		const inputDocumentName = screen.getByLabelText("Nome do documento");
+		fireEvent.change(inputDocumentName, { target: { value: "Novo Processo" } });
+		const valorDocumentName = screen.getByLabelText("Nome do documento").value;
+		expect(valorDocumentName === "Novo Processo").toBe(true);
+
+		const inputTemporality = screen.getByLabelText("Temporalidade");
+		fireEvent.change(inputTemporality, { target: { value: "2021" } });
+		const valorTemporality = screen.getByLabelText("Temporalidade").value;
+		expect(valorTemporality === "2021").toBe(true);
 	});
 });
 
@@ -41,7 +36,7 @@ const hostApi = `${process.env.REACT_APP_URL_API}document_subject`;
 
 describe("Button test", () => {
 	it("Save button", () => {
-		let mock = new MockAdapter(axios);
+		const mock = new MockAdapter(axios);
 
 		render(<CreateDocumentSubject />);
 

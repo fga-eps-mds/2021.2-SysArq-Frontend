@@ -14,26 +14,21 @@ describe("Main component", () => {
 });
 
 describe("Ensure that the shelf input fields exist", () => {
-	it("Estante", () => {
+	it("shelf", () => {
 		render(<CreateShelf />);
 
 		expect(screen.getByText("Estante")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Estante");
-		fireEvent.change(input, { target: { value: "2" } });
-		const valor = screen.getByLabelText("Estante").value;
-		expect(valor == "2").toBe(true);
-	});
-
-	it("Prateleira", () => {
-		render(<CreateShelf />);
-
 		expect(screen.getByText("Prateleira")).toBeInTheDocument();
 
-		const input = screen.getByLabelText("Prateleira");
-		fireEvent.change(input, { target: { value: "4" } });
-		const valor = screen.getByLabelText("Prateleira").value;
-		expect(valor == "4").toBe(true);
+		const inputShelfE = screen.getByLabelText("Estante");
+		fireEvent.change(inputShelfE, { target: { value: "2" } });
+		const valorShelfE = screen.getByLabelText("Estante").value;
+		expect(valorShelfE === "2").toBe(true);
+
+		const inputShelfP = screen.getByLabelText("Prateleira");
+		fireEvent.change(inputShelfP, { target: { value: "4" } });
+		const valorShelfP = screen.getByLabelText("Prateleira").value;
+		expect(valorShelfP === "4").toBe(true);
 	});
 });
 
@@ -42,7 +37,7 @@ const hostApiShelfP = `${process.env.REACT_APP_URL_API}shelfP`;
 
 describe("Teste do botão", () => {
 	it("Botão de salvar", () => {
-		let mock = new MockAdapter(axios);
+		const mock = new MockAdapter(axios);
 
 		render(<CreateShelf />);
 

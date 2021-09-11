@@ -14,109 +14,74 @@ describe("Main component", () => {
 });
 
 describe("Ensure unit input fields exist", () => {
-	it("Unit name", () => {
+	it("Unit name, abbreviation, administrative bond, abbreviation bond, type unity, municipality, comments", () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Nome da unidade")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Nome da unidade");
-		fireEvent.change(input, { target: { value: "20º Delegacia de Polícia" } });
-		const valor = screen.getByLabelText("Nome da unidade").value;
-		expect(valor == "20º Delegacia de Polícia").toBe(true);
-	});
-
-	it("Unit abbreviation", () => {
-		render(<CreateUnity />);
-
 		expect(screen.getByText("Sigla da unidade")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Sigla da unidade");
-		fireEvent.change(input, { target: { value: "20º DP" } });
-		const valor = screen.getByLabelText("Sigla da unidade").value;
-		expect(valor == "20º DP").toBe(true);
-	});
-
-	it("Administrative bond", () => {
-		render(<CreateUnity />);
-
 		expect(screen.getByText("Vínculo administrativo")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Vínculo administrativo");
-		fireEvent.change(input, { target: { value: "Jurídico" } });
-		const valor = screen.getByLabelText("Vínculo administrativo").value;
-		expect(valor == "Jurídico").toBe(true);
-	});
-
-	it("Abbreviation bond", () => {
-		render(<CreateUnity />);
-
 		expect(screen.getByText("Sigla do vínculo")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Sigla do vínculo");
-		fireEvent.change(input, { target: { value: "VJA" } });
-		const valor = screen.getByLabelText("Sigla do vínculo").value;
-		expect(valor == "VJA").toBe(true);
-	});
-
-	it("Unit type", () => {
-		render(<CreateUnity />);
-
 		expect(screen.getByText("Tipo de unidade")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Tipo de unidade");
-		fireEvent.change(input, { target: { value: "Administrativa" } });
-		const valor = screen.getByLabelText("Tipo de unidade").value;
-		expect(valor == "Administrativa").toBe(true);
-	});
-
-	it("Municipality", () => {
-		render(<CreateUnity />);
-
 		expect(screen.getByText("Município")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Município");
-		fireEvent.change(input, { target: { value: "Abadiânia" } });
-		const valor = screen.getByLabelText("Município").value;
-		expect(valor == "Abadiânia").toBe(true);
-	});
-
-	it("Phone number", () => {
-		render(<CreateUnity />);
-
 		expect(screen.getByText("Número de telefone")).toBeInTheDocument();
-
-		const input = screen.getByLabelText("Número de telefone");
-		fireEvent.change(input, { target: { value: "912398734" } });
-		const valor = screen.getByLabelText("Número de telefone").value;
-		expect(valor == "912398734").toBe(true);
-	});
-
-	it("Comments", () => {
-		render(<CreateUnity />);
-
 		expect(screen.getByText("Observações")).toBeInTheDocument();
 
-		const input = screen.getByLabelText("Observações");
-		fireEvent.change(input, { target: { value: "Testando" } });
-		const valor = screen.getByLabelText("Observações").value;
-		expect(valor == "Testando").toBe(true);
-	});
-});
+		const inputUnityName = screen.getByLabelText("Nome da unidade");
+		fireEvent.change(inputUnityName, {
+			target: { value: "20º Delegacia de Polícia" },
+		});
+		const valorUnityName = screen.getByLabelText("Nome da unidade").value;
+		expect(valorUnityName === "20º Delegacia de Polícia").toBe(true);
 
-describe("Button test", () => {
-	it("Save button", () => {
-		render(<CreateUnity />);
+		const inputBoxUnity = screen.getByLabelText("Sigla da unidade");
+		fireEvent.change(inputBoxUnity, { target: { value: "20º DP" } });
+		const valorBoxUnity = screen.getByLabelText("Sigla da unidade").value;
+		expect(valorBoxUnity === "20º DP").toBe(true);
 
-		const click = screen.getByTestId("click");
-		expect(fireEvent.click(click)).toBe(true);
+		const inputAdministrativeBond = screen.getByLabelText(
+			"Vínculo administrativo"
+		);
+		fireEvent.change(inputAdministrativeBond, {
+			target: { value: "Jurídico" },
+		});
+		const valorAdministrativeBond = screen.getByLabelText(
+			"Vínculo administrativo"
+		).value;
+		expect(valorAdministrativeBond === "Jurídico").toBe(true);
+
+		const inputAbbreviationBond = screen.getByLabelText("Sigla do vínculo");
+		fireEvent.change(inputAbbreviationBond, { target: { value: "VJA" } });
+		const valorAbbreviationBond =
+			screen.getByLabelText("Sigla do vínculo").value;
+		expect(valorAbbreviationBond === "VJA").toBe(true);
+
+		const inputTypeUnity = screen.getByLabelText("Tipo de unidade");
+		fireEvent.change(inputTypeUnity, { target: { value: "Administrativa" } });
+		const valorTypeUnity = screen.getByLabelText("Tipo de unidade").value;
+		expect(valorTypeUnity === "Administrativa").toBe(true);
+
+		const inputMunicipality = screen.getByLabelText("Município");
+		fireEvent.change(inputMunicipality, { target: { value: "Abadiânia" } });
+		const valorMunicipality = screen.getByLabelText("Município").value;
+		expect(valorMunicipality === "Abadiânia").toBe(true);
+
+		const inputPhoneNumber = screen.getByLabelText("Número de telefone");
+		fireEvent.change(inputPhoneNumber, { target: { value: "912398734" } });
+		const valorPhoneNumber = screen.getByLabelText("Número de telefone").value;
+		expect(valorPhoneNumber === "912398734").toBe(true);
+
+		const inputComments = screen.getByLabelText("Observações");
+		fireEvent.change(inputComments, { target: { value: "Testando" } });
+		const valorComments = screen.getByLabelText("Observações").value;
+		expect(valorComments === "Testando").toBe(true);
 	});
 });
 
 const hostApi = `${process.env.REACT_APP_URL_API}unity`;
 
-describe("Teste do botão", () => {
-	it("Botão de salvar", () => {
-		let mock = new MockAdapter(axios);
+describe("Button test", () => {
+	it("Save button", () => {
+		const mock = new MockAdapter(axios);
 
 		render(<CreateUnity />);
 

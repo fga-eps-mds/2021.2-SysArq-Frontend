@@ -14,12 +14,12 @@ describe("Button test", () => {
 			/>
 		);
 
-		const click = screen.getByTestId("click-criar");
-		expect(fireEvent.click(click)).toBe(true);
+		const clickDocumentSubject = screen.getByTestId("click-criar");
+		expect(fireEvent.click(clickDocumentSubject)).toBe(true);
 		expect(screen.getByText("Assunto do Documento")).toBeInTheDocument();
 
-		const click1 = screen.getByTestId("click-listar");
-		expect(fireEvent.click(click1)).toBe(true);
+		const clickDocumentSubject1 = screen.getByTestId("click-listar");
+		expect(fireEvent.click(clickDocumentSubject1)).toBe(true);
 		expect(screen.getByText("Assunto do Documento")).toBeInTheDocument();
 	});
 
@@ -33,12 +33,12 @@ describe("Button test", () => {
 			/>
 		);
 
-		const click = screen.getByTestId("click-criar");
-		expect(fireEvent.click(click)).toBe(true);
+		const clickBoxAbbreviation = screen.getByTestId("click-criar");
+		expect(fireEvent.click(clickBoxAbbreviation)).toBe(true);
 		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
 
-		const click1 = screen.getByTestId("click-listar");
-		expect(fireEvent.click(click)).toBe(true);
+		const clickBoxAbbreviation1 = screen.getByTestId("click-listar");
+		expect(fireEvent.click(clickBoxAbbreviation1)).toBe(true);
 		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
 	});
 
