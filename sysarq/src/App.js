@@ -20,10 +20,19 @@ import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
 import CreatePublicWorker from "./pages/FieldsRegister/CreatePublicWorker";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
-
+import AdministrativeProcess from "./pages/DocumentsRegister/AdministrativeProcess";
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import DocumentsRegister from "./pages/DocumentsRegister/DocumentsRegister";
+import CreateAdministrativeProcess from "./pages/DocumentsRegister/CreateAdministrativeProcess";
+import CreateFrequencyRelation from "./pages/DocumentsRegister/CreateFrequencyRelation";
+import FrequencyRelation from "./pages/DocumentsRegister/FrequencyRelation";
+import FrequencyDocument from "./pages/DocumentsRegister/FrequencyDocument";
+import CreateFrequencyDocument from "./pages/DocumentsRegister/CreateFrequencyDocument";
+import CreateArchivingRelation from "./pages/DocumentsRegister/CreateArchivingRelation";
+import ArchivingRelation from "./pages/DocumentsRegister/ArchivingRelation";
+
 
 function App() {
 	return (
@@ -33,6 +42,7 @@ function App() {
 					<Nav className="me-auto">
 						<Nav.Link href="/">Home</Nav.Link>
 						<Nav.Link href="/fields-register">Cadastro de Campos</Nav.Link>
+						<Nav.Link href="/documents-register">Cadastro de Documentos</Nav.Link>
 					</Nav>
 				</Container>
 			</Navbar>
@@ -41,6 +51,38 @@ function App() {
 				<Route exact path="/">
 					<Home />
 				</Route>
+				
+				<Route path="/documents-register">
+					<Route exact path="/documents-register">
+						<DocumentsRegister/>
+					</Route>
+					<Route path="/documents-register/administrative-process">
+						<AdministrativeProcess/>
+					</Route>
+					<Route path="/documents-register/frequency-relation">
+						<FrequencyRelation/>
+					</Route>
+					<Route path="/documents-register/frequency-document">
+						<FrequencyDocument/>
+					</Route>
+					<Route path="/documents-register/archiving-relation">
+						<ArchivingRelation/>
+					</Route>
+				</Route>
+				<Route path="/create-archiving-relation">
+					<CreateArchivingRelation/>
+				</Route>
+				<Route path="/create-frequency-document">
+					<CreateFrequencyDocument/>
+				</Route>
+				<Route path="/create-frequency-relation">
+					<CreateFrequencyRelation/>
+				</Route>
+				<Route path="/create-administrative-process">
+					<CreateAdministrativeProcess/>
+				</Route>
+
+
 				<Route path="/fields-register">
 					<Route exact path="/fields-register">
 						<FieldsRegister />
@@ -67,6 +109,8 @@ function App() {
 						<Status />
 					</Route>
 				</Route>
+					
+					
 				<Route path="/create-box-abbreviation">
 					<CreateBoxAbbreviation />
 				</Route>
@@ -88,6 +132,7 @@ function App() {
 				<Route path="/create-unity">
 					<CreateUnity />
 				</Route>
+				
 			</Switch>
 		</Router>
 	);

@@ -19,4 +19,6 @@ describe("Componente principal", () => {
 		const botaoAdicionar = screen.getByTestId("botao-adicionar");
 		expect(fireEvent.click(botaoAdicionar)).toBe(true);
 	});
+
+	
 });
