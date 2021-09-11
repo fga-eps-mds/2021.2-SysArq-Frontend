@@ -3,16 +3,16 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateDocumentSubject from "./pages/FieldsRegister/CreateDocumentSubject";
 
-describe("Componente principal", () => {
-	it("Mostrar o título da página", () => {
+describe('Main component', () => {
+	it('Show page title', () => {
 		render(<CreateDocumentSubject />);
 
 		expect(screen.getByText("Assunto do Documento")).toBeInTheDocument();
 	});
 });
 
-describe("Garantir que os campos de input do assunto do documento existam", () => {
-	it("Nome do documento", () => {
+describe('Ensure that the document subject input fields exist', () => {
+	it("Full name", () => {
 		render(<CreateDocumentSubject />);
 
 		expect(screen.getByText("Nome do documento")).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe("Garantir que os campos de input do assunto do documento existam", () =
 		expect(valor == "Novo Processo").toBe(true);
 	});
 
-	it("Temporalidade", () => {
+	it('Temporality', () => {
 		render(<CreateDocumentSubject />);
 
 		expect(screen.getByText("Temporalidade")).toBeInTheDocument();
@@ -35,8 +35,8 @@ describe("Garantir que os campos de input do assunto do documento existam", () =
 	});
 });
 
-describe("Teste do botão", () => {
-	it("Botão de salvar", () => {
+describe('Button test', () => {
+	it('Save button', () => {
 		render(<CreateDocumentSubject />);
 
 		const click = screen.getByTestId("click");

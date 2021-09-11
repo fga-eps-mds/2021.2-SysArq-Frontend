@@ -3,15 +3,15 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
 
-describe("Componente principal", () => {
-	it("Mostrar o título da página", () => {
+describe('Main component', () => {
+	it('Show page title', () => {
 		render(<CreateShelf />);
 
 		expect(screen.getByText("Estante e Prateleira")).toBeInTheDocument();
 	});
 });
 
-describe("Garantir que os campos de input da estante e prateleira existam", () => {
+describe('Ensure that the shelf input fields exist', () => {
 	it("Estante", () => {
 		render(<CreateShelf />);
 
@@ -35,8 +35,8 @@ describe("Garantir que os campos de input da estante e prateleira existam", () =
 	});
 });
 
-describe("Teste do botão", () => {
-	it("Botão de salvar", () => {
+describe('Button test', () => {
+	it('Save button', () => {
 		render(<CreateShelf />);
 
 		const click = screen.getByTestId("click");

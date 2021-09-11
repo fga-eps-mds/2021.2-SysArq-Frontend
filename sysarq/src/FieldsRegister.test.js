@@ -9,8 +9,8 @@ describe('<FieldsRegister/>', () => {
     beforeEach(() => {
         documentBody = render(<FieldsRegister />);
     });
-
+    
     it('show document card', () => {
         expect(documentBody.getByText('Assunto do Documento')).toBeInTheDocument();
-    })
+    });
 });

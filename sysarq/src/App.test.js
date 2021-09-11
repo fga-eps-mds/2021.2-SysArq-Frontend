@@ -3,8 +3,8 @@ import { render, screen } from "@testing-library/react";
 
 import App from "./App";
 
-describe("Componente principal", () => {
-	it("Mostrar os nomes na barra de navegação", () => {
+describe('Main component', () => {
+	it('Show names in navigation bar', () => {
 		render(<App />);
 
 		expect(screen.getByText("Home")).toBeInTheDocument();

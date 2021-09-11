@@ -3,16 +3,16 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateStatus from "./pages/FieldsRegister/CreateStatus";
 
-describe("Componente principal", () => {
-	it("Mostrar o título da página", () => {
+describe('Main component', () => {
+	it('Show page title', () => {
 		render(<CreateStatus />);
 
 		expect(screen.getByText("Status")).toBeInTheDocument();
 	});
 });
 
-describe("Garantir que os campos de input quando é selecionado o desarquivado exista", () => {
-	it("Status", () => {
+describe('Ensure that input fields when unarchived are selected exist', () => {
+	it('Status', () => {
 		const { getByTestId, getAllByTestId } = render(<CreateStatus />);
 		fireEvent.change(getByTestId("statusID"), {
 			target: { value: "DESARQUIVADO" },
@@ -21,7 +21,7 @@ describe("Garantir que os campos de input quando é selecionado o desarquivado e
 		expect(options[0].value).toBe("DESARQUIVADO");
 	});
 
-	it("Eliminado ?", () => {
+	it('Eliminated ?', () => {
 		const { getByTestId, getAllByTestId } = render(<CreateStatus />);
 		fireEvent.change(getByTestId("eliminado"), {
 			target: { value: "ELIMINADO" },
@@ -30,8 +30,8 @@ describe("Garantir que os campos de input quando é selecionado o desarquivado e
 		expect(options[0].value).toBe("ELIMINADO");
 	});
 
-	describe("Garamtir que os campos de input quando selecionado DESARQUIVADO existam", () => {
-		it("Enviado por", () => {
+	describe('Ensure that input fields when UNARCHIVED exist', () => {
+		it('Sent by', () => {
 			const { getByTestId, getAllByTestId } = render(<CreateStatus />);
 			fireEvent.change(getByTestId("statusID"), {
 				target: { value: "DESARQUIVADO" },
@@ -45,7 +45,7 @@ describe("Garantir que os campos de input quando é selecionado o desarquivado e
 			expect(valor == "João").toBe(true);
 		});
 
-		it("Documento que solicito o desarquivamento", () => {
+		it('Document that requested the unarchive', () => {
 			const { getByTestId, getAllByTestId } = render(<CreateStatus />);
 			fireEvent.change(getByTestId("statusID"), {
 				target: { value: "DESARQUIVADO" },
@@ -59,7 +59,7 @@ describe("Garantir que os campos de input quando é selecionado o desarquivado e
 			expect(valor == "Documento 1").toBe(true);
 		});
 
-		it("Data de envio", () => {
+		it('Send date', () => {
 			const { getByTestId, getAllByTestId } = render(<CreateStatus />);
 			fireEvent.change(getByTestId("statusID"), {
 				target: { value: "DESARQUIVADO" },
@@ -75,8 +75,8 @@ describe("Garantir que os campos de input quando é selecionado o desarquivado e
 	});
 });
 
-describe("Teste do botão", () => {
-	it("Botão de salvar", () => {
+describe('Button test', () => {
+	it('Save button', () => {
 		render(<CreateStatus />);
 
 		const click = screen.getByTestId("click");

@@ -18,9 +18,9 @@ import AddIcon from "@material-ui/icons/Add";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 
-import axios from "axios";
-
 import tableHeadCells from "./tablesHeadCells";
+
+import Api from "../../../Api";
 
 const hostApi = process.env.REACT_APP_URL_API;
 
@@ -98,7 +98,7 @@ const DataTable = ({ url, title }) => {
 	useEffect(() => {
 		setHeadCells(tableHeadCells(url));
 
-		axios
+		Api
 			.get(hostApi + url)
 			.then((response) => {
 				setRows(response.data);

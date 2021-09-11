@@ -3,16 +3,16 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreatePublicWorker from "./pages/FieldsRegister/CreatePublicWorker";
 
-describe("Componente principal", () => {
-	it("Mostrar o título da página", () => {
+describe('Main component', () => {
+	it('Show page title', () => {
 		render(<CreatePublicWorker />);
 
 		expect(screen.getByText("Servidor")).toBeInTheDocument();
 	});
-});
+}); 
 
-describe("Garantir que os campos de input do servidor existam", () => {
-	it("Nome do servidor", () => {
+describe('Ensure server input fields exist', () => {
+	it('server name', () => {
 		render(<CreatePublicWorker />);
 
 		expect(screen.getByText("Nome do servidor")).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe("Garantir que os campos de input do servidor existam", () => {
 		expect(valor == "João").toBe(true);
 	});
 
-	it("CPF do servidor", () => {
+	it('Server CPF', () => {
 		render(<CreatePublicWorker />);
 
 		expect(screen.getByText("CPF do servidor")).toBeInTheDocument();
@@ -34,7 +34,7 @@ describe("Garantir que os campos de input do servidor existam", () => {
 		expect(valor == "12345678912").toBe(true);
 	});
 
-	it("Cargo do servidor", () => {
+	it('Server position', () => {
 		render(<CreatePublicWorker />);
 
 		expect(screen.getByText("Cargo do servidor")).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe("Garantir que os campos de input do servidor existam", () => {
 		expect(valor == "Supervisor").toBe(true);
 	});
 
-	it("Classe do servidor", () => {
+	it('Server class', () => {
 		render(<CreatePublicWorker />);
 
 		expect(screen.getByText("Classe do servidor")).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe("Garantir que os campos de input do servidor existam", () => {
 		expect(valor == "Administrativo").toBe(true);
 	});
 
-	it("Lotação do servidor", () => {
+	it('Server stocking', () => {
 		render(<CreatePublicWorker />);
 
 		expect(screen.getByText("Lotação do servidor")).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe("Garantir que os campos de input do servidor existam", () => {
 		expect(valor == "Numérica").toBe(true);
 	});
 
-	it("Município do servidor", () => {
+	it('Server municipality', () => {
 		render(<CreatePublicWorker />);
 
 		expect(screen.getByText("Município do servidor")).toBeInTheDocument();
@@ -79,8 +79,8 @@ describe("Garantir que os campos de input do servidor existam", () => {
 	});
 });
 
-describe("Teste do botão", () => {
-	it("Botão de salvar", () => {
+describe('Button test', () => {
+	it('Save button', () => {
 		render(<CreatePublicWorker />);
 
 		const click = screen.getByTestId("click");

@@ -3,16 +3,16 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 
-describe("Componente principal", () => {
-	it("Mostrar o título da página", () => {
+describe('Main component', () => {
+	it('Show page title', () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Unidade")).toBeInTheDocument();
 	});
 });
 
-describe("Garantir que os campos de input da unidade existam", () => {
-	it("Nome da unidade", () => {
+describe('Ensure unit input fields exist', () => {
+	it('Unit name', () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Nome da unidade")).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe("Garantir que os campos de input da unidade existam", () => {
 		expect(valor == "20º Delegacia de Polícia").toBe(true);
 	});
 
-	it("Sigla da unidade", () => {
+	it('Unit abbreviation', () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Sigla da unidade")).toBeInTheDocument();
@@ -34,7 +34,7 @@ describe("Garantir que os campos de input da unidade existam", () => {
 		expect(valor == "20º DP").toBe(true);
 	});
 
-	it("Vínculo administrativo", () => {
+	it('Administrative bond', () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Vínculo administrativo")).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe("Garantir que os campos de input da unidade existam", () => {
 		expect(valor == "Jurídico").toBe(true);
 	});
 
-	it("Sigla do vínculo", () => {
+	it('Abbreviation bond', () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Sigla do vínculo")).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe("Garantir que os campos de input da unidade existam", () => {
 		expect(valor == "VJA").toBe(true);
 	});
 
-	it("Tipo de unidade", () => {
+	it('Unit type', () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Tipo de unidade")).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe("Garantir que os campos de input da unidade existam", () => {
 		expect(valor == "Administrativa").toBe(true);
 	});
 
-	it("Município", () => {
+	it('Municipality', () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Município")).toBeInTheDocument();
@@ -78,7 +78,7 @@ describe("Garantir que os campos de input da unidade existam", () => {
 		expect(valor == "Abadiânia").toBe(true);
 	});
 
-	it("Número de telefone", () => {
+	it('Phone number', () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Número de telefone")).toBeInTheDocument();
@@ -89,7 +89,7 @@ describe("Garantir que os campos de input da unidade existam", () => {
 		expect(valor == "912398734").toBe(true);
 	});
 
-	it("Observações", () => {
+	it('Comments', () => {
 		render(<CreateUnity />);
 
 		expect(screen.getByText("Observações")).toBeInTheDocument();
@@ -101,8 +101,8 @@ describe("Garantir que os campos de input da unidade existam", () => {
 	});
 });
 
-describe("Teste do botão", () => {
-	it("Botão de salvar", () => {
+describe('Button test', () => {
+	it('Save button', () => {
 		render(<CreateUnity />);
 
 		const click = screen.getByTestId("click");

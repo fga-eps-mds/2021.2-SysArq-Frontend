@@ -3,17 +3,17 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
 
-describe("Componente principal", () => {
-	it("Mostrar o título da página", () => {
+describe('Main component', () => {
+	it('Show page title', () => {
 		render(<CreateDocumentType />);
 
 		expect(screen.getByText("Tipo de Documento")).toBeInTheDocument();
 	});
 });
 
-describe("Garantir que os campos de input existam", () => {
-	describe("Tipo de documento", () => {
-		it("Nome do documento", () => {
+describe('Ensure that the document type input fields exist', () => {
+	describe('Document type', () => {
+		it('Document name', () => {
 			render(<CreateDocumentType />);
 
 			expect(screen.getByText("Nome do Documento")).toBeInTheDocument();
@@ -24,7 +24,7 @@ describe("Garantir que os campos de input existam", () => {
 			expect(valor == "Teste").toBe(true);
 		});
 
-		it("Temporalidade", () => {
+		it('Temporality', () => {
 			render(<CreateDocumentType />);
 
 			expect(screen.getByText("Temporalidade")).toBeInTheDocument();
@@ -37,8 +37,8 @@ describe("Garantir que os campos de input existam", () => {
 	});
 });
 
-describe("Teste do botão", () => {
-	it("Botão de salvar", () => {
+describe('Button test', () => {
+	it('Save button', () => {
 		render(<CreateDocumentType />);
 
 		const click = screen.getByTestId("click");

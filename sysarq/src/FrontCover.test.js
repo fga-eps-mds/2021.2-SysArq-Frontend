@@ -3,8 +3,8 @@ import { render, screen } from "@testing-library/react";
 
 import FrontCover from "./pages/FieldsRegister/FrontCover";
 
-describe("Componente principal", () => {
-	it("Título", () => {
+describe('Main component', () => {
+	it('Title', () => {
 		render(<FrontCover />);
 
 		expect(

@@ -3,16 +3,16 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation";
 
-describe("Componente principal", () => {
-	it("Mostrar o título da página", () => {
+describe('Main component', () => {
+	it('Show page title', () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
 	});
 });
 
-describe("Garantir que os campos de input da sigla da caixa existam", () => {
-	it("Número da caixa", () => {
+describe('Ensure that the input fields of the box abbreviation exist', () => {
+	it('box number', () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Número da caixa")).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe("Garantir que os campos de input da sigla da caixa existam", () => {
 		expect(valor == "10").toBe(true);
 	});
 
-	it("Sigla da caixa", () => {
+	it('box abbreviation', () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Sigla da caixa")).toBeInTheDocument();
@@ -34,7 +34,7 @@ describe("Garantir que os campos de input da sigla da caixa existam", () => {
 		expect(valor == "PC-GO").toBe(true);
 	});
 
-	it("Nome completo", () => {
+	it('Full name', () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Nome completo")).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe("Garantir que os campos de input da sigla da caixa existam", () => {
 		expect(valor == "Polícia Civil do Goias").toBe(true);
 	});
 
-	it("Ano", () => {
+	it('Year', () => {
 		render(<CreateBoxAbbreviation />);
 
 		expect(screen.getByText("Ano")).toBeInTheDocument();
@@ -57,8 +57,8 @@ describe("Garantir que os campos de input da sigla da caixa existam", () => {
 	});
 });
 
-describe("Teste do botão", () => {
-	it("Botão de salvar", () => {
+describe('Button test', () => {
+	it('Save button', () => {
 		render(<CreateBoxAbbreviation />);
 
 		const click = screen.getByTestId("click");
