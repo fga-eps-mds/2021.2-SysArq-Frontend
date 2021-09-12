@@ -1,0 +1,16 @@
+#card{
+    background-color: #5289B5;
+    color: rgba(31, 53, 65, 1);
+    
+    background: #5289B5;
+    border-radius: 15px;
+}
+
+#texto{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 25px;
+    line-height: 44px;
+    text-align: center;
+}
