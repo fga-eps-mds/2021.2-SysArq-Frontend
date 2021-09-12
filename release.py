@@ -157,9 +157,9 @@ if __name__ == "__main__":
     create_release_sh.close()
 
     command = (
-        "cp " + analytics_path + " target\n" +
+        "cp " + analytics_path + " target/analytics-raw-data\n" +
         "cd target\n" +
-        "git add " + analytics_path + "\n"
+        "git add analytics-raw-data/" + analytics_path + "\n"
         "git commit -m \"Adiciona Métricas da Release " + new_tag + " do Frontend\"\n"
     )
 
