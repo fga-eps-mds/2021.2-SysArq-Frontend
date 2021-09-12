@@ -3,137 +3,84 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import MenuCard from "./pages/components/MenuCard";
 
+
+const renderMenuCard = (icon, title, createUrl, listUrl) => {
+	render(
+		<MenuCard
+			icon={icon}
+			title={title}
+			createUrl={createUrl}
+			listUrl={listUrl}
+		/>
+	)
+}
+
+const testClick = (testText) => {
+	const clickCreate = screen.getByTestId("click-criar");
+	expect(fireEvent.click(clickCreate)).toBe(true);
+	expect(screen.getByText(testText)).toBeInTheDocument();
+
+	const clickList = screen.getByTestId("click-listar");
+	expect(fireEvent.click(clickList)).toBe(true);
+	expect(screen.getByText(testText)).toBeInTheDocument();
+
+}
+
 describe("Button test", () => {
 	it("Document subject", () => {
-		render(
-			<MenuCard
-				icon="icone-assunto"
-				title="Assunto do Documento"
-				createUrl="/create-document-subject"
-				listUrl="/fields-register/document-subject"
-			/>
-		);
 
-		const clickDocumentSubject = screen.getByTestId("click-criar");
-		expect(fireEvent.click(clickDocumentSubject)).toBe(true);
-		expect(screen.getByText("Assunto do Documento")).toBeInTheDocument();
+		renderMenuCard("icone-assunto", "Assunto do Documento",
+		"/create-document-subject", "/fields-register/document-subject")
 
-		const clickDocumentSubject1 = screen.getByTestId("click-listar");
-		expect(fireEvent.click(clickDocumentSubject1)).toBe(true);
-		expect(screen.getByText("Assunto do Documento")).toBeInTheDocument();
+		testClick("Assunto do Documento");
 	});
 
 	it("Box abbreviation", () => {
-		render(
-			<MenuCard
-				icon="icone-sigla-da-caixa"
-				title="Sigla da Caixa"
-				createUrl="/create-document-subject"
-				listUrl="/fields-register/document-subject"
-			/>
-		);
 
-		const clickBoxAbbreviation = screen.getByTestId("click-criar");
-		expect(fireEvent.click(clickBoxAbbreviation)).toBe(true);
-		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
+		renderMenuCard("icone-sigla-da-caixa", "Sigla da Caixa",
+		"/create-document-subject", "/fields-register/document-subject")
 
-		const clickBoxAbbreviation1 = screen.getByTestId("click-listar");
-		expect(fireEvent.click(clickBoxAbbreviation1)).toBe(true);
-		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
+		testClick("Sigla da Caixa");
+
 	});
 
 	it("Publick worker", () => {
-		render(
-			<MenuCard
-				icon="icone-servidor"
-				title="Servidor"
-				createUrl="/create-document-subject"
-				listUrl="/fields-register/document-subject"
-			/>
-		);
 
-		const click = screen.getByTestId("click-criar");
-		expect(fireEvent.click(click)).toBe(true);
-		expect(screen.getByText("Servidor")).toBeInTheDocument();
+		renderMenuCard("icone-servidor", "Servidor",
+		"/create-document-subject", "/fields-register/document-subject")
 
-		const click1 = screen.getByTestId("click-listar");
-		expect(fireEvent.click(click)).toBe(true);
-		expect(screen.getByText("Servidor")).toBeInTheDocument();
+		testClick("Servidor");
 	});
 
 	it("Unity", () => {
-		render(
-			<MenuCard
-				icon="icone-unidade"
-				title="Unidade"
-				createUrl="/create-document-subject"
-				listUrl="/fields-register/document-subject"
-			/>
-		);
+		
+		renderMenuCard("icone-unidade", "Unidade",
+		"/create-document-subject", "/fields-register/document-subject")
 
-		const click = screen.getByTestId("click-criar");
-		expect(fireEvent.click(click)).toBe(true);
-		expect(screen.getByText("Unidade")).toBeInTheDocument();
-
-		const click1 = screen.getByTestId("click-listar");
-		expect(fireEvent.click(click)).toBe(true);
-		expect(screen.getByText("Unidade")).toBeInTheDocument();
+		testClick("Unidade");
 	});
 
 	it("Document type", () => {
-		render(
-			<MenuCard
-				icon="icone-tipo-de-documento"
-				title="Tipo de Documento"
-				createUrl="/create-document-subject"
-				listUrl="/fields-register/document-subject"
-			/>
-		);
 
-		const click = screen.getByTestId("click-criar");
-		expect(fireEvent.click(click)).toBe(true);
-		expect(screen.getByText("Tipo de Documento")).toBeInTheDocument();
+		renderMenuCard("icone-tipo-de-documento",
+		"Tipo de Documento", "/create-document-subject", "/fields-register/document-subject")
 
-		const click1 = screen.getByTestId("click-listar");
-		expect(fireEvent.click(click)).toBe(true);
-		expect(screen.getByText("Tipo de Documento")).toBeInTheDocument();
+		testClick("Tipo de Documento");
 	});
 
 	it("Status", () => {
-		render(
-			<MenuCard
-				icon="icone-status"
-				title="Status"
-				createUrl="/create-document-subject"
-				listUrl="/fields-register/document-subject"
-			/>
-		);
+		
+		renderMenuCard("icone-status", "Status",
+		"/create-document-subject", "/fields-register/document-subject")
 
-		const click = screen.getByTestId("click-criar");
-		expect(fireEvent.click(click)).toBe(true);
-		expect(screen.getByText("Status")).toBeInTheDocument();
-
-		const click1 = screen.getByTestId("click-listar");
-		expect(fireEvent.click(click)).toBe(true);
-		expect(screen.getByText("Status")).toBeInTheDocument();
+		testClick("Status");
 	});
 
 	it("Shelf", () => {
-		render(
-			<MenuCard
-				icon="icone-estante-prateleira"
-				title="Estante e Prateleira"
-				createUrl="/create-shelf"
-				listUrl="/fields-register/shelf"
-			/>
-		);
+		
+		renderMenuCard("icone-estante-prateleira",
+		"Estante e Prateleira", "/create-document-subject", "/fields-register/document-subject")
 
-		const click = screen.getByTestId("click-criar");
-		expect(fireEvent.click(click)).toBe(true);
-		expect(screen.getByText("Estante e Prateleira")).toBeInTheDocument();
-
-		const click1 = screen.getByTestId("click-listar");
-		expect(fireEvent.click(click)).toBe(true);
-		expect(screen.getByText("Estante e Prateleira")).toBeInTheDocument();
+		testClick("Estante e Prateleira");
 	});
 });
