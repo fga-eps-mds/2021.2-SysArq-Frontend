@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
             changelog.writelines(
                 "Hoje, estamos lançando, com as alterações recentes, uma nova versão do Frontend"
-                " de Gerenciamento de Usuários do sistema "
+                " do sistema "
                 "*[SysArq](https://github.com/fga-eps-mds/2021.1-PC-GO1)*.\nAinda não "
                 "conhece o sistema? "
                 "**[Saiba Mais](https://fga-eps-mds.github.io/2021.1-PC-GO1/)**\n"
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
             changelog.writelines(
                 "Hoje, estamos lançando, para marcar o fim de um prazo, uma nova versão do Frontend"
-                " API de Gerenciamento de Usuários do sistema "
+                " do sistema "
                 "*[SysArq](https://github.com/fga-eps-mds/2021.1-PC-GO1)*. Ainda não "
                 "conhece o sistema? "
                 "**[Saiba Mais](https://fga-eps-mds.github.io/2021.1-PC-GO1/)**\n"
@@ -143,7 +143,7 @@ if __name__ == "__main__":
         f"{now.day:02d}-{now.month:02d}-" + str(now.year) + f"-{now.hour:02d}"
     )
 
-    analytics_path = "fga-eps-mds-2021_1-PC-GO1-Archives-" + new_tag.replace(".", "_") + "-" + data_release + ".json"
+    analytics_path = "fga-eps-mds-2021_1-PC-GO1-Frontend-" + new_tag.replace(".", "_") + "-" + data_release + ".json"
 
     with open(analytics_path, "w") as file:
         json.dump(analytics, file)
@@ -160,7 +160,7 @@ if __name__ == "__main__":
         "cp " + analytics_path + " target\n" +
         "cd target\n" +
         "git add " + analytics_path + "\n"
-        "git commit -m \"Adiciona Métricas da Release " + new_tag + " do Archives\"\n"
+        "git commit -m \"Adiciona Métricas da Release " + new_tag + " do Frontend\"\n"
     )
 
     doc_update_sh = open("doc_update.sh", "w")
