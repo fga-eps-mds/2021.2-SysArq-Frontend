@@ -22,7 +22,10 @@ jobs:
           fetch-depth: 0  # Evita clones rasos
 
       - name: Criar arquivo .env
-        run: touch .env
+        run: |
+          touch .env
+          echo REACT_APP_URL_API="http://0.0.0.0:8002/" >> .env
+          cat .env
 
       - name: Executar docker-compose up
         run: sudo docker-compose up -d
