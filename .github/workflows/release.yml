@@ -42,7 +42,7 @@ jobs:
         run: |
           git config --global user.name 'Matheus'
           git config --global user.email 'J-Matheus@users.noreply.github.com'
-          git clone https://.:${{ secrets.PAT }}@github.com/J-Matheus/TesteDoc.git target
+          git clone https://.:${{ secrets.PAT }}@github.com/fga-eps-mds/2021.1-PC-GO1.git target
 
       - name: Atualizar Documentação
         run: chmod +x ./doc_update.sh && ./doc_update.sh
