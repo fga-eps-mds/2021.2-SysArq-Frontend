@@ -24,8 +24,8 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-assunto"
 							title="Assunto do Documento"
-							createUrl="/create-document-subject"
-							listUrl="/fields-register/document-subject"
+							createUrl="/fields-register/document-subject/create"
+							listUrl="/fields-register/document-subject/list"
 						/>
 					</Grid>
 
@@ -33,8 +33,8 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-sigla-da-caixa"
 							title="Sigla da Caixa"
-							createUrl="create-box-abbreviation"
-							listUrl="/fields-register/box-abbreviation"
+							createUrl="/fields-register/box-abbreviation/create"
+							listUrl="/fields-register/box-abbreviation/list"
 						/>
 					</Grid>
 
@@ -42,8 +42,8 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-servidor"
 							title="Servidor"
-							createUrl="create-public-worker"
-							listUrl="/fields-register/public-worker"
+							createUrl="/fields-register/public-worker/create"
+							listUrl="/fields-register/public-worker/list"
 						/>
 					</Grid>
 
@@ -51,8 +51,8 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-unidade"
 							title="Unidade"
-							createUrl="create-unity"
-							listUrl="/fields-register/unity"
+							createUrl="/fields-register/unity/create"
+							listUrl="/fields-register/unity/list"
 						/>
 					</Grid>
 
@@ -60,8 +60,8 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-tipo-de-documento"
 							title="Tipo de Documento"
-							createUrl="create-document-type"
-							listUrl="/fields-register/document-type"
+							createUrl="/fields-register/document-type/create"
+							listUrl="/fields-register/document-type/list"
 						/>
 					</Grid>
 
@@ -69,8 +69,8 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-status"
 							title="Status"
-							createUrl="/create-status"
-							listUrl="/fields-register/status"
+							createUrl="/fields-register/status/create"
+							listUrl="/fields-register/status/list"
 						/>
 					</Grid>
 
@@ -78,8 +78,8 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-estante-prateleira"
 							title="Estante e Prateleira"
-							createUrl="/create-shelf"
-							listUrl="/fields-register/shelf"
+							createUrl="/fields-register/shelf/create"
+							listUrl="/fields-register/shelf/list"
 						/>
 					</Grid>
 				</Grid>

@@ -43,33 +43,24 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
-const Icon = ({ iconName, title }) => {
+const Icon = ({ iconName }) => {
 	const classes = useStyles();
 
 	let icon = "";
 
-	if (iconName === "icone-assunto" && title === "Assunto do Documento") {
+	if (iconName === "icone-assunto") {
 		icon = <SubjectIcon className={classes.icon} />;
-	} else if (
-		iconName === "icone-sigla-da-caixa" &&
-		title === "Sigla da Caixa"
-	) {
+	} else if (iconName === "icone-sigla-da-caixa") {
 		icon = <LocalOfferIcon className={classes.icon} />;
-	} else if (iconName === "icone-servidor" && title === "Servidor") {
+	} else if (iconName === "icone-servidor") {
 		icon = <PersonOutlineIcon className={classes.icon} />;
-	} else if (iconName === "icone-unidade" && title === "Unidade") {
+	} else if (iconName === "icone-unidade") {
 		icon = <HomeWorkIcon className={classes.icon} />;
-	} else if (
-		iconName === "icone-tipo-de-documento" &&
-		title === "Tipo de Documento"
-	) {
+	} else if (iconName === "icone-tipo-de-documento") {
 		icon = <DescriptionIcon className={classes.icon} />;
-	} else if (iconName === "icone-status" && title === "Status") {
+	} else if (iconName === "icone-status") {
 		icon = <ArchiveIcon className={classes.icon} />;
-	} else if (
-		iconName === "icone-estante-prateleira" &&
-		title === "Estante e Prateleira"
-	) {
+	} else if (iconName === "icone-estante-prateleira") {
 		icon = <AllInboxIcon className={classes.icon} />;
 	}
 
