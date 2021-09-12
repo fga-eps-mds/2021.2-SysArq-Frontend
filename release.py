@@ -14,7 +14,7 @@ if __name__ == "__main__":
     contributors = []
 
     pr_commits = requests.get(
-        "https://api.github.com/repos/fga-eps-mds/2021.1-PC-GO1-Archives/pulls/" + 
+        "https://api.github.com/repos/fga-eps-mds/2021.1-PC-GO1-Frontend/pulls/" + 
         pr_number + "/commits", auth=requests.auth.HTTPBasicAuth(user, token)
     )
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
         print('\033[93m' + "WARNING:" + '\033[0m' + " Unable to collect topics.")
 
     last_tag = requests.get(
-        "https://api.github.com/repos/J-Matheus/FT/tags", #
+        "https://api.github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/tags",
         auth=requests.auth.HTTPBasicAuth(user, token)
     ).json()[0]['name'][1:]
 
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
     analytics = requests.get(
         "https://sonarcloud.io/api/measures/component_tree?"
-        "component=fga-eps-mds_2021.1-PC-GO1-Archives&"
+        "component=fga-eps-mds_2021.1-PC-GO1-Frontend&"
         "metricKeys=files,functions,complexity,comment_lines_density,"
         "duplicated_lines_density,coverage,ncloc,security_rating,tests,"
         "test_success_density,test_execution_time,reliability_rating&ps=500"
