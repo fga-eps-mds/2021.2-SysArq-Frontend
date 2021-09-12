@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import Shelf from "./pages/FieldsRegister/Shelf";
+import Status from "../pages/FieldsRegister/Status";
 
 describe("Main component", () => {
 	it("Title", () => {
-		render(<Shelf />);
+		render(<Status />);
 
-		expect(screen.getByText("Estante e Prateleira")).toBeInTheDocument();
+		expect(screen.getByText("Status de Encaminhamento")).toBeInTheDocument();
 	});
 });

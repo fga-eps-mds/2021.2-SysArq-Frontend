@@ -4,7 +4,7 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { render, fireEvent, screen, within } from "@testing-library/react";
 
-import DataTable from "./pages/components/DataTable/DataTable";
+import DataTable from "../pages/components/DataTable/DataTable";
 
 const hostApi = `${process.env.REACT_APP_URL_API}document_subject`;
 

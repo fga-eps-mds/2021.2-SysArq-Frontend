@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
+import CreateDocumentType from "../pages/FieldsRegister/CreateDocumentType";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 

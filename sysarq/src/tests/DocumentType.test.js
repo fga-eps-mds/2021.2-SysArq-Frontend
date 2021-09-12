@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import DocumentType from "./pages/FieldsRegister/DocumentType";
+import DocumentType from "../pages/FieldsRegister/DocumentType";
 
 describe("Main component", () => {
 	it("Title", () => {

@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import Unity from "./pages/FieldsRegister/Unity";
+import Shelf from "../pages/FieldsRegister/Shelf";
 
 describe("Main component", () => {
 	it("Title", () => {
-		render(<Unity />);
+		render(<Shelf />);
 
-		expect(screen.getByText("Unidade")).toBeInTheDocument();
+		expect(screen.getByText("Estante e Prateleira")).toBeInTheDocument();
 	});
 });

@@ -1,4 +1,4 @@
-import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
+import FieldsRegister from "../pages/FieldsRegister/FieldsRegister";
 
 import { render } from "@testing-library/react";
 

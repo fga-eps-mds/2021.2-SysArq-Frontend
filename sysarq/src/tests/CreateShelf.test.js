@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import CreateShelf from "./pages/FieldsRegister/CreateShelf";
+import CreateShelf from "../pages/FieldsRegister/CreateShelf";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 

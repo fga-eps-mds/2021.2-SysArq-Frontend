@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import CreatePublicWorker from "./pages/FieldsRegister/CreatePublicWorker";
+import CreatePublicWorker from "../pages/FieldsRegister/CreatePublicWorker";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import CreateStatus from "./pages/FieldsRegister/CreateStatus";
+import CreateStatus from "../pages/FieldsRegister/CreateStatus";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 

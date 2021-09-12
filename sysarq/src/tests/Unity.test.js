@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import Status from "./pages/FieldsRegister/Status";
+import Unity from "../pages/FieldsRegister/Unity";
 
 describe("Main component", () => {
 	it("Title", () => {
-		render(<Status />);
+		render(<Unity />);
 
-		expect(screen.getByText("Status de Encaminhamento")).toBeInTheDocument();
+		expect(screen.getByText("Unidade")).toBeInTheDocument();
 	});
 });
