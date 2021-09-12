@@ -40,8 +40,8 @@ describe("Button test", () => {
 		renderMenuCard(
 			"icone-sigla-da-caixa",
 			"Sigla da Caixa",
-			"/create-document-subject",
-			"/fields-register/document-subject"
+			"/create-box-abbreviation",
+			"/fields-register/box-abbreviation"
 		);
 
 		testClick("Sigla da Caixa");
@@ -51,8 +51,8 @@ describe("Button test", () => {
 		renderMenuCard(
 			"icone-servidor",
 			"Servidor",
-			"/create-document-subject",
-			"/fields-register/document-subject"
+			"/create-public-worker",
+			"/fields-register/public-worker"
 		);
 
 		testClick("Servidor");
@@ -62,8 +62,8 @@ describe("Button test", () => {
 		renderMenuCard(
 			"icone-unidade",
 			"Unidade",
-			"/create-document-subject",
-			"/fields-register/document-subject"
+			"/create-unity",
+			"/fields-register/unity"
 		);
 
 		testClick("Unidade");
@@ -73,8 +73,8 @@ describe("Button test", () => {
 		renderMenuCard(
 			"icone-tipo-de-documento",
 			"Tipo de Documento",
-			"/create-document-subject",
-			"/fields-register/document-subject"
+			"/create-document-type",
+			"/fields-register/document-type"
 		);
 
 		testClick("Tipo de Documento");
@@ -84,8 +84,8 @@ describe("Button test", () => {
 		renderMenuCard(
 			"icone-status",
 			"Status",
-			"/create-document-subject",
-			"/fields-register/document-subject"
+			"/create-status",
+			"/fields-register/status"
 		);
 
 		testClick("Status");
@@ -95,8 +95,8 @@ describe("Button test", () => {
 		renderMenuCard(
 			"icone-estante-prateleira",
 			"Estante e Prateleira",
-			"/create-document-subject",
-			"/fields-register/document-subject"
+			"/create-shelf",
+			"/fields-register/shelf"
 		);
 
 		testClick("Estante e Prateleira");
