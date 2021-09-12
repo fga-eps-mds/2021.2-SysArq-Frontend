@@ -17,7 +17,7 @@ const testStatus = (title, value) => {
 	fireEvent.change(input, { target: { value: value } });
 	const valor = getByTestId(title).value;
 	expect(valor === value).toBe(true);
-}
+};
 
 describe("Main component", () => {
 	it("Show page title", () => {
@@ -28,7 +28,6 @@ describe("Main component", () => {
 });
 
 describe("Ensure that input fields when unarchived are selected exist", () => {
-
 	it("Status", () => {
 		testStatus("enviado-por", "João");
 	});
@@ -38,7 +37,6 @@ describe("Ensure that input fields when unarchived are selected exist", () => {
 	it("Status", () => {
 		testStatus("data-envio", "10/07/2021");
 	});
-
 });
 
 describe("Ensure that input fields when unarchived are selected exist", () => {
@@ -59,7 +57,6 @@ describe("Ensure that input fields when unarchived are selected exist", () => {
 		const options = getAllByTestId("eliminado");
 		expect(options[0].value).toBe("ELIMINADO");
 	});
-
 });
 
 const hostApi = `${process.env.REACT_APP_URL_API}status`;
