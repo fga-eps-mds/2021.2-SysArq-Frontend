@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 import MenuCard from "./pages/components/MenuCard";
 
-
 const renderMenuCard = (icon, title, createUrl, listUrl) => {
 	render(
 		<MenuCard
@@ -12,8 +11,8 @@ const renderMenuCard = (icon, title, createUrl, listUrl) => {
 			createUrl={createUrl}
 			listUrl={listUrl}
 		/>
-	)
-}
+	);
+};
 
 const testClick = (testText) => {
 	const clickCreate = screen.getByTestId("click-criar");
@@ -23,64 +22,63 @@ const testClick = (testText) => {
 	const clickList = screen.getByTestId("click-listar");
 	expect(fireEvent.click(clickList)).toBe(true);
 	expect(screen.getByText(testText)).toBeInTheDocument();
+};
 
-}
-
+const obj = [
+	{
+		icon: "icone-assunto",
+		title: "Assunto do Documento",
+		createUrl: "/create-document-subject",
+		listUrl: "/fields-register/document-subject"
+	},
+	{
+		icon: "icone-sigla-da-caixa",
+		title: "Sigla da Caixa",
+		createUrl: "/create-box-abbreviation",
+		listUrl:"/fields-register/box-abbreviation"
+	},
+	{
+		icon:"icone-servidor",
+		title:"Servidor",
+		createUrl:"/create-public-worker",
+		listUrl:"/fields-register/public-worker"
+	},
+	{
+		icon:"icone-unidade",
+		title:"Unidade",
+		createUrl:"/create-unity",
+		listUrl:"/fields-register/unity"
+	},
+	{
+		icon:"icone-tipo-de-documento",
+		title:"Tipo de Documento",
+		createUrl:"/create-document-type",
+		listUrl:"/fields-register/document-type"
+	},
+	{
+		icon:"icone-status",
+		title:"Status",
+		createUrl:"/create-status",
+		listUrl:"/fields-register/status"
+	},
+	{
+		icon:"icone-estante-prateleira",
+		title:"Estante e Prateleira",
+		createUrl:"/create-shelf",
+		listUrl:"/fields-register/shelf"
+	}
+]
 describe("Button test", () => {
-	it("Document subject", () => {
 
-		renderMenuCard("icone-assunto", "Assunto do Documento",
-		"/create-document-subject", "/fields-register/document-subject")
-
-		testClick("Assunto do Documento");
-	});
-
-	it("Box abbreviation", () => {
-
-		renderMenuCard("icone-sigla-da-caixa", "Sigla da Caixa",
-		"/create-document-subject", "/fields-register/document-subject")
-
-		testClick("Sigla da Caixa");
-
-	});
-
-	it("Publick worker", () => {
-
-		renderMenuCard("icone-servidor", "Servidor",
-		"/create-document-subject", "/fields-register/document-subject")
-
-		testClick("Servidor");
-	});
-
-	it("Unity", () => {
-		
-		renderMenuCard("icone-unidade", "Unidade",
-		"/create-document-subject", "/fields-register/document-subject")
-
-		testClick("Unidade");
-	});
-
-	it("Document type", () => {
-
-		renderMenuCard("icone-tipo-de-documento",
-		"Tipo de Documento", "/create-document-subject", "/fields-register/document-subject")
-
-		testClick("Tipo de Documento");
-	});
-
-	it("Status", () => {
-		
-		renderMenuCard("icone-status", "Status",
-		"/create-document-subject", "/fields-register/document-subject")
-
-		testClick("Status");
-	});
-
-	it("Shelf", () => {
-		
-		renderMenuCard("icone-estante-prateleira",
-		"Estante e Prateleira", "/create-document-subject", "/fields-register/document-subject")
-
-		testClick("Estante e Prateleira");
+	obj.forEach(element => {
+		it(element.icon, () => {
+			renderMenuCard(
+				element.icon,
+				element.title,
+				element.createUrl,
+				element.listUrl
+			)
+			testClick(element.title);
+		})
 	});
 });
