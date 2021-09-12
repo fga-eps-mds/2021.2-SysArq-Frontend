@@ -14,7 +14,7 @@ if __name__ == "__main__":
     contributors = []
 
     pr_commits = requests.get(
-        "https://api.github.com/repos/fga-eps-mds/2021.1-PC-GO1-Frontend/pulls/" + 
+        "https://api.github.com/repos/fga-eps-mds/2021.1-PC-GO1-Frontend/pulls/" +
         pr_number + "/commits", auth=requests.auth.HTTPBasicAuth(user, token)
     )
 
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     pr_body_text = ""
 
     for line in pr_body.readlines(): pr_body_text = pr_body_text + line
-    
+
     pr_body.close()
 
     pr_issues_numbers = [
@@ -38,7 +38,7 @@ if __name__ == "__main__":
         for pr_issue_number in re.findall(r"\[#\d+\]", pr_body_text)
     ]
 
-    topics = []    
+    topics = []
 
     try:
         for pr_issue_number in pr_issues_numbers:
@@ -70,9 +70,9 @@ if __name__ == "__main__":
 
         changelog.writelines(
             "Hoje, estamos lançando, com as correções dos erros encontrados recentemente "
-            "pela comunidade, uma nova versão do Frontend do sistema *[SysArq](https://github.com/fga-eps-mds/2021.1-PC-GO1)*. Ainda não "
-            "conhece o sistema? "
-            "**[Saiba Mais](https://fga-eps-mds.github.io/2021.1-PC-GO1/)**\n"
+            "pela comunidade, uma nova versão do Frontend do sistema "
+            "*[SysArq](https://github.com/fga-eps-mds/2021.1-PC-GO1)*. Ainda não conhece o"
+            " sistema? **[Saiba Mais](https://fga-eps-mds.github.io/2021.1-PC-GO1/)**\n"
         )
 
         icon_c = [
@@ -87,8 +87,8 @@ if __name__ == "__main__":
             new_tag = "v" + tag_components[0] + "." + str(int(tag_components[1]) + 1) + ".0"
 
             changelog.writelines(
-                "Hoje, estamos lançando, com as alterações recentes, uma nova versão do Frontend"
-                " do sistema "
+                "Hoje, estamos lançando, com as alterações recentes, uma nova versão do "
+                "Frontend do sistema "
                 "*[SysArq](https://github.com/fga-eps-mds/2021.1-PC-GO1)*.\nAinda não "
                 "conhece o sistema? "
                 "**[Saiba Mais](https://fga-eps-mds.github.io/2021.1-PC-GO1/)**\n"
@@ -98,8 +98,8 @@ if __name__ == "__main__":
             new_tag = "v" + str(int(tag_components[0]) + 1) + ".0.0"
 
             changelog.writelines(
-                "Hoje, estamos lançando, para marcar o fim de um prazo, uma nova versão do Frontend"
-                " do sistema "
+                "Hoje, estamos lançando, para marcar o fim de um prazo, uma nova versão do"
+                " Frontend do sistema "
                 "*[SysArq](https://github.com/fga-eps-mds/2021.1-PC-GO1)*. Ainda não "
                 "conhece o sistema? "
                 "**[Saiba Mais](https://fga-eps-mds.github.io/2021.1-PC-GO1/)**\n"
@@ -110,7 +110,7 @@ if __name__ == "__main__":
         if topics != []:
             changelog.writelines("\n## " + random.choice(icon_c) + " Alterações\n")
 
-    else:   
+    else:
         raise Exception("Invalid Release Type.")
 
     if len(topics) != 0:
@@ -143,13 +143,17 @@ if __name__ == "__main__":
         f"{now.day:02d}-{now.month:02d}-" + str(now.year) + f"-{now.hour:02d}"
     )
 
-    analytics_path = "fga-eps-mds-2021_1-PC-GO1-Frontend-" + new_tag.replace(".", "_") + "-" + data_release + ".json"
+    analytics_path = (
+        "fga-eps-mds-2021_1-PC-GO1-Frontend-"
+        + new_tag.replace(".", "_") + "-" + data_release + ".json"
+    )
 
     with open(analytics_path, "w") as file:
         json.dump(analytics, file)
-    
+
     command = (
-        "gh release create " + new_tag + " '" + analytics_path + "#Métricas SonarCloud (json)' -F CHANGELOG.md -t " + new_tag
+        "gh release create " + new_tag + " '" + analytics_path +
+        "#Métricas SonarCloud (json)' -F CHANGELOG.md -t " + new_tag
     )
 
     create_release_sh = open("create_release.sh", "w")
