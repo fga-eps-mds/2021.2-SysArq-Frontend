@@ -5,12 +5,40 @@ import CreateStatus from "./pages/FieldsRegister/CreateStatus";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
+const testStatus = (title, value) => {
+	const { getByTestId, getAllByTestId } = render(<CreateStatus />);
+	fireEvent.change(getByTestId("statusID"), {
+		target: { value: "DESARQUIVADO" },
+	});
+	let options = getAllByTestId("statusID");
+	expect(options[0].value).toBe("DESARQUIVADO");
+
+	const input = getByTestId(title);
+	fireEvent.change(input, { target: { value: value } });
+	const valor = getByTestId(title).value;
+	expect(valor === value).toBe(true);
+}
+
 describe("Main component", () => {
 	it("Show page title", () => {
 		render(<CreateStatus />);
 
 		expect(screen.getByText("Status")).toBeInTheDocument();
 	});
+});
+
+describe("Ensure that input fields when unarchived are selected exist", () => {
+
+	it("Status", () => {
+		testStatus("enviado-por", "João");
+	});
+	it("Status", () => {
+		testStatus("requisitado", "Documento 1");
+	});
+	it("Status", () => {
+		testStatus("data-envio", "10/07/2021");
+	});
+
 });
 
 describe("Ensure that input fields when unarchived are selected exist", () => {
@@ -32,49 +60,6 @@ describe("Ensure that input fields when unarchived are selected exist", () => {
 		expect(options[0].value).toBe("ELIMINADO");
 	});
 
-	describe("Ensure that input fields when UNARCHIVED exist", () => {
-		it("Sent by", () => {
-			const { getByTestId, getAllByTestId } = render(<CreateStatus />);
-			fireEvent.change(getByTestId("statusID"), {
-				target: { value: "DESARQUIVADO" },
-			});
-			let options = getAllByTestId("statusID");
-			expect(options[0].value).toBe("DESARQUIVADO");
-
-			const input = getByTestId("enviado-por");
-			fireEvent.change(input, { target: { value: "João" } });
-			const valor = getByTestId("enviado-por").value;
-			expect(valor === "João").toBe(true);
-		});
-
-		it("Document that requested the unarchive", () => {
-			const { getByTestId, getAllByTestId } = render(<CreateStatus />);
-			fireEvent.change(getByTestId("statusID"), {
-				target: { value: "DESARQUIVADO" },
-			});
-			const options = getAllByTestId("statusID");
-			expect(options[0].value).toBe("DESARQUIVADO");
-
-			const input = getByTestId("requisitado");
-			fireEvent.change(input, { target: { value: "Documento 1" } });
-			const valor = getByTestId("requisitado").value;
-			expect(valor === "Documento 1").toBe(true);
-		});
-
-		it("Send date", () => {
-			const { getByTestId, getAllByTestId } = render(<CreateStatus />);
-			fireEvent.change(getByTestId("statusID"), {
-				target: { value: "DESARQUIVADO" },
-			});
-			const options = getAllByTestId("statusID");
-			expect(options[0].value).toBe("DESARQUIVADO");
-
-			const input = getByTestId("data-envio");
-			fireEvent.change(input, { target: { value: "10/07/2021" } });
-			const valor = getByTestId("data-envio").value;
-			expect(valor === "10/07/2021").toBe(true);
-		});
-	});
 });
 
 const hostApi = `${process.env.REACT_APP_URL_API}status`;
