@@ -5,6 +5,15 @@ import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
+const testType = (titulo, valor) => {
+	expect(screen.getByText(titulo)).toBeInTheDocument();
+
+	const input = screen.getByLabelText(titulo);
+	fireEvent.change(input, { target: { value: valor } });
+	const value = screen.getByLabelText(titulo).value;
+	expect(value === valor).toBe(true);
+};
+
 describe("Main component", () => {
 	it("Show page title", () => {
 		render(<CreateDocumentType />);
@@ -14,21 +23,11 @@ describe("Main component", () => {
 });
 
 describe("Ensure that the document type input fields exist", () => {
-	it("Document name and temporality", () => {
+	it("Full name and temporality", () => {
 		render(<CreateDocumentType />);
 
-		expect(screen.getByText("Nome do Documento")).toBeInTheDocument();
-		expect(screen.getByText("Temporalidade")).toBeInTheDocument();
-
-		const inputDocumentName = screen.getByLabelText("Nome do Documento");
-		fireEvent.change(inputDocumentName, { target: { value: "Teste" } });
-		const valorDocumentName = screen.getByLabelText("Nome do Documento").value;
-		expect(valorDocumentName === "Teste").toBe(true);
-
-		const inputTemporality = screen.getByLabelText("Temporalidade");
-		fireEvent.change(inputTemporality, { target: { value: "12" } });
-		const valorTemporality = screen.getByLabelText("Temporalidade").value;
-		expect(valorTemporality === "12").toBe(true);
+		testType("Nome do Documento", "teste");
+		testType("Temporalidade", "12");
 	});
 });
 

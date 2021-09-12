@@ -4,6 +4,16 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import CreateDocumentSubject from "./pages/FieldsRegister/CreateDocumentSubject";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
+import { func } from "prop-types";
+
+const testSubject = (titulo, valor) => {
+	expect(screen.getByText(titulo)).toBeInTheDocument();
+
+	const input = screen.getByLabelText(titulo);
+	fireEvent.change(input, { target: { value: valor } });
+	const value = screen.getByLabelText(titulo).value;
+	expect(value === valor).toBe(true);
+};
 
 describe("Main component", () => {
 	it("Show page title", () => {
@@ -17,18 +27,8 @@ describe("Ensure that the document subject input fields exist", () => {
 	it("Full name and temporality", () => {
 		render(<CreateDocumentSubject />);
 
-		expect(screen.getByText("Nome do documento")).toBeInTheDocument();
-		expect(screen.getByText("Temporalidade")).toBeInTheDocument();
-
-		const inputDocumentName = screen.getByLabelText("Nome do documento");
-		fireEvent.change(inputDocumentName, { target: { value: "Novo Processo" } });
-		const valorDocumentName = screen.getByLabelText("Nome do documento").value;
-		expect(valorDocumentName === "Novo Processo").toBe(true);
-
-		const inputTemporality = screen.getByLabelText("Temporalidade");
-		fireEvent.change(inputTemporality, { target: { value: "2021" } });
-		const valorTemporality = screen.getByLabelText("Temporalidade").value;
-		expect(valorTemporality === "2021").toBe(true);
+		testSubject("Nome do documento", "Novo Processo");
+		testSubject("Temporalidade", "2021");
 	});
 });
 
