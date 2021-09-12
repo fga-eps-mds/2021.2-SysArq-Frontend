@@ -2,6 +2,7 @@ name: Nova Versão
 
 on:
   pull_request:
+    branches: main
     types: closed
 
 env:
@@ -26,7 +27,7 @@ jobs:
       - name: Lançamento MAJOR
         if: contains( github.event.pull_request.labels.*.name, 'MAJOR' )
         run: python3 release.py J-Matheus $GITHUB_TOKEN $PR_NUMBER MAJOR
-        
+
       - name: Lançamento MINOR
         if: contains( github.event.pull_request.labels.*.name, 'MINOR' )
         run: python3 release.py J-Matheus $GITHUB_TOKEN $PR_NUMBER MINOR
