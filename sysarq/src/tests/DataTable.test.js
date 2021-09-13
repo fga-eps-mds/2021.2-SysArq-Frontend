@@ -33,7 +33,7 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-describe("idk", () => {
+describe("Testing rendering of pages", () => {
 	it("loads and displays greeting", async () => {
 		render(<DataTable title="Assunto do documento" url="document_subject/" />);
 

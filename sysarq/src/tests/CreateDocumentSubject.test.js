@@ -6,13 +6,13 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { func } from "prop-types";
 
-const testSubject = (titulo, valor) => {
-	expect(screen.getByText(titulo)).toBeInTheDocument();
+const testSubject = (title, value) => {
+	expect(screen.getByText(title)).toBeInTheDocument();
 
-	const input = screen.getByLabelText(titulo);
-	fireEvent.change(input, { target: { value: valor } });
-	const value = screen.getByLabelText(titulo).value;
-	expect(value === valor).toBe(true);
+	const input = screen.getByLabelText(title);
+	fireEvent.change(input, { target: { value: value } });
+	const value = screen.getByLabelText(title).value;
+	expect(value === value).toBe(true);
 };
 
 describe("Main component", () => {

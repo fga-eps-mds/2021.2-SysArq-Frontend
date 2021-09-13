@@ -45,9 +45,14 @@ function App() {
 					<Route exact path="/fields-register">
 						<FieldsRegister />
 					</Route>
-					<Route path="/fields-register/document-subject/list">
+				<Route path="/fields-register/document-subject">
+      				<Route exact path="/fields-register/document-subject">
 						<DocumentSubject />
-					</Route>
+      				</Route>
+      			<Route path="/fields-register/document-subject/create">
+        				<CreateDocumentSubject />
+      			</Route>
+   			</Route>
 					<Route path="/fields-register/box-abbreviation/list">
 						<BoxAbbreviation />
 					</Route>
