@@ -4,15 +4,14 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import CreateDocumentSubject from "../pages/FieldsRegister/CreateDocumentSubject";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { func } from "prop-types";
 
-const testSubject = (title, value) => {
+const testSubject = (title, gain) => {
 	expect(screen.getByText(title)).toBeInTheDocument();
 
 	const input = screen.getByLabelText(title);
-	fireEvent.change(input, { target: { value: value } });
+	fireEvent.change(input, { target: { value: gain } });
 	const value = screen.getByLabelText(title).value;
-	expect(value === value).toBe(true);
+	expect(value === gain).toBe(true);
 };
 
 describe("Main component", () => {
