@@ -1,0 +1,52 @@
+name: Nova Versão
+
+on:
+  pull_request:
+    branches: main
+    types: closed
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PR_BODY: ${{ github.event.pull_request.body }}
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+
+jobs:
+  release:
+    name: Verificar Necessidade de Nova Versão
+    runs-on: ubuntu-latest
+
+    if: github.event.pull_request.merged && !contains( github.event.pull_request.labels.*.name, 'NOT RELEASED')
+
+    steps:
+      - name: Conferir Repositório
+        uses: actions/checkout@v2
+
+      - name: Coletar Corpo do Pull Request
+        run: echo $PR_BODY > pr_body.txt
+
+      - name: Lançamento MAJOR
+        if: contains( github.event.pull_request.labels.*.name, 'MAJOR' )
+        run: python3 release.py J-Matheus $GITHUB_TOKEN $PR_NUMBER MAJOR
+
+      - name: Lançamento MINOR
+        if: contains( github.event.pull_request.labels.*.name, 'MINOR' )
+        run: python3 release.py J-Matheus $GITHUB_TOKEN $PR_NUMBER MINOR
+
+      - name: Lançamento PATCH
+        if: contains( github.event.pull_request.labels.*.name, 'PATCH' )
+        run: python3 release.py J-Matheus $GITHUB_TOKEN $PR_NUMBER PATCH
+
+      - name: Criar Novo Lançamento
+        run: chmod +x ./create_release.sh && ./create_release.sh
+
+      - name: Configurar Usuário do GitHub e Clonar Repositório de Documentação
+        run: |
+          git config --global user.name 'Matheus'
+          git config --global user.email 'J-Matheus@users.noreply.github.com'
+          git clone https://.:${{ secrets.PAT }}@github.com/fga-eps-mds/2021.1-PC-GO1.git target
+
+      - name: Atualizar Documentação
+        run: chmod +x ./doc_update.sh && ./doc_update.sh
+
+      - name: Confirmar Alterações
+        run: cd target && git push origin main
