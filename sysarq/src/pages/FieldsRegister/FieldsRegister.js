@@ -25,7 +25,7 @@ export default function FieldsRegister() {
 							icon="icone-assunto"
 							title="Assunto do Documento"
 							createUrl="/fields-register/document-subject/create"
-							listUrl="/fields-register/document-subject/list"
+							listUrl="/fields-register/document-subject"
 						/>
 					</Grid>
 
@@ -34,7 +34,7 @@ export default function FieldsRegister() {
 							icon="icone-sigla-da-caixa"
 							title="Sigla da Caixa"
 							createUrl="/fields-register/box-abbreviation/create"
-							listUrl="/fields-register/box-abbreviation/list"
+							listUrl="/fields-register/box-abbreviation"
 						/>
 					</Grid>
 
@@ -43,7 +43,7 @@ export default function FieldsRegister() {
 							icon="icone-servidor"
 							title="Servidor"
 							createUrl="/fields-register/public-worker/create"
-							listUrl="/fields-register/public-worker/list"
+							listUrl="/fields-register/public-worker"
 						/>
 					</Grid>
 
@@ -52,7 +52,7 @@ export default function FieldsRegister() {
 							icon="icone-unidade"
 							title="Unidade"
 							createUrl="/fields-register/unity/create"
-							listUrl="/fields-register/unity/list"
+							listUrl="/fields-register/unity"
 						/>
 					</Grid>
 
@@ -61,7 +61,7 @@ export default function FieldsRegister() {
 							icon="icone-tipo-de-documento"
 							title="Tipo de Documento"
 							createUrl="/fields-register/document-type/create"
-							listUrl="/fields-register/document-type/list"
+							listUrl="/fields-register/document-type"
 						/>
 					</Grid>
 
@@ -70,7 +70,7 @@ export default function FieldsRegister() {
 							icon="icone-status"
 							title="Status"
 							createUrl="/fields-register/status/create"
-							listUrl="/fields-register/status/list"
+							listUrl="/fields-register/status"
 						/>
 					</Grid>
 
@@ -79,7 +79,7 @@ export default function FieldsRegister() {
 							icon="icone-estante-prateleira"
 							title="Estante e Prateleira"
 							createUrl="/fields-register/shelf/create"
-							listUrl="/fields-register/shelf/list"
+							listUrl="/fields-register/shelf"
 						/>
 					</Grid>
 				</Grid>

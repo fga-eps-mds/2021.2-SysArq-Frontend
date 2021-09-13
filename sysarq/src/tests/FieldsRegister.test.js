@@ -2,7 +2,7 @@ import FieldsRegister from "../pages/FieldsRegister/FieldsRegister";
 
 import { render } from "@testing-library/react";
 
-describe("<FieldsRegister/>", () => {
+describe("Main component", () => {
 	let documentBody;
 
 	beforeEach(() => {

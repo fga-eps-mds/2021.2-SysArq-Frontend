@@ -35,8 +35,8 @@ describe("Ensure that the shelf input fields exist", () => {
 const hostApiShelfE = `${process.env.REACT_APP_URL_API}shelfE`;
 const hostApiShelfP = `${process.env.REACT_APP_URL_API}shelfP`;
 
-describe("Teste do botão", () => {
-	it("Botão de salvar", () => {
+describe("Button test", () => {
+	it("Save button", () => {
 		const mock = new MockAdapter(axios);
 
 		render(<CreateShelf />);
