@@ -24,25 +24,25 @@ describe("Ensure that the input fields of the box abbreviation exist", () => {
 
 		const inputBoxNumner = screen.getByLabelText("Número da caixa");
 		fireEvent.change(inputBoxNumner, { target: { value: "10" } });
-		const valorBoxNumber = screen.getByLabelText("Número da caixa").value;
-		expect(valorBoxNumber === "10").toBe(true);
+		const valueBoxNumber = screen.getByLabelText("Número da caixa").value;
+		expect(valueBoxNumber === "10").toBe(true);
 
 		const inputBoxAbbreviation = screen.getByLabelText("Sigla da caixa");
 		fireEvent.change(inputBoxAbbreviation, { target: { value: "PC-GO" } });
-		const valorBoxAbbreviation = screen.getByLabelText("Sigla da caixa").value;
-		expect(valorBoxAbbreviation === "PC-GO").toBe(true);
+		const valueBoxAbbreviation = screen.getByLabelText("Sigla da caixa").value;
+		expect(valueBoxAbbreviation === "PC-GO").toBe(true);
 
 		const inputFullName = screen.getByLabelText("Nome completo");
 		fireEvent.change(inputFullName, {
 			target: { value: "Polícia Civil do Goias" },
 		});
-		const valorFullName = screen.getByLabelText("Nome completo").value;
-		expect(valorFullName === "Polícia Civil do Goias").toBe(true);
+		const valueFullName = screen.getByLabelText("Nome completo").value;
+		expect(valueFullName === "Polícia Civil do Goias").toBe(true);
 
 		const inputYear = screen.getByLabelText("Ano");
 		fireEvent.change(inputYear, { target: { value: "2021" } });
-		const valorYear = screen.getByLabelText("Ano").value;
-		expect(valorYear === "2021").toBe(true);
+		const valueYear = screen.getByLabelText("Ano").value;
+		expect(valueYear === "2021").toBe(true);
 	});
 });
 

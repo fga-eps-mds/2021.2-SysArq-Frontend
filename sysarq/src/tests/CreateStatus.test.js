@@ -15,8 +15,8 @@ const testStatus = (title, value) => {
 
 	const input = getByTestId(title);
 	fireEvent.change(input, { target: { value: value } });
-	const valor = getByTestId(title).value;
-	expect(valor === value).toBe(true);
+	const valueTest = getByTestId(title).value;
+	expect(valueTest === value).toBe(true);
 };
 
 describe("Main component", () => {

@@ -30,13 +30,13 @@ describe("Ensure unit input fields exist", () => {
 		fireEvent.change(inputUnityName, {
 			target: { value: "20º Delegacia de Polícia" },
 		});
-		const valorUnityName = screen.getByLabelText("Nome da unidade").value;
-		expect(valorUnityName === "20º Delegacia de Polícia").toBe(true);
+		const valueUnityName = screen.getByLabelText("Nome da unidade").value;
+		expect(valueUnityName === "20º Delegacia de Polícia").toBe(true);
 
 		const inputBoxUnity = screen.getByLabelText("Sigla da unidade");
 		fireEvent.change(inputBoxUnity, { target: { value: "20º DP" } });
-		const valorBoxUnity = screen.getByLabelText("Sigla da unidade").value;
-		expect(valorBoxUnity === "20º DP").toBe(true);
+		const valueBoxUnity = screen.getByLabelText("Sigla da unidade").value;
+		expect(valueBoxUnity === "20º DP").toBe(true);
 
 		const inputAdministrativeBond = screen.getByLabelText(
 			"Vínculo administrativo"
@@ -44,36 +44,36 @@ describe("Ensure unit input fields exist", () => {
 		fireEvent.change(inputAdministrativeBond, {
 			target: { value: "Jurídico" },
 		});
-		const valorAdministrativeBond = screen.getByLabelText(
+		const valueAdministrativeBond = screen.getByLabelText(
 			"Vínculo administrativo"
 		).value;
-		expect(valorAdministrativeBond === "Jurídico").toBe(true);
+		expect(valueAdministrativeBond === "Jurídico").toBe(true);
 
 		const inputAbbreviationBond = screen.getByLabelText("Sigla do vínculo");
 		fireEvent.change(inputAbbreviationBond, { target: { value: "VJA" } });
-		const valorAbbreviationBond =
+		const valueAbbreviationBond =
 			screen.getByLabelText("Sigla do vínculo").value;
-		expect(valorAbbreviationBond === "VJA").toBe(true);
+		expect(valueAbbreviationBond === "VJA").toBe(true);
 
 		const inputTypeUnity = screen.getByLabelText("Tipo de unidade");
 		fireEvent.change(inputTypeUnity, { target: { value: "Administrativa" } });
-		const valorTypeUnity = screen.getByLabelText("Tipo de unidade").value;
-		expect(valorTypeUnity === "Administrativa").toBe(true);
+		const valueTypeUnity = screen.getByLabelText("Tipo de unidade").value;
+		expect(valueTypeUnity === "Administrativa").toBe(true);
 
 		const inputMunicipality = screen.getByLabelText("Município");
 		fireEvent.change(inputMunicipality, { target: { value: "Abadiânia" } });
-		const valorMunicipality = screen.getByLabelText("Município").value;
-		expect(valorMunicipality === "Abadiânia").toBe(true);
+		const valueMunicipality = screen.getByLabelText("Município").value;
+		expect(valueMunicipality === "Abadiânia").toBe(true);
 
 		const inputPhoneNumber = screen.getByLabelText("Número de telefone");
 		fireEvent.change(inputPhoneNumber, { target: { value: "912398734" } });
-		const valorPhoneNumber = screen.getByLabelText("Número de telefone").value;
-		expect(valorPhoneNumber === "912398734").toBe(true);
+		const valuePhoneNumber = screen.getByLabelText("Número de telefone").value;
+		expect(valuePhoneNumber === "912398734").toBe(true);
 
 		const inputComments = screen.getByLabelText("Observações");
 		fireEvent.change(inputComments, { target: { value: "Testando" } });
-		const valorComments = screen.getByLabelText("Observações").value;
-		expect(valorComments === "Testando").toBe(true);
+		const valueComments = screen.getByLabelText("Observações").value;
+		expect(valueComments === "Testando").toBe(true);
 	});
 });
 

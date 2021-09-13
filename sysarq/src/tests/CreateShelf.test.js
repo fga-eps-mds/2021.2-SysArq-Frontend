@@ -22,13 +22,13 @@ describe("Ensure that the shelf input fields exist", () => {
 
 		const inputShelfE = screen.getByLabelText("Estante");
 		fireEvent.change(inputShelfE, { target: { value: "2" } });
-		const valorShelfE = screen.getByLabelText("Estante").value;
-		expect(valorShelfE === "2").toBe(true);
+		const valueShelfE = screen.getByLabelText("Estante").value;
+		expect(valueShelfE === "2").toBe(true);
 
 		const inputShelfP = screen.getByLabelText("Prateleira");
 		fireEvent.change(inputShelfP, { target: { value: "4" } });
-		const valorShelfP = screen.getByLabelText("Prateleira").value;
-		expect(valorShelfP === "4").toBe(true);
+		const valueShelfP = screen.getByLabelText("Prateleira").value;
+		expect(valueShelfP === "4").toBe(true);
 	});
 });
 

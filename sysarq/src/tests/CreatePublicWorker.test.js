@@ -26,38 +26,38 @@ describe("Ensure server input fields exist", () => {
 
 		const inputServerName = screen.getByLabelText("Nome do servidor");
 		fireEvent.change(inputServerName, { target: { value: "João" } });
-		const valorServerName = screen.getByLabelText("Nome do servidor").value;
-		expect(valorServerName === "João").toBe(true);
+		const valueServerName = screen.getByLabelText("Nome do servidor").value;
+		expect(valueServerName === "João").toBe(true);
 
 		const inputCPF = screen.getByLabelText("CPF do servidor");
 		fireEvent.change(inputCPF, { target: { value: "12345678912" } });
-		const valorCPF = screen.getByLabelText("CPF do servidor").value;
-		expect(valorCPF === "12345678912").toBe(true);
+		const valueCPF = screen.getByLabelText("CPF do servidor").value;
+		expect(valueCPF === "12345678912").toBe(true);
 
 		const inputServerPosition = screen.getByLabelText("Cargo do servidor");
 		fireEvent.change(inputServerPosition, { target: { value: "Supervisor" } });
-		const valorServerPosition =
+		const valueServerPosition =
 			screen.getByLabelText("Cargo do servidor").value;
-		expect(valorServerPosition === "Supervisor").toBe(true);
+		expect(valueServerPosition === "Supervisor").toBe(true);
 
 		const inputServerClass = screen.getByLabelText("Classe do servidor");
 		fireEvent.change(inputServerClass, { target: { value: "Administrativo" } });
-		const valorServerClass = screen.getByLabelText("Classe do servidor").value;
-		expect(valorServerClass === "Administrativo").toBe(true);
+		const valueServerClass = screen.getByLabelText("Classe do servidor").value;
+		expect(valueServerClass === "Administrativo").toBe(true);
 
 		const inputServerStocking = screen.getByLabelText("Lotação do servidor");
 		fireEvent.change(inputServerStocking, { target: { value: "Numérica" } });
-		const valorServerStocking = screen.getByLabelText(
+		const valueServerStocking = screen.getByLabelText(
 			"Lotação do servidor"
 		).value;
-		expect(valorServerStocking === "Numérica").toBe(true);
+		expect(valueServerStocking === "Numérica").toBe(true);
 
 		const inputMunicipality = screen.getByLabelText("Município do servidor");
 		fireEvent.change(inputMunicipality, { target: { value: "Abadiânia" } });
-		const valorMunicipality = screen.getByLabelText(
+		const valueMunicipality = screen.getByLabelText(
 			"Município do servidor"
 		).value;
-		expect(valorMunicipality === "Abadiânia").toBe(true);
+		expect(valueMunicipality === "Abadiânia").toBe(true);
 	});
 });
 

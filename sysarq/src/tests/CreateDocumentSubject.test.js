@@ -5,13 +5,13 @@ import CreateDocumentSubject from "../pages/FieldsRegister/CreateDocumentSubject
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
-const testSubject = (title, gain) => {
+const testSubject = (title, valueTest) => {
 	expect(screen.getByText(title)).toBeInTheDocument();
 
 	const input = screen.getByLabelText(title);
-	fireEvent.change(input, { target: { value: gain } });
+	fireEvent.change(input, { target: { value: valueTest } });
 	const value = screen.getByLabelText(title).value;
-	expect(value === gain).toBe(true);
+	expect(value === valueTest).toBe(true);
 };
 
 describe("Main component", () => {

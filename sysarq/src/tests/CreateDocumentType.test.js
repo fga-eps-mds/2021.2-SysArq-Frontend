@@ -5,13 +5,13 @@ import CreateDocumentType from "../pages/FieldsRegister/CreateDocumentType";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
-const testType = (titulo, valor) => {
-	expect(screen.getByText(titulo)).toBeInTheDocument();
+const testType = (title, valueTest) => {
+	expect(screen.getByText(title)).toBeInTheDocument();
 
-	const input = screen.getByLabelText(titulo);
-	fireEvent.change(input, { target: { value: valor } });
-	const value = screen.getByLabelText(titulo).value;
-	expect(value === valor).toBe(true);
+	const input = screen.getByLabelText(title);
+	fireEvent.change(input, { target: { value: valueTest } });
+	const value = screen.getByLabelText(title).value;
+	expect(value === valueTest).toBe(true);
 };
 
 describe("Main component", () => {
