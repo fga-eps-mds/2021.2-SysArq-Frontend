@@ -1,0 +1,38 @@
+.header {
+    height: 7rem;
+    width: 100%;
+    background-color: rgba(31, 53, 65, 1);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 3rem;
+}
+
+.header > div {
+    height: 100%;
+    background-color: transparent !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 2rem;
+}
+
+.header > div a {
+    color: #FFFFFF;
+    width: 9rem;
+}
+
+.header div a:hover {
+    background-color: #5289B5;
+}
+
+.header button {
+    background-color: transparent;
+    border: 0;
+    outline: none !important;
+    color: #F6F6F6;
+    font-size: 1rem;
+    margin-left: auto;
+}

@@ -1,3 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, .App, #root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+}
+
 .App {
   text-align: center;
 }
@@ -35,40 +49,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-#barra{
-  background-color: rgba(31, 53, 65, 1);
-  position: absolute;
-  width: 1536px;
-  height: 70px;
-  left: 0px;
-  top: 0px;
-
-}
-
-#texto1{
-  background-color: rgba(31, 53, 65, 1);
-  left: 30px;
-  top: 30px;
-}
-
-.caixa{
-  left: 200px;
-  top: 20px
-}
-
-#sair{
-  left: 1400px;
-  top: -30px;
-}
-
-.footer{
-  position: fixed;
-    left: 0px;
-    bottom: 0px;
-    width: 100%;
-    height: 30px;
-    background-color: rgba(31, 53, 65, 1);
-
 }

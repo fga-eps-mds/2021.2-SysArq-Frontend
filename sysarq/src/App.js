@@ -1,13 +1,7 @@
 import React from "react";
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Typography from '@material-ui/core/Typography';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import Button from '@material-ui/core/Button';
-import StarsIcon from '@material-ui/icons/Stars';
+import Header from "./pages/components/Header/index";
 import Home from "./pages/Home";
 
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
@@ -41,40 +35,17 @@ import ArchivingRelation from "./pages/DocumentsRegister/ArchivingRelation";
 
 
 function App() {
-	const useStyles = makeStyles({
-		root: {
-		  width: 100,
-		},
-	  });
+	// const useStyles = makeStyles({
+	// 	root: {
+	// 	  width: 100,
+	// 	},
+	//   });
 	  
-		const classes = useStyles();
+		// const classes = useStyles();
 	  
 	return (
-	
 		<Router>
-				<AppBar position="static">
-					<Toolbar id = "barra">
-						<Typography>
-						<BottomNavigation
-						id = "texto1"
-						showLabels
-						className={classes.root}
-						>
-      					<BottomNavigationAction label="Home"  href="/" className="caixa" icon={<StarsIcon />} />
-						<BottomNavigationAction label="Campos" href="/fields-register" className="caixa" icon={<StarsIcon />} />
-						<BottomNavigationAction label="Cadastro" href="/documents-register" 
-						className="caixa" icon={<StarsIcon />} />
-						</BottomNavigation>
-						<Button color="inherit" id="sair">Sair</Button>
-						</Typography>
-					</Toolbar>
-				</AppBar>
-
-				<div>
-					<section className="footer">
-						<p> </p>
-					</section>
-				</div>
+			<Header />
 			<Switch>
 				<Route exact path="/">
 					<Home />
@@ -162,7 +133,6 @@ function App() {
 				</Route>
 				
 			</Switch>
-			
 		</Router>
 	);
 }
