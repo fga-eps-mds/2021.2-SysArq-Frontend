@@ -1,8 +1,9 @@
 import React from "react";
 // import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Header from "./pages/components/Header/index";
+import Header from "./pages/components/Header";
 import Home from "./pages/Home";
+import Footer from "./pages/components/Footer";
 
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
@@ -47,6 +48,7 @@ function App() {
 		<Router>
 			<Header />
 			<Switch>
+
 				<Route exact path="/">
 					<Home />
 				</Route>
@@ -133,6 +135,7 @@ function App() {
 				</Route>
 				
 			</Switch>
+			<Footer/>
 		</Router>
 	);
 }

@@ -81,7 +81,7 @@ h4{
     border-radius: 15px;
 }
 
-.footer {
+/* .footer {
     position: fixed;
     left: 0px;
     bottom: 0px;
@@ -89,7 +89,7 @@ h4{
     height: 30px;
     background-color: rgba(31, 53, 65, 1);
 
-}
+} */
 
 body{
     background-size: cover;
