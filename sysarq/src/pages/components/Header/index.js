@@ -31,6 +31,7 @@ function Header() {
                 <BottomNavigationAction label="Pesquisar"  href="/" icon={<StarsIcon />} />
                 <BottomNavigationAction label="Campos" href="/fields-register" icon={<StarsIcon />} />
                 <BottomNavigationAction label="Cadastro" href="/documents-register" icon={<StarsIcon />} />
+                <BottomNavigationAction label="Documento" href="/create-administrative-process" icon={<StarsIcon />} />
                 <BottomNavigationAction label="Configurações" href="#" icon={<StarsIcon />} />
                 <BottomNavigationAction label="Relatório" href="#" icon={<StarsIcon />} />
             </BottomNavigation>
