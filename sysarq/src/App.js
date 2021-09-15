@@ -89,51 +89,62 @@ function App() {
 						<FieldsRegister />
 					</Route>
 					<Route path="/fields-register/document-subject">
-						<DocumentSubject />
+						<Route exact path="/fields-register/document-subject">
+							<DocumentSubject />
+						</Route>
+						<Route path="/fields-register/document-subject/create">
+							<CreateDocumentSubject />
+						</Route>
 					</Route>
 					<Route path="/fields-register/box-abbreviation">
-						<BoxAbbreviation />
+						<Route exact path="/fields-register/box-abbreviation">
+							<BoxAbbreviation />
+						</Route>
+						<Route path="/fields-register/box-abbreviation/create">
+							<CreateBoxAbbreviation />
+						</Route>
 					</Route>
 					<Route path="/fields-register/public-worker">
-						<PublicWorker />
+						<Route exact path="/fields-register/public-worker">
+							<PublicWorker />
+						</Route>
+						<Route path="/fields-register/public-worker/create">
+							<CreatePublicWorker />
+						</Route>
 					</Route>
 					<Route path="/fields-register/unity">
-						<Unity />
+						<Route exact path="/fields-register/unity">
+							<Unity />
+						</Route>
+						<Route path="/fields-register/unity/create">
+							<CreateUnity />
+						</Route>
 					</Route>
 					<Route path="/fields-register/document-type">
-						<DocumentType />
+						<Route exact path="/fields-register/document-type">
+							<DocumentType />
+						</Route>
+						<Route path="/fields-register/document-type/create">
+							<CreateDocumentType />
+						</Route>
 					</Route>
 					<Route path="/fields-register/shelf">
-						<Shelf />
+						<Route exact path="/fields-register/shelf">
+							<Shelf />
+						</Route>
+						<Route path="/fields-register/shelf/create">
+							<CreateShelf />
+						</Route>
 					</Route>
 					<Route path="/fields-register/status">
-						<Status />
+						<Route exact path="/fields-register/status">
+							<Status />
+						</Route>
+						<Route path="/fields-register/status/create">
+							<CreateStatus />
+						</Route>
 					</Route>
 				</Route>
-					
-					
-				<Route path="/create-box-abbreviation">
-					<CreateBoxAbbreviation />
-				</Route>
-				<Route path="/create-document-subject">
-					<CreateDocumentSubject />
-				</Route>
-				<Route path="/create-document-type">
-					<CreateDocumentType />
-				</Route>
-				<Route path="/create-public-worker">
-					<CreatePublicWorker />
-				</Route>
-				<Route path="/create-shelf">
-					<CreateShelf />
-				</Route>
-				<Route path="/create-status">
-					<CreateStatus />
-				</Route>
-				<Route path="/create-unity">
-					<CreateUnity />
-				</Route>
-				
 			</Switch>
 			<Footer/>
 		</Router>

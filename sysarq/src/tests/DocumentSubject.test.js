@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
+import DocumentSubject from "../pages/FieldsRegister/DocumentSubject";
 
-describe("Componente principal", () => {
-	it("Título", () => {
+describe("Main component", () => {
+	it("Title", () => {
 		render(<DocumentSubject />);
 
 		expect(screen.getByText("Assunto do Documento")).toBeInTheDocument();

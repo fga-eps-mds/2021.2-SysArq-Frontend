@@ -24,7 +24,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-assunto"
 							title="Assunto do Documento"
-							createUrl="/create-document-subject"
+							createUrl="/fields-register/document-subject/create"
 							listUrl="/fields-register/document-subject"
 						/>
 					</Grid>
@@ -33,7 +33,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-sigla-da-caixa"
 							title="Sigla da Caixa"
-							createUrl="create-box-abbreviation"
+							createUrl="/fields-register/box-abbreviation/create"
 							listUrl="/fields-register/box-abbreviation"
 						/>
 					</Grid>
@@ -42,7 +42,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-servidor"
 							title="Servidor"
-							createUrl="create-public-worker"
+							createUrl="/fields-register/public-worker/create"
 							listUrl="/fields-register/public-worker"
 						/>
 					</Grid>
@@ -51,7 +51,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-unidade"
 							title="Unidade"
-							createUrl="create-unity"
+							createUrl="/fields-register/unity/create"
 							listUrl="/fields-register/unity"
 						/>
 					</Grid>
@@ -60,7 +60,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-tipo-de-documento"
 							title="Tipo de Documento"
-							createUrl="create-document-type"
+							createUrl="/fields-register/document-type/create"
 							listUrl="/fields-register/document-type"
 						/>
 					</Grid>
@@ -69,7 +69,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-status"
 							title="Status"
-							createUrl="/create-status"
+							createUrl="/fields-register/status/create"
 							listUrl="/fields-register/status"
 						/>
 					</Grid>
@@ -78,7 +78,7 @@ export default function FieldsRegister() {
 						<MenuCard
 							icon="icone-estante-prateleira"
 							title="Estante e Prateleira"
-							createUrl="/create-shelf"
+							createUrl="/fields-register/shelf/create"
 							listUrl="/fields-register/shelf"
 						/>
 					</Grid>

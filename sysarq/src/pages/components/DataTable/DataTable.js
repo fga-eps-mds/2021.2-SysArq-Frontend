@@ -18,11 +18,9 @@ import AddIcon from "@material-ui/icons/Add";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 
-import axios from "axios";
-
 import tableHeadCells from "./tablesHeadCells";
 
-const hostApi = process.env.REACT_APP_URL_API;
+import Api from "../../../Api";
 
 const useStyles = makeStyles((theme) => ({
 	title: {
@@ -98,8 +96,7 @@ const DataTable = ({ url, title }) => {
 	useEffect(() => {
 		setHeadCells(tableHeadCells(url));
 
-		axios
-			.get(hostApi + url)
+		Api.get(url)
 			.then((response) => {
 				setRows(response.data);
 			})

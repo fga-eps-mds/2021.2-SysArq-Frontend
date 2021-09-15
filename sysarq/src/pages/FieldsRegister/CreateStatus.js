@@ -83,7 +83,7 @@ export default function CreateStatus() {
 						onChange={onChangeSentFrom}
 						type="unity_that_forwarded"
 						value={sentFrom}
-						placeholder="Eviado por"
+						placeholder="Enviado por"
 						variant="filed"
 					/>
 					<input
