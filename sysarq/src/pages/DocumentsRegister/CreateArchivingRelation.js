@@ -1,21 +1,11 @@
 import React, { useState } from "react";
-
-import { Button, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-
 import axios from "axios";
+import FormCadastro from "../FormCadastro";
+import "./Create.css";
 
-const hostApi = `${process.env.REACT_APP_URL_API}frequency_relation`;
+const hostApi = `${process.env.REACT_APP_URL_API}administrative_process`;
 
-const useStyles = makeStyles({
-	fields: {
-		marginTop: 20,
-		marginBotton: 20,
-		display: "block",
-	},
-});
-
-export default function CreateArchivingRelation() {
+export default function CreateAdministrativeProcess() {
 	const [processNumber, setProcessNumber] = useState(0);
 	const [documentType, setDocumentType] = useState("");
 	const [documentNumber, setDocumentNumber] = useState(0);
@@ -24,251 +14,123 @@ export default function CreateArchivingRelation() {
     const [workerRecieved, setWorkerRecieved] = useState("");
     const [numberBoxReceived, setNumberBoxReceived] = useState(0);
     const [originBox, setOriginBox] = useState("");
-    const [subjects, setSubjects] = useState("");
-    const [dates, setDates] = useState("");
+    const [Subjects, setSubjects] = useState("");
+    const [Dates, setDates] = useState("");
     const [boxAbbreviation, setBoxAbbreviation] = useState("");
-	const [shelfeNumber, setShelfeNumber] = useState(0);
-    const [shelfpNumber, setShelfpNumber] = useState(0);
-    const [notes, setNotes] = useState("");
+	const [shelfNumber, setShelfNumber] = useState(0);
+    const [observations, setObservations] = useState("");
     const [documentAttach, setDocumentAttach] = useState("");
+    const [coversheet, setCoverSheet] = useState("");
 
-	const classes = useStyles();
+	const [fields] = useState([
+		{
+			type: "text",
+			placeholder: "Número do processo:*",
+			setState: setProcessNumber,
+		},
+		{
+			type: "text",
+			placeholder: "Tipo do documento de envio:*",
+			setState: setDocumentType,
+		},
+		{
+			type: "text",
+			placeholder: "Número do documento de envio:*",
+			setState: setDocumentNumber,
+		},
+		{
+			type: "text",
+			placeholder: "Unidade que encaminhou para arquivamento:*",
+			setState: setUnityForwardedArchiving,
+		},
+		{
+			type: "text",
+			placeholder: "Data de recebimento:*",
+			setState: setReceiptDate,
+		},
+		{
+			type: "text",
+			placeholder: "Servidor que recebeu as caixas:*",
+			setState: setWorkerRecieved,
+		},
+		{
+			type: "text",
+			placeholder: "Quantidade de caixas box recebidas para arquivamento:",
+			setState: setNumberBoxReceived,
+		},
+		{
+			type: "text",
+			placeholder: "Caixa de origem:",
+			setState: setOriginBox,
+		},
+		{
+			type: "text",
+			placeholder: "Assuntos:",
+			setState: setSubjects,
+		},
+		{
+			type: "text",
+			placeholder: "Data:",
+			setState: setDates,
+		},
+		{
+			type: "text",
+			placeholder: "Sigla da caixa:",
+			setState: setBoxAbbreviation,
+		},
+		{
+			type: "text",
+			placeholder: "Estante:",
+			setState: setShelfNumber,
+		},
+		{
+			type: "text",
+			placeholder: "Observações:",
+			setState: setObservations,
+		},
+		{
+			type: "text",
+			placeholder: "Anexar documento externo:",
+			setState: setDocumentAttach,
+		},
+		{
+			type: "text",
+			placeholder: "Capa de rosto da caixa para impressão:",
+			setState: setCoverSheet,
+		},
+	]);
 
-	const onClick = () => {
+	function onSubmit() {
 		axios
 			.post(hostApi, {
 				process_number: processNumber,
-				document_type: documentType,
-				document_number: documentNumber,
+				document_type_id: documentType,
+				number: documentNumber,
 				unity_forwarded_for_archiving: unityForwardedArchiving,
                 receipt_date: receiptDate,
                 worker_who_recieved_box: workerRecieved,
                 number_of_boxes_received_for_archiving: numberBoxReceived,
                 origin_box: originBox,
-                subjects,
-                dates,
+                subjects: Subjects,
+                dates: Dates,
 				box_abbreviation: boxAbbreviation,
-				shelfe_number: shelfeNumber,
-				shelfp_number: shelfpNumber,
-				notes,
-                document_to_attach: documentAttach,
+				shelf_id: shelfNumber,
+				notes: observations,
+                cover_sheet: coversheet,
+				document_url: documentAttach
 			})
 			.then(() => {})
 			.catch(() => {});
-	};
-
-	const onChangeProcessNumber = (event) => {
-		setProcessNumber(event.target.value);
-	};
-
-	const onChangeDocumentType = (event) => {
-		setDocumentType(event.target.value);
-	};
-
-	const onChangeDocumentNumber = (event) => {
-		setDocumentNumber(event.target.value);
-	};
-
-	const onChangeUnityForwardedArchiving = (event) => {
-		setUnityForwardedArchiving(event.target.value);
-	};
-
-    const onChangeReceiptDate = (event) => {
-		setReceiptDate(event.target.value);
-	};
-
-	const onChangeWorkerRecieved = (event) => {
-		setWorkerRecieved(event.target.value);
-	};
-
-    const onChangeNumberBoxReceived = (event) => {
-		setNumberBoxReceived(event.target.value);
-	};
-
-    const onChangeOriginBox = (event) => {
-		setOriginBox(event.target.value);
-	};
-
-    const onChangeSubjects = (event) => {
-		setSubjects(event.target.value);
-	};
-
-    const onChangeDates = (event) => {
-		setDates(event.target.value);
-	};
-    
-    const onChangeBoxAbbreviation = (event) => {
-		setBoxAbbreviation(event.target.value);
-	};
-
-    const onChangeShelfeNumber = (event) => {
-		setShelfeNumber(event.target.value);
-	};
-
-    const onChangeShelfpNumber = (event) => {
-		setShelfpNumber(event.target.value);
-	};
-
-    const onChangeNotes = (event) => {
-		setNotes(event.target.value);
-	};
-
-    const onChangeDocumentAttach = (event) => {
-		setDocumentAttach(event.target.value);
-	};
+	}
 
 	return (
-		<div>
-			<h1>Relação de Arquivamento</h1>
-			<TextField
-				id="numero-do-processo-input"
-				className={classes.fields}
-				onChange={onChangeProcessNumber}
-				type="process_number"
-				value={processNumber}
-				label="Número do Processo"
-				variant="filled"
+		<div className="create-adm-process-container">
+			<FormCadastro 
+				title="Arquivo Geral da Polícia Civil de Goiás"
+				subtitle="Cadastrar documento"
+				fields={fields}
+				onClickBtn={onSubmit}
 			/>
-			<TextField
-				id="tipo-documento-input"
-				className={classes.fields}
-				onChange={onChangeDocumentType}
-				type="document_type"
-				value={documentType}
-				label="Tipo de Documento"
-				variant="filled"
-			/>
-			<TextField
-				id="numero-documento-input"
-				className={classes.fields}
-				onChange={onChangeDocumentNumber}
-				type="document_number"
-				value={documentNumber}
-				label="Numero do Documento"
-				variant="filled"
-			/>
-			<TextField
-				id="unidade-encaminhou-para-arquivamento-input"
-				className={classes.fields}
-				onChange={onChangeUnityForwardedArchiving}
-				type="unity_forwarded_for_archiving"
-				value={unityForwardedArchiving}
-				label="Órgão/Unidade de destino"
-				variant="filled"
-			/>
-			<TextField
-				id="data-recebimento-input"
-				className={classes.fields}
-				onChange={onChangeReceiptDate}
-				type="receipt_date"
-				value={receiptDate}
-				label="Data de recebimento"
-				variant="filled"
-			/>
-			<TextField
-				id="servidor-recebeu-input"
-				className={classes.fields}
-				onChange={onChangeWorkerRecieved}
-				type="worker_who_recieved_frequencies"
-				value={workerRecieved}
-				label="Recebedor das frequencias"
-				variant="filled"
-			/>
-
-            <TextField
-				id="numero-caixas-recebidas-input"
-				className={classes.fields}
-				onChange={onChangeNumberBoxReceived}
-				type="number_of_boxes_received_for_archiving"
-				value={numberBoxReceived}
-				label="Número de Caixas recebidas para arquivamento"
-				variant="filled"
-			/>
-
-            <TextField
-				id="origem-caixa-input"
-				className={classes.fields}
-				onChange={onChangeOriginBox}
-				type="origin_box"
-				value={originBox}
-				label="Origem da caixa"
-				variant="filled"
-			/>
-            <TextField
-				id="assuntos-input"
-				className={classes.fields}
-				onChange={onChangeSubjects}
-				type="subjects"
-				value={subjects}
-				label="Assuntos"
-				variant="filled"
-			/>
-            <TextField
-				id="datas-input"
-				className={classes.fields}
-				onChange={onChangeDates}
-				type="dates"
-				value={dates}
-				label="Datas"
-				variant="filled"
-			/>
-
-			<TextField
-				id="sigla-caixa-input"
-				className={classes.fields}
-				onChange={onChangeBoxAbbreviation}
-				type="box_abbreviation"
-				value={boxAbbreviation}
-				label="Sigla da caixa"
-				variant="filled"
-			/>
-			
-            <TextField
-				id="estante-input"
-				className={classes.fields}
-				onChange={onChangeShelfeNumber}
-				type="shelfe_number"
-				value={shelfeNumber}
-				label="Estante"
-				variant="filled"
-			/>
-            <TextField
-				id="prateleira-input"
-				className={classes.fields}
-				onChange={onChangeShelfpNumber}
-				type="shelfp_number"
-				value={shelfpNumber}
-				label="Prateleira"
-				variant="filled"
-			/>
-            <TextField
-				id="notes-input"
-				className={classes.fields}
-				onChange={onChangeNotes}
-				type="notes"
-				value={notes}
-				label="Observações"
-				variant="filled"
-			/> 
-            <TextField
-				id="capa-impressao-input"
-				className={classes.fields}
-				onChange={onChangeDocumentAttach}
-				type="document_to_attach"
-				value={documentAttach}
-				label="Capa de rosto para impressão"
-				variant="filled"
-			/>      
-
-			<Button
-				data-testid="click"
-				onClick={onClick}
-				style={{ marginTop: "20px" }}
-				variant="contained"
-				color="primary"
-			>
-				Salvar
-			</Button>
 		</div>
 	);
 }

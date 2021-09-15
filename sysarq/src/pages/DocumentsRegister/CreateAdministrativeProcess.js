@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import FormCadastro from "../FormCadastro";
-import "./CreateAdministrativeProcess.css";
+import "./Create.css";
 
 const hostApi = `${process.env.REACT_APP_URL_API}administrative_process`;
 
@@ -17,32 +17,86 @@ export default function CreateAdministrativeProcess() {
     const [forwardedBy, setForwardedBy] = useState("");
     const [archivingDate, setArchivingDate] = useState("");
     const [boxAbbreviation, setBoxAbbreviation] = useState("");
-    const [shelfeNumber, setShelfeNumber] = useState(0);
-    const [shelfpNumber, setShelfpNumber] = useState(0);
+    const [shelfNumber, setShelfNumber] = useState(0);
     const [workerRegistered, setWorkerRegistered] = useState(0);
     const [status, setStatus] = useState(true);
-    const [notes, setNotes] = useState("");
+    const [observations, setObservations] = useState("");
 	
 	const [fields] = useState([
 		{
 			type: "text",
-			placeholder: "Número do processo",
+			placeholder: "Número do processo:*",
 			setState: setProcessNumber,
 		},
 		{
 			type: "text",
-			placeholder: "Data de autuação",
+			placeholder: "Data de autuação:*",
 			setState: setBookedDate,
 		},
 		{
 			type: "text",
-			placeholder: "Interessado",
+			placeholder: "Interessado:*",
 			setState: setInterested,
 		},
 		{
 			type: "text",
-			placeholder: "CPF/Cnpj",
+			placeholder: "CPF/Cnpj:",
 			setState: setCpfCnpj,
+		},
+		{
+			type: "text",
+			placeholder: "Assunto:*",
+			setState: setSubject,
+		},
+		{
+			type: "text",
+			placeholder: "Orgão/Unidade de destino:",
+			setState: setDestinationUnity,
+		},
+		{
+			type: "text",
+			placeholder: "Referência:",
+			setState: setReferenceDate,
+		},
+		{
+			type: "text",
+			placeholder: "Unidade que encaminhou para arquivamento:",
+			setState: setUnityForwardedArchiving,
+		},
+		{
+			type: "text",
+			placeholder: "Servidor que encaminhou para arquivamento:",
+			setState: setForwardedBy,
+		},
+		{
+			type: "text",
+			placeholder: "Data de arquivamento:",
+			setState: setArchivingDate,
+		},
+		{
+			type: "text",
+			placeholder: "Sigla da Caixa:",
+			setState: setBoxAbbreviation,
+		},
+		{
+			type: "text",
+			placeholder: "Estante:",
+			setState: setShelfNumber,
+		},
+		{
+			type: "text",
+			placeholder: "Servidor cadastrante:",
+			setState: setWorkerRegistered,
+		},
+		{
+			type: "text",
+			placeholder: "Status*:",
+			setState: setStatus,
+		},
+		{
+			type: "text",
+			placeholder: "Observações:*",
+			setState: setObservations,
 		},
 	]);
 
@@ -53,6 +107,18 @@ export default function CreateAdministrativeProcess() {
 				booked_date: bookedDate,
 				interested,
 				cpf_cnpj: cpfCnpj,
+				subject_id: subject,
+				dest_unity_id: destinationUnity,
+				reference_month_year: referenceDate,
+				sender_unity: unityForwardedArchiving,
+				sender_user: forwardedBy,
+				archiving_date: archivingDate,
+				abbreviation_id: boxAbbreviation,
+				shelf_id: shelfNumber,
+				filer_user: workerRegistered,
+				status_id: status,
+				notes: observations
+
 			})
 			.then(() => {})
 			.catch(() => {});
