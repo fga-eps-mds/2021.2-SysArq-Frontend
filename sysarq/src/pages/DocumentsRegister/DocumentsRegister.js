@@ -68,11 +68,7 @@ export default function DocumentsRegister() {
 					</Grid>
 				</Grid>
 			</Container>
-			</section>
-			<section className="footer">
-			<p> </p>
-			</section>
-			
+			</section>		
 		</div>
 	);
 }

@@ -25,6 +25,7 @@ export default function CreateAdministrativeProcess() {
 	]);
 
 	function onSubmit() {
+		// eslint-disable-next-line
 		console.log("Axios req: ", {
 			campo,
 			campo2,
