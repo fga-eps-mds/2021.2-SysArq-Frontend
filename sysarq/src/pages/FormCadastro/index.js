@@ -50,7 +50,8 @@ function FormCadastro({
                     })
                 }
             </div>
-            <button 
+            <button
+                data-testid="click" 
                 type="button" 
                 onClick={onClickBtn}
             >

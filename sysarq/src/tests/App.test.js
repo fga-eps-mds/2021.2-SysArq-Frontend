@@ -7,7 +7,10 @@ describe("Main component", () => {
 	it("Show names in navigation bar", () => {
 		render(<App />);
 
-		expect(screen.getByText("Home")).toBeInTheDocument();
-		expect(screen.getByText("Cadastro de Campos")).toBeInTheDocument();
+		expect(screen.getByText("Pesquisar")).toBeInTheDocument();
+		expect(screen.getByText("Campos")).toBeInTheDocument();
+		expect(screen.getByText("Cadastro")).toBeInTheDocument();
+		expect(screen.getByText("Configurações")).toBeInTheDocument();
+		expect(screen.getByText("Relatório")).toBeInTheDocument();
 	});
-});
+}); 
