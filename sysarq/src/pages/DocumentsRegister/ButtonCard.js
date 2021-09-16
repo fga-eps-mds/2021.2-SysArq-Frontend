@@ -74,7 +74,7 @@ const ButtonCard = ({ icon, title, createUrl }) => {
 						fontFamily='Montserrat'
 						gutterBottom
 						variant="h6"
-						component="h2"
+						component="h3"
 						id = "texto"
 					>
 						{title}

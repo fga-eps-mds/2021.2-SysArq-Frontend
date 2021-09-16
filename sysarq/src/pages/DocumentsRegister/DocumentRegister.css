@@ -1,87 +1,40 @@
- h1{
-    width: 1000px;
-    height: 51px;
-    left: -50px;
-    top: 50px;
-    
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 48px;
-    line-height: 59px;
-    text-align:right;
-    position: absolute;
-    color: rgba(82, 137, 181, 1);
-}
-
-h4{
-    position: absolute;
-    width: 1000px;
-    height: 51px;
-    left: 10px;
-    top: 110px;
-    
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 36px;
-    line-height: 44px;
-    text-align: center;
-    
+.form-cards-container h1{
     color: #5289B5;
-
+    font-size: 3rem;
+    font-weight: 700;
+    top: 150px;
+    left: 170px;
 }
 
- #c1{
-    position: absolute;
-    width: 213px;
-    height: 289px;
-    left: 52px;
-    top: 200px;
-    border-radius: 15px;
+.form-cards-container h2 {
+    color: #5289B5;
+    font-weight: 700;
+    font-size: 2.25rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
-#c2{
-    position: absolute;
-    width: 213px;
-    height: 289px;
-    left: 302px;
-    top: 200px;
-    border-radius: 15px;
+.card-container{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;    
 }
 
-#c3{
-    position: absolute;
-    width: 213px;
-    height: 289px;
-    left: 552px;
-    top: 200px;
-    
-    border-radius: 15px;
+.form-cards-container{
+    width: 100%;
+    min-height: calc(100vh - 19rem);
+    max-width: 1059px;
+    padding: 2rem;
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #F6F6F6;
+
+    border-radius: 4px;
 }
 
-#c4{
-    position: absolute;
-    width: 213px;
-    height: 289px;
-    left: 802px;
-    top: 200px;
-    border-radius: 15px;
-}
-
-#caixa{
-    position: absolute;
-    width: 1059px;
-    height: 555px;
-    left: 230px;
-    top: 116px;
-
-    background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
-}
-
-body{
-    background-size: cover;
-}
 

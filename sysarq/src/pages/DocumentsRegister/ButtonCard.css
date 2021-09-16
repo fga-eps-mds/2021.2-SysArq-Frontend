@@ -1,13 +1,15 @@
 #card{
     background-color: #5289B5;
     color: rgba(31, 53, 65, 1);
-    
-    background: #5289B5;
-    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    width: 22%;
+    height: 289px;
+    border-radius: 4px;
 }
 
 #texto{
-    font-family: Montserrat;
+    font-family: 'Monsterrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 25px;
