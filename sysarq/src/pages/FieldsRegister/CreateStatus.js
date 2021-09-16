@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
 
-const hostApi = `${process.env.REACT_APP_URL_API}status`;
+const hostApi = `${process.env.REACT_APP_URL_API}status/`;
 
 const useStyles = makeStyles({
 	fields: {
@@ -44,8 +44,8 @@ export default function CreateStatus() {
 			.post(hostApi, {
 				filed: status === "ARQUIVADO",
 				eliminated: eliminated === "ELIMINADO",
-				unity_that_forwarded: sentFrom,
-				document_requested: requestedDocument,
+				sent_from: sentFrom,
+				requested_document: requestedDocument,
 				send_date: sendDate,
 			})
 			.then(() => {})

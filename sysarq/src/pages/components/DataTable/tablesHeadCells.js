@@ -7,7 +7,7 @@ const headCellsDocumentSubject = [
 
 	{
 		id: "temporality",
-		numeric: true,
+		numeric: false,
 		label: "Temporalidade",
 	},
 ];
@@ -38,47 +38,9 @@ const headCellsBoxAbbreviation = [
 	},
 ];
 
-const headCellsPublicWorker = [
-	{
-		id: "name",
-		numeric: false,
-		label: "Nome",
-	},
-
-	{
-		id: "cpf",
-		numeric: false,
-		label: "CPF",
-	},
-
-	{
-		id: "office",
-		numeric: false,
-		label: "Cargo",
-	},
-
-	{
-		id: "class_worker",
-		numeric: false,
-		label: "Classe",
-	},
-
-	{
-		id: "capacity",
-		numeric: false,
-		label: "Lotação",
-	},
-
-	{
-		id: "county",
-		numeric: false,
-		label: "Município",
-	},
-];
-
 const headCellsUnity = [
 	{
-		id: "name_of_unity",
+		id: "unity_name",
 		numeric: false,
 		label: "Nome da Unidade",
 	},
@@ -135,20 +97,20 @@ const headCellsDocumentType = [
 
 	{
 		id: "temporality",
-		numeric: true,
+		numeric: false,
 		label: "Temporalidade",
 	},
 ];
 
 const headCellsShelf = [
 	{
-		id: "number",
+		id: "shelfe_number",
 		numeric: true,
 		label: "Estante",
 	},
 
 	{
-		id: "number",
+		id: "shelfp_number",
 		numeric: true,
 		label: "Prateleira",
 	},
@@ -162,13 +124,13 @@ const headCellsStatus = [
 	},
 
 	{
-		id: "unity_that_forwarded",
+		id: "sent_from",
 		numeric: false,
 		label: "Unidade que encaminhou",
 	},
 
 	{
-		id: "document_requested",
+		id: "requested_document",
 		numeric: false,
 		label: "Documento solicitado",
 	},
@@ -187,8 +149,6 @@ const tableHeadCells = (url) => {
 		headCells = headCellsDocumentSubject;
 	} else if (url === "box_abbreviation/") {
 		headCells = headCellsBoxAbbreviation;
-	} else if (url === "public_worker/") {
-		headCells = headCellsPublicWorker;
 	} else if (url === "unity/") {
 		headCells = headCellsUnity;
 	} else if (url === "document_type/") {
