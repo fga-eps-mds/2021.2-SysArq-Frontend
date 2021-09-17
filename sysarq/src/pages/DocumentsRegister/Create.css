@@ -1,4 +1,4 @@
-.create-adm-process-container {
+.create-form-container {
     min-height: calc(100vh - 11rem);
     display: flex;
     flex-direction: column;
