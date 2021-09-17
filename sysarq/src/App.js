@@ -8,7 +8,6 @@ import Footer from "./pages/components/Footer";
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
 import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
-import PublicWorker from "./pages/FieldsRegister/PublicWorker";
 import DocumentType from "./pages/FieldsRegister/DocumentType";
 import Unity from "./pages/FieldsRegister/Unity";
 import Shelf from "./pages/FieldsRegister/Shelf";
@@ -17,7 +16,6 @@ import CreateDocumentSubject from "./pages/FieldsRegister/CreateDocumentSubject"
 import CreateStatus from "./pages/FieldsRegister/CreateStatus";
 import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation";
 import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
-import CreatePublicWorker from "./pages/FieldsRegister/CreatePublicWorker";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
 import AdministrativeProcess from "./pages/DocumentsRegister/AdministrativeProcess";
@@ -102,14 +100,6 @@ function App() {
 						</Route>
 						<Route path="/fields-register/box-abbreviation/create">
 							<CreateBoxAbbreviation />
-						</Route>
-					</Route>
-					<Route path="/fields-register/public-worker">
-						<Route exact path="/fields-register/public-worker">
-							<PublicWorker />
-						</Route>
-						<Route path="/fields-register/public-worker/create">
-							<CreatePublicWorker />
 						</Route>
 					</Route>
 					<Route path="/fields-register/unity">
