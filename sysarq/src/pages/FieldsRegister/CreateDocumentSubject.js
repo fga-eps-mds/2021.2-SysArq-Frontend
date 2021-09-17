@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
 
-const hostApi = `${process.env.REACT_APP_URL_API}document_suject`;
+const hostApi = `${process.env.REACT_APP_URL_API}document-subject/`;
 
 const useStyles = makeStyles({
 	fields: {
@@ -17,14 +17,14 @@ const useStyles = makeStyles({
 
 export default function CreateDocumentSubject() {
 	const [documentSubject, setDocumentSubject] = useState("");
-	const [temporality, setTemporality] = useState(0);
+	const [temporalityValue, setTemporality] = useState("");
 	const classes = useStyles();
 
 	const onClick = () => {
 		axios
 			.post(hostApi, {
 				subject_name: documentSubject,
-				temporality,
+				temporality: temporalityValue,
 			})
 			.then(() => {})
 			.catch(() => {});
@@ -54,9 +54,9 @@ export default function CreateDocumentSubject() {
 				id="temporalidade-input"
 				className={classes.fields}
 				onChange={onChangeTemporality}
-				type="number"
+				type="temporality"
 				label="Temporalidade"
-				value={temporality}
+				value={temporalityValue}
 				variant="filled"
 			/>
 			<Button

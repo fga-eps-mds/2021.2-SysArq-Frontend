@@ -36,6 +36,7 @@ const useStyles = makeStyles(() => ({
 		width: "100%",
 		alignItems: "center",
 		alignSelf: "end",
+		color: "#5289B5",
 	},
 
 	content: {
@@ -77,7 +78,7 @@ const MenuCard = ({ icon, title, createUrl, listUrl }) => {
 					<Icon iconName={icon} title={title} />
 					<Typography
 						align="center"
-						fontFamily="Monospace"
+						fontFamily="Montserrat"
 						gutterBottom
 						variant="h6"
 						component="h2"
