@@ -1,8 +1,13 @@
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
+// import DesktopDatePicker from '@material-ui/lab/DesktopDatePicker';
 import PropTypes from "prop-types";
-import { makeStyles } from '@material-ui/core/styles';
-
+import { makeStyles } from "@material-ui/core/styles";
+import * as React from "react";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
 import "./styles.css";
 
@@ -12,6 +17,12 @@ function FormCadastro({
     fields,
     onClickBtn,
 }) {
+
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event) => {
+        setAge(event.target.value);
+      };
 
     const useStyles = makeStyles({
         input: {
@@ -35,6 +46,24 @@ function FormCadastro({
                         let input;
 
                         switch(item.type) {
+                            case "id":
+                                input = (
+                                    
+                                    <FormControl variant="standard" className={classes.input} sx={{ m: 1, minWidth: 120 }}>
+                                        <InputLabel>{item.placeholder}</InputLabel>
+                                        <Select
+                                        labelId="demo-simple-select-standard-label"
+                                        id="demo-simple-select-standard-label"
+                                        value={age}
+                                        onChange={handleChange}
+                                        label="Age"
+                                        >
+                                        <MenuItem value=""><em>None</em></MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                );
+                                break;
+
                             default:
                                 input = (
                                     <TextField

@@ -3,7 +3,7 @@ import axios from "axios";
 import FormCadastro from "../FormCadastro";
 import "./Create.css";
 
-const hostApi = `${process.env.REACT_APP_URL_API}administrative_process`;
+const hostApi = `${process.env.REACT_APP_URL_API}frequency-sheet`;
 
 export default function CreateAdministrativeProcess() {
 	const [workerName, setWorkerName] = useState(0);

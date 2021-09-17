@@ -3,10 +3,10 @@ import axios from "axios";
 import FormCadastro from "../FormCadastro";
 import "./Create.css";
 
-const hostApi = `${process.env.REACT_APP_URL_API}administrative_process`;
+const hostApi = `${process.env.REACT_APP_URL_API}administrative-process`;
 
 export default function CreateAdministrativeProcess() {
-	const [processNumber, setProcessNumber] = useState(0);
+	const [processNumber, setProcessNumber] = useState("");
 	const [bookedDate, setBookedDate] = useState("");
 	const [interested, setInterested] = useState("");
 	const [cpfCnpj, setCpfCnpj] = useState(0);
@@ -18,7 +18,7 @@ export default function CreateAdministrativeProcess() {
     const [archivingDate, setArchivingDate] = useState("");
     const [boxAbbreviation, setBoxAbbreviation] = useState("");
     const [shelfNumber, setShelfNumber] = useState(0);
-    const [workerRegistered, setWorkerRegistered] = useState(0);
+    const [workerRegistered, setWorkerRegistered] = useState("");
     const [status, setStatus] = useState(true);
     const [observations, setObservations] = useState("");
 	
@@ -44,12 +44,12 @@ export default function CreateAdministrativeProcess() {
 			setState: setCpfCnpj,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Assunto:*",
 			setState: setSubject,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Orgão/Unidade de destino:",
 			setState: setDestinationUnity,
 		},
@@ -74,12 +74,12 @@ export default function CreateAdministrativeProcess() {
 			setState: setArchivingDate,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Sigla da Caixa:",
 			setState: setBoxAbbreviation,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Estante:",
 			setState: setShelfNumber,
 		},
@@ -89,7 +89,7 @@ export default function CreateAdministrativeProcess() {
 			setState: setWorkerRegistered,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Status*:",
 			setState: setStatus,
 		},
@@ -104,7 +104,7 @@ export default function CreateAdministrativeProcess() {
 		axios
 			.post(hostApi, {
 				process_number: processNumber,
-				booked_date: bookedDate,
+				notice_date: bookedDate,
 				interested,
 				cpf_cnpj: cpfCnpj,
 				subject_id: subject,
