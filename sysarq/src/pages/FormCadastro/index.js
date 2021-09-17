@@ -49,7 +49,9 @@ function FormCadastro({
                             case "id":
                                 input = (
                                     
-                                    <FormControl variant="standard" className={classes.input} sx={{ m: 1, minWidth: 120 }}>
+                                    <FormControl 
+                                    style={{marginTop: '0.75rem'}}
+                                    variant="standard" className={classes.input} sx={{ m: 1, minWidth: 120 }}>
                                         <InputLabel>{item.placeholder}</InputLabel>
                                         <Select
                                         labelId="demo-simple-select-standard-label"
@@ -66,7 +68,8 @@ function FormCadastro({
 
                             default:
                                 input = (
-                                    <TextField
+                                    <TextField 
+                                        style={{marginTop: '1rem'}}
                                         placeholder={item.placeholder}
                                         onChange={({ target }) => item.setState(target.value)}
                                         className={classes.input}
