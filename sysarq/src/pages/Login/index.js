@@ -10,7 +10,6 @@ import Alert from '@material-ui/lab/Alert';
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 import { axiosProfile } from "../../Api";
-
 import logo from "../../assets/logo.png"
 
 
@@ -123,11 +122,6 @@ const Login = () => {
     }
 
     const onPush = () => { // 
-        
-        if (loginHelperText === "Erro de conexão!"){
-            setLoginHelperText("");
-            setLoginError(false);     
-        }
 
         if (username.length < 3){
             setUsernameError(true);
@@ -142,27 +136,14 @@ const Login = () => {
         }
 
         axiosProfile.post(
-            "/api/token/",
+            `api/token/`,
             {
                 "username": username,
                 "password": password,
             }
-        ).then((response) => {
-        
-            // eslint-disable-next-line
-            console.log(response)
-        
-        }).catch((error) => {
-
-            if (error.response === undefined){
-                setLoginHelperText("Erro de conexão!")
-            } else {
-                const errorDetail = "No active account found with the given credentials"
-                if (error.response.data.detail === errorDetail){
-                    setLoginHelperText("Nome de Usuário e/ou Senha incorreto!")
-                }
-            }
-
+        ).then()
+        .catch((error) => {
+            setLoginHelperText(error.response)
             setLoginError(true)
         })
 
@@ -211,19 +192,22 @@ const Login = () => {
                                                         aria-label="toggle password visibility"
                                                         onClick={handleClickShowPassword}
                                                         onMouseDown={handleMouseDownPassword}
+                                                        data-testid="showPass"
                                                     >
-                                                        { showPassword ? <Visibility/> : <VisibilityOff/> }
+                                                        {showPassword ? <Visibility data-testid="visible" /> : <VisibilityOff data-testid="invis"/> }
                                                     </IconButton>
                                                 </InputAdornment>
                                             )
                                         }}
                                     />
+                                    <div data-testid='alert'>
 
                                     { loginError === true?
                                         <Alert className={classes.alert} severity="error">
-                                            {loginHelperText}
-                                        </Alert> : ""
+                                            {loginHelperText === undefined ? "Erro de conexão":loginHelperText}
+                                            </Alert> : ""
                                     }
+                                    </div >
 
                                     <Box className={`${classes.spreadBox} ${classes.box}`}>
                                         <Typography>
@@ -236,6 +220,7 @@ const Login = () => {
 					                        size="small"
 					                        color="primary"
                                             onClick={onPush}
+                                            data-testid='send'
 				                        >
 					                        ENTRAR
 				                        </Button>
