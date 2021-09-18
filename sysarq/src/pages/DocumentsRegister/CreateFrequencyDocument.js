@@ -147,7 +147,7 @@ export default function CreateAdministrativeProcess() {
 	}
 
 	return (
-		<div className="create-adm-process-container">
+		<div className="create-form-container">
 			<FormCadastro 
 				title="Arquivo Geral da Polícia Civil de Goiás"
 				subtitle="Cadastrar documento"

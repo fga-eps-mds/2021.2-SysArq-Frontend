@@ -72,6 +72,17 @@ function FormCadastro({
                                 );
                                 break;
 
+                            case "select":
+                                input = (
+                                    <FormControl>
+                                        <Select labelId={item.placeholder} onChange={handleChange}>
+                                                {
+                                                    item.options?.map(option => <MenuItem>{option}</MenuItem>)
+                                                }    
+                                        </Select>
+                                    </FormControl>
+                                );
+                                break;
                             default:
                                 input = (
                                     <TextField
@@ -102,7 +113,7 @@ FormCadastro.propTypes = {
 	title: PropTypes.string.isRequired,
 	subtitle: PropTypes.string.isRequired,
     fields: PropTypes.arrayOf(Object).isRequired,
-    onClickBtn: PropTypes.func.isRequired
+    onClickBtn: PropTypes.func.isRequired,
 };
 
 export default FormCadastro;

@@ -1,26 +1,16 @@
 import React, { useState } from "react";
-
-import { Button, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-
 import axios from "axios";
+import FormCadastro from "../FormCadastro";
+import "../DocumentsRegister/Create.css";
 
 const hostApi = `${process.env.REACT_APP_URL_API}document-type/`;
 
-const useStyles = makeStyles({
-	fields: {
-		marginTop: 20,
-		marginBotton: 20,
-		display: "block",
-	},
-});
 
 export default function CreateDocumentType() {
 	const [documentName, setDocumentName] = useState("");
 	const [temporalityValue, setTemporality] = useState("");
-	const classes = useStyles();
 
-	const onClick = () => {
+	const onSubmit = () => {
 		axios
 			.post(hostApi, {
 				document_name: documentName,
@@ -30,44 +20,27 @@ export default function CreateDocumentType() {
 			.catch(() => {});
 	};
 
-	const onChangeDocumentName = (event) => {
-		setDocumentName(event.target.value);
-	};
-
-	const onChangeTemporality = (event) => {
-		setTemporality(event.target.value);
-	};
+	const[fields] = useState([
+		{
+			type: "text",
+			placeholder: "Nome do Documento:",
+			setState: setDocumentName,
+		},
+		{
+			type: "text",
+			placeholder: "Temporalidade:",
+			setState: setTemporality,
+		},
+	]);
 
 	return (
-		<div>
-			<h1>Tipo de Documento</h1>
-			<TextField
-				id="nome-do-documento-input"
-				className={classes.fields}
-				onChange={onChangeDocumentName}
-				type="document_name"
-				value={documentName}
-				label="Nome do Documento"
-				variant="filled"
+		<div className="create-form-container">
+			<FormCadastro
+			title="Arquivo Geral da Policia Civil de Goiás"
+			subtitle="Cadastrar Documento"
+			fields={fields}
+			onClickBtn={onSubmit}
 			/>
-			<TextField
-				id="temporalidade-input"
-				className={classes.fields}
-				onChange={onChangeTemporality}
-				type="temporality"
-				value={temporalityValue}
-				label="Temporalidade"
-				variant="filled"
-			/>
-			<Button
-				data-testid="click"
-				onClick={onClick}
-				style={{ marginTop: "20px" }}
-				variant="contained"
-				color="primary"
-			>
-				Salvar
-			</Button>
 		</div>
 	);
 }

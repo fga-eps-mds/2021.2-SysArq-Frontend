@@ -1,19 +1,10 @@
-import React, { useState } from "react";
-
-import { Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import FormCadastro from "../FormCadastro";
+import "../DocumentsRegister/Create.css";
+
 
 const hostApi = `${process.env.REACT_APP_URL_API}status/`;
-
-const useStyles = makeStyles({
-	fields: {
-		marginTop: 20,
-		marginBotton: 20,
-		display: "block",
-	},
-});
 
 export default function CreateStatus() {
 	const [status, setStatus] = useState("ARQUIVADO");
@@ -21,25 +12,25 @@ export default function CreateStatus() {
 	const [sentFrom, setSentFrom] = useState("");
 	const [requestedDocument, setRequestedDocument] = useState("");
 	const [sendDate, setSendDate] = useState("");
-	const classes = useStyles();
+	
+	const[fields, setFields] = useState([
+		{
+			type: "select",
+			placeholder: "Status:",
+			setState: setStatus,
+			options: ["ARQUIVADO", "DESARQUIVDO"],
+		},
+		{
+			type: "select",
+			placeholder: "Situação:",
+			setState: setEliminated,
+			options: ["ARQUIVADO", "ELIMINADO"],
+		},
 
-	const onChangeStatus = (event) => {
-		setStatus(event.target.value);
-	};
-	const onChangeEliminated = (event) => {
-		setEliminated(event.target.value);
-	};
-	const onChangeSentFrom = (event) => {
-		setSentFrom(event.target.value);
-	};
-	const onChangeRequestedDocument = (event) => {
-		setRequestedDocument(event.target.value);
-	};
-	const onChangeSendDate = (event) => {
-		setSendDate(event.target.value);
-	};
+	]);
+	
 
-	const onClick = () => {
+	const onSubmit = () => {
 		axios
 			.post(hostApi, {
 				filed: status === "ARQUIVADO",
@@ -52,68 +43,39 @@ export default function CreateStatus() {
 			.catch(() => {});
 	};
 
+	useEffect(() => {
+		if(status === "DESARQUIVADO"){
+			setFields([
+				...fields,
+				{
+					type: "text",
+					placeholder: "Enviado por:",
+					setState: setSentFrom,
+				},
+				{
+					type: "text",
+					placeholder: "Documento que solicitou o desarquivamento:",
+					setState: setRequestedDocument,
+				},
+				{
+					type: "text",
+					placeholder: "Data de envio:",
+					setState: setSendDate,
+				},
+			])
+		}
+	}, [status])
+	
 	return (
-		<div>
-			<h1>Status</h1>
 
-			<select
-				data-testid="statusID"
-				className={classes.fields}
-				label="Status"
-				onChange={onChangeStatus}
-			>
-				<option>ARQUIVADO</option>
-				<option value="DESARQUIVADO">DESARQUIVADO</option>
-			</select>
+		<div className="create-form-container">
+			<FormCadastro
+			title="Arquivo Geral da Policia Civil de Goiás"
+			subtitle="Cadastrar Documento"
+			fields={fields}
+			onClickBtn={onSubmit}
+			/>
 
-			<select
-				data-testid="eliminado"
-				className={classes.fields}
-				label="Eliminado ?"
-				onChange={onChangeEliminated}
-			>
-				<option>ATIVO</option>
-				<option value="ELIMINADO">ELIMINADO</option>
-			</select>
-
-			{status === "DESARQUIVADO" && (
-				<div>
-					<input
-						data-testid="enviado-por"
-						onChange={onChangeSentFrom}
-						type="unity_that_forwarded"
-						value={sentFrom}
-						placeholder="Enviado por"
-						variant="filed"
-					/>
-					<input
-						data-testid="requisitado"
-						onChange={onChangeRequestedDocument}
-						type="document_requested"
-						value={requestedDocument}
-						placeholder="Documento que solicito o desarquivamento"
-						variant="filed"
-					/>
-					<input
-						data-testid="data-envio"
-						onChange={onChangeSendDate}
-						type="send_date"
-						value={sendDate}
-						placeholder="Data de envio"
-						variant="filed"
-					/>
-				</div>
-			)}
-
-			<Button
-				data-testid="click"
-				onClick={onClick}
-				style={{ marginTop: "20px" }}
-				variant="contained"
-				color="primary"
-			>
-				Salvar
-			</Button>
 		</div>
 	);
 }

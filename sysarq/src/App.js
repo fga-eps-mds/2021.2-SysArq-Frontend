@@ -19,6 +19,8 @@ import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
 import AdministrativeProcess from "./pages/DocumentsRegister/AdministrativeProcess";
+import PublicWorker from "./pages/FieldsRegister/PublicWorker";
+import CreatePublicWorker from "./pages/FieldsRegister/CreatePublicWorker";
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -125,6 +127,14 @@ function App() {
 						</Route>
 						<Route path="/fields-register/status/create">
 							<CreateStatus />
+						</Route>
+					</Route>
+					<Route path="/fields-register/public-worker">
+						<Route exact path="/fields-register/public-worker">
+							<PublicWorker />
+						</Route>
+						<Route path="/fields-register/public-worker/create">
+							<CreatePublicWorker/>
 						</Route>
 					</Route>
 				</Route>
