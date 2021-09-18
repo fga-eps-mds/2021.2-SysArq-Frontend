@@ -29,7 +29,7 @@ export default function CreateAdministrativeProcess() {
 			setState: setProcessNumber,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Tipo do documento de envio:*",
 			setState: setDocumentType,
 		},
@@ -59,12 +59,12 @@ export default function CreateAdministrativeProcess() {
 			setState: setNumberBoxReceived,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Caixa de origem:",
 			setState: setOriginBox,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Assuntos:",
 			setState: setSubjects,
 		},
@@ -74,12 +74,12 @@ export default function CreateAdministrativeProcess() {
 			setState: setDates,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Sigla da caixa:",
 			setState: setBoxAbbreviation,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Estante:",
 			setState: setShelfNumber,
 		},

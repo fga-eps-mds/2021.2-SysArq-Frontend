@@ -24,7 +24,7 @@ export default function CreateAdministrativeProcess() {
 			setState: setProcessNumber,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Tipo do documento de envio:*",
 			setState: setDocumentType,
 		},
@@ -34,7 +34,7 @@ export default function CreateAdministrativeProcess() {
 			setState: setDocumentNumber,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Período:*",
 			setState: setTimeCourse,
 		},
@@ -54,12 +54,12 @@ export default function CreateAdministrativeProcess() {
 			setState: setUnityForwardedArchiving,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Sigla da Caixa:",
 			setState: setBoxAbbreviation,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Estante:",
 			setState: setShelfNumber,
 		},

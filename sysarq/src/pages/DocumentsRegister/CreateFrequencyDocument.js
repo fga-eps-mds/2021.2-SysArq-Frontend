@@ -40,7 +40,7 @@ export default function CreateAdministrativeProcess() {
 			setState: setBracket,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Período:",
 			setState: setTimeCourse,
 		},
@@ -60,12 +60,12 @@ export default function CreateAdministrativeProcess() {
 			setState: setProcessNumberSentFrequency,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Sigla da caixa:",
 			setState: setBoxAbbreviation,
 		},
 		{
-			type: "text",
+			type: "id",
 			placeholder: "Estante:",
 			setState: setShelfNumber,
 		},
