@@ -18,11 +18,11 @@ function FormCadastro({
     onClickBtn,
 }) {
 
-    const [age, setAge] = React.useState('');
+    // const [age, setAge] = React.useState('');
 
-    const handleChange = (event) => {
-        setAge(event.target.value);
-      };
+    // const handleChange = (event) => {
+    //     setAge(event.target.value);
+    //   };
 
     const useStyles = makeStyles({
         input: {
@@ -50,15 +50,23 @@ function FormCadastro({
                                 input = (
                                     
                                     <FormControl variant="standard" className={classes.input} sx={{ m: 1, minWidth: 120 }}>
-                                        <InputLabel>{item.placeholder}</InputLabel>
+                                        <InputLabel>{item.placeholder} - {item.state}</InputLabel>
                                         <Select
-                                        labelId="demo-simple-select-standard-label"
-                                        id="demo-simple-select-standard-label"
-                                        value={age}
-                                        onChange={handleChange}
-                                        label="Age"
+                                            labelId="demo-simple-select-standard-label"
+                                            id="demo-simple-select-standard-label"
+                                            value={item.state}
+                                            onChange={({ target }) => item.setState(target.value)}
+                                            label="Age"
                                         >
                                         <MenuItem value=""><em>None</em></MenuItem>
+                                        {
+                                            item.options && (
+                                                item.options.map((option) =>
+                                            <MenuItem value={option.value} key={option.value}>
+                                                <em>{option.description}</em>
+                                            </MenuItem>)
+                                            )
+                                        }
                                         </Select>
                                     </FormControl>
                                 );
@@ -67,7 +75,7 @@ function FormCadastro({
                             default:
                                 input = (
                                     <TextField
-                                        placeholder={item.placeholder}
+                                        label={item.placeholder}
                                         onChange={({ target }) => item.setState(target.value)}
                                         className={classes.input}
                                     />

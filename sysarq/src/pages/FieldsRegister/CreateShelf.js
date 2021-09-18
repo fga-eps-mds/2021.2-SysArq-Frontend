@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import axios from "axios";
+import Api from "../../Api";
 
 const hostApiShelf = `${process.env.REACT_APP_URL_API}shelf/`;
 
@@ -21,7 +21,7 @@ export default function CreateShelf() {
 	const classes = useStyles();
 
 	const onClick = () => {
-		axios
+		Api
 			.post(hostApiShelf, {
 				shelfe_number: numberE,
 				shelfp_number: numberP,
