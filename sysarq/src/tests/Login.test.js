@@ -35,8 +35,6 @@ describe("Main component", () => {
 
         const clickSend = screen.getByTestId("send");
         expect(fireEvent.click(clickSend)).toBe(true);
-
-        // screen.debug();
     })
 });
 

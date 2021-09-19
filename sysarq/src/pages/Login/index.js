@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 
 import {
-    makeStyles, createTheme, ThemeProvider, Container, Grid, Card, CardContent, Typography, TextField,
-    InputAdornment, IconButton, Box, Button
+    makeStyles, createTheme, withStyles, ThemeProvider, Container, Grid, Card, CardContent, Typography, TextField,
+    InputAdornment, IconButton, Box, Button, CircularProgress
 } from "@material-ui/core";
+
+import MuiLink from "@material-ui/core/Link";
 
 import Alert from '@material-ui/lab/Alert';
 
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 import { axiosProfile } from "../../Api";
+
 import logo from "../../assets/logo.png"
 
 
@@ -21,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
 
     card: {
         paddingTop: theme.spacing(8),
-        paddingBottom: theme.spacing(16),
+        paddingBottom: theme.spacing(8),
 
         borderRadius: "15px",
-        backgroundColor: "#f6f6f6", // "#5389b5", "#f6f6f6",
+        backgroundColor: "#f6f6f6",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)"
 	},
 
@@ -45,12 +48,15 @@ const useStyles = makeStyles((theme) => ({
     alert: {
         width: "82%",
         marginLeft: "9%",
-        marginTop: "2%", 
+        marginTop: "2%",
     },
 
-    box: { //
-        height: 100,
+    box: {
         display: "flex",
+        height: "100%",
+        width: "82%",
+        marginTop: "8%",
+        marginLeft: "9%",
     },
 
     spreadBox: {
@@ -58,16 +64,17 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center"
     },
 
-    button: { //
-        textAlign: "left",
-	    width: "20%",
-        justifyContent: "space-around",
-        alignItems: "center"
-	},
+    link: {
+        fontWeight: "bold",
+    },
 
-	content: {
-		flexGrow: 1,
-	},
+    reference: {
+        paddingTop: theme.spacing(8),
+
+        color: "#1f354195",
+        fontSize: "12px",
+        fontFamily: ['"Montserrat"', 'sans-serif']
+    },
 }));
 
 const theme = createTheme({
@@ -78,13 +85,21 @@ const theme = createTheme({
     },
 });
 
+const Link = withStyles({
+    root: {
+      "&:hover": {
+        color: "#5389b5",
+      }
+    },
+})(MuiLink);
+
 const Login = () => {
     const classes = useStyles();
 
     const [username, setUsername] = useState("");
     const [usernameError, setUsernameError] = useState(false);
     const [usernameHelperText, setUsernameHelperText] = useState("");
-    
+
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState(false);
     const [passwordHelperText, setPasswordHelperText] = useState("");
@@ -92,6 +107,8 @@ const Login = () => {
 
     const [loginError, setLoginError] = useState(false);
     const [loginHelperText, setLoginHelperText] = useState("");
+
+    const [loading, setLoading] = useState(false);
 
     const handleUsernameChange = (event) => {
         setUsernameHelperText("");
@@ -121,17 +138,24 @@ const Login = () => {
         event.preventDefault();
     }
 
-    const onPush = () => { // 
+    const onPush = () => {
+        setLoading(true);
 
         if (username.length < 3){
             setUsernameError(true);
-            setUsernameHelperText("Digite um nome de usuário válido")
+            setUsernameHelperText("Digite um nome de usuário válido");
+
+            setLoading(false);
+
             return null
         }
 
         if (password.length < 8){
             setPasswordError(true);
-            setPasswordHelperText("Digite uma senha válida")
+            setPasswordHelperText("Digite uma senha válida");
+
+            setLoading(false);
+
             return null
         }
 
@@ -141,14 +165,27 @@ const Login = () => {
                 "username": username,
                 "password": password,
             }
-        ).then()
-        .catch((error) => {
-            setLoginHelperText(error.response)
-            setLoginError(true)
-        })
+        ).then((response) => {
+
+            localStorage.setItem("tk", response.data.access);
+            localStorage.setItem("tkr", response.data.refresh);
+            window.location = "/";
+
+        }).catch((error) => {
+
+            if (error.response.status === 401){
+                setLoginHelperText("Nome de Usuário e/ou Senha incorreto!");
+            } else {
+                setLoginHelperText("Erro de conexão!");
+            }
+
+            setLoginError(true);
+        });
+
+        setLoading(false)
 
         return null
-    } //
+    }
 
     return (
         <div style={{ background: "#1f3541" }} id="root">
@@ -194,37 +231,55 @@ const Login = () => {
                                                         onMouseDown={handleMouseDownPassword}
                                                         data-testid="showPass"
                                                     >
-                                                        {showPassword ? <Visibility data-testid="visible" /> : <VisibilityOff data-testid="invis"/> }
+                                                        {showPassword ? <Visibility /> : <VisibilityOff /> }
                                                     </IconButton>
                                                 </InputAdornment>
                                             )
                                         }}
                                     />
-                                    <div data-testid='alert'>
 
-                                    { loginError === true?
+                                    { loginError === true ?
                                         <Alert className={classes.alert} severity="error">
-                                            {loginHelperText === undefined ? "Erro de conexão":loginHelperText}
-                                            </Alert> : ""
+                                            { loginHelperText }
+                                        </Alert> : ""
                                     }
-                                    </div >
 
                                     <Box className={`${classes.spreadBox} ${classes.box}`}>
                                         <Typography>
-                                            Precisa de Ajuda?
-					                    </Typography>
-                                        <div styles={{"flexGrow": "1"}}/>
-                                        <Button
-                                            variant="contained"
-					                        className={classes.button}
-					                        size="small"
-					                        color="primary"
-                                            onClick={onPush}
-                                            data-testid='send'
-				                        >
-					                        ENTRAR
-				                        </Button>
+                                            <Link
+                                                className={classes.link}
+                                                target="_blank"
+                                                href="https://github.com/fga-eps-mds/2021.1-PC-GO1/issues"
+                                            >
+                                                    Ajuda?
+                                            </Link>
+                                        </Typography>
+
+                                        {
+                                            loading ?
+                                                <CircularProgress />
+                                                :
+                                                <Button
+                                                    style={{ "fontWeight": "bold" }}
+                                                    variant="contained"
+					                                color="primary"
+                                                    onClick={onPush}
+				                                >
+					                                Entrar
+				                                </Button> 
+                                        }
                                     </Box>
+
+                                    <Typography className={classes.reference}>
+                                        Logo made by{" "}
+                                        <Link target="_blank" href="https://www.freepik.com/">
+                                            Freepik
+                                        </Link>
+                                        {" "}from{" "}
+                                        <Link target="_blank" href="https://www.flaticon.com/">
+                                            www.flaticon.com
+                                        </Link>
+                                    </Typography>
 				                </CardContent>
 		                    </Card>
 					    </Grid>
