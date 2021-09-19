@@ -37,7 +37,7 @@ export default function CreateDocumentType() {
 		<div className="create-form-container">
 			<FormCadastro
 			title="Arquivo Geral da Policia Civil de Goiás"
-			subtitle="Cadastrar Documento"
+			subtitle="Cadastrar tipo de documento"
 			fields={fields}
 			onClickBtn={onSubmit}
 			/>

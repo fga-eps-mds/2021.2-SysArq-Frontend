@@ -80,7 +80,7 @@ export default function CreateUnity() {
 		<div className="create-form-container">
 			<FormCadastro
 			title="Arquivo Geral da Policia Civil de Goiás"
-			subtitle="Cadastrar Documento"
+			subtitle="Cadastrar Unidade"
 			fields={fields}
 			onClickBtn={onSubmit}
 			/>

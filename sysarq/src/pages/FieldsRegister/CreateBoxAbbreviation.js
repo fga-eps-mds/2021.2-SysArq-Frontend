@@ -1,23 +1,22 @@
 import React, { useState } from "react";
-import axios from "axios";
 import FormCadastro from "../FormCadastro";
-import "../DocumentsRegister/Create.css";
+import Api from "../../Api";
 
-const hostApi = `${process.env.REACT_APP_URL_API}box-abbreviation`;
+const hostApiBox = `${process.env.REACT_APP_URL_API}box-abbreviation/`;
 
 export default function CreateBoxAbbreviation() {
-	const [number, setNumber] = useState("");
-	const [abbreviation, setAbbreviation] = useState("");
-	const [name, setName] = useState("");
-	const [year, setBondYear] = useState("");
+	const [Number, setNumber] = useState(0);
+	const [Abbreviation, setAbbreviation] = useState("");
+	const [Name, setName] = useState("");
+	const [Year, setBondYear] = useState(0);
 
-	const onSubmit = () => {
-		axios
-			.post(hostApi, {
-				number,
-				abbreviation,
-				name,
-				year,
+	const onClick = () => {
+		Api
+			.post(hostApiBox, {
+				number: Number,
+				abbreviation: Abbreviation,
+				name: Name,
+				year: Year,
 			})
 			.then(() => {})
 			.catch(() => {});
@@ -25,7 +24,7 @@ export default function CreateBoxAbbreviation() {
 
 	const[fields] = useState([
 		{
-			type: "text",
+			type: "number",
 			placeholder: "Número da caixa:",
 			setState: setNumber,
 		},
@@ -40,7 +39,7 @@ export default function CreateBoxAbbreviation() {
 			setState: setName,
 		},
 		{
-			type: "text",
+			type: "number",
 			placeholder: "Ano:",
 			setState: setBondYear,
 		},
@@ -50,9 +49,9 @@ export default function CreateBoxAbbreviation() {
 		<div className="create-form-container">
 			<FormCadastro
 			title="Arquivo Geral da Policia Civil de Goiás"
-			subtitle="Cadastrar Documento"
+			subtitle="Cadastrar sigla da caixa"
 			fields={fields}
-			onClickBtn={onSubmit}
+			onClickBtn={onClick}
 			/>
 		</div>
 	);

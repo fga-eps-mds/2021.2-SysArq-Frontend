@@ -65,7 +65,7 @@ export default function CreatePublicWorker() {
 		<div className="create-form-container">
 			<FormCadastro
 			title="Arquivo Geral da Policia Civil de Goiás"
-			subtitle="Cadastrar Documento"
+			subtitle="Cadastrar servidor"
 			fields={fields}
 			onClickBtn={onSubmit}
 			/>

@@ -8,6 +8,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import "./styles.css";
 
@@ -33,7 +36,7 @@ function FormCadastro({
             color: "red",
         },
     });
-
+    // const label = { inputProps: { 'Montserrat': 'Checkbox demo' } };
     const classes = useStyles();
 
     return (
@@ -72,19 +75,33 @@ function FormCadastro({
                                 );
                                 break;
 
-                            case "select":
+                            case "checkbox":
                                 input = (
-                                    <FormControl>
-                                        <Select labelId={item.placeholder} 
-                                        // onChange={handleChange}
-                                        >
-                                                {
-                                                    item.options?.map(option => <MenuItem>{option}</MenuItem>)
-                                                }    
-                                        </Select>
+                                    <FormControl component="fieldset">
+                                    <FormGroup column>
+                                        <FormControlLabel
+                                        className={classes.input}
+                                        control={<Checkbox defaultChecked color="default" />}
+                                        label={item.placeholder}
+                                        labelPlacement="end"
+                                        />
+                                    </FormGroup>
                                     </FormControl>
                                 );
                                 break;
+
+                            case "number":
+                                input = (
+                                <TextField
+                                    className={classes.input}
+                                    label={item.placeholder}
+                                    type="number"
+                                    onChange={({ target }) => item.setState(target.value)}
+                                    
+                                />);
+                            
+                                break;
+
                             default:
                                 input = (
                                     <TextField

@@ -4,7 +4,6 @@ import Api from "../../Api";
 
 const hostApiShelf = `${process.env.REACT_APP_URL_API}shelf/`;
 
-
 export default function CreateShelf() {
 	const [numberE, setNumberE] = useState(0);
 	const [numberP, setNumberP] = useState(0);
@@ -21,12 +20,12 @@ export default function CreateShelf() {
 
 	const[fields] = useState([
 		{
-			type: "id",
+			type: "number",
 			placeholder: "Estante:",
 			setState: setNumberE,
 		},
 		{
-			type: "id",
+			type: "number",
 			placeholder: "Prateleira:",
 			setState: setNumberP,
 		},
@@ -36,7 +35,7 @@ export default function CreateShelf() {
 		<div className="create-form-container">
 			<FormCadastro
 			title="Arquivo Geral da Policia Civil de Goiás"
-			subtitle="Cadastrar Documento"
+			subtitle="Cadastrar Estante/prateleira"
 			fields={fields}
 			onClickBtn={onClick}
 			/>
