@@ -75,7 +75,9 @@ function FormCadastro({
                             case "select":
                                 input = (
                                     <FormControl>
-                                        <Select labelId={item.placeholder} onChange={handleChange}>
+                                        <Select labelId={item.placeholder} 
+                                        // onChange={handleChange}
+                                        >
                                                 {
                                                     item.options?.map(option => <MenuItem>{option}</MenuItem>)
                                                 }    

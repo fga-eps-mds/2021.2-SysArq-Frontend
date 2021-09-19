@@ -9,7 +9,6 @@ const hostApiShelf = `${process.env.REACT_APP_URL_API}shelf/`;
 const hostApiBoxAbbreviation = `${process.env.REACT_APP_URL_API}box-abbreviation/`;
 const hostApiDocumentSubject = `${process.env.REACT_APP_URL_API}document-subject/`;
 
-
 export default function CreateAdministrativeProcess() {
 	const [processNumber, setProcessNumber] = useState(0);
 	const [documentType, setDocumentType] = useState("");

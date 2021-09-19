@@ -154,9 +154,10 @@ export default function CreateAdministrativeProcess() {
 						setState: setReferenceDate,
 					},
 					{
-						type: "text",
+						type: "id",
 						placeholder: "Unidade que encaminhou para arquivamento:",
 						setState: setUnityForwardedArchiving,
+						options: optionsUnity
 					},
 					{
 						type: "text",

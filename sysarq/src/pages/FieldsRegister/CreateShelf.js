@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-
-import { Button, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-
-import Api from "../../Api";
-import axios from "axios";
 import FormCadastro from "../FormCadastro";
-import "../DocumentsRegister/Create.css";
+import Api from "../../Api";
 
 const hostApiShelf = `${process.env.REACT_APP_URL_API}shelf/`;
 
