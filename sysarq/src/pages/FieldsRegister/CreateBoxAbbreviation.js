@@ -11,25 +11,24 @@ export default function CreateBoxAbbreviation() {
 	const [Year, setBondYear] = useState(0);
 
 	const onClick = () => {
-		Api
-			.post(hostApiBox, {
-				number: Number,
-				abbreviation: Abbreviation,
-				name: Name,
-				year: Year,
-			})
+		Api.post(hostApiBox, {
+			number: Number,
+			abbreviation: Abbreviation,
+			name: Name,
+			year: Year,
+		})
 			.then(() => {})
 			.catch(() => {});
 	};
 
-	const[fields] = useState([
+	const [fields] = useState([
 		{
 			type: "number",
 			placeholder: "Número da caixa:",
 			setState: setNumber,
 		},
 		{
-			type: "text",
+			type: "ShortText",
 			placeholder: "Sigla da Caixa:",
 			setState: setAbbreviation,
 		},
@@ -48,10 +47,10 @@ export default function CreateBoxAbbreviation() {
 	return (
 		<div className="create-form-container">
 			<FormCadastro
-			title="Arquivo Geral da Policia Civil de Goiás"
-			subtitle="Cadastrar sigla da caixa"
-			fields={fields}
-			onClickBtn={onClick}
+				title="Arquivo Geral da Policia Civil de Goiás"
+				subtitle="Cadastrar sigla da caixa"
+				fields={fields}
+				onClickBtn={onClick}
 			/>
 		</div>
 	);

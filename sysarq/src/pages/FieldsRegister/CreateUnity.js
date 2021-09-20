@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import FormCadastro from "../FormCadastro";
-import "../DocumentsRegister/Create.css";
+import Api from "../../Api";
 
-
-const hostApi = `${process.env.REACT_APP_URL_API}unity/`;
+const hostApiUnity = `${process.env.REACT_APP_URL_API}unity/`;
 
 export default function CreateUnity() {
 	const [unityName, setUnityName] = useState("");
@@ -12,35 +10,33 @@ export default function CreateUnity() {
 	const [administrativeBond, setAdiministrativeBond] = useState("");
 	const [bondAbbreviation, setBondAbbreviation] = useState("");
 	const [unityType, setUnityType] = useState("");
-	const [municipality, setMunicipality] = useState("");
+	const [county, setCounty] = useState("");
 	const [telephoneNumber, setTelephoneNumber] = useState("");
 	const [note, setNote] = useState("");
 
-
-	const onSubmit = () => {
-		axios
-			.post(hostApi, {
-				unity_name: unityName,
-				unity_abbreviation: unityAbbreviation,
-				administrative_bond: administrativeBond,
-				bond_abbreviation: bondAbbreviation,
-				type_of_unity: unityType,
-				telephone_number: telephoneNumber,
-				county: municipality,
-				note,
-			})
+	const onClick = () => {
+		Api.post(hostApiUnity, {
+			unity_name: unityName,
+			unity_abbreviation: unityAbbreviation,
+			administrative_bond: administrativeBond,
+			bond_abbreviation: bondAbbreviation,
+			type_of_unity: unityType,
+			telephone_number: telephoneNumber,
+			municipality: county,
+			note,
+		})
 			.then(() => {})
 			.catch(() => {});
 	};
 
-	const[fields] = useState([
+	const [fields] = useState([
 		{
 			type: "text",
 			placeholder: "Nome da Unidade:",
 			setState: setUnityName,
 		},
 		{
-			type: "text",
+			type: "ShortText",
 			placeholder: "Sigla da Unidade:",
 			setState: setUnityAbbreviation,
 		},
@@ -50,22 +46,22 @@ export default function CreateUnity() {
 			setState: setAdiministrativeBond,
 		},
 		{
-			type: "text",
+			type: "ShortText",
 			placeholder: "Sigla do Vínculo:",
 			setState: setBondAbbreviation,
 		},
 		{
-			type: "text",
+			type: "MiddleText",
 			placeholder: "Tipo de unidade:",
 			setState: setUnityType,
 		},
 		{
 			type: "text",
 			placeholder: "Município:",
-			setState: setMunicipality,
+			setState: setCounty,
 		},
 		{
-			type: "text",
+			type: "phone",
 			placeholder: "Número do telefone:",
 			setState: setTelephoneNumber,
 		},
@@ -74,15 +70,15 @@ export default function CreateUnity() {
 			placeholder: "Observações:",
 			setState: setNote,
 		},
-	])
+	]);
 
 	return (
 		<div className="create-form-container">
 			<FormCadastro
-			title="Arquivo Geral da Policia Civil de Goiás"
-			subtitle="Cadastrar Unidade"
-			fields={fields}
-			onClickBtn={onSubmit}
+				title="Arquivo Geral da Policia Civil de Goiás"
+				subtitle="Cadastrar Unidade"
+				fields={fields}
+				onClickBtn={onClick}
 			/>
 		</div>
 	);

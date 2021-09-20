@@ -8,12 +8,12 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import DescriptionIcon from "@material-ui/icons/Description";
-import "./ButtonCard.css"
+import "./ButtonCard.css";
 
 const useStyles = makeStyles(() => ({
 	card: {
 		height: "100%",
-		display: "flex",	
+		display: "flex",
 		flexDirection: "column",
 	},
 
@@ -34,25 +34,16 @@ const Icon = ({ iconName, title }) => {
 
 	let icon = "";
 
-	if (
-		iconName === "icone-processo" &&
-		title === "Processo Administrativo"
-	) {
+	if (iconName === "icone-processo" && title === "Processo Administrativo") {
 		icon = <DescriptionIcon className={classes.icon} />;
-	}
-	else if (
+	} else if (
 		iconName === "icone-frequencia" &&
 		title === "Relação de Frequências"
 	) {
 		icon = <DescriptionIcon className={classes.icon} />;
-	}
-	else if (
-		iconName === "icone-folha" &&
-		title === "Folha de Frequências"
-	) {
+	} else if (iconName === "icone-folha" && title === "Folha de Frequências") {
 		icon = <DescriptionIcon className={classes.icon} />;
-	}
-	else if (
+	} else if (
 		iconName === "icone-arquivar" &&
 		title === "Relação de Arquivamento"
 	) {
@@ -65,17 +56,17 @@ const ButtonCard = ({ icon, title, createUrl }) => {
 	const classes = useStyles();
 
 	return (
-		<Card className={classes.card} id = "card">
+		<Card className={classes.card} id="card">
 			<CardActionArea className={classes.content} href={createUrl}>
 				<CardContent>
 					<Icon iconName={icon} title={title} />
 					<Typography
 						align="center"
-						fontFamily='Montserrat'
+						fontFamily="Montserrat"
 						gutterBottom
 						variant="h6"
 						component="h3"
-						id = "texto"
+						id="texto"
 					>
 						{title}
 					</Typography>

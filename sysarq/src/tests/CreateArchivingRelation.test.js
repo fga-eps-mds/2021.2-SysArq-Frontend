@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import CreateArchivingRelation from '../pages/DocumentsRegister/CreateArchivingRelation';
+import CreateArchivingRelation from "../pages/DocumentsRegister/CreateArchivingRelation";
 
 const testArchivingRelation = (title, valueTest) => {
 	expect(screen.getByPlaceholderText(title)).toBeInTheDocument();
@@ -12,19 +12,21 @@ const testArchivingRelation = (title, valueTest) => {
 	expect(value === valueTest).toBe(true);
 };
 
-describe('Main component', () => {
-    it('Title', () => {
-        render(<CreateArchivingRelation />);
+describe("Main component", () => {
+	it("Title", () => {
+		render(<CreateArchivingRelation />);
 
-        expect(screen.getByText("Arquivo Geral da Polícia Civil de Goiás")).toBeInTheDocument();
-        expect(screen.getByText("Cadastrar documento")).toBeInTheDocument();
-    });
+		expect(
+			screen.getByText("Arquivo Geral da Polícia Civil de Goiás")
+		).toBeInTheDocument();
+		expect(screen.getByText("Cadastrar documento")).toBeInTheDocument();
+	});
 });
 
-describe('Ensure that the archiving relation input fields exist', () => {
-    it('test', () => {
-        render(<CreateArchivingRelation />);
+describe("Ensure that the archiving relation input fields exist", () => {
+	it("test", () => {
+		render(<CreateArchivingRelation />);
 
-        testArchivingRelation("Número do processo:*", "11");
-    });
+		testArchivingRelation("Número do processo:*", "11");
+	});
 });

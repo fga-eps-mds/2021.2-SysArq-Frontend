@@ -33,49 +33,44 @@ import CreateFrequencyDocument from "./pages/DocumentsRegister/CreateFrequencyDo
 import CreateArchivingRelation from "./pages/DocumentsRegister/CreateArchivingRelation";
 import ArchivingRelation from "./pages/DocumentsRegister/ArchivingRelation";
 
-
-
 function App() {
-	  
 	return (
 		<Router>
 			<Header />
 			<Switch>
-
 				<Route exact path="/">
 					<Home />
 				</Route>
-				
+
 				<Route path="/documents-register">
 					<Route exact path="/documents-register">
-						<DocumentsRegister/>
+						<DocumentsRegister />
 					</Route>
 					<Route path="/documents-register/administrative-process">
-						<AdministrativeProcess/>
+						<AdministrativeProcess />
 					</Route>
 					<Route path="/documents-register/frequency-relation">
-						<FrequencyRelation/>
+						<FrequencyRelation />
 					</Route>
 					<Route path="/documents-register/frequency-document">
-						<FrequencyDocument/>
+						<FrequencyDocument />
 					</Route>
 					<Route path="/documents-register/archiving-relation">
-						<ArchivingRelation/>
+						<ArchivingRelation />
 					</Route>
 				</Route>
 				<Route path="/create-archiving-relation">
-					<CreateArchivingRelation/>
+					<CreateArchivingRelation />
 				</Route>
 				<Route path="/create-frequency-document">
-					<CreateFrequencyDocument/>
+					<CreateFrequencyDocument />
 				</Route>
 				<Route path="/create-frequency-relation">
-					<CreateFrequencyRelation/>
+					<CreateFrequencyRelation />
 				</Route>
 				<Route path="/create-administrative-process">
-					<CreateAdministrativeProcess/>
+					<CreateAdministrativeProcess />
 				</Route>
-
 
 				<Route path="/fields-register">
 					<Route exact path="/fields-register">
@@ -134,12 +129,12 @@ function App() {
 							<PublicWorker />
 						</Route>
 						<Route path="/fields-register/public-worker/create">
-							<CreatePublicWorker/>
+							<CreatePublicWorker />
 						</Route>
 					</Route>
 				</Route>
 			</Switch>
-			<Footer/>
+			<Footer />
 		</Router>
 	);
 }

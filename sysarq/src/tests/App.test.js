@@ -13,4 +13,4 @@ describe("Main component", () => {
 		expect(screen.getByText("Configurações")).toBeInTheDocument();
 		expect(screen.getByText("Relatório")).toBeInTheDocument();
 	});
-}); 
+});

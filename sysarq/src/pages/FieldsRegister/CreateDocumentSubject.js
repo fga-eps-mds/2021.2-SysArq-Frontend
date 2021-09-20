@@ -1,33 +1,31 @@
 import React, { useState } from "react";
-import axios from "axios";
 import FormCadastro from "../FormCadastro";
-import "../DocumentsRegister/Create.css";
+import Api from "../../Api";
 
-const hostApi = `${process.env.REACT_APP_URL_API}document-subject/`;
+const hostApiDocSub = `${process.env.REACT_APP_URL_API}document-subject/`;
 
 export default function CreateDocumentSubject() {
 	const [documentSubject, setDocumentSubject] = useState("");
-	const [temporalityValue, setTemporality] = useState("");
+	const [temporalityValue, setTemporality] = useState(null);
 
-	const[fields] = useState([
+	const [fields] = useState([
 		{
 			type: "text",
 			placeholder: "Assundo do Documento:",
 			setState: setDocumentSubject,
 		},
 		{
-			type: "text",
+			type: "date",
 			placeholder: "Temporalidade:",
 			setState: setTemporality,
 		},
 	]);
 
 	const onSubmit = () => {
-		axios
-			.post(hostApi, {
-				subject_name: documentSubject,
-				temporality: temporalityValue,
-			})
+		Api.post(hostApiDocSub, {
+			subject_name: documentSubject,
+			temporality: temporalityValue,
+		})
 			.then(() => {})
 			.catch(() => {});
 	};
@@ -35,10 +33,10 @@ export default function CreateDocumentSubject() {
 	return (
 		<div className="create-form-container">
 			<FormCadastro
-			title="Arquivo Geral da Policia Civil de Goiás"
-			subtitle="Cadastrar Assunto de documento"
-			fields={fields}
-			onClickBtn={onSubmit}
+				title="Arquivo Geral da Policia Civil de Goiás"
+				subtitle="Cadastrar Assunto de documento"
+				fields={fields}
+				onClickBtn={onSubmit}
 			/>
 		</div>
 	);

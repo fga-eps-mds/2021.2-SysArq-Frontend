@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import CreateFrequencyRelation from '../pages/DocumentsRegister/CreateFrequencyRelation';
+import CreateFrequencyRelation from "../pages/DocumentsRegister/CreateFrequencyRelation";
 
 const testFrequencyRelation = (title, valueTest) => {
 	expect(screen.getByPlaceholderText(title)).toBeInTheDocument();
@@ -12,19 +12,21 @@ const testFrequencyRelation = (title, valueTest) => {
 	expect(value === valueTest).toBe(true);
 };
 
-describe('Main component', () => {
-    it('Title', () => {
-        render(<CreateFrequencyRelation />);
+describe("Main component", () => {
+	it("Title", () => {
+		render(<CreateFrequencyRelation />);
 
-        expect(screen.getByText("Arquivo Geral da Polícia Civil de Goiás")).toBeInTheDocument();
-        expect(screen.getByText("Cadastrar documento")).toBeInTheDocument();
-    });
+		expect(
+			screen.getByText("Arquivo Geral da Polícia Civil de Goiás")
+		).toBeInTheDocument();
+		expect(screen.getByText("Cadastrar documento")).toBeInTheDocument();
+	});
 });
 
-describe('Ensure that the frequency relation input fields exist', () => {
-    it('test', () => {
-        render(<CreateFrequencyRelation />);
+describe("Ensure that the frequency relation input fields exist", () => {
+	it("test", () => {
+		render(<CreateFrequencyRelation />);
 
-        testFrequencyRelation("Número do processo:*", "21");
-    });
+		testFrequencyRelation("Número do processo:*", "21");
+	});
 });

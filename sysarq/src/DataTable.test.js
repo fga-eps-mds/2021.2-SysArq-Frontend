@@ -3,7 +3,7 @@ import { render, screen, fireEvent, shallow } from "@testing-library/react";
 // import { shallow } from 'enzyme';
 
 import DataTable from "./pages/components/DataTable/DataTable";
-import axios from 'axios';
+import axios from "axios";
 
 describe("Componente principal", () => {
 	it("Informações da tabela de listagem do assunto do documento", () => {
@@ -19,6 +19,4 @@ describe("Componente principal", () => {
 		const botaoAdicionar = screen.getByTestId("botao-adicionar");
 		expect(fireEvent.click(botaoAdicionar)).toBe(true);
 	});
-
-	
 });

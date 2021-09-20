@@ -1,28 +1,26 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState /*	,useEffect	*/ } from "react";
 import FormCadastro from "../FormCadastro";
+import Api from "../../Api";
 
-const hostApi = `${process.env.REACT_APP_URL_API}status/`;
+const hostApiStatus = `${process.env.REACT_APP_URL_API}status/`;
 
 export default function CreateStatus() {
-	const [status, setStatus] = useState("ARQUIVADO");
-	const [Eliminated, setEliminated] = useState("ELIMINADO");
+	const [status, setStatus] = useState(false);
+	const [Eliminated, setEliminated] = useState(false);
 	const [sentFrom, setSentFrom] = useState("");
 	const [requestedDocument, setRequestedDocument] = useState("");
-	const [sendDate, setSendDate] = useState("");
-	
-	const[fields] = useState([
+	const [sendDate, setSendDate] = useState(null);
+
+	const [fields /*	,setFields	*/] = useState([
 		{
 			type: "checkbox",
 			placeholder: "Encaminhado",
 			setState: setStatus,
-			// options: ["ARQUIVADO", "DESARQUIVDO"],
 		},
 		{
 			type: "checkbox",
 			placeholder: "Eliminado",
 			setState: setEliminated,
-			// options: ["ARQUIVADO", "ELIMINADO"],
 		},
 		{
 			type: "text",
@@ -35,28 +33,14 @@ export default function CreateStatus() {
 			setState: setRequestedDocument,
 		},
 		{
-			type: "text",
+			type: "date",
 			placeholder: "Data de envio:",
 			setState: setSendDate,
 		},
 	]);
-	
-
-	const onSubmit = () => {
-		axios
-			.post(hostApi, {
-				filed: status,
-				eliminated: Eliminated,
-				sent_from: sentFrom,
-				requested_document: requestedDocument,
-				send_date: sendDate,
-			})
-			.then(() => {})
-			.catch(() => {});
-	};
 
 	// useEffect(() => {
-	// 	if(status === "DESARQUIVADO"){
+	// 	if(status === true){
 	// 		setFields([
 	// 			...fields,
 	// 			{
@@ -70,24 +54,37 @@ export default function CreateStatus() {
 	// 				setState: setRequestedDocument,
 	// 			},
 	// 			{
-	// 				type: "text",
+	// 				type: "date",
 	// 				placeholder: "Data de envio:",
 	// 				setState: setSendDate,
 	// 			},
 	// 		])
 	// 	}
+	// 	return () =>{
+	// 		setFields(fields)
+	// 	}
 	// }, [status])
-	
-	return (
 
+	const onClick = () => {
+		Api.post(hostApiStatus, {
+			filed: status,
+			eliminated: Eliminated,
+			sent_from: sentFrom,
+			requested_document: requestedDocument,
+			send_date: sendDate,
+		})
+			.then(() => {})
+			.catch(() => {});
+	};
+
+	return (
 		<div className="create-form-container">
 			<FormCadastro
-			title="Arquivo Geral da Policia Civil de Goiás"
-			subtitle="Cadastrar Status de encaminhamento"
-			fields={fields}
-			onClickBtn={onSubmit}
+				title="Arquivo Geral da Policia Civil de Goiás"
+				subtitle="Cadastrar Status de encaminhamento"
+				fields={fields}
+				onClickBtn={onClick}
 			/>
-
 		</div>
 	);
 }
