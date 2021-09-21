@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Alert from "@material-ui/lab/Alert";
 import FormCadastro from "../FormCadastro";
 import Api from "../../Api";
 
@@ -13,7 +14,10 @@ export default function CreateUnity() {
 	const [county, setCounty] = useState("");
 	const [telephoneNumber, setTelephoneNumber] = useState("");
 	const [note, setNote] = useState("");
+	const [show, setShow] = useState(false);
 
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 	const onClick = () => {
 		Api.post(hostApiUnity, {
 			unity_name: unityName,
@@ -25,7 +29,10 @@ export default function CreateUnity() {
 			municipality: county,
 			note,
 		})
-			.then(() => {})
+			.then(() => {
+				handleShow();
+				setTimeout(handleClose, 3000);
+			})
 			.catch(() => {});
 	};
 
@@ -74,6 +81,7 @@ export default function CreateUnity() {
 
 	return (
 		<div className="create-form-container">
+			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
 			<FormCadastro
 				title="Arquivo Geral da Policia Civil de Goiás"
 				subtitle="Cadastrar Unidade"

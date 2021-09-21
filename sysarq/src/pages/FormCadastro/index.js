@@ -130,7 +130,7 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 									label={item.placeholder}
 									onChange={({ target }) => item.setState(target.value)}
 									className={classes.input}
-									inputProps={{ maxLength: "8" }}
+									inputProps={{ maxLength: "2000" }}
 								/>
 							);
 							break;

@@ -10,7 +10,6 @@ import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
 import CardActionArea from "@material-ui/core/CardActionArea";
 
-import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import SubjectIcon from "@material-ui/icons/Subject";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import DescriptionIcon from "@material-ui/icons/Description";

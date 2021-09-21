@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Alert from "@material-ui/lab/Alert";
+
 import FormCadastro from "../FormCadastro";
 import Api from "../../Api";
 
@@ -9,6 +11,10 @@ export default function CreateBoxAbbreviation() {
 	const [Abbreviation, setAbbreviation] = useState("");
 	const [Name, setName] = useState("");
 	const [Year, setBondYear] = useState(0);
+	const [show, setShow] = useState(false);
+
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 
 	const onClick = () => {
 		Api.post(hostApiBox, {
@@ -17,7 +23,10 @@ export default function CreateBoxAbbreviation() {
 			name: Name,
 			year: Year,
 		})
-			.then(() => {})
+			.then(() => {
+				handleShow();
+				setTimeout(handleClose, 3000);
+			})
 			.catch(() => {});
 	};
 
@@ -46,6 +55,7 @@ export default function CreateBoxAbbreviation() {
 
 	return (
 		<div className="create-form-container">
+			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
 			<FormCadastro
 				title="Arquivo Geral da Policia Civil de Goiás"
 				subtitle="Cadastrar sigla da caixa"

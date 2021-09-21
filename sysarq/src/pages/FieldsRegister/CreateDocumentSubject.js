@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Alert from "@material-ui/lab/Alert";
+
 import FormCadastro from "../FormCadastro";
 import Api from "../../Api";
 
@@ -7,6 +9,10 @@ const hostApiDocSub = `${process.env.REACT_APP_URL_API}document-subject/`;
 export default function CreateDocumentSubject() {
 	const [documentSubject, setDocumentSubject] = useState("");
 	const [temporalityValue, setTemporality] = useState(null);
+	const [show, setShow] = useState(false);
+
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 
 	const [fields] = useState([
 		{
@@ -26,12 +32,16 @@ export default function CreateDocumentSubject() {
 			subject_name: documentSubject,
 			temporality: temporalityValue,
 		})
-			.then(() => {})
+			.then(() => {
+				handleShow();
+				setTimeout(handleClose, 3000);
+			})
 			.catch(() => {});
 	};
 
 	return (
 		<div className="create-form-container">
+			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
 			<FormCadastro
 				title="Arquivo Geral da Policia Civil de Goiás"
 				subtitle="Cadastrar Assunto de documento"
