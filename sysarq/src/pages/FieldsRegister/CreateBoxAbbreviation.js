@@ -24,22 +24,22 @@ export default function CreateBoxAbbreviation() {
 	const [fields] = useState([
 		{
 			type: "number",
-			placeholder: "Número da caixa:",
+			placeholder: "Número da caixa",
 			setState: setNumber,
 		},
 		{
 			type: "ShortText",
-			placeholder: "Sigla da Caixa:",
+			placeholder: "Sigla da caixa",
 			setState: setAbbreviation,
 		},
 		{
 			type: "text",
-			placeholder: "Nome Completo:",
+			placeholder: "Nome completo",
 			setState: setName,
 		},
 		{
 			type: "number",
-			placeholder: "Ano:",
+			placeholder: "Ano",
 			setState: setBondYear,
 		},
 	]);

@@ -53,8 +53,6 @@ const Icon = ({ iconName }) => {
 		icon = <SubjectIcon className={classes.icon} />;
 	} else if (iconName === "icone-sigla-da-caixa") {
 		icon = <LocalOfferIcon className={classes.icon} />;
-	} else if (iconName === "icone-servidor") {
-		icon = <PersonOutlineIcon className={classes.icon} />;
 	} else if (iconName === "icone-unidade") {
 		icon = <HomeWorkIcon className={classes.icon} />;
 	} else if (iconName === "icone-tipo-de-documento") {

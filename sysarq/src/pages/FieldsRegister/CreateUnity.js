@@ -32,42 +32,42 @@ export default function CreateUnity() {
 	const [fields] = useState([
 		{
 			type: "text",
-			placeholder: "Nome da Unidade:",
+			placeholder: "Nome da unidade",
 			setState: setUnityName,
 		},
 		{
 			type: "ShortText",
-			placeholder: "Sigla da Unidade:",
+			placeholder: "Sigla da unidade",
 			setState: setUnityAbbreviation,
 		},
 		{
 			type: "text",
-			placeholder: "Vínculo administrativo:",
+			placeholder: "Vínculo administrativo",
 			setState: setAdiministrativeBond,
 		},
 		{
 			type: "ShortText",
-			placeholder: "Sigla do Vínculo:",
+			placeholder: "Sigla do vínculo",
 			setState: setBondAbbreviation,
 		},
 		{
 			type: "MiddleText",
-			placeholder: "Tipo de unidade:",
+			placeholder: "Tipo de unidade",
 			setState: setUnityType,
 		},
 		{
 			type: "text",
-			placeholder: "Município:",
+			placeholder: "Município",
 			setState: setCounty,
 		},
 		{
 			type: "phone",
-			placeholder: "Número do telefone:",
+			placeholder: "Telefone",
 			setState: setTelephoneNumber,
 		},
 		{
 			type: "text",
-			placeholder: "Observações:",
+			placeholder: "Observações",
 			setState: setNote,
 		},
 	]);

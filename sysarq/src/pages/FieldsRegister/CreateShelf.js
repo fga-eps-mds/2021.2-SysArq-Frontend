@@ -20,12 +20,12 @@ export default function CreateShelf() {
 	const [fields] = useState([
 		{
 			type: "number",
-			placeholder: "Estante:",
+			placeholder: "Estante",
 			setState: setNumberE,
 		},
 		{
 			type: "number",
-			placeholder: "Prateleira:",
+			placeholder: "Prateleira",
 			setState: setNumberP,
 		},
 	]);
@@ -34,7 +34,7 @@ export default function CreateShelf() {
 		<div className="create-form-container">
 			<FormCadastro
 				title="Arquivo Geral da Policia Civil de Goiás"
-				subtitle="Cadastrar Estante/prateleira"
+				subtitle="Cadastrar estante e/ou prateleira"
 				fields={fields}
 				onClickBtn={onClick}
 			/>

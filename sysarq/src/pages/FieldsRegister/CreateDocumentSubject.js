@@ -11,7 +11,7 @@ export default function CreateDocumentSubject() {
 	const [fields] = useState([
 		{
 			type: "text",
-			placeholder: "Assundo do Documento:",
+			placeholder: "Assunto do documento",
 			setState: setDocumentSubject,
 		},
 		{

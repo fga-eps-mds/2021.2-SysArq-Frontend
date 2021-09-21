@@ -38,12 +38,6 @@ const obj = [
 		listUrl: "/fields-register/box-abbreviation",
 	},
 	{
-		icon: "icone-servidor",
-		title: "Servidor",
-		createUrl: "/fields-register/public-worker/create",
-		listUrl: "/fields-register/public-worker",
-	},
-	{
 		icon: "icone-unidade",
 		title: "Unidade",
 		createUrl: "/fields-register/unity/create",

@@ -27,6 +27,13 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 			marginBottom: "1rem",
 			maxWidth: 908,
 		},
+		inputDate: {
+			width: "100%",
+			height: 36,
+			marginTop: "2rem",
+			marginBottom: "2rem",
+			maxWidth: 908,
+		},
 	});
 	// const label = { inputProps: { 'Montserrat': 'Checkbox demo' } };
 	const classes = useStyles();
@@ -111,7 +118,7 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 									label={item.placeholder}
 									type="date"
 									defaultValue="2021-01-01"
-									className={classes.input}
+									className={classes.inputDate}
 									onChange={({ target }) => item.setState(target.value)}
 								/>
 							);

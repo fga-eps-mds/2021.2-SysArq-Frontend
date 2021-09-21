@@ -40,15 +40,6 @@ export default function FieldsRegister() {
 
 					<Grid item xs={12} sm={6} md={3}>
 						<MenuCard
-							icon="icone-servidor"
-							title="Servidor"
-							createUrl="/fields-register/public-worker/create"
-							listUrl="/fields-register/public-worker"
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={6} md={3}>
-						<MenuCard
 							icon="icone-unidade"
 							title="Unidade"
 							createUrl="/fields-register/unity/create"

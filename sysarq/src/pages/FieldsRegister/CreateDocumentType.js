@@ -20,12 +20,12 @@ export default function CreateDocumentType() {
 	const [fields] = useState([
 		{
 			type: "text",
-			placeholder: "Nome do Documento:",
+			placeholder: "Nome do documento",
 			setState: setDocumentName,
 		},
 		{
 			type: "date",
-			placeholder: "Temporalidade:",
+			placeholder: "Temporalidade",
 			setState: setTemporality,
 		},
 	]);
