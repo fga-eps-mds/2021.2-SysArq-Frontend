@@ -1,4 +1,4 @@
-import React, { useState /*	,useEffect	*/ } from "react";
+import React, { useState ,useEffect } from "react";
 import FormCadastro from "../FormCadastro";
 import Api from "../../Api";
 
@@ -11,7 +11,7 @@ export default function CreateStatus() {
 	const [requestedDocument, setRequestedDocument] = useState("");
 	const [sendDate, setSendDate] = useState(null);
 
-	const [fields /*	,setFields	*/] = useState([
+	const [fields, setFields] = useState([
 		{
 			type: "checkbox",
 			placeholder: "Encaminhado",
@@ -22,48 +22,33 @@ export default function CreateStatus() {
 			placeholder: "Eliminado",
 			setState: setEliminated,
 		},
-		{
-			type: "text",
-			placeholder: "Enviado por:",
-			setState: setSentFrom,
-		},
-		{
-			type: "text",
-			placeholder: "Documento que solicitou o desarquivamento:",
-			setState: setRequestedDocument,
-		},
-		{
-			type: "date",
-			placeholder: "Data de envio:",
-			setState: setSendDate,
-		},
 	]);
 
-	// useEffect(() => {
-	// 	if(status === true){
-	// 		setFields([
-	// 			...fields,
-	// 			{
-	// 				type: "text",
-	// 				placeholder: "Enviado por:",
-	// 				setState: setSentFrom,
-	// 			},
-	// 			{
-	// 				type: "text",
-	// 				placeholder: "Documento que solicitou o desarquivamento:",
-	// 				setState: setRequestedDocument,
-	// 			},
-	// 			{
-	// 				type: "date",
-	// 				placeholder: "Data de envio:",
-	// 				setState: setSendDate,
-	// 			},
-	// 		])
-	// 	}
-	// 	return () =>{
-	// 		setFields(fields)
-	// 	}
-	// }, [status])
+	useEffect(() => {
+		if(status === true){
+			setFields([
+				...fields,
+				{
+					type: "text",
+					placeholder: "Enviado por:",
+					setState: setSentFrom,
+				},
+				{
+					type: "text",
+					placeholder: "Documento que solicitou o desarquivamento:",
+					setState: setRequestedDocument,
+				},
+				{
+					type: "date",
+					placeholder: "Data de envio:",
+					setState: setSendDate,
+				},
+			])
+		}
+		return () =>{
+			setFields(fields)
+		}
+	}, [status])
 
 	const onClick = () => {
 		Api.post(hostApiStatus, {

@@ -14,26 +14,43 @@ export default function CreateUnity() {
 	const [county, setCounty] = useState("");
 	const [telephoneNumber, setTelephoneNumber] = useState("");
 	const [note, setNote] = useState("");
-	const [show, setShow] = useState(false);
 
+	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+
+	const [showError, setShowError] = useState(false);
+	const handleCloseError = () => setShowError(false);
+	const handleShowError = () => setShowError(true);
+
 	const onClick = () => {
+		// console.log(hostApiUnity)
+		// console.log(unityName)
+		// console.log(unityAbbreviation)
+		// console.log(bondAbbreviation)
+		// console.log(unityType)
+		// console.log(county)
+		// console.log(telephoneNumber)
+		// console.log(note)
+
 		Api.post(hostApiUnity, {
 			unity_name: unityName,
 			unity_abbreviation: unityAbbreviation,
 			administrative_bond: administrativeBond,
 			bond_abbreviation: bondAbbreviation,
 			type_of_unity: unityType,
-			telephone_number: telephoneNumber,
 			municipality: county,
+			telephone_number: telephoneNumber,
 			note,
 		})
 			.then(() => {
 				handleShow();
 				setTimeout(handleClose, 3000);
 			})
-			.catch(() => {});
+			.catch(() => {
+				handleShowError();
+				setTimeout(handleCloseError, 3000);
+			});
 	};
 
 	const [fields] = useState([
@@ -82,6 +99,8 @@ export default function CreateUnity() {
 	return (
 		<div className="create-form-container">
 			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
+			{showError === true ? <Alert severity="error">Erro de conexão!</Alert> : ""}
+
 			<FormCadastro
 				title="Arquivo Geral da Policia Civil de Goiás"
 				subtitle="Cadastrar Unidade"

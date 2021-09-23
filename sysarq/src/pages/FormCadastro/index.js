@@ -19,6 +19,7 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 	// const handleChange = (event) => {
 	//     setAge(event.target.value);
 	//   };
+	// console.log('Fds  = ',fields)
 
 	const useStyles = makeStyles({
 		input: {
@@ -35,7 +36,6 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 			maxWidth: 908,
 		},
 	});
-	// const label = { inputProps: { 'Montserrat': 'Checkbox demo' } };
 	const classes = useStyles();
 
 	return (
@@ -43,9 +43,9 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 			<h1>{title}</h1>
 			<h2>{subtitle}</h2>
 			<div className="inputs-container">
-				{fields.map((item) => {
+				{fields.map((item, key) => {
 					let input;
-
+					// console.log('item  = ', item.type)
 					switch (item.type) {
 						case "id":
 							input = (
@@ -104,10 +104,39 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 						case "number":
 							input = (
 								<TextField
+									key={key.toString()}
+									id="number"
 									className={classes.input}
 									label={item.placeholder}
 									type="number"
-									onChange={({ target }) => item.setState(target.value)}
+									onChange={({ target }) => {
+										if(target.value===''){
+											item.setState(0)
+										}
+										else{
+											item.setState(target.value)
+										}
+									}
+								}
+								/>
+							);
+							break;
+						case "year":
+							input = (
+								<TextField
+									key={key.toString()}
+									id="year"
+									className={classes.input}
+									label={item.placeholder}
+									type="number"
+									onChange={({ target }) => {
+										if (target.value === '') {
+											item.setState(0)
+										}
+										else {
+											item.setState(target.value)
+										}
+									}}
 								/>
 							);
 							break;
@@ -115,6 +144,8 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 						case "date":
 							input = (
 								<TextField
+									key={key.toString()}
+									id="date"
 									label={item.placeholder}
 									type="date"
 									defaultValue="2021-01-01"
@@ -127,6 +158,8 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 						case "phone":
 							input = (
 								<TextField
+									key={key.toString()}
+									id="phone"
 									label={item.placeholder}
 									onChange={({ target }) => item.setState(target.value)}
 									className={classes.input}
@@ -138,6 +171,8 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 						case "ShortText":
 							input = (
 								<TextField
+									key={key.toString()}
+									id="ShortText"
 									label={item.placeholder}
 									onChange={({ target }) => item.setState(target.value)}
 									className={classes.input}
@@ -149,6 +184,8 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 						case "MiddleText":
 							input = (
 								<TextField
+									key={key.toString()}
+									id="MiddleText"
 									label={item.placeholder}
 									onChange={({ target }) => item.setState(target.value)}
 									className={classes.input}
@@ -160,6 +197,8 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 						case "cpf":
 							input = (
 								<TextField
+									key={key.toString()}
+									id="cpf"
 									label={item.placeholder}
 									onChange={({ target }) => item.setState(target.value)}
 									className={classes.input}
@@ -171,6 +210,8 @@ function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 						default:
 							input = (
 								<TextField
+									key={key.toString()}
+									id="default"
 									label={item.placeholder}
 									onChange={({ target }) => item.setState(target.value)}
 									className={classes.input}

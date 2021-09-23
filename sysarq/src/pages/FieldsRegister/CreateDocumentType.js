@@ -8,10 +8,14 @@ const hostApiDocType = `${process.env.REACT_APP_URL_API}document-type/`;
 export default function CreateDocumentType() {
 	const [documentName, setDocumentName] = useState("");
 	const [temporalityValue, setTemporality] = useState(null);
-	const [show, setShow] = useState(false);
 
+	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+
+	const [showError, setShowError] = useState(false);
+	const handleCloseError = () => setShowError(false);
+	const handleShowError = () => setShowError(true);
 
 	const onClick = () => {
 		Api.post(hostApiDocType, {
@@ -22,7 +26,10 @@ export default function CreateDocumentType() {
 				handleShow();
 				setTimeout(handleClose, 3000);
 			})
-			.catch(() => {});
+			.catch(() => {
+				handleShowError();
+				setTimeout(handleCloseError, 3000);
+			});
 	};
 
 	const [fields] = useState([
@@ -41,6 +48,7 @@ export default function CreateDocumentType() {
 	return (
 		<div className="create-form-container">
 			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
+			{showError === true ? <Alert severity="error">Erro de conexão!</Alert> : ""}
 			<FormCadastro
 				title="Arquivo Geral da Policia Civil de Goiás"
 				subtitle="Cadastrar tipo de documento"

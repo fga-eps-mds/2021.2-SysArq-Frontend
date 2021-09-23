@@ -8,10 +8,15 @@ const hostApiShelf = `${process.env.REACT_APP_URL_API}shelf/`;
 export default function CreateShelf() {
 	const [numberE, setNumberE] = useState(0);
 	const [numberP, setNumberP] = useState(0);
-	const [show, setShow] = useState(false);
 
+	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+
+	const [showError, setShowError] = useState(false);
+	const handleCloseError = () => setShowError(false);
+	const handleShowError = () => setShowError(true);
+
 	const onClick = () => {
 		Api.post(hostApiShelf, {
 			shelfe_number: numberE,
@@ -21,7 +26,10 @@ export default function CreateShelf() {
 				handleShow();
 				setTimeout(handleClose, 3000);
 			})
-			.catch(() => {});
+			.catch(() => {
+				handleShowError();
+				setTimeout(handleCloseError, 3000);
+			});
 	};
 
 	const [fields] = useState([
@@ -40,6 +48,7 @@ export default function CreateShelf() {
 	return (
 		<div className="create-form-container">
 			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
+			{showError === true ? <Alert severity="error">Erro de conexão!</Alert> : ""}
 			<FormCadastro
 				title="Arquivo Geral da Policia Civil de Goiás"
 				subtitle="Cadastrar estante e/ou prateleira"

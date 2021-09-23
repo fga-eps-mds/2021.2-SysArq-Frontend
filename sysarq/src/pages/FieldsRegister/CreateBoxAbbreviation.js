@@ -11,10 +11,17 @@ export default function CreateBoxAbbreviation() {
 	const [Abbreviation, setAbbreviation] = useState("");
 	const [Name, setName] = useState("");
 	const [Year, setBondYear] = useState(0);
-	const [show, setShow] = useState(false);
 
+	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+
+	const [showError, setShowError] = useState(false);
+	const handleCloseError = () => setShowError(false);
+	const handleShowError = () => setShowError(true);
+	
+	// eslint-disable-next-line
+	var teste = 'batata'
 
 	const onClick = () => {
 		Api.post(hostApiBox, {
@@ -27,7 +34,10 @@ export default function CreateBoxAbbreviation() {
 				handleShow();
 				setTimeout(handleClose, 3000);
 			})
-			.catch(() => {});
+			.catch(()=>{
+				handleShowError();
+				setTimeout(handleCloseError, 3000);
+			})
 	};
 
 	const [fields] = useState([
@@ -47,7 +57,7 @@ export default function CreateBoxAbbreviation() {
 			setState: setName,
 		},
 		{
-			type: "number",
+			type: "year",
 			placeholder: "Ano",
 			setState: setBondYear,
 		},
@@ -55,7 +65,8 @@ export default function CreateBoxAbbreviation() {
 
 	return (
 		<div className="create-form-container">
-			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
+			{show === true ? <Alert data-testid='sucess' severity="success">Campo cadastrado!</Alert> : ""}
+			{showError === true ? <Alert severity="error">Erro de conexão!</Alert> : ""}
 			<FormCadastro
 				title="Arquivo Geral da Policia Civil de Goiás"
 				subtitle="Cadastrar sigla da caixa"

@@ -18,18 +18,10 @@ import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation"
 import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
-import AdministrativeProcess from "./pages/DocumentsRegister/AdministrativeProcess";
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import DocumentsRegister from "./pages/DocumentsRegister/DocumentsRegister";
-import CreateAdministrativeProcess from "./pages/DocumentsRegister/CreateAdministrativeProcess";
-import CreateFrequencyRelation from "./pages/DocumentsRegister/CreateFrequencyRelation";
-import FrequencyRelation from "./pages/DocumentsRegister/FrequencyRelation";
-import FrequencyDocument from "./pages/DocumentsRegister/FrequencyDocument";
-import CreateFrequencyDocument from "./pages/DocumentsRegister/CreateFrequencyDocument";
-import CreateArchivingRelation from "./pages/DocumentsRegister/CreateArchivingRelation";
-import ArchivingRelation from "./pages/DocumentsRegister/ArchivingRelation";
+
 
 function App() {
 	return (
@@ -38,36 +30,6 @@ function App() {
 			<Switch>
 				<Route exact path="/">
 					<Home />
-				</Route>
-
-				<Route path="/documents-register">
-					<Route exact path="/documents-register">
-						<DocumentsRegister />
-					</Route>
-					<Route path="/documents-register/administrative-process">
-						<AdministrativeProcess />
-					</Route>
-					<Route path="/documents-register/frequency-relation">
-						<FrequencyRelation />
-					</Route>
-					<Route path="/documents-register/frequency-document">
-						<FrequencyDocument />
-					</Route>
-					<Route path="/documents-register/archiving-relation">
-						<ArchivingRelation />
-					</Route>
-				</Route>
-				<Route path="/create-archiving-relation">
-					<CreateArchivingRelation />
-				</Route>
-				<Route path="/create-frequency-document">
-					<CreateFrequencyDocument />
-				</Route>
-				<Route path="/create-frequency-relation">
-					<CreateFrequencyRelation />
-				</Route>
-				<Route path="/create-administrative-process">
-					<CreateAdministrativeProcess />
 				</Route>
 
 				<Route path="/fields-register">
