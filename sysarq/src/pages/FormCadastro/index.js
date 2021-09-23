@@ -12,6 +12,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import "./styles.css";
+import "../Create.css";
 
 function FormCadastro({ title, subtitle, fields, onClickBtn }) {
 	// const [age, setAge] = React.useState('');
