@@ -1,4 +1,4 @@
-const headCellsDocumentSubject = [
+const documentSubjectHeadCells = [
 	{
 		id: "subject_name",
 		numeric: false,
@@ -12,7 +12,7 @@ const headCellsDocumentSubject = [
 	},
 ];
 
-const headCellsBoxAbbreviation = [
+const boxAbbreviationHeadCells = [
 	{
 		id: "number",
 		numeric: true,
@@ -38,7 +38,7 @@ const headCellsBoxAbbreviation = [
 	},
 ];
 
-const headCellsUnity = [
+const unityHeadCells = [
 	{
 		id: "unity_name",
 		numeric: false,
@@ -82,13 +82,13 @@ const headCellsUnity = [
 	},
 
 	{
-		id: "note",
+		id: "notes",
 		numeric: false,
 		label: "Observações",
 	},
 ];
 
-const headCellsDocumentType = [
+const documentTypeHeadCells = [
 	{
 		id: "document_name",
 		numeric: false,
@@ -102,7 +102,7 @@ const headCellsDocumentType = [
 	},
 ];
 
-const headCellsShelf = [
+const shelfHeadCells = [
 	{
 		id: "shelfe_number",
 		numeric: true,
@@ -116,7 +116,7 @@ const headCellsShelf = [
 	},
 ];
 
-const headCellsStatus = [
+const statusHeadCells = [
 	{
 		id: "filed",
 		numeric: false,
@@ -126,37 +126,37 @@ const headCellsStatus = [
 	{
 		id: "sent_from",
 		numeric: false,
-		label: "Unidade que encaminhou",
+		label: "Unidade que Encaminhou",
 	},
 
 	{
 		id: "requested_document",
 		numeric: false,
-		label: "Documento solicitado",
+		label: "Documento Solicitado",
 	},
 
 	{
 		id: "send_date",
 		numeric: true,
-		label: "Data de envio",
+		label: "Data de Envio",
 	},
 ];
 
 const tableHeadCells = (url) => {
 	let headCells = [];
 
-	if (url === "document_subject/") {
-		headCells = headCellsDocumentSubject;
-	} else if (url === "box_abbreviation/") {
-		headCells = headCellsBoxAbbreviation;
+	if (url === "document-subject/") {
+		headCells = documentSubjectHeadCells;
+	} else if (url === "box-abbreviation/") {
+		headCells = boxAbbreviationHeadCells;
 	} else if (url === "unity/") {
-		headCells = headCellsUnity;
-	} else if (url === "document_type/") {
-		headCells = headCellsDocumentType;
+		headCells = unityHeadCells;
+	} else if (url === "document-type/") {
+		headCells = documentTypeHeadCells;
 	} else if (url === "shelf/") {
-		headCells = headCellsShelf;
+		headCells = shelfHeadCells;
 	} else if (url === "status/") {
-		headCells = headCellsStatus;
+		headCells = statusHeadCells;
 	}
 	return headCells;
 };
