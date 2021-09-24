@@ -1,11 +1,30 @@
 import React, { useState } from "react";
 import Alert from "@material-ui/lab/Alert";
-import FormCadastro from "../FormCadastro";
-import Api from "../../Api";
+import Paper from "@material-ui/core/Paper";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import { axiosArchives } from "../../Api";
 
-const hostApiUnity = `${process.env.REACT_APP_URL_API}unity/`;
 
 export default function CreateUnity() {
+
+	const useStyles = makeStyles({
+		input: {
+			width: "100%",
+			height: 36,
+			marginBottom: "1rem",
+			maxWidth: 908,
+		},
+		inputDate: {
+			width: "100%",
+			height: 36,
+			marginTop: "2rem",
+			marginBottom: "2rem",
+			maxWidth: 908,
+		},
+	});
+	const classes = useStyles();
+
 	const [unityName, setUnityName] = useState("");
 	const [unityAbbreviation, setUnityAbbreviation] = useState("");
 	const [administrativeBond, setAdiministrativeBond] = useState("");
@@ -24,16 +43,8 @@ export default function CreateUnity() {
 	const handleShowError = () => setShowError(true);
 
 	const onClick = () => {
-		// console.log(hostApiUnity)
-		// console.log(unityName)
-		// console.log(unityAbbreviation)
-		// console.log(bondAbbreviation)
-		// console.log(unityType)
-		// console.log(county)
-		// console.log(telephoneNumber)
-		// console.log(note)
 
-		Api.post(hostApiUnity, {
+		axiosArchives.post(`unity/`, {
 			unity_name: unityName,
 			unity_abbreviation: unityAbbreviation,
 			administrative_bond: administrativeBond,
@@ -41,7 +52,7 @@ export default function CreateUnity() {
 			type_of_unity: unityType,
 			municipality: county,
 			telephone_number: telephoneNumber,
-			note,
+			note
 		})
 			.then(() => {
 				handleShow();
@@ -96,17 +107,37 @@ export default function CreateUnity() {
 		},
 	]);
 
+	const title = "Arquivo Geral da Policia Civil de Goiás"
+	const subtitle = "Cadastrar unidade"
+
 	return (
 		<div className="create-form-container">
 			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
 			{showError === true ? <Alert severity="error">Erro de conexão!</Alert> : ""}
-
-			<FormCadastro
-				title="Arquivo Geral da Policia Civil de Goiás"
-				subtitle="Cadastrar Unidade"
-				fields={fields}
-				onClickBtn={onClick}
-			/>
+			<Paper className="form-cadastro-container" elevation={10}>
+				<h1>{title}</h1>
+				<h2>{subtitle}</h2>
+				<div className="inputs-container">
+					{fields.map((item, key) => {
+						const input = (
+							<TextField
+								key={key.toString()}
+								id={item.placeholder}
+								label={item.placeholder}
+								type={item.type}
+								onChange={({ target }) => item.setState(target.value)}
+								className={classes.input}
+								inputProps={{ maxLength: "100" }}
+							/>
+						)
+						return input
+					}
+					)}
+				</div>
+				<button data-testid="click" type="button" onClick={onClick}>
+					CADASTRAR
+				</button>
+			</Paper>
 		</div>
 	);
 }

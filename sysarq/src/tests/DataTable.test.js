@@ -6,10 +6,10 @@ import { render, fireEvent, screen, within } from "@testing-library/react";
 
 import DataTable from "../pages/components/DataTable";
 
-const hostApiArchives = process.env.REACT_APP_URL_API_ARCHIVES;
+const axiosArchives = process.env.REACT_APP_URL_API_ARCHIVES;
 
 const server = setupServer(
-	rest.get(`${hostApiArchives}document-subject/`, async (req, res, ctx) => {
+	rest.get(`${axiosArchives}document-subject/`, async (req, res, ctx) => {
 		return res(
 			ctx.json([
 				{
@@ -76,23 +76,23 @@ const server = setupServer(
 		);
 	}),
 
-	rest.get(`${hostApiArchives}box-abbreviation/`, async (req, res, ctx) => {
+	rest.get(`${axiosArchives}box-abbreviation/`, async (req, res, ctx) => {
 		return res(ctx.json([]));
 	}),
 
-	rest.get(`${hostApiArchives}unity/`, async (req, res, ctx) => {
+	rest.get(`${axiosArchives}unity/`, async (req, res, ctx) => {
 		return res(ctx.json([]));
 	}),
 
-	rest.get(`${hostApiArchives}document-type/`, async (req, res, ctx) => {
+	rest.get(`${axiosArchives}document-type/`, async (req, res, ctx) => {
 		return res(ctx.json([]));
 	}),
 
-	rest.get(`${hostApiArchives}shelf/`, async (req, res, ctx) => {
+	rest.get(`${axiosArchives}shelf/`, async (req, res, ctx) => {
 		return res(ctx.json([]));
 	}),
 
-	rest.get(`${hostApiArchives}status/`, async (req, res, ctx) => {
+	rest.get(`${axiosArchives}status/`, async (req, res, ctx) => {
 		return res(ctx.json([]));
 	})
 );

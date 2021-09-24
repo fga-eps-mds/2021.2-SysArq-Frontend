@@ -5,11 +5,10 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 
 
-const hostApi = `${process.env.REACT_APP_URL_API}box-abbreviation/`;
+const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}box-abbreviation/`;
 
 const server = setupServer(
-	rest.post(hostApi, (req, res, ctx) => {
-		console.log(req.body.abbreviation)
+	rest.post(axiosArchives, (req, res, ctx) => {
 		if (req.body.number === '201') {
 			return res(
 				ctx.status(201),
@@ -27,36 +26,22 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
+const inputChange = (title, targetValue) => {
+	const inputReference = screen.getByLabelText(title);
+	fireEvent.change(inputReference, {
+		target: { value: targetValue }
+	})
+}
 
-describe("Render test", () => {
-	it("test component rendering", () => {
-		render(<CreateBoxAbbreviation />);
-		expect(screen.getByText("Cadastrar sigla da caixa")).toBeInTheDocument();
-		expect(screen.getByText("Número da caixa")).toBeInTheDocument();
-		expect(screen.getByText("Sigla da caixa")).toBeInTheDocument();
-		expect(screen.getByText("Nome completo")).toBeInTheDocument();
-		expect(screen.getByText("Ano")).toBeInTheDocument();
-		expect(screen.getByText("CADASTRAR")).toBeInTheDocument();
-	});
-});
 
-describe("Button test", () => {
+describe("Page test", () => {
 	it("axios success", async () => {
 		render(<CreateBoxAbbreviation />);
 
-		const inputBoxNumber = screen.getByLabelText("Número da caixa");
-		fireEvent.change(inputBoxNumber, { target: { value: '201' } });
-
-		const inputBoxAbbreviation = screen.getByLabelText("Sigla da caixa");
-		fireEvent.change(inputBoxAbbreviation, { target: { value: "ASD" } });
-
-		const inputFullName = screen.getByLabelText("Nome completo");
-		fireEvent.change(inputFullName, {
-			target: { value: "Polícia Civil do Goias" },
-		});
-
-		const inputYear = screen.getByLabelText("Ano");
-		fireEvent.change(inputYear, { target: { value: "2021" } });
+		inputChange("Número da caixa", "201")
+		inputChange("Sigla da caixa", "ASD")
+		inputChange("Nome completo", "Polícia Civil do Goias")
+		inputChange("Ano", "2021")
 
 		fireEvent.click(screen.getByTestId("click"))
 		
@@ -69,20 +54,10 @@ describe("Button test", () => {
 	it("axios fail", async () => {
 		render(<CreateBoxAbbreviation />);
 
-		const inputBoxNumber = screen.getByLabelText("Número da caixa");
-		fireEvent.change(inputBoxNumber, { target: { value: '401' } });
-
-		const inputBoxAbbreviation = screen.getByLabelText("Sigla da caixa");
-		fireEvent.change(inputBoxAbbreviation, { target: { value: "PC-GO" } });
-
-		const inputFullName = screen.getByLabelText("Nome completo");
-		fireEvent.change(inputFullName, {
-			target: { value: "Polícia Civil do Goias" },
-		});
-
-		const inputYear = screen.getByLabelText("Ano");
-		fireEvent.change(inputYear, { target: { value: "2021" } });
-
+		inputChange("Número da caixa", "401")
+		inputChange("Sigla da caixa", "ASD")
+		inputChange("Nome completo", "Polícia Civil do Goias")
+		inputChange("Ano", "2021")
 		fireEvent.click(screen.getByTestId("click"))
 
 		await (screen.findByText("Erro de conexão!"));

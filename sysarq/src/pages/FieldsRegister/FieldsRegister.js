@@ -5,6 +5,9 @@ import Grid from "@material-ui/core/Grid";
 
 import MenuCard from "../components/MenuCard";
 
+import "../styles.css";
+import "../Create.css";
+
 const useStyles = makeStyles((theme) => ({
 	cardGrid: {
 		paddingTop: theme.spacing(3),
