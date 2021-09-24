@@ -5,9 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives } from "../../Api";
 
-
 export default function CreateDocumentSubject() {
-
 	const useStyles = makeStyles({
 		input: {
 			width: "100%",
@@ -50,10 +48,11 @@ export default function CreateDocumentSubject() {
 	]);
 
 	const onClick = () => {
-		axiosArchives.post(`document-subject/`, {
-			subject_name: documentSubject,
-			temporality: temporalityValue,
-		})
+		axiosArchives
+			.post(`document-subject/`, {
+				subject_name: documentSubject,
+				temporality: temporalityValue,
+			})
 			.then(() => {
 				handleShow();
 				setTimeout(handleClose, 3000);
@@ -64,20 +63,24 @@ export default function CreateDocumentSubject() {
 			});
 	};
 
-	const title = "Arquivo Geral da Policia Civil de Goiás"
-	const subtitle = "Cadastrar assunto do documento"
+	const title = "Arquivo Geral da Policia Civil de Goiás";
+	const subtitle = "Cadastrar assunto do documento";
 
 	return (
 		<div className="create-form-container">
 			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
-			{showError === true ? <Alert severity="error">Erro de conexão!</Alert> : ""}
+			{showError === true ? (
+				<Alert severity="error">Erro de conexão!</Alert>
+			) : (
+				""
+			)}
 			<Paper className="form-cadastro-container" elevation={10}>
 				<h1>{title}</h1>
 				<h2>{subtitle}</h2>
 				<div className="inputs-container">
 					{fields.map((item, key) => {
-						const input = (
-							item.type !== "date" ?
+						const input =
+							item.type !== "date" ? (
 								<TextField
 									key={key.toString()}
 									id={item.placeholder}
@@ -87,7 +90,7 @@ export default function CreateDocumentSubject() {
 									className={classes.input}
 									inputProps={{ maxLength: "100" }}
 								/>
-								:
+							) : (
 								<TextField
 									key={key.toString()}
 									id={item.placeholder}
@@ -97,10 +100,9 @@ export default function CreateDocumentSubject() {
 									value={temporalityValue}
 									className={classes.inputDate}
 								/>
-						)
-						return input
-					}
-					)}
+							);
+						return input;
+					})}
 				</div>
 				<button data-testid="click" type="button" onClick={onClick}>
 					CADASTRAR

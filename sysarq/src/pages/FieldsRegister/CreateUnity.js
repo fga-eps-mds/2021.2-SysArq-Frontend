@@ -5,9 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives } from "../../Api";
 
-
 export default function CreateUnity() {
-
 	const useStyles = makeStyles({
 		input: {
 			width: "100%",
@@ -43,17 +41,17 @@ export default function CreateUnity() {
 	const handleShowError = () => setShowError(true);
 
 	const onClick = () => {
-
-		axiosArchives.post(`unity/`, {
-			unity_name: unityName,
-			unity_abbreviation: unityAbbreviation,
-			administrative_bond: administrativeBond,
-			bond_abbreviation: bondAbbreviation,
-			type_of_unity: unityType,
-			municipality: county,
-			telephone_number: telephoneNumber,
-			note
-		})
+		axiosArchives
+			.post(`unity/`, {
+				unity_name: unityName,
+				unity_abbreviation: unityAbbreviation,
+				administrative_bond: administrativeBond,
+				bond_abbreviation: bondAbbreviation,
+				type_of_unity: unityType,
+				municipality: county,
+				telephone_number: telephoneNumber,
+				note,
+			})
 			.then(() => {
 				handleShow();
 				setTimeout(handleClose, 3000);
@@ -107,13 +105,17 @@ export default function CreateUnity() {
 		},
 	]);
 
-	const title = "Arquivo Geral da Policia Civil de Goiás"
-	const subtitle = "Cadastrar unidade"
+	const title = "Arquivo Geral da Policia Civil de Goiás";
+	const subtitle = "Cadastrar unidade";
 
 	return (
 		<div className="create-form-container">
 			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
-			{showError === true ? <Alert severity="error">Erro de conexão!</Alert> : ""}
+			{showError === true ? (
+				<Alert severity="error">Erro de conexão!</Alert>
+			) : (
+				""
+			)}
 			<Paper className="form-cadastro-container" elevation={10}>
 				<h1>{title}</h1>
 				<h2>{subtitle}</h2>
@@ -129,10 +131,9 @@ export default function CreateUnity() {
 								className={classes.input}
 								inputProps={{ maxLength: "100" }}
 							/>
-						)
-						return input
-					}
-					)}
+						);
+						return input;
+					})}
 				</div>
 				<button data-testid="click" type="button" onClick={onClick}>
 					CADASTRAR

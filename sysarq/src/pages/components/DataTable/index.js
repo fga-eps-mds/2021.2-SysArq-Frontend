@@ -27,7 +27,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { Alert, AlertTitle } from "@material-ui/lab";
 
-import {axiosArchives}  from "../../../Api";
+import { axiosArchives } from "../../../Api";
 
 import tableHeadCells from "./tablesHeadCells";
 

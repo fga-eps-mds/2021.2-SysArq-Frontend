@@ -2,7 +2,6 @@
 // import FormCadastro from "../FormCadastro";
 // import { axiosArchives } from "../../Api";
 
-
 // export default function CreateStatus() {
 //     const [status, setStatus] = useState("ARQUIVADO");
 //     const [Eliminated, setEliminated] = useState("ELIMINADO");
@@ -24,7 +23,6 @@
 //         },
 
 //     ]);
-
 
 //     const onSubmit = () => {
 //         console.log(status)

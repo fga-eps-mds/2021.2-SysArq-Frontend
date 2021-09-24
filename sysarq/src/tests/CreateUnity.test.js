@@ -4,19 +4,14 @@ import CreateUnity from "../pages/FieldsRegister/CreateUnity";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
-
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}unity/`;
 
 const server = setupServer(
 	rest.post(axiosArchives, (req, res, ctx) => {
-		if (req.body.unity_name === '201') {
-			return res(
-				ctx.status(201),
-			)
+		if (req.body.unity_name === "201") {
+			return res(ctx.status(201));
 		} else {
-			return res(
-				ctx.status(404)
-			)
+			return res(ctx.status(404));
 		}
 	})
 );
@@ -26,52 +21,51 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
-
 const inputChange = (title, targetValue) => {
 	const inputReference = screen.getByLabelText(title);
 	fireEvent.change(inputReference, {
-		target: {value: targetValue}
-	})
-}
+		target: { value: targetValue },
+	});
+};
 
 describe("Button test", () => {
 	it("axios success", async () => {
 		render(<CreateUnity />);
 
-		inputChange("Nome da unidade", "201")
-		inputChange("Sigla da unidade", "20º DP")
-		inputChange("Vínculo administrativo", "Jurídico")
-		inputChange("Sigla do vínculo", "VJA")
-		inputChange("Tipo de unidade", "Administrativa")
-		inputChange("Município", "Abadiânia")
-		inputChange("Telefone", "912398734")
-		inputChange("Observações", "Robson")
+		inputChange("Nome da unidade", "201");
+		inputChange("Sigla da unidade", "20º DP");
+		inputChange("Vínculo administrativo", "Jurídico");
+		inputChange("Sigla do vínculo", "VJA");
+		inputChange("Tipo de unidade", "Administrativa");
+		inputChange("Município", "Abadiânia");
+		inputChange("Telefone", "912398734");
+		inputChange("Observações", "Robson");
 
-		fireEvent.click(screen.getByTestId("click"))
+		fireEvent.click(screen.getByTestId("click"));
 
-		await (screen.findByText("Campo cadastrado!"));
+		await screen.findByText("Campo cadastrado!");
 		act(() => {
 			jest.advanceTimersByTime(3000);
-		})
+		});
 	});
 
 	it("axios fail", async () => {
 		render(<CreateUnity />);
 
-		inputChange("Nome da unidade", "401")
-		inputChange("Sigla da unidade", "20º DP")
-		inputChange("Vínculo administrativo", "Jurídico")
-		inputChange("Sigla do vínculo", "VJA")
-		inputChange("Tipo de unidade", "Administrativa")
-		inputChange("Município", "Abadiânia")
-		inputChange("Telefone", "912398734")
-		inputChange("Observações", "Robson")
+		inputChange("Nome da unidade", "401");
+		inputChange("Sigla da unidade", "20º DP");
+		inputChange("Vínculo administrativo", "Jurídico");
+		inputChange("Sigla do vínculo", "VJA");
+		inputChange("Tipo de unidade", "Administrativa");
+		inputChange("Município", "Abadiânia");
+		inputChange("Telefone", "912398734");
+		inputChange("Observações", "Robson");
 
-		fireEvent.click(screen.getByTestId("click"))
+		fireEvent.click(screen.getByTestId("click"));
 
-		await (screen.findByText("Erro de conexão!"));
+		await screen.findByText("Erro de conexão!");
 		act(() => {
 			jest.advanceTimersByTime(3000);
-		})
+		});
 	});
 });
