@@ -61,15 +61,6 @@ export default function FieldsRegister() {
 
 					<Grid item xs={12} sm={6} md={3}>
 						<MenuCard
-							icon="icone-status"
-							title="Status"
-							createUrl="/fields-register/status/create"
-							listUrl="/fields-register/status"
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={6} md={3}>
-						<MenuCard
 							icon="icone-estante-prateleira"
 							title="Estante e Prateleira"
 							createUrl="/fields-register/shelf/create"

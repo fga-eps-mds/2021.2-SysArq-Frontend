@@ -1,61 +1,68 @@
-// import React from "react";
-// import { render, screen, fireEvent } from "@testing-library/react";
+import React from "react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 
-// import CreateShelf from "../pages/FieldsRegister/CreateShelf";
-// import axios from "axios";
-// import MockAdapter from "axios-mock-adapter";
+import CreateShelf from "../pages/FieldsRegister/CreateShelf";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 
-// describe("Main component", () => {
-// 	it("Show page title", () => {
-// 		render(<CreateShelf />);
+const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}shelf/`;
 
-// 		expect(screen.getByText("Estante e Prateleira")).toBeInTheDocument();
-// 	});
-// });
+const server = setupServer(
+	rest.post(axiosArchives, (req, res, ctx) => {
+		if (req.body.shelfe_number === "201") {
+			return res(ctx.status(201));
+		} else {
+			return res(ctx.status(404));
+		}
+	})
+);
 
-// describe("Ensure that the shelf input fields exist", () => {
-// 	it("shelf", () => {
-// 		render(<CreateShelf />);
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+jest.useFakeTimers();
 
-// 		expect(screen.getByText("Estante")).toBeInTheDocument();
-// 		expect(screen.getByText("Prateleira")).toBeInTheDocument();
+const inputChange = (title, targetValue) => {
+	const inputReference = screen.getByLabelText(title);
+	fireEvent.change(inputReference, {
+		target: { value: targetValue },
+	});
+};
+describe("Main component", () => {
+	it("Show page title", () => {
+		render(<CreateShelf />);
 
-// 		const inputShelfE = screen.getByLabelText("Estante");
-// 		fireEvent.change(inputShelfE, { target: { value: "2" } });
-// 		const valueShelfE = screen.getByLabelText("Estante").value;
-// 		expect(valueShelfE === "2").toBe(true);
+		expect(
+			screen.getByText("Cadastrar estantes e prateleiras")
+		).toBeInTheDocument();
+	});
+});
 
-// 		const inputShelfP = screen.getByLabelText("Prateleira");
-// 		fireEvent.change(inputShelfP, { target: { value: "4" } });
-// 		const valueShelfP = screen.getByLabelText("Prateleira").value;
-// 		expect(valueShelfP === "4").toBe(true);
-// 	});
-// });
+describe("inputs", () => {
+	it("axios sucess", async () => {
+		render(<CreateShelf />);
 
-// const hostApiShelfE = `${process.env.REACT_APP_URL_API}shelfE`;
-// const hostApiShelfP = `${process.env.REACT_APP_URL_API}shelfP`;
+		inputChange("Estante", "201");
+		inputChange("Prateleira", "12");
 
-// describe("Button test", () => {
-// 	it("Save button", () => {
-// 		const mock = new MockAdapter(axios);
+		fireEvent.click(screen.getByTestId("click"));
 
-// 		render(<CreateShelf />);
+		await screen.findByText("Campo cadastrado!");
+		act(() => {
+			jest.advanceTimersByTime(3000);
+		});
+	});
+	it("axios fail", async () => {
+		render(<CreateShelf />);
 
-// 		const click = screen.getByTestId("click");
-// 		expect(fireEvent.click(click)).toBe(true);
+		inputChange("Estante", "401");
+		inputChange("Prateleira", "12");
 
-// 		mock.onPost(hostApiShelfE).reply(function () {
-// 			return [201];
-// 		});
+		fireEvent.click(screen.getByTestId("click"));
 
-// 		mock.onPost(hostApiShelfP).reply(function () {
-// 			return [201];
-// 		});
-
-// 		expect(mock.history.post.length).toBe(2);
-// 		expect(mock.history.post[0].data).toBe(
-// 			JSON.stringify({ shelfe: 0, shelfp: 0 })
-// 		);
-// 		expect(mock.history.post[1].data).toBe(JSON.stringify({ number: 0 }));
-// 	});
-// });
+		await screen.findByText("Erro de conexão!");
+		act(() => {
+			jest.advanceTimersByTime(3000);
+		});
+	});
+});

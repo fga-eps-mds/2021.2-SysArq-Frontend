@@ -11,9 +11,7 @@ import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
 import DocumentType from "./pages/FieldsRegister/DocumentType";
 import Unity from "./pages/FieldsRegister/Unity";
 import Shelf from "./pages/FieldsRegister/Shelf";
-import Status from "./pages/FieldsRegister/Status";
 import CreateDocumentSubject from "./pages/FieldsRegister/CreateDocumentSubject";
-import CreateStatus from "./pages/FieldsRegister/CreateStatus";
 import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation";
 import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
@@ -30,7 +28,6 @@ function App() {
 				<Route exact path="/">
 					<Home />
 				</Route>
-
 				<Route path="/fields-register">
 					<Route exact path="/fields-register">
 						<FieldsRegister />
@@ -73,14 +70,6 @@ function App() {
 						</Route>
 						<Route path="/fields-register/shelf/create">
 							<CreateShelf />
-						</Route>
-					</Route>
-					<Route path="/fields-register/status">
-						<Route exact path="/fields-register/status">
-							<Status />
-						</Route>
-						<Route path="/fields-register/status/create">
-							<CreateStatus />
 						</Route>
 					</Route>
 				</Route>

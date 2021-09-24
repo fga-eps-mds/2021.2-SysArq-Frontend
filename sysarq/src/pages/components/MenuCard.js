@@ -14,7 +14,6 @@ import SubjectIcon from "@material-ui/icons/Subject";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import DescriptionIcon from "@material-ui/icons/Description";
 import HomeWorkIcon from "@material-ui/icons/HomeWork";
-import ArchiveIcon from "@material-ui/icons/Archive";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
 
 const useStyles = makeStyles(() => ({
@@ -56,8 +55,6 @@ const Icon = ({ iconName }) => {
 		icon = <HomeWorkIcon className={classes.icon} />;
 	} else if (iconName === "icone-tipo-de-documento") {
 		icon = <DescriptionIcon className={classes.icon} />;
-	} else if (iconName === "icone-status") {
-		icon = <ArchiveIcon className={classes.icon} />;
 	} else if (iconName === "icone-estante-prateleira") {
 		icon = <AllInboxIcon className={classes.icon} />;
 	}
