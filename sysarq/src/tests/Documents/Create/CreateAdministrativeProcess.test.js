@@ -7,7 +7,7 @@ import CreateAdministrativeProcess from "../../../pages/Documents/Create/CreateA
 
 const hostApiArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
 
-jest.setTimeout(20000);
+jest.setTimeout(30000);
 
 const server = setupServer(
 	rest.get(`${hostApiArchives}document-subject/`, (req, res, ctx) => {
