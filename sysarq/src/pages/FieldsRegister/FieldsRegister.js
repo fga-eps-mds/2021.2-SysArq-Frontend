@@ -3,7 +3,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
-import MenuCard from "../components/MenuCard";
+import MenuCard from "../components/MenuCard/Fields";
 
 const useStyles = makeStyles((theme) => ({
 	cardGrid: {
