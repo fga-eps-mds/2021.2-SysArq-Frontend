@@ -37,7 +37,7 @@ const Icon = ({ iconName }) => {
 		icon = <DescriptionIcon className={classes.icon} />;
 	} else if (iconName === "frequency-sheet-icon") {
 		icon = <AccountBoxIcon className={classes.icon} />;
-	} else if (iconName === "archiving-relation-icon") {
+	} else {
 		icon = <AllInboxIcon className={classes.icon} />;
 	}
 
