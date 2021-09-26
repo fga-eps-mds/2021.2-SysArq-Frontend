@@ -20,9 +20,12 @@ import CreatePublicWorker from "./pages/FieldsRegister/CreatePublicWorker";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
 
+import Documents from "./pages/Documents";
+
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdministrativeProcess";
 
 function App() {
 	return (
@@ -98,6 +101,20 @@ function App() {
 						</Route>
 						<Route path="/fields-register/status/create">
 							<CreateStatus />
+						</Route>
+					</Route>
+				</Route>
+
+				<Route path="/documents">
+					<Route exact path="/documents">
+						<Documents />
+					</Route>
+					<Route path="/documents/administrative-process">
+						<Route exact path="/documents/administrative-process">
+							<Status />
+						</Route>
+						<Route path="/documents/administrative-process/create">
+							<CreateAdministrativeProcess />
 						</Route>
 					</Route>
 				</Route>

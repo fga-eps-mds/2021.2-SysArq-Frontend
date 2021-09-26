@@ -536,13 +536,13 @@ const CreateAdministrativeProcess = () => {
 				<>
 					<Grid item xs={12} sm={12} md={12}>
 						<FormControl fullWidth>
-							<InputLabel id="select-destinationUnit-label">
+							<InputLabel id="select-unarchiveDestinationUnit-label">
 								Unidade de Destino do Desarquivamento
 							</InputLabel>
 							<Select
 								style={{ textAlign: "left" }}
-								labelId="select-destinationUnit-label"
-								id="select-destinationUnit"
+								labelId="select-unarchiveDestinationUnit-label"
+								id="select-unarchiveDestinationUnit"
 								value={unarchiveDestinationUnit}
 								onChange={handleUnarchiveDestinationUnit}
 								renderValue={(value) => `${value.unity_name}`}
@@ -551,9 +551,12 @@ const CreateAdministrativeProcess = () => {
 									<em>Nenhuma</em>
 								</MenuItem>
 
-								{units.map((destUnitOption) => (
-									<MenuItem id={destUnitOption.id} value={destUnitOption}>
-										{destUnitOption.unity_name}
+								{units.map((unarchiveDestinationUnitOption) => (
+									<MenuItem
+										id={unarchiveDestinationUnitOption.id}
+										value={unarchiveDestinationUnitOption}
+									>
+										{unarchiveDestinationUnitOption.unity_name}
 									</MenuItem>
 								))}
 							</Select>

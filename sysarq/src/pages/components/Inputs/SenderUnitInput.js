@@ -25,13 +25,13 @@ const SenderUnitInput = ({
 	return (
 		<Grid item xs={12} sm={12} md={12}>
 			<FormControl fullWidth error={senderUnitHelperText !== ""}>
-				<InputLabel id="select-abbreviation-label">
+				<InputLabel id="select-senderUnit-label">
 					Unidade que Encaminhou*
 				</InputLabel>
 				<Select
 					style={{ textAlign: "left" }}
-					labelId="select-abbreviation-label"
-					id="select-abbreviation"
+					labelId="select-senderUnit-label"
+					id="select-senderUnit"
 					value={senderUnit}
 					onChange={handleChange}
 					renderValue={(value) => `${value.unity_name}`}
