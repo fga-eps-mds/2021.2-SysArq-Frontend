@@ -1,33 +1,32 @@
 import React, { useState } from "react";
 import Alert from "@material-ui/lab/Alert";
-import Paper from "@material-ui/core/Paper";
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
+import { FormControl, Grid, Container, InputLabel, Select, MenuItem, Paper, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives } from "../../Api";
 
+const useStyles = makeStyles({
+	input: {
+		width: "100%",
+		height: 36,
+		marginBottom: "1rem",
+		maxWidth: 908,
+		marginTop: "1rem",
+	},
+	inputDate: {
+		width: "100%",
+		height: 36,
+		marginTop: "2rem",
+		marginBottom: "2rem",
+		maxWidth: 908,
+	},
+});
+
 export default function CreateShelf() {
-	const useStyles = makeStyles({
-		input: {
-			width: "100%",
-			height: 36,
-			marginBottom: "1rem",
-			maxWidth: 908,
-			marginTop: "1rem",
-		},
-		inputDate: {
-			width: "100%",
-			height: 36,
-			marginTop: "2rem",
-			marginBottom: "2rem",
-			maxWidth: 908,
-		},
-	});
 	const classes = useStyles();
 
 	const [type, setType] = useState("Estante");
-	const [numberE, setNumberE] = useState(0);
-	const [numberP, setNumberP] = useState(0);
+	const [numberE, setNumberE] = useState("");
+	const [numberP, setNumberP] = useState("");
 
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
@@ -37,11 +36,28 @@ export default function CreateShelf() {
 	const handleCloseError = () => setShowError(false);
 	const handleShowError = () => setShowError(true);
 
+	const [shelfHelperText, setShelfHelperText] = useState("");
+	const [shelfNumberError, setShelfNumberError] = useState(false);
+
+	const [rackHelperText, setRackHelperText] = useState("");
+	const [rackNumberError, setRackNumberError] = useState(false);
+
+
 	const handleValueChange = (event) => {
 		setType(event.target.value);
 	};
 
 	const onClick = () => {
+		if (numberE === "" && type==="Estante") {
+			setShelfNumberError(true)
+			setShelfHelperText("Estante não pode ser vazia")
+			return "Erro";
+		}
+		if (numberP === "" && type === "Prateleira") {
+			setRackNumberError(true)
+			setRackHelperText("Prateleira não pode ser vazia")
+			return "Erro";
+		}
 		if (type === "Estante") {
 			axiosArchives
 				.post(`shelf/`, {
@@ -69,6 +85,14 @@ export default function CreateShelf() {
 					setTimeout(handleCloseError, 3000);
 				});
 		}
+		setShelfNumberError(false)
+		setShelfHelperText("")
+
+		setRackNumberError(false)
+		setRackHelperText("")
+
+		return null;
+
 	};
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
@@ -86,43 +110,66 @@ export default function CreateShelf() {
 				<h1>{title}</h1>
 				<h2>{subtitle}</h2>
 				<div className="inputs-container">
-					<FormControl fullWidth>
-						<InputLabel id="select-shelf-rack-label">Selecione</InputLabel>
-						<Select
-							style={{ textAlign: "left" }}
-							labelId="select-shelf-rack-label"
-							id="select-shelf"
-							value={type}
-							onChange={handleValueChange}
-							renderValue={(value) => `${value}`}
-						>
-							<MenuItem key={0} value="Estante">
-								Estante
-							</MenuItem>
-							<MenuItem key={1} value="Prateleira">
-								Prateleira
-							</MenuItem>
-						</Select>
-					</FormControl>
-					{type === "Estante" ? (
-						<TextField
-							key={0}
-							id="Estante"
-							label="Número da estante"
-							type="number"
-							onChange={({ target }) => setNumberE(target.value)}
-							className={classes.input}
-						/>
-					) : (
-						<TextField
-							key={1}
-							id="Prateleira"
-							label="Número da prateleira"
-							type="number"
-							onChange={({ target }) => setNumberP(target.value)}
-							className={classes.input}
-						/>
-					)}
+					<Container className="container">
+						<Grid container spacing={2}>
+							<Grid item xs={12} sm={12} md={12} key={1}>
+								<FormControl fullWidth>
+									<InputLabel id="select-shelf-rack-label">Selecione</InputLabel>
+									<Select
+										style={{ textAlign: "left" }}
+										labelId="select-shelf-rack-label"
+										id="select-shelf"
+										value={type}
+										onChange={handleValueChange}
+										renderValue={(value) => `${value}`}
+									>
+										<MenuItem key={0} value="Estante">
+											Estante
+										</MenuItem>
+										<MenuItem key={1} value="Prateleira">
+											Prateleira
+										</MenuItem>
+									</Select>
+								</FormControl>
+							</Grid>
+							{type === "Estante" ? (
+								<Grid item xs={12} sm={12} md={12} key={2}>
+
+									<TextField
+										id="Estante"
+										label="Número da estante"
+										type="number"
+										onChange={( event ) => {
+											setNumberE(event.target.value) 
+											setShelfNumberError(false)
+											setShelfHelperText("")}}
+										className={classes.input}
+										helperText={shelfHelperText}
+										error={shelfNumberError}
+									/>
+								</Grid>
+
+							) : (
+								<Grid item xs={12} sm={12} md={12}>
+									<TextField
+										key={1}
+										id="Prateleira"
+										label="Número da prateleira"
+										type="number"
+										onChange={(event) => {
+											setNumberP(event.target.value)
+											setRackNumberError(false)
+											setRackHelperText("")}
+										}
+										className={classes.input}
+										helperText={rackHelperText}
+										error={rackNumberError}
+
+									/>
+								</Grid>
+							)}
+						</Grid>
+					</Container>
 				</div>
 				<button data-testid="click" type="button" onClick={onClick}>
 					CADASTRAR

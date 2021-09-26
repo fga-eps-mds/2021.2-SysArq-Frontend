@@ -1,26 +1,26 @@
 import React, { useState } from "react";
 import Alert from "@material-ui/lab/Alert";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
+import { Paper, TextField, Grid, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives } from "../../Api";
 
+const useStyles = makeStyles({
+	input: {
+		width: "100%",
+		height: 36,
+		marginBottom: "1rem",
+		maxWidth: 908,
+	},
+	inputDate: {
+		width: "100%",
+		height: 36,
+		marginTop: "2rem",
+		marginBottom: "2rem",
+		maxWidth: 908,
+	},
+});
+
 export default function CreateDocumentType() {
-	const useStyles = makeStyles({
-		input: {
-			width: "100%",
-			height: 36,
-			marginBottom: "1rem",
-			maxWidth: 908,
-		},
-		inputDate: {
-			width: "100%",
-			height: 36,
-			marginTop: "2rem",
-			marginBottom: "2rem",
-			maxWidth: 908,
-		},
-	});
 	const classes = useStyles();
 
 	const [documentName, setDocumentName] = useState("");
@@ -54,12 +54,22 @@ export default function CreateDocumentType() {
 		{
 			type: "text",
 			placeholder: "Nome do documento",
-			setState: setDocumentName,
+			setValue: setDocumentName,
+			value: documentName,
+			helperText: "",
+			error: false,
+			setHelperText: () => { "" },
+			setError: () => { "" }
 		},
 		{
 			type: "date",
 			placeholder: "Temporalidade",
-			setState: setTemporality,
+			setValue: setTemporality,
+			value: temporalityValue,
+			helperText: "",
+			error: false,
+			setHelperText: () => { "" },
+			setError: () => { "" }
 		},
 	]);
 
@@ -78,31 +88,46 @@ export default function CreateDocumentType() {
 				<h1>{title}</h1>
 				<h2>{subtitle}</h2>
 				<div className="inputs-container">
-					{fields.map((item, key) => {
-						const input =
-							item.type !== "date" ? (
-								<TextField
-									key={key.toString()}
-									id={item.placeholder}
-									label={item.placeholder}
-									type={item.type}
-									onChange={({ target }) => item.setState(target.value)}
-									className={classes.input}
-									inputProps={{ maxLength: "100" }}
-								/>
-							) : (
-								<TextField
-									key={key.toString()}
-									id={item.placeholder}
-									label={item.placeholder}
-									type={item.type}
-									onChange={({ target }) => item.setState(target.value)}
-									value={temporalityValue}
-									className={classes.inputDate}
-								/>
-							);
-						return input;
-					})}
+					<Container className="container">
+						<Grid container spacing={2}>
+							{fields.map((item, key) => {
+								const input =
+									item.type !== "date" ? (
+										<Grid item xs={12} sm={12} md={12} key={key.toString()}>
+											<TextField
+												id={item.placeholder}
+												label={item.placeholder}
+												type={item.type}
+												value={item.value}
+												onChange={(event) => {
+													item.setValue(event.target.value)
+													item.setHelperText("")
+													item.setError(false)
+												}} 
+												className={classes.input}
+												inputProps={{ maxLength: "100" }}
+											/>
+										</Grid>
+									) : (
+											<Grid item xs={12} sm={12} md={12} key={key.toString()}>
+											<TextField
+												id={item.placeholder}
+												label={item.placeholder}
+												type={item.type}
+												value={item.value}
+												onChange={(event) => {
+													item.setValue(event.target.value)
+													item.setHelperText("")
+													item.setError(false)
+												}} 
+												className={classes.inputDate}
+											/>
+										</Grid>
+									);
+								return input;
+							})}
+						</Grid>
+					</Container>
 				</div>
 				<button data-testid="click" type="button" onClick={onClick}>
 					CADASTRAR
