@@ -96,7 +96,8 @@ const DataTable = ({ url, title }) => {
 	useEffect(() => {
 		setHeadCells(tableHeadCells(url));
 
-		axiosArchives.get(url)
+		axiosArchives
+			.get(url)
 			.then((response) => {
 				setRows(response.data);
 			})
