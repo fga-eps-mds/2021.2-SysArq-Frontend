@@ -20,7 +20,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 import tableHeadCells from "./tablesHeadCells";
 
-import Api from "../../../Api";
+import { axiosArchives } from "../../../Api";
 
 const useStyles = makeStyles((theme) => ({
 	title: {
@@ -96,7 +96,7 @@ const DataTable = ({ url, title }) => {
 	useEffect(() => {
 		setHeadCells(tableHeadCells(url));
 
-		Api.get(url)
+		axiosArchives.get(url)
 			.then((response) => {
 				setRows(response.data);
 			})

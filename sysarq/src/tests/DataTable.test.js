@@ -6,7 +6,7 @@ import { render, fireEvent, screen, within } from "@testing-library/react";
 
 import DataTable from "../pages/components/DataTable/DataTable";
 
-const hostApi = `${process.env.REACT_APP_URL_API}document_subject`;
+const hostApi = `${process.env.REACT_APP_URL_API_ARCHIVES}document_subject`;
 
 const server = setupServer(
 	rest.get(hostApi, async (req, res, ctx) => {
