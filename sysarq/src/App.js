@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Navbar, Container, Nav } from "react-bootstrap";
 
 import Home from "./pages/Home";
+import Search from "./pages/Search";
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
 import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
@@ -33,6 +34,7 @@ function App() {
 					<Nav className="me-auto">
 						<Nav.Link href="/">Home</Nav.Link>
 						<Nav.Link href="/fields-register">Cadastro de Campos</Nav.Link>
+						<Nav.Link href="/search">Pesquisar</Nav.Link>
 					</Nav>
 				</Container>
 			</Navbar>
@@ -40,6 +42,9 @@ function App() {
 			<Switch>
 				<Route exact path="/">
 					<Home />
+				</Route>
+				<Route exact path="/search">
+					<Search />
 				</Route>
 				<Route path="/fields-register">
 					<Route exact path="/fields-register">
