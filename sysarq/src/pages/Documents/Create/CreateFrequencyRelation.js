@@ -119,24 +119,24 @@ const CreateFrequencyRelation = () => {
 
 	const handleCloseNewPeriodDialog = () => setOpenNewPeriodDialog(false);
 
-	const handlePeriodChange = (date) => {
-		setPeriodHelperText("");
-		setPeriod(date);
-	};
+	// const handlePeriodChange = (date) => {
+	// 	setPeriodHelperText("");
+	// 	setPeriod(date);
+	// };
 
-	const handleConfirmNewPeriodDialog = () => {
+	// const handleConfirmNewPeriodDialog = () => {
 		// Here
-		setPeriodHelperText("Teste");
-	}
+	//	setPeriodHelperText("Teste");
+	// };
 
-	const handleDelete = (period1) => {
-		console.log(period1 === referencePeriod[0]);
-		console.log(referencePeriod);
-		setReferencePeriod([]);
+	// const handleDelete = (period1) => {
+	// 	console.log(period1 === referencePeriod[0]);
+	// 	console.log(referencePeriod);
+	// 	setReferencePeriod([]);
 
-		setReferencePeriodHelperText("");
-		console.log(referencePeriodHelperText);
-	};
+	// 	setReferencePeriodHelperText("");
+	// 	console.log(referencePeriodHelperText);
+	// };
 
 	// const handleReferenceChange = (date) => {
 	// 	setReferenceHelperText("");
@@ -195,11 +195,11 @@ const CreateFrequencyRelation = () => {
 			return "senderUnit error";
 		}
 
-		if (referencePeriod === []) {
+		// if (referencePeriod === []) {
 			//
-			setLoading(false);
-			return "referencePeriod error";
-		}
+		// 	setLoading(false);
+		// 	return "referencePeriod error";
+		// }
 
 		// axiosArchives
 		// 	.post("administrative-process/", {
@@ -238,12 +238,12 @@ const CreateFrequencyRelation = () => {
 		axiosArchives
 			.get("document-type/")
 			.then((response) => setDocumentTypes(response.data))
-			.catch(() => connectionError());
+			// .catch(() => connectionError());
 
 		axiosArchives
 			.get("unity/")
 			.then((response) => setUnits(response.data))
-			.catch(() => connectionError());
+			// .catch(() => connectionError());
 	}, []);
 
 	return (
@@ -358,7 +358,7 @@ const CreateFrequencyRelation = () => {
 							icon={<TimelapseIcon />}
 							label={`${period1.getMonth() + 1}/${period1.getFullYear()}`}
 							color="secondary"
-							onDelete={() => handleDelete(period1)}
+							// onDelete={() => null}
 						/>
 					))}
 					<Chip
@@ -390,7 +390,7 @@ const CreateFrequencyRelation = () => {
 						label="Período"
 						format="MM/yyyy"
 						value={period}
-						onChange={handlePeriodChange}
+						// onChange={handlePeriodChange}
 						error={periodHelperText !== ""}
 						helperText={periodHelperText}
 					/>
@@ -399,7 +399,7 @@ const CreateFrequencyRelation = () => {
 					<Button onClick={handleCloseNewPeriodDialog} color="primary">
 						Cancelar
 					</Button>
-					<Button onClick={handleConfirmNewPeriodDialog} color="primary">
+					<Button onClick={handleCloseNewPeriodDialog} color="primary">
 						Confirmar
 					</Button>
 				</DialogActions>
