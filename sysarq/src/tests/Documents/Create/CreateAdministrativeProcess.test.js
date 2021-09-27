@@ -155,8 +155,7 @@ const INVALID_DATE_ERROR_MESSAGE = "Insira uma data válida";
 
 const ARCHIVING_DATE_LABEL = "Data de Arquivamento*";
 
-const UNARCHIVE_DESTINATION_UNIT_LABEL =
-	"Unid. Destino do Desarquivamento";
+const UNARCHIVE_DESTINATION_UNIT_LABEL = "Unid. Destino do Desarquivamento";
 
 const UNARCHIVE_PROCESS_NUMBER_LABEL = "Nº do Processo do Desarquivamento";
 

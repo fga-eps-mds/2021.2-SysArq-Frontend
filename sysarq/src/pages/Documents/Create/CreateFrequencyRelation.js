@@ -23,6 +23,7 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import Alert from "@material-ui/lab/Alert";
 
 import TimelapseIcon from "@material-ui/icons/Timelapse";
+import CancelIcon from '@material-ui/icons/Cancel';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 import {
@@ -396,6 +397,7 @@ const CreateFrequencyRelation = () => {
 								4
 							)}`}
 							color="secondary"
+							deleteIcon={<CancelIcon data-testid="delete"/>}
 							onDelete={() => handleDeletePeriod(addedPeriod)}
 						/>
 					))}
@@ -439,7 +441,7 @@ const CreateFrequencyRelation = () => {
 						Cancelar
 					</Button>
 					<Button onClick={handleAddNewPeriodDialog} color="primary">
-						Adicionar
+						Confirmar
 					</Button>
 				</DialogActions>
 			</Dialog>
