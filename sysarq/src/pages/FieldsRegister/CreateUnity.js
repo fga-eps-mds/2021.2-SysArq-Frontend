@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import Alert from "@material-ui/lab/Alert";
-import { Paper, TextField, Grid, Container } from "@material-ui/core";
+import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives } from "../../Api";
+import { createForm2 } from "./form";
 
 export default function CreateUnity() {
 	const useStyles = makeStyles({
@@ -29,7 +28,7 @@ export default function CreateUnity() {
 	const [unityType, setUnityType] = useState("");
 	const [county, setCounty] = useState("");
 	const [telephoneNumber, setTelephoneNumber] = useState("");
-	const [note, setNote] = useState("");
+	const [notes, setNote] = useState("");
 
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
@@ -49,7 +48,7 @@ export default function CreateUnity() {
 				type_of_unity: unityType,
 				municipality: county,
 				telephone_number: telephoneNumber,
-				note,
+				note: notes,
 			})
 			.then(() => {
 				handleShow();
@@ -164,7 +163,7 @@ export default function CreateUnity() {
 			type: "text",
 			placeholder: "Observações",
 			setValue: setNote,
-			value: note,
+			value: notes,
 			helperText: "",
 			error: false,
 			setHelperText: () => {
@@ -179,47 +178,14 @@ export default function CreateUnity() {
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar unidade";
 
-	return (
-		<div className="create-form-container">
-			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
-			{showError === true ? (
-				<Alert severity="error">Erro de conexão!</Alert>
-			) : (
-				""
-			)}
-			<Paper className="form-cadastro-container" elevation={10}>
-				<h1>{title}</h1>
-				<h2>{subtitle}</h2>
-				<div className="inputs-container">
-					<Container className="container">
-						<Grid container spacing={2}>
-							{fields.map((item, key) => {
-								const input = (
-									<Grid item xs={12} sm={12} md={12} key={key.toString()}>
-										<TextField
-											id={item.placeholder}
-											label={item.placeholder}
-											type={item.type}
-											value={item.value}
-											onChange={(event) => {
-												item.setValue(event.target.value);
-												item.setHelperText("");
-												item.setError(false);
-											}}
-											className={classes.input}
-											inputProps={{ maxLength: "100" }}
-										/>
-									</Grid>
-								);
-								return input;
-							})}
-						</Grid>
-					</Container>
-				</div>
-				<button data-testid="click" type="button" onClick={onClick}>
-					CADASTRAR
-				</button>
-			</Paper>
-		</div>
+	return createForm2(
+		fields,
+		title,
+		subtitle,
+		classes,
+		show,
+		showError,
+		onClick,
+		false
 	);
 }
