@@ -20,10 +20,17 @@ import {
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
+import Alert from "@material-ui/lab/Alert";
+
 import TimelapseIcon from "@material-ui/icons/Timelapse";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
-import { initialDate, initialPeriod, isDateNotValid } from "../../../support";
+import {
+	initialDate,
+	formatDate,
+	initialPeriod,
+	isDateNotValid,
+} from "../../../support";
 
 import { axiosArchives } from "../../../Api";
 
@@ -80,7 +87,9 @@ const CreateFrequencyRelation = () => {
 	const [shelf, setShelf] = useState("");
 	const [rack, setRack] = useState("");
 	const [notes, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState([initialPeriod]);
+	const [referencePeriod, setReferencePeriod] = useState([
+		formatDate(initialPeriod),
+	]);
 
 	const [numberHelperText, setNumberHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
@@ -124,39 +133,33 @@ const CreateFrequencyRelation = () => {
 		setPeriod(date);
 	};
 
-	const handleConfirmNewPeriodDialog = () => {
+	const handleAddNewPeriodDialog = () => {
 		if (isDateNotValid(period, setPeriodHelperText, "period", "required")) {
 			return "period error";
 		}
 
 		const periodList = referencePeriod;
-		const formattedPeriod = period.toISOString().substring(0, 10);
-		
-		if (periodList.indexOf(period) !== -1){ 
-			setPeriodHelperText("Período já adicionado")
+		const formattedPeriod = formatDate(period);
+
+		if (periodList.indexOf(formattedPeriod) !== -1) {
+			setPeriodHelperText("Período já adicionado");
 			return "period already added error";
 		}
 
-		periodList.push(period)
+		periodList.push(formattedPeriod);
 		setReferencePeriod(periodList);
+		setReferencePeriodHelperText("");
 
 		setOpenNewPeriodDialog(false);
 		return "added period";
 	};
 
-	const handleDelete = (period1) => {
-		console.log(period1 === referencePeriod[0]);
-		console.log(referencePeriod);
-		setReferencePeriod([]);
+	const handleDeletePeriod = (deletedPeriod) => {
+		const periodList = referencePeriod;
+		const newPeriodList = periodList.filter((item) => item !== deletedPeriod);
 
-		setReferencePeriodHelperText("");
-		console.log(referencePeriodHelperText);
+		setReferencePeriod(newPeriodList);
 	};
-
-	// const handleReferenceChange = (date) => {
-	// 	setReferenceHelperText("");
-	// 	setReference(date);
-	// };
 
 	const handleAlertClose = () => setOpenAlert(false);
 
@@ -169,6 +172,26 @@ const CreateFrequencyRelation = () => {
 		setAlertHelperText(
 			"Verifique sua conexão com a internet e recarregue a página."
 		);
+	};
+
+	const onSuccess = () => {
+		setLoading(false);
+
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Documento cadastrado!");
+
+		setNumber("");
+		setProcessNumber("");
+		setReceivedDate(initialDate);
+		setDocumentType("");
+		setSenderUnit("");
+		setAbbreviation("");
+		setShelf("");
+		setRack("");
+		setNotes("");
+		setReferencePeriod([formatDate(initialPeriod)]);
+		setPeriod(initialDate);
 	};
 
 	const onSubmit = () => {
@@ -189,8 +212,8 @@ const CreateFrequencyRelation = () => {
 		if (
 			isDateNotValid(
 				receivedDate,
-				"recebimento",
 				setReceivedDateHelperText,
+				"date",
 				"required"
 			)
 		) {
@@ -210,41 +233,30 @@ const CreateFrequencyRelation = () => {
 			return "senderUnit error";
 		}
 
-		// if (referencePeriod === []) {
-			//
-		// 	setLoading(false);
-		// 	return "referencePeriod error";
-		// }
+		if (referencePeriod.length === 0) {
+			setReferencePeriodHelperText(
+				"Não é possível criar uma Relação de Frequências sem um Período de Referência."
+			);
+			setLoading(false);
+			return "referencePeriod error";
+		}
 
-		// axiosArchives
-		// 	.post("administrative-process/", {
-		// 		notice_date: noticeDate.toISOString().substring(0, 10),
-		// 		archiving_date: archivingDate.toISOString().substring(0, 10),
-		// 		reference_month_year:
-		// 			reference !== null ? reference.toISOString().substring(0, 10) : null,
-		// 		process_number: processNumber,
-		// 		cpf_cnpj: personRegistry,
-		// 		interested,
-		// 		subject_id: subject.id,
-		// 		dest_unity_id: destinationUnit.id,
-		// 		sender_unity: senderUnit.id,
-		// 		sender_user: senderWorker,
-		// 		abbreviation_id: abbreviation.id,
-		// 		shelf_id: shelf.id,
-		// 		rack_id: rack.id,
-		// 		is_filed: isStatusFiled(status),
-		// 		is_eliminated: status === "Eliminado",
-		// 		unity_id: unarchiveDestinationUnit.id,
-		// 		send_date:
-		// 			unarchiveDate !== null
-		// 				? unarchiveDate.toISOString().substring(0, 10)
-		// 				: null,
-		// 		administrative_process_number: unarchiveProcessNumber,
-		// 		notes,
-		// 		filer_user: "filer_user", //
-		// 	})
-		// 	.then(() => onSuccess())
-		// 	.catch(() => connectionError());
+		axiosArchives
+			.post("frequency-relation/", {
+				process_number: processNumber,
+				notes,
+				filer_user: "filer_user",
+				number,
+				received_date: formatDate(receivedDate),
+				reference_period: referencePeriod,
+				sender_unity: senderUnit.id,
+				abbreviation_id: abbreviation.id,
+				shelf_id: shelf.id,
+				rack_id: rack.id,
+				document_type_id: documentType.id,
+			})
+			.then(() => onSuccess())
+			.catch(() => connectionError());
 
 		return "post done";
 	};
@@ -253,12 +265,12 @@ const CreateFrequencyRelation = () => {
 		axiosArchives
 			.get("document-type/")
 			.then((response) => setDocumentTypes(response.data))
-			// .catch(() => connectionError());
+			.catch(() => connectionError());
 
 		axiosArchives
 			.get("unity/")
 			.then((response) => setUnits(response.data))
-			// .catch(() => connectionError());
+			.catch(() => connectionError());
 	}, []);
 
 	return (
@@ -287,22 +299,21 @@ const CreateFrequencyRelation = () => {
 
 			<Grid item xs={12} sm={6} md={4}>
 				<KeyboardDatePicker
-					clearable
-					clearLabel="Limpar"
-					showTodayButton
-					okLabel="Confirmar"
-					cancelLabel=""
 					style={{ width: "100%" }}
 					id="received-date-picker-dialog"
 					label="Data de Recebimento*"
 					format="dd/MM/yyyy"
-					todayLabel="Hoje"
 					value={receivedDate}
 					onChange={handleReceivedDateChange}
+					okLabel="Confirmar"
+					cancelLabel=""
+					clearable
+					clearLabel="Limpar"
+					showTodayButton
+					todayLabel="Hoje"
 					KeyboardButtonProps={{
 						"aria-label": "change received date",
 					}}
-					DialogProps
 					error={receivedDateHelperText !== ""}
 					helperText={receivedDateHelperText}
 				/>
@@ -367,15 +378,28 @@ const CreateFrequencyRelation = () => {
 				<Typography className={classes.referencePeriodTitle}>
 					Período de Referência
 				</Typography>
+
+				{referencePeriodHelperText !== "" ? (
+					<Alert styles={{ width: "100%" }} severity="error">
+						{referencePeriodHelperText}
+					</Alert>
+				) : (
+					""
+				)}
+
 				<div className={classes.chips}>
-					{referencePeriod.map((period1) => (
+					{referencePeriod.map((addedPeriod) => (
 						<Chip
 							icon={<TimelapseIcon />}
-							label={`${period1.getMonth() + 1}/${period1.getFullYear()}`}
+							label={`${addedPeriod.substring(5, 7)}/${addedPeriod.substring(
+								0,
+								4
+							)}`}
 							color="secondary"
-							// onDelete={() => null}
+							onDelete={() => handleDeletePeriod(addedPeriod)}
 						/>
 					))}
+
 					<Chip
 						label="Adicionar"
 						icon={<AddCircleIcon />}
@@ -391,21 +415,21 @@ const CreateFrequencyRelation = () => {
 				maxWidth="xs"
 				open={openNewPeriodDialog}
 				onClose={handleCloseNewPeriodDialog}
-				aria-labelledby="form-dialog-title"
+				aria-labelledby="newPeriod-dialog-title"
 			>
-				<DialogTitle id="form-dialog-title">Novo</DialogTitle>
+				<DialogTitle id="newPeriod-dialog-title">Novo</DialogTitle>
 				<DialogContent>
 					<KeyboardDatePicker
-						okLabel="Confirmar"
-						cancelLabel="Cancelar"
 						style={{ width: "100%" }}
 						id="period-date-picker-dialog"
-						openTo="year"
-						views={["year", "month"]}
 						label="Período"
 						format="MM/yyyy"
 						value={period}
-						// onChange={handlePeriodChange}
+						onChange={handlePeriodChange}
+						openTo="month"
+						views={["month", "year"]}
+						okLabel="Confirmar"
+						cancelLabel="Cancelar"
 						error={periodHelperText !== ""}
 						helperText={periodHelperText}
 					/>
@@ -414,8 +438,8 @@ const CreateFrequencyRelation = () => {
 					<Button onClick={handleCloseNewPeriodDialog} color="primary">
 						Cancelar
 					</Button>
-					<Button onClick={handleCloseNewPeriodDialog} color="primary">
-						Confirmar
+					<Button onClick={handleAddNewPeriodDialog} color="primary">
+						Adicionar
 					</Button>
 				</DialogActions>
 			</Dialog>
