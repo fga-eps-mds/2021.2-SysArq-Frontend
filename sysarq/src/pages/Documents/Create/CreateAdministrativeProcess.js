@@ -12,6 +12,8 @@ import {
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
+import { initialDate, isDateNotValid, isInt } from "../../../support";
+
 import { axiosArchives } from "../../../Api";
 
 import DocumentsContainer from "../../components/Container/DocumentsContainer";
@@ -27,10 +29,6 @@ import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
 import "date-fns";
-
-const initialDate = new Date();
-
-const isInt = (number) => /^\d+$/.test(number);
 
 const isPersonRegistryLengthValid = (registryLength) =>
 	registryLength === 11 || registryLength === 15;
@@ -175,20 +173,6 @@ const CreateAdministrativeProcess = () => {
 		setUnarchiveProcessNumber("");
 		setUnarchiveDate(initialDate);
 		setNotes("");
-	};
-
-	const isDateNotValid = (date, dateType, setHelperText, fieldType = "") => {
-		if (fieldType === "required" && date === null) {
-			setHelperText(`Insira a data de ${dateType}`);
-			return true;
-		}
-		if (date !== null && !isInt(date.getFullYear())) {
-			setHelperText(
-				`Insira uma ${fieldType === "required" ? "data" : dateType} válida`
-			);
-			return true;
-		}
-		return false;
 	};
 
 	const onSubmit = () => {
