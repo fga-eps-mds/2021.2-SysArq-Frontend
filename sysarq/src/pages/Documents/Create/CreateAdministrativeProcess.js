@@ -179,12 +179,7 @@ const CreateAdministrativeProcess = () => {
 		setLoading(true);
 
 		if (
-			isDateNotValid(
-				noticeDate,
-				"autuação",
-				setNoticeDateHelperText,
-				"required"
-			)
+			isDateNotValid(noticeDate, setNoticeDateHelperText, "date", "required")
 		) {
 			setLoading(false);
 			return "noticeDate error";
@@ -193,8 +188,8 @@ const CreateAdministrativeProcess = () => {
 		if (
 			isDateNotValid(
 				archivingDate,
-				"arquivamento",
 				setArchivingDateHelperText,
+				"date",
 				"required"
 			)
 		) {
@@ -202,7 +197,7 @@ const CreateAdministrativeProcess = () => {
 			return "archivingDate error";
 		}
 
-		if (isDateNotValid(reference, "referência", setReferenceHelperText)) {
+		if (isDateNotValid(reference, setReferenceHelperText)) {
 			setLoading(false);
 			return "reference error";
 		}
@@ -252,11 +247,7 @@ const CreateAdministrativeProcess = () => {
 
 		if (
 			status === "Desarquivado" &&
-			isDateNotValid(
-				unarchiveDate,
-				"data de desarquivamento",
-				setUnarchiveDateHelperText
-			)
+			isDateNotValid(unarchiveDate, setUnarchiveDateHelperText, "date")
 		) {
 			setLoading(false);
 			return "unarchiveDate error";
@@ -521,7 +512,7 @@ const CreateAdministrativeProcess = () => {
 					<Grid item xs={12} sm={12} md={12}>
 						<FormControl fullWidth>
 							<InputLabel id="select-unarchiveDestinationUnit-label">
-								Unidade de Destino do Desarquivamento
+								Unid. Destino do Desarquivamento
 							</InputLabel>
 							<Select
 								style={{ textAlign: "left" }}
@@ -546,17 +537,17 @@ const CreateAdministrativeProcess = () => {
 							</Select>
 						</FormControl>
 					</Grid>
-					<Grid item xs={12} sm={6} md={6}>
+					<Grid item xs={12} sm={12} md={6}>
 						<TextField
 							fullWidth
 							id="unarchiveProcessNumber"
-							label="Número do Processo do Desarquivamento"
+							label="Nº do Processo do Desarquivamento"
 							value={unarchiveProcessNumber}
 							onChange={handleUnarchiveProcessNumberChange}
 							inputProps={{ maxLength: 15 }}
 						/>
 					</Grid>
-					<Grid item xs={12} sm={6} md={6}>
+					<Grid item xs={12} sm={12} md={6}>
 						<KeyboardDatePicker
 							okLabel="Confirmar"
 							cancelLabel="Cancelar"

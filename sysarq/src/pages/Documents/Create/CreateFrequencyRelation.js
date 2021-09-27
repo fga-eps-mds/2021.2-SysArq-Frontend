@@ -119,10 +119,10 @@ const CreateFrequencyRelation = () => {
 
 	const handleCloseNewPeriodDialog = () => setOpenNewPeriodDialog(false);
 
-	// const handlePeriodChange = (date) => {
-	// 	setPeriodHelperText("");
-	// 	setPeriod(date);
-	// };
+	const handlePeriodChange = (date) => {
+		setPeriodHelperText("");
+		setPeriod(date);
+	};
 
 	// const handleConfirmNewPeriodDialog = () => {
 		// Here
