@@ -3,7 +3,7 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import CreateUnity from "../pages/FieldsRegister/CreateUnity";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { inputChange } from "../serverTest";
+import { inputChange } from "./serverTest";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}unity/`;
 
@@ -22,45 +22,64 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
+const objSucess = [
+	"Nome da unidade",
+	"201",
+	"Sigla da unidade",
+	"20º DP",
+	"Vínculo administrativo",
+	"Jurídico",
+	"Sigla do vínculo",
+	"VJA",
+	"Tipo de unidade",
+	"Administrativa",
+	"Município",
+	"Abadiânia",
+	"Telefone",
+	"912398734",
+	"Observações",
+	"Robson",
+];
+
+const objFail = [
+	"Nome da unidade",
+	"401",
+	"Sigla da unidade",
+	"20º DP",
+	"Vínculo administrativo",
+	"Jurídico",
+	"Sigla do vínculo",
+	"VJA",
+	"Tipo de unidade",
+	"Administrativa",
+	"Município",
+	"Abadiânia",
+	"Telefone",
+	"912398734",
+	"Observações",
+	"Robson",
+];
+
+const testEvent = async (object, findText) => {
+	for (let i = 0; i < object.length; i += 2) {
+		inputChange(object[i], object[i + 1]);
+	}
+	fireEvent.click(screen.getByTestId("click"));
+
+	await screen.findByText(findText);
+	act(() => {
+		jest.advanceTimersByTime(3000);
+	});
+};
 
 describe("Button test", () => {
 	it("axios success", async () => {
 		render(<CreateUnity />);
-
-		inputChange("Nome da unidade", "201");
-		inputChange("Sigla da unidade", "20º DP");
-		inputChange("Vínculo administrativo", "Jurídico");
-		inputChange("Sigla do vínculo", "VJA");
-		inputChange("Tipo de unidade", "Administrativa");
-		inputChange("Município", "Abadiânia");
-		inputChange("Telefone", "912398734");
-		inputChange("Observações", "Robson");
-
-		fireEvent.click(screen.getByTestId("click"));
-
-		await screen.findByText("Campo cadastrado!");
-		act(() => {
-			jest.advanceTimersByTime(3000);
-		});
+		await testEvent(objSucess, "Campo cadastrado!");
 	});
 
 	it("axios fail", async () => {
 		render(<CreateUnity />);
-
-		inputChange("Nome da unidade", "401");
-		inputChange("Sigla da unidade", "20º DP");
-		inputChange("Vínculo administrativo", "Jurídico");
-		inputChange("Sigla do vínculo", "VJA");
-		inputChange("Tipo de unidade", "Administrativa");
-		inputChange("Município", "Abadiânia");
-		inputChange("Telefone", "912398734");
-		inputChange("Observações", "Robson");
-
-		fireEvent.click(screen.getByTestId("click"));
-
-		await screen.findByText("Erro de conexão!");
-		act(() => {
-			jest.advanceTimersByTime(3000);
-		});
+		await testEvent(objFail, "Erro de conexão!");
 	});
 });

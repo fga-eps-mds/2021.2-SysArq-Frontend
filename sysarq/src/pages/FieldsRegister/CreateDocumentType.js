@@ -58,8 +58,12 @@ export default function CreateDocumentType() {
 			value: documentName,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "date",
@@ -68,8 +72,12 @@ export default function CreateDocumentType() {
 			value: temporalityValue,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 	]);
 
@@ -100,26 +108,26 @@ export default function CreateDocumentType() {
 												type={item.type}
 												value={item.value}
 												onChange={(event) => {
-													item.setValue(event.target.value)
-													item.setHelperText("")
-													item.setError(false)
-												}} 
+													item.setValue(event.target.value);
+													item.setHelperText("");
+													item.setError(false);
+												}}
 												className={classes.input}
 												inputProps={{ maxLength: "100" }}
 											/>
 										</Grid>
 									) : (
-											<Grid item xs={12} sm={12} md={12} key={key.toString()}>
+										<Grid item xs={12} sm={12} md={12} key={key.toString()}>
 											<TextField
 												id={item.placeholder}
 												label={item.placeholder}
 												type={item.type}
 												value={item.value}
 												onChange={(event) => {
-													item.setValue(event.target.value)
-													item.setHelperText("")
-													item.setError(false)
-												}} 
+													item.setValue(event.target.value);
+													item.setHelperText("");
+													item.setError(false);
+												}}
 												className={classes.inputDate}
 											/>
 										</Grid>

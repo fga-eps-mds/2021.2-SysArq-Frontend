@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import Alert from "@material-ui/lab/Alert";
-import { FormControl, Grid, Container, InputLabel, Select, MenuItem, Paper, TextField } from "@material-ui/core";
+import {
+	FormControl,
+	Grid,
+	Container,
+	InputLabel,
+	Select,
+	MenuItem,
+	Paper,
+	TextField,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives } from "../../Api";
 
@@ -42,20 +51,19 @@ export default function CreateShelf() {
 	const [rackHelperText, setRackHelperText] = useState("");
 	const [rackNumberError, setRackNumberError] = useState(false);
 
-
 	const handleValueChange = (event) => {
 		setType(event.target.value);
 	};
 
 	const onClick = () => {
-		if (numberE === "" && type==="Estante") {
-			setShelfNumberError(true)
-			setShelfHelperText("Estante não pode ser vazia")
+		if (numberE === "" && type === "Estante") {
+			setShelfNumberError(true);
+			setShelfHelperText("Estante não pode ser vazia");
 			return "Erro";
 		}
 		if (numberP === "" && type === "Prateleira") {
-			setRackNumberError(true)
-			setRackHelperText("Prateleira não pode ser vazia")
+			setRackNumberError(true);
+			setRackHelperText("Prateleira não pode ser vazia");
 			return "Erro";
 		}
 		if (type === "Estante") {
@@ -85,14 +93,13 @@ export default function CreateShelf() {
 					setTimeout(handleCloseError, 3000);
 				});
 		}
-		setShelfNumberError(false)
-		setShelfHelperText("")
+		setShelfNumberError(false);
+		setShelfHelperText("");
 
-		setRackNumberError(false)
-		setRackHelperText("")
+		setRackNumberError(false);
+		setRackHelperText("");
 
 		return null;
-
 	};
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
@@ -114,7 +121,9 @@ export default function CreateShelf() {
 						<Grid container spacing={2}>
 							<Grid item xs={12} sm={12} md={12} key={1}>
 								<FormControl fullWidth>
-									<InputLabel id="select-shelf-rack-label">Selecione</InputLabel>
+									<InputLabel id="select-shelf-rack-label">
+										Selecione
+									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-shelf-rack-label"
@@ -134,21 +143,20 @@ export default function CreateShelf() {
 							</Grid>
 							{type === "Estante" ? (
 								<Grid item xs={12} sm={12} md={12} key={2}>
-
 									<TextField
 										id="Estante"
 										label="Número da estante"
 										type="number"
-										onChange={( event ) => {
-											setNumberE(event.target.value) 
-											setShelfNumberError(false)
-											setShelfHelperText("")}}
+										onChange={(event) => {
+											setNumberE(event.target.value);
+											setShelfNumberError(false);
+											setShelfHelperText("");
+										}}
 										className={classes.input}
 										helperText={shelfHelperText}
 										error={shelfNumberError}
 									/>
 								</Grid>
-
 							) : (
 								<Grid item xs={12} sm={12} md={12}>
 									<TextField
@@ -157,14 +165,13 @@ export default function CreateShelf() {
 										label="Número da prateleira"
 										type="number"
 										onChange={(event) => {
-											setNumberP(event.target.value)
-											setRackNumberError(false)
-											setRackHelperText("")}
-										}
+											setNumberP(event.target.value);
+											setRackNumberError(false);
+											setRackHelperText("");
+										}}
 										className={classes.input}
 										helperText={rackHelperText}
 										error={rackNumberError}
-
 									/>
 								</Grid>
 							)}

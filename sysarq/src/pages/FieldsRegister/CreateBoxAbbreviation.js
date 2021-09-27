@@ -27,9 +27,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-
 export default function CreateBoxAbbreviation() {
-
 	const classes = useStyles();
 	const [boxNumber, setBoxNumber] = useState("");
 	const [boxAbbreviation, setBoxAbbreviation] = useState("");
@@ -51,7 +49,7 @@ export default function CreateBoxAbbreviation() {
 
 	const onClick = () => {
 		if (parseInt(boxYear, 10) < 1900) {
-			setYearError(true)
+			setYearError(true);
 			setYearHelperText("Ano inválido");
 			return "Erro";
 		}
@@ -83,8 +81,12 @@ export default function CreateBoxAbbreviation() {
 			value: boxNumber,
 			helperText: "",
 			error: false,
-			setHelperText: () => {""},
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "text",
@@ -93,9 +95,12 @@ export default function CreateBoxAbbreviation() {
 			value: boxAbbreviation,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
-
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "text",
@@ -104,9 +109,12 @@ export default function CreateBoxAbbreviation() {
 			value: boxName,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
-
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "number",
@@ -116,8 +124,7 @@ export default function CreateBoxAbbreviation() {
 			helperText: yearHelperText,
 			error: yearError,
 			setHelperText: setYearHelperText,
-			setError: setYearError
-			
+			setError: setYearError,
 		},
 	];
 
@@ -147,9 +154,9 @@ export default function CreateBoxAbbreviation() {
 											type={item.type}
 											value={item.value}
 											onChange={(event) => {
-												item.setValue(event.target.value)
-												item.setHelperText("")
-												item.setError(false)
+												item.setValue(event.target.value);
+												item.setHelperText("");
+												item.setError(false);
 											}}
 											className={classes.input}
 											helperText={item.helperText}

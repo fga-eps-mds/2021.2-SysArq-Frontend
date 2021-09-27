@@ -42,8 +42,12 @@ export default function CreateDocumentSubject() {
 			value: documentSubject,
 			helperText: "",
 			error: false,
-			setHelperText: () => {""},
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "date",
@@ -52,8 +56,12 @@ export default function CreateDocumentSubject() {
 			value: temporalityValue,
 			helperText: "",
 			error: false,
-			setHelperText: () => {""},
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 	];
 
@@ -100,9 +108,9 @@ export default function CreateDocumentSubject() {
 												type={item.type}
 												value={item.value}
 												onChange={(event) => {
-													item.setValue(event.target.value)
-													item.setHelperText("")
-													item.setError(false)
+													item.setValue(event.target.value);
+													item.setHelperText("");
+													item.setError(false);
 												}}
 												className={classes.input}
 												inputProps={{ maxLength: "100" }}
@@ -116,9 +124,9 @@ export default function CreateDocumentSubject() {
 												type={item.type}
 												value={item.value}
 												onChange={(event) => {
-													item.setValue(event.target.value)
-													item.setHelperText("")
-													item.setError(false)
+													item.setValue(event.target.value);
+													item.setHelperText("");
+													item.setError(false);
 												}}
 												className={classes.inputDate}
 											/>

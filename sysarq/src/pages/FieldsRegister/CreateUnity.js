@@ -69,8 +69,12 @@ export default function CreateUnity() {
 			value: unityName,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "ShortText",
@@ -79,8 +83,12 @@ export default function CreateUnity() {
 			value: unityAbbreviation,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "text",
@@ -89,8 +97,12 @@ export default function CreateUnity() {
 			value: administrativeBond,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "ShortText",
@@ -99,8 +111,12 @@ export default function CreateUnity() {
 			value: bondAbbreviation,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "MiddleText",
@@ -109,8 +125,12 @@ export default function CreateUnity() {
 			value: unityType,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "text",
@@ -119,8 +139,12 @@ export default function CreateUnity() {
 			value: county,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "phone",
@@ -129,8 +153,12 @@ export default function CreateUnity() {
 			value: telephoneNumber,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 		{
 			type: "text",
@@ -139,8 +167,12 @@ export default function CreateUnity() {
 			value: note,
 			helperText: "",
 			error: false,
-			setHelperText: () => { "" },
-			setError: () => { "" }
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
 		},
 	];
 
@@ -170,9 +202,9 @@ export default function CreateUnity() {
 											type={item.type}
 											value={item.value}
 											onChange={(event) => {
-												item.setValue(event.target.value)
-												item.setHelperText("")
-												item.setError(false)
+												item.setValue(event.target.value);
+												item.setHelperText("");
+												item.setError(false);
 											}}
 											className={classes.input}
 											inputProps={{ maxLength: "100" }}
@@ -187,7 +219,7 @@ export default function CreateUnity() {
 				<button data-testid="click" type="button" onClick={onClick}>
 					CADASTRAR
 				</button>
-			</Paper >
-		</div >
+			</Paper>
+		</div>
 	);
 }
