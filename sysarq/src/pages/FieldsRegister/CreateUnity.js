@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives } from "../../Api";
-import { createForm2 } from "./form";
+import createForm from "./form";
 
 export default function CreateUnity() {
 	const useStyles = makeStyles({
@@ -178,7 +178,7 @@ export default function CreateUnity() {
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar unidade";
 
-	return createForm2(
+	return createForm(
 		fields,
 		title,
 		subtitle,

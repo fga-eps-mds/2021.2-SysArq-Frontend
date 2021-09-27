@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives } from "../../Api";
-import { createForm2 } from "./form";
+import createForm from "./form";
 
 const useStyles = makeStyles((theme) => ({
 	input: {
@@ -130,7 +130,7 @@ export default function CreateBoxAbbreviation() {
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar caixa";
 
-	return createForm2(
+	return createForm(
 		fields,
 		title,
 		subtitle,
