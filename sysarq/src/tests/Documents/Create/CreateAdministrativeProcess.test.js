@@ -149,14 +149,16 @@ const isNotInTheDocument = (text) => {
 
 const NOTICE_DATE_LABEL = "Data de Autuação*";
 
+const REQUIRED_DATE_ERROR_MESSAGE = "Insira uma data";
+
 const INVALID_DATE_ERROR_MESSAGE = "Insira uma data válida";
 
 const ARCHIVING_DATE_LABEL = "Data de Arquivamento*";
 
 const UNARCHIVE_DESTINATION_UNIT_LABEL =
-	"Unidade de Destino do Desarquivamento";
+	"Unid. Destino do Desarquivamento";
 
-const UNARCHIVE_PROCESS_NUMBER_LABEL = "Número do Processo do Desarquivamento";
+const UNARCHIVE_PROCESS_NUMBER_LABEL = "Nº do Processo do Desarquivamento";
 
 const UNARCHIVE_DATE_LABEL = "Data de Desarquivamento";
 
@@ -166,10 +168,10 @@ describe("Create Administrative Process Screen Test", () => {
 
 		input(NOTICE_DATE_LABEL, "");
 		submitClick();
-		isOnTheScreen("Insira a data de autuação");
+		isOnTheScreen(REQUIRED_DATE_ERROR_MESSAGE);
 
 		input(NOTICE_DATE_LABEL, "01/02/");
-		isNotInTheDocument("Insira a data de autuação");
+		isNotInTheDocument(REQUIRED_DATE_ERROR_MESSAGE);
 		submitClick();
 		isOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
 
@@ -178,10 +180,10 @@ describe("Create Administrative Process Screen Test", () => {
 
 		input(ARCHIVING_DATE_LABEL, "");
 		submitClick();
-		isOnTheScreen("Insira a data de arquivamento");
+		isOnTheScreen(REQUIRED_DATE_ERROR_MESSAGE);
 
 		input(ARCHIVING_DATE_LABEL, "36/07/2008");
-		isNotInTheDocument("Insira a data de arquivamento");
+		isNotInTheDocument(REQUIRED_DATE_ERROR_MESSAGE);
 		submitClick();
 		isOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
 
@@ -190,10 +192,10 @@ describe("Create Administrative Process Screen Test", () => {
 
 		input("Referência", "13/2012");
 		submitClick();
-		isOnTheScreen("Insira uma referência válida");
+		isOnTheScreen("Insira um período válido");
 
 		input("Referência", "04/2015");
-		isNotInTheDocument("Insira uma referência válida");
+		isNotInTheDocument("Insira um período válido");
 
 		submitClick();
 		isOnTheScreen("Insira o número do processo");
@@ -309,10 +311,10 @@ describe("Create Administrative Process Screen Test", () => {
 
 		input(UNARCHIVE_DATE_LABEL, "/06/2052");
 		submitClick();
-		isOnTheScreen("Insira uma data de desarquivamento válida");
+		isOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
 
 		input(UNARCHIVE_DATE_LABEL, "08/09/2055");
-		isNotInTheDocument("Insira uma data de desarquivamento válida");
+		isNotInTheDocument(INVALID_DATE_ERROR_MESSAGE);
 
 		input("Observação", "notes_test");
 
