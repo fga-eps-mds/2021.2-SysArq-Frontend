@@ -22,45 +22,8 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
-const objSucess = [
-	"Nome da unidade",
-	"201",
-	"Sigla da unidade",
-	"20º DP",
-	"Vínculo administrativo",
-	"Jurídico",
-	"Sigla do vínculo",
-	"VJA",
-	"Tipo de unidade",
-	"Administrativa",
-	"Município",
-	"Abadiânia",
-	"Telefone",
-	"912398734",
-	"Observações",
-	"Robson",
-];
-
-const objFail = [
-	"Nome da unidade",
-	"401",
-	"Sigla da unidade",
-	"20º DP",
-	"Vínculo administrativo",
-	"Jurídico",
-	"Sigla do vínculo",
-	"VJA",
-	"Tipo de unidade",
-	"Administrativa",
-	"Município",
-	"Abadiânia",
-	"Telefone",
-	"912398734",
-	"Observações",
-	"Robson",
-];
-
 const testEvent = async (object, findText) => {
+	render(<CreateUnity />);
 	for (let i = 0; i < object.length; i += 2) {
 		inputChange(object[i], object[i + 1]);
 	}
@@ -74,12 +37,45 @@ const testEvent = async (object, findText) => {
 
 describe("Button test", () => {
 	it("axios success", async () => {
-		render(<CreateUnity />);
+		const objSucess = [
+			"Nome da unidade",
+			"201",
+			"Sigla da unidade",
+			"20º DP",
+			"Vínculo administrativo",
+			"Jurídico",
+			"Sigla do vínculo",
+			"VJA",
+			"Tipo de unidade",
+			"Administrativa",
+			"Município",
+			"Abadiânia",
+			"Telefone",
+			"912398734",
+			"Observações",
+			"Robson",
+		];
 		await testEvent(objSucess, "Campo cadastrado!");
 	});
-
 	it("axios fail", async () => {
-		render(<CreateUnity />);
+		const objFail = [
+			"Nome da unidade",
+			"401",
+			"Sigla da unidade",
+			"20º DP",
+			"Vínculo administrativo",
+			"Jurídico",
+			"Sigla do vínculo",
+			"VJA",
+			"Tipo de unidade",
+			"Administrativa",
+			"Município",
+			"Abadiânia",
+			"Telefone",
+			"912398734",
+			"Observações",
+			"Robson",
+		];
 		await testEvent(objFail, "Erro de conexão!");
 	});
 });

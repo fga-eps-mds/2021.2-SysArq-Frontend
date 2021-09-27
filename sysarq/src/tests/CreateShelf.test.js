@@ -4,6 +4,7 @@ import { render, screen, fireEvent, act, within } from "@testing-library/react";
 import CreateShelf from "../pages/FieldsRegister/CreateShelf";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
+import { inputChange } from "./serverTest";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
 
@@ -29,17 +30,12 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
-const inputChange = (title, targetValue) => {
-	const inputReference = screen.getByLabelText(title);
-	fireEvent.change(inputReference, {
-		target: { value: targetValue },
-	});
-};
 const selectValue = (title) => {
 	fireEvent.mouseDown(screen.getByLabelText("Selecione"));
 	const subjectsOptions = within(screen.getByRole("listbox"));
 	fireEvent.click(subjectsOptions.getByText(title));
 };
+
 describe("Main component", () => {
 	it("Show page title", () => {
 		render(<CreateShelf />);
@@ -50,49 +46,32 @@ describe("Main component", () => {
 	});
 });
 
+const testEvent = async (object, findTextMsg) => {
+	render(<CreateShelf />);
+	selectValue(object[0]);
+	inputChange(object[1], object[2]);
+	fireEvent.click(screen.getByTestId("click"));
+	await screen.findByText(findTextMsg);
+	act(() => {
+		jest.advanceTimersByTime(3000);
+	});
+};
+
 describe("inputs", () => {
 	it("axios sucess rack", async () => {
-		render(<CreateShelf />);
-
-		selectValue("Prateleira");
-		inputChange("Número da prateleira", "201");
-		fireEvent.click(screen.getByTestId("click"));
-		await screen.findByText("Campo cadastrado!");
-		act(() => {
-			jest.advanceTimersByTime(3000);
-		});
+		const sucessRak = ["Prateleira", "Número da prateleira", "201"];
+		await testEvent(sucessRak, "Campo cadastrado!");
 	});
 	it("axios sucess shelf", async () => {
-		render(<CreateShelf />);
-
-		selectValue("Estante");
-		inputChange("Número da estante", "201");
-		fireEvent.click(screen.getByTestId("click"));
-		await screen.findByText("Campo cadastrado!");
-		act(() => {
-			jest.advanceTimersByTime(3000);
-		});
+		const sucessShelf = ["Estante", "Número da estante", "201"];
+		await testEvent(sucessShelf, "Campo cadastrado!");
 	});
 	it("axios fail rack", async () => {
-		render(<CreateShelf />);
-
-		selectValue("Prateleira");
-		inputChange("Número da prateleira", "401");
-		fireEvent.click(screen.getByTestId("click"));
-		await screen.findByText("Erro de conexão!");
-		act(() => {
-			jest.advanceTimersByTime(3000);
-		});
+		const failRack = ["Prateleira", "Número da prateleira", "401"];
+		await testEvent(failRack, "Erro de conexão!");
 	});
 	it("axios fail shelf", async () => {
-		render(<CreateShelf />);
-
-		selectValue("Estante");
-		inputChange("Número da estante", "401");
-		fireEvent.click(screen.getByTestId("click"));
-		await screen.findByText("Erro de conexão!");
-		act(() => {
-			jest.advanceTimersByTime(3000);
-		});
+		const failShelf = ["Estante", "Número da estante", "401"];
+		await testEvent(failShelf, "Erro de conexão!");
 	});
 });
