@@ -23,7 +23,7 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import TimelapseIcon from "@material-ui/icons/Timelapse";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
-import { initialDate, isDateNotValid } from "../../../support";
+import { initialDate, initialPeriod, isDateNotValid } from "../../../support";
 
 import { axiosArchives } from "../../../Api";
 
@@ -80,7 +80,7 @@ const CreateFrequencyRelation = () => {
 	const [shelf, setShelf] = useState("");
 	const [rack, setRack] = useState("");
 	const [notes, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState([initialDate]);
+	const [referencePeriod, setReferencePeriod] = useState([initialPeriod]);
 
 	const [numberHelperText, setNumberHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
@@ -91,7 +91,7 @@ const CreateFrequencyRelation = () => {
 		useState("");
 
 	const [openNewPeriodDialog, setOpenNewPeriodDialog] = useState(false);
-	const [period, setPeriod] = useState(initialDate);
+	const [period, setPeriod] = useState(initialPeriod);
 	const [periodHelperText, setPeriodHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
@@ -124,19 +124,34 @@ const CreateFrequencyRelation = () => {
 		setPeriod(date);
 	};
 
-	// const handleConfirmNewPeriodDialog = () => {
-		// Here
-	//	setPeriodHelperText("Teste");
-	// };
+	const handleConfirmNewPeriodDialog = () => {
+		if (isDateNotValid(period, setPeriodHelperText, "period", "required")) {
+			return "period error";
+		}
 
-	// const handleDelete = (period1) => {
-	// 	console.log(period1 === referencePeriod[0]);
-	// 	console.log(referencePeriod);
-	// 	setReferencePeriod([]);
+		const periodList = referencePeriod;
+		const formattedPeriod = period.toISOString().substring(0, 10);
+		
+		if (periodList.indexOf(period) !== -1){ 
+			setPeriodHelperText("Período já adicionado")
+			return "period already added error";
+		}
 
-	// 	setReferencePeriodHelperText("");
-	// 	console.log(referencePeriodHelperText);
-	// };
+		periodList.push(period)
+		setReferencePeriod(periodList);
+
+		setOpenNewPeriodDialog(false);
+		return "added period";
+	};
+
+	const handleDelete = (period1) => {
+		console.log(period1 === referencePeriod[0]);
+		console.log(referencePeriod);
+		setReferencePeriod([]);
+
+		setReferencePeriodHelperText("");
+		console.log(referencePeriodHelperText);
+	};
 
 	// const handleReferenceChange = (date) => {
 	// 	setReferenceHelperText("");

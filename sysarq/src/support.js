@@ -1,5 +1,13 @@
 export const initialDate = new Date();
 
+export const initialPeriod = new Date(
+	initialDate.getFullYear(),
+	initialDate.getMonth(),
+	"01"
+);
+
+export const formatDate = (date) => date.toISOString().substring(0, 10);
+
 export const isInt = (number) => /^\d+$/.test(number);
 
 export const isDateNotValid = (

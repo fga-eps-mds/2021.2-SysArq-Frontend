@@ -12,7 +12,13 @@ import {
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-import { initialDate, isDateNotValid, isInt } from "../../../support";
+import {
+	initialDate,
+	initialPeriod,
+	isDateNotValid,
+	isInt,
+	formatDate,
+} from "../../../support";
 
 import { axiosArchives } from "../../../Api";
 
@@ -49,7 +55,7 @@ const CreateAdministrativeProcess = () => {
 
 	const [noticeDate, setNoticeDate] = useState(initialDate);
 	const [archivingDate, setArchivingDate] = useState(initialDate);
-	const [reference, setReference] = useState(initialDate);
+	const [reference, setReference] = useState(initialPeriod);
 	const [processNumber, setProcessNumber] = useState("");
 	const [personRegistry, setPersonRegistry] = useState("");
 	const [interested, setInterested] = useState("");
@@ -255,10 +261,9 @@ const CreateAdministrativeProcess = () => {
 
 		axiosArchives
 			.post("administrative-process/", {
-				notice_date: noticeDate.toISOString().substring(0, 10),
-				archiving_date: archivingDate.toISOString().substring(0, 10),
-				reference_month_year:
-					reference !== null ? reference.toISOString().substring(0, 10) : null,
+				notice_date: formatDate(noticeDate),
+				archiving_date: formatDate(archivingDate),
+				reference_month_year: reference !== null ? formatDate(reference) : null,
 				process_number: processNumber,
 				cpf_cnpj: personRegistry,
 				interested,
@@ -272,10 +277,7 @@ const CreateAdministrativeProcess = () => {
 				is_filed: isStatusFiled(status),
 				is_eliminated: status === "Eliminado",
 				unity_id: unarchiveDestinationUnit.id,
-				send_date:
-					unarchiveDate !== null
-						? unarchiveDate.toISOString().substring(0, 10)
-						: null,
+				send_date: unarchiveDate !== null ? formatDate(unarchiveDate) : null,
 				administrative_process_number: unarchiveProcessNumber,
 				notes,
 				filer_user: "filer_user", //
