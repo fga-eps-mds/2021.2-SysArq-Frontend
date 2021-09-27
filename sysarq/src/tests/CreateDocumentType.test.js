@@ -3,7 +3,7 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import CreateDocumentType from "../pages/FieldsRegister/CreateDocumentType";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { inputChange } from "./serverTest";
+import inputChange from "./serverTest";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}document-type/`;
 
