@@ -3,6 +3,7 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import CreateDocumentSubject from "../pages/FieldsRegister/CreateDocumentSubject";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
+import { inputChange } from "../serverTest";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}document-subject/`;
 
@@ -21,12 +22,6 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
-const inputChange = (title, targetValue) => {
-	const inputReference = screen.getByLabelText(title);
-	fireEvent.change(inputReference, {
-		target: { value: targetValue },
-	});
-};
 
 describe("Page test", () => {
 	it("axios sucess", async () => {
