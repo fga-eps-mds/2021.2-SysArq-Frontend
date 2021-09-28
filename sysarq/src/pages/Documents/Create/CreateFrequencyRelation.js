@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import {
 	makeStyles,
 	Grid,
-	TextField,
 	Typography,
 	Chip,
 	Dialog,
@@ -33,6 +32,7 @@ import { axiosArchives } from "../../../Api";
 import DocumentsContainer from "../../components/Container/DocumentsContainer";
 
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
+import NumberInput from "../../components/Inputs/NumberInput";
 import DocumentTypeInput from "../../components/Inputs/DocumentTypeInput";
 import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
 import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
@@ -104,11 +104,6 @@ const CreateFrequencyRelation = () => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
-
-	const handleNumberChange = (event) => {
-		setNumberHelperText("");
-		setNumber(event.target.value);
-	};
 
 	const handleReceivedDateChange = (date) => {
 		setReceivedDateHelperText("");
@@ -262,15 +257,11 @@ const CreateFrequencyRelation = () => {
 	return (
 		<DocumentsContainer title="Relação de Frequências" spacing={1}>
 			<Grid item xs={12} sm={12} md={4}>
-				<TextField
-					fullWidth
-					id="number"
-					label="Número*"
-					value={number}
-					onChange={handleNumberChange}
-					error={numberHelperText !== ""}
+				<NumberInput
+					setHelperText={setNumberHelperText}
+					set={setNumber}
+					number={number}
 					helperText={numberHelperText}
-					inputProps={{ maxLength: 20 }}
 				/>
 			</Grid>
 
