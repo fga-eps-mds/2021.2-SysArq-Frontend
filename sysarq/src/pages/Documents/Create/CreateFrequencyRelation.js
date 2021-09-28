@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import {
-	makeStyles,
 	Grid,
 	Chip,
 	Dialog,
@@ -39,7 +38,9 @@ import ShelfInput from "../../components/Inputs/ShelfInput";
 import RackInput from "../../components/Inputs/RackInput";
 import NotesInput from "../../components/Inputs/NotesInput";
 
+import ChipsContainer from "../../components/Container/ChipsContainer";
 import AddChip from "../../components/AddChip";
+
 import SpecialLabels from "../../components/SpecialLabels";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
@@ -47,20 +48,7 @@ import PopUpAlert from "../../components/PopUpAlert"; //
 
 import "date-fns";
 
-const useStyles = makeStyles((theme) => ({
-	chips: {
-		display: "flex",
-		justifyContent: "left",
-		flexWrap: "wrap",
-		"& > *": {
-			margin: theme.spacing(0.5),
-		},
-	},
-}));
-
 const CreateFrequencyRelation = () => {
-	const classes = useStyles();
-
 	const [units, setUnits] = useState([]);
 
 	const [number, setNumber] = useState("");
@@ -310,7 +298,7 @@ const CreateFrequencyRelation = () => {
 					""
 				)}
 
-				<div className={classes.chips}>
+				<ChipsContainer justifyContent="left" marginTop="0%">
 					{referencePeriod.map((addedPeriod) => (
 						<Chip
 							icon={<TimelapseIcon />}
@@ -325,7 +313,7 @@ const CreateFrequencyRelation = () => {
 					))}
 
 					<AddChip onClick={handleOpenNewPeriodDialog} />
-				</div>
+				</ChipsContainer>
 			</Grid>
 
 			<Dialog
