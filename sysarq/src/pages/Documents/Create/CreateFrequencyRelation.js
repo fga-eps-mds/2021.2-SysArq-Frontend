@@ -31,8 +31,9 @@ import { axiosArchives } from "../../../Api";
 
 import DocumentsContainer from "../../components/Container/DocumentsContainer";
 
-import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 import NumberInput from "../../components/Inputs/NumberInput";
+import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
+import ReceivedDateInput from "../../components/Inputs/ReceivedDateInput";
 import DocumentTypeInput from "../../components/Inputs/DocumentTypeInput";
 import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
 import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
@@ -104,11 +105,6 @@ const CreateFrequencyRelation = () => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
-
-	const handleReceivedDateChange = (date) => {
-		setReceivedDateHelperText("");
-		setReceivedDate(date);
-	};
 
 	const handleOpenNewPeriodDialog = () => setOpenNewPeriodDialog(true);
 
@@ -275,23 +271,10 @@ const CreateFrequencyRelation = () => {
 			</Grid>
 
 			<Grid item xs={12} sm={6} md={4}>
-				<KeyboardDatePicker
-					style={{ width: "100%" }}
-					id="received-date-picker-dialog"
-					label="Data de Recebimento*"
-					format="dd/MM/yyyy"
-					value={receivedDate}
-					onChange={handleReceivedDateChange}
-					okLabel="Confirmar"
-					cancelLabel=""
-					clearable
-					clearLabel="Limpar"
-					showTodayButton
-					todayLabel="Hoje"
-					KeyboardButtonProps={{
-						"aria-label": "change received date",
-					}}
-					error={receivedDateHelperText !== ""}
+				<ReceivedDateInput
+					setHelperText={setReceivedDateHelperText}
+					set={setReceivedDate}
+					receivedDate={receivedDate}
 					helperText={receivedDateHelperText}
 				/>
 			</Grid>
