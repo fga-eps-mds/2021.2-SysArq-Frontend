@@ -5,6 +5,9 @@ import Grid from "@material-ui/core/Grid";
 
 import MenuCard from "../components/MenuCard";
 
+import "../styles.css";
+import "../Create.css";
+
 const useStyles = makeStyles((theme) => ({
 	cardGrid: {
 		paddingTop: theme.spacing(3),
@@ -40,15 +43,6 @@ export default function FieldsRegister() {
 
 					<Grid item xs={12} sm={6} md={3}>
 						<MenuCard
-							icon="icone-servidor"
-							title="Servidor"
-							createUrl="/fields-register/public-worker/create"
-							listUrl="/fields-register/public-worker"
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={6} md={3}>
-						<MenuCard
 							icon="icone-unidade"
 							title="Unidade"
 							createUrl="/fields-register/unity/create"
@@ -62,15 +56,6 @@ export default function FieldsRegister() {
 							title="Tipo de Documento"
 							createUrl="/fields-register/document-type/create"
 							listUrl="/fields-register/document-type"
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={6} md={3}>
-						<MenuCard
-							icon="icone-status"
-							title="Status"
-							createUrl="/fields-register/status/create"
-							listUrl="/fields-register/status"
 						/>
 					</Grid>
 
