@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import {
 	makeStyles,
 	Grid,
-	Typography,
 	Chip,
 	Dialog,
 	DialogTitle,
@@ -40,7 +39,8 @@ import ShelfInput from "../../components/Inputs/ShelfInput";
 import RackInput from "../../components/Inputs/RackInput";
 import NotesInput from "../../components/Inputs/NotesInput";
 
-import AddChip from "../../components/AddChip/AddChip";
+import AddChip from "../../components/AddChip";
+import SpecialLabels from "../../components/SpecialLabels";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert"; //
@@ -48,19 +48,6 @@ import PopUpAlert from "../../components/PopUpAlert"; //
 import "date-fns";
 
 const useStyles = makeStyles((theme) => ({
-	referencePeriodTitle: {
-		paddingTop: theme.spacing(2),
-		paddingBottom: theme.spacing(1),
-
-		width: "100%",
-		textAlign: "left",
-
-		color: "#787878",
-		fontSize: "15px",
-		fontWeight: "bold",
-		fontFamily: ['"Montserrat"', "sans-serif"],
-	},
-
 	chips: {
 		display: "flex",
 		justifyContent: "left",
@@ -313,9 +300,7 @@ const CreateFrequencyRelation = () => {
 			<NotesInput set={setNotes} notes={notes} />
 
 			<Grid item xs={12} sm={12} md={12}>
-				<Typography className={classes.referencePeriodTitle}>
-					Período de Referência
-				</Typography>
+				<SpecialLabels label="Período de Referência" />
 
 				{referencePeriodHelperText !== "" ? (
 					<Alert styles={{ width: "100%" }} severity="error">
