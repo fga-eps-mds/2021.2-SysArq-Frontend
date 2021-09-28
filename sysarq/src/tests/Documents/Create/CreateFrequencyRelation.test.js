@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 
 import server from "../../support/testServer";
+import { input, submitClick } from "../../support";
 
 import CreateFrequencyRelation from "../../../pages/Documents/Create/CreateFrequencyRelation";
 
@@ -9,14 +10,6 @@ jest.setTimeout(30000);
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
-
-const input = (field, value) => {
-	fireEvent.change(screen.getByLabelText(field), { target: { value: value } });
-};
-
-const submitClick = () => {
-	fireEvent.click(screen.getByRole("button", { name: /CADASTRAR/ }));
-};
 
 const isOnTheScreen = (text) => {
 	expect(screen.getByText(text)).toBeInTheDocument();

@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 
 import server from "../../support/testServer";
+import { input, submitClick } from "../../support";
 
 import CreateAdministrativeProcess from "../../../pages/Documents/Create/CreateAdministrativeProcess";
 
@@ -24,104 +25,104 @@ const UNARCHIVE_PROCESS_NUMBER_LABEL = "Nº do Processo do Desarquivamento";
 
 const UNARCHIVE_DATE_LABEL = "Data de Desarquivamento";
 
-const input = (field, value) => {
-	fireEvent.change(screen.getByLabelText(field), { target: { value: value } });
-};
-
-const submitClick = () => {
-	fireEvent.click(screen.getByRole("button", { name: /CADASTRAR/ }));
-};
-
-const isOnTheScreen = (text) => {
-	expect(screen.getByText(text)).toBeInTheDocument();
-};
-
-const isNotOnTheScreen = (text) => {
-	expect(screen.queryByText(text)).not.toBeInTheDocument();
-};
-
 describe("Create Administrative Process Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateAdministrativeProcess />);
 
 		input(NOTICE_DATE_LABEL, "");
 		submitClick();
-		isOnTheScreen(REQUIRED_DATE_ERROR_MESSAGE);
+		expect(screen.getByText(REQUIRED_DATE_ERROR_MESSAGE)).toBeInTheDocument();
 
 		input(NOTICE_DATE_LABEL, "01/02/");
-		isNotOnTheScreen(REQUIRED_DATE_ERROR_MESSAGE);
+		expect(
+			screen.queryByText(REQUIRED_DATE_ERROR_MESSAGE)
+		).not.toBeInTheDocument();
 		submitClick();
-		isOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
+		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
 
 		input(NOTICE_DATE_LABEL, "03/04/2005");
-		isNotOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
+		expect(
+			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
+		).not.toBeInTheDocument();
 
 		input(ARCHIVING_DATE_LABEL, "");
 		submitClick();
-		isOnTheScreen(REQUIRED_DATE_ERROR_MESSAGE);
+		expect(screen.getByText(REQUIRED_DATE_ERROR_MESSAGE)).toBeInTheDocument();
 
 		input(ARCHIVING_DATE_LABEL, "36/07/2008");
-		isNotOnTheScreen(REQUIRED_DATE_ERROR_MESSAGE);
+		expect(
+			screen.queryByText(REQUIRED_DATE_ERROR_MESSAGE)
+		).not.toBeInTheDocument();
 		submitClick();
-		isOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
+		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
 
 		input(ARCHIVING_DATE_LABEL, "09/10/2011");
-		isNotOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
+		expect(
+			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
+		).not.toBeInTheDocument();
 
 		input("Referência", "13/2012");
 		submitClick();
-		isOnTheScreen("Insira um período válido");
+		expect(screen.getByText("Insira um período válido")).toBeInTheDocument();
 
 		input("Referência", "04/2015");
-		isNotOnTheScreen("Insira um período válido");
+		expect(
+			screen.queryByText("Insira um período válido")
+		).not.toBeInTheDocument();
 
 		submitClick();
-		isOnTheScreen("Insira o número do processo");
+		expect(screen.getByText("Insira o número do processo")).toBeInTheDocument();
 
 		input("Número do Processo*", "16");
-		isNotOnTheScreen("Insira o número do processo");
+		expect(
+			screen.queryByText("Insira o número do processo")
+		).not.toBeInTheDocument();
 
 		input("CPF/CNPJ", "171.819.20212");
 		submitClick();
-		isOnTheScreen("Insira somente números");
+		expect(screen.getByText("Insira somente números")).toBeInTheDocument();
 
 		input("CPF/CNPJ", "2324252627");
-		isNotOnTheScreen("Insira somente números");
+		expect(
+			screen.queryByText("Insira somente números")
+		).not.toBeInTheDocument();
 		submitClick();
-		isOnTheScreen("Insira um CPF/CNPJ válido");
+		expect(screen.getByText("Insira um CPF/CNPJ válido")).toBeInTheDocument();
 
 		input("CPF/CNPJ", "28293031323");
-		isNotOnTheScreen("Insira um CPF/CNPJ válido");
+		expect(
+			screen.queryByText("Insira um CPF/CNPJ válido")
+		).not.toBeInTheDocument();
 		submitClick();
-		isOnTheScreen("Insira um interessado");
+		expect(screen.getByText("Insira um interessado")).toBeInTheDocument();
 
 		input("Interessado*", "interested_test");
-		isNotOnTheScreen("Insira um interessado");
+		expect(screen.queryByText("Insira um interessado")).not.toBeInTheDocument();
 		submitClick();
-		isOnTheScreen("Selecione um assunto");
+		expect(screen.getByText("Selecione um assunto")).toBeInTheDocument();
 
 		fireEvent.mouseDown(screen.getByLabelText("Assunto do Documento*"));
 		const subjectsOptions = within(screen.getByRole("listbox"));
 		await subjectsOptions.findByText("subject_name_test");
 		fireEvent.click(subjectsOptions.getByText(/subject_name_test/i));
-		isNotOnTheScreen("Selecione um assunto");
+		expect(screen.queryByText("Selecione um assunto")).not.toBeInTheDocument();
 
 		submitClick();
-		isOnTheScreen("Selecione uma unidade");
+		expect(screen.getByText("Selecione uma unidade")).toBeInTheDocument();
 
 		fireEvent.mouseDown(screen.getByLabelText("Unidade que Encaminhou*"));
 		const senderUnitOptions = within(screen.getByRole("listbox"));
 		await senderUnitOptions.findByText("sender_unit_name_test");
 		fireEvent.click(senderUnitOptions.getByText(/sender_unit_name_test/i));
-		isNotOnTheScreen("Selecione uma unidade");
+		expect(screen.queryByText("Selecione uma unidade")).not.toBeInTheDocument();
 
 		submitClick();
-		isOnTheScreen("Selecione um status");
+		expect(screen.getByText("Selecione um status")).toBeInTheDocument();
 
 		fireEvent.mouseDown(screen.getByLabelText("Status*"));
 		const statusOptions = within(screen.getByRole("listbox"));
 		fireEvent.click(statusOptions.getByText(/Eliminado/i));
-		isNotOnTheScreen("Selecione um status");
+		expect(screen.queryByText("Selecione um status")).not.toBeInTheDocument();
 
 		submitClick();
 
@@ -160,17 +161,25 @@ describe("Create Administrative Process Screen Test", () => {
 		await rackOptions.findByText("49");
 		fireEvent.click(rackOptions.getByText(/49/i));
 
-		isNotOnTheScreen(UNARCHIVE_DESTINATION_UNIT_LABEL);
-		isNotOnTheScreen(UNARCHIVE_PROCESS_NUMBER_LABEL);
-		isNotOnTheScreen(UNARCHIVE_DATE_LABEL);
+		expect(
+			screen.queryByText(UNARCHIVE_DESTINATION_UNIT_LABEL)
+		).not.toBeInTheDocument();
+		expect(
+			screen.queryByText(UNARCHIVE_PROCESS_NUMBER_LABEL)
+		).not.toBeInTheDocument();
+		expect(screen.queryByText(UNARCHIVE_DATE_LABEL)).not.toBeInTheDocument();
 
 		fireEvent.mouseDown(screen.getByLabelText("Status*"));
 		const statusOptions2 = within(screen.getByRole("listbox"));
 		fireEvent.click(statusOptions2.getByText(/Desarquivado/i));
 
-		isOnTheScreen(UNARCHIVE_DESTINATION_UNIT_LABEL);
-		isOnTheScreen(UNARCHIVE_PROCESS_NUMBER_LABEL);
-		isOnTheScreen(UNARCHIVE_DATE_LABEL);
+		expect(
+			screen.getByText(UNARCHIVE_DESTINATION_UNIT_LABEL)
+		).toBeInTheDocument();
+		expect(
+			screen.getByText(UNARCHIVE_PROCESS_NUMBER_LABEL)
+		).toBeInTheDocument();
+		expect(screen.getByText(UNARCHIVE_DATE_LABEL)).toBeInTheDocument();
 
 		fireEvent.mouseDown(
 			screen.getByLabelText(UNARCHIVE_DESTINATION_UNIT_LABEL)
@@ -189,10 +198,12 @@ describe("Create Administrative Process Screen Test", () => {
 
 		input(UNARCHIVE_DATE_LABEL, "/06/2052");
 		submitClick();
-		isOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
+		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
 
 		input(UNARCHIVE_DATE_LABEL, "08/09/2055");
-		isNotOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
+		expect(
+			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
+		).not.toBeInTheDocument();
 
 		input("Observação", "notes_test");
 
