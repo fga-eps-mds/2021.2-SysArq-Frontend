@@ -28,7 +28,7 @@ export default function CreateUnity() {
 	const [unityType, setUnityType] = useState("");
 	const [county, setCounty] = useState("");
 	const [telephoneNumber, setTelephoneNumber] = useState("");
-	const [notes, setNote] = useState("");
+	const [note, setNote] = useState("");
 
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
@@ -48,7 +48,7 @@ export default function CreateUnity() {
 				type_of_unity: unityType,
 				municipality: county,
 				telephone_number: telephoneNumber,
-				note: notes,
+				notes: note,
 			})
 			.then(() => {
 				handleShow();
@@ -163,7 +163,7 @@ export default function CreateUnity() {
 			type: "text",
 			placeholder: "Observações",
 			setValue: setNote,
-			value: notes,
+			value: note,
 			helperText: "",
 			error: false,
 			setHelperText: () => {

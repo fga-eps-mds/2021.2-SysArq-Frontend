@@ -83,5 +83,14 @@ export default function CreateDocumentType() {
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar tipo do documento";
 
-	return createForm(fields, title, subtitle, classes, show, showError, onClick,null);
+	return createForm(
+		fields,
+		title,
+		subtitle,
+		classes,
+		show,
+		showError,
+		onClick,
+		null
+	);
 }

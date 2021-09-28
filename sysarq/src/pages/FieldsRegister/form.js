@@ -2,9 +2,6 @@ import React from "react";
 import Alert from "@material-ui/lab/Alert";
 import { Paper, TextField, Grid, Container } from "@material-ui/core";
 
-
-
-
 export default function createForm(
 	fields,
 	title,
@@ -42,14 +39,17 @@ export default function createForm(
 												item.setHelperText("");
 												item.setError(false);
 											}}
-											className={(item.type !=="date" || isBox != null) ? classes.input:classes.inputDate}
-											inputProps={{maxLength: "100"}}
-											helperText={isBox===true? item.helperText : null}
-											error={isBox===true ? item.error : null}
-											
+											className={
+												item.type !== "date" || isBox != null
+													? classes.input
+													: classes.inputDate
+											}
+											inputProps={{ maxLength: "100" }}
+											helperText={isBox === true ? item.helperText : null}
+											error={isBox === true ? item.error : null}
 										/>
 									</Grid>
-								)
+								);
 								return input;
 							})}
 						</Grid>
@@ -62,5 +62,3 @@ export default function createForm(
 		</div>
 	);
 }
-
-
