@@ -18,7 +18,6 @@ import Alert from "@material-ui/lab/Alert";
 
 import TimelapseIcon from "@material-ui/icons/Timelapse";
 import CancelIcon from "@material-ui/icons/Cancel";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 import {
 	initialDate,
@@ -40,6 +39,8 @@ import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
 import ShelfInput from "../../components/Inputs/ShelfInput";
 import RackInput from "../../components/Inputs/RackInput";
 import NotesInput from "../../components/Inputs/NotesInput";
+
+import AddChip from "../../components/AddChip/AddChip";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert"; //
@@ -338,13 +339,7 @@ const CreateFrequencyRelation = () => {
 						/>
 					))}
 
-					<Chip
-						label="Adicionar"
-						icon={<AddCircleIcon />}
-						color="primary"
-						onClick={handleOpenNewPeriodDialog}
-						clickable
-					/>
+					<AddChip onClick={handleOpenNewPeriodDialog} />
 				</div>
 			</Grid>
 
