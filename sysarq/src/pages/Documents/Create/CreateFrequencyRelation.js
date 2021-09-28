@@ -4,11 +4,6 @@ import {
 	makeStyles,
 	Grid,
 	TextField,
-	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
-	FormHelperText,
 	Typography,
 	Chip,
 	Dialog,
@@ -38,6 +33,7 @@ import { axiosArchives } from "../../../Api";
 import DocumentsContainer from "../../components/Container/DocumentsContainer";
 
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
+import DocumentTypeInput from "../../components/Inputs/DocumentTypeInput";
 import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
 import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
 import ShelfInput from "../../components/Inputs/ShelfInput";
@@ -76,7 +72,6 @@ const useStyles = makeStyles((theme) => ({
 const CreateFrequencyRelation = () => {
 	const classes = useStyles();
 
-	const [documentTypes, setDocumentTypes] = useState([]);
 	const [units, setUnits] = useState([]);
 
 	const [number, setNumber] = useState("");
@@ -118,11 +113,6 @@ const CreateFrequencyRelation = () => {
 	const handleReceivedDateChange = (date) => {
 		setReceivedDateHelperText("");
 		setReceivedDate(date);
-	};
-
-	const handleDocumentTypeChange = (event) => {
-		setDocumentTypeHelperText("");
-		setDocumentType(event.target.value);
 	};
 
 	const handleOpenNewPeriodDialog = () => setOpenNewPeriodDialog(true);
@@ -264,11 +254,6 @@ const CreateFrequencyRelation = () => {
 
 	useEffect(() => {
 		axiosArchives
-			.get("document-type/")
-			.then((response) => setDocumentTypes(response.data))
-			.catch(() => connectionError());
-
-		axiosArchives
 			.get("unity/")
 			.then((response) => setUnits(response.data))
 			.catch(() => connectionError());
@@ -320,36 +305,13 @@ const CreateFrequencyRelation = () => {
 				/>
 			</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<FormControl fullWidth error={documentTypeHelperText !== ""}>
-					<InputLabel id="select-documentType-label">
-						Tipo de Documento*
-					</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-documentType-label"
-						id="select-documentType"
-						value={documentType}
-						onChange={handleDocumentTypeChange}
-						renderValue={(value) => `${value.document_name}`}
-					>
-						<MenuItem key={0} value="">
-							<em>Nenhum</em>
-						</MenuItem>
-
-						{documentTypes.map((documentTypeOption) => (
-							<MenuItem key={documentTypeOption.id} value={documentTypeOption}>
-								{documentTypeOption.document_name}
-							</MenuItem>
-						))}
-					</Select>
-					{documentTypeHelperText ? (
-						<FormHelperText>{documentTypeHelperText}</FormHelperText>
-					) : (
-						""
-					)}
-				</FormControl>
-			</Grid>
+			<DocumentTypeInput
+				setHelperText={setDocumentTypeHelperText}
+				set={setDocumentType}
+				connectionError={connectionError}
+				documentType={documentType}
+				documentTypeHelperText={documentTypeHelperText}
+			/>
 
 			<SenderUnitInput
 				setHelperText={setSenderUnitHelperText}
