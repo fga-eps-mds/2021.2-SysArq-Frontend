@@ -2,10 +2,9 @@ import React from "react";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-
 import Home from "./pages/Home";
 import Header from "./pages/components/Header";
-import Footer  from "./pages/components/Footer";
+import Footer from "./pages/components/Footer";
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
 import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
@@ -29,8 +28,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
 	return (
 		<Router>
-			<Header/>
-			
+			<Header />
+
 			<Switch>
 				<Route exact path="/">
 					<Home />
@@ -97,7 +96,7 @@ function App() {
 					</Route>
 				</Route>
 			</Switch>
-			<Footer/>
+			<Footer />
 		</Router>
 	);
 }

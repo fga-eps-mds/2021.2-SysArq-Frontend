@@ -12,23 +12,34 @@ function Header() {
 			<a href="/">
 				<img src={imgFolders} alt="Logo" />
 			</a>
-			
-			<input type="checkbox" id="bt_menu"/>
+
+			<input type="checkbox" id="bt_menu" />
 			<label htmlFor="bt_menu">&#9776;</label>
-			
+
 			<div className="div-media">
 				<ul>
-					<li><a href= "/">Pesquisar</a></li>
-					<li><a href= "/fields-register">Campos</a></li>
-					<li><a href= "/documents-register">Cadastro</a></li>
-					<li><a href= "/">Configurações</a></li>
-					<li><a href= "/">Relatório</a></li>
-					<li><a href= "/">Sair</a></li>
+					<li>
+						<a href="/">Pesquisar</a>
+					</li>
+					<li>
+						<a href="/fields-register">Campos</a>
+					</li>
+					<li>
+						<a href="/documents-register">Cadastro</a>
+					</li>
+					<li>
+						<a href="/">Configurações</a>
+					</li>
+					<li>
+						<a href="/">Relatório</a>
+					</li>
+					<li>
+						<a href="/">Sair</a>
+					</li>
 				</ul>
 			</div>
 
 			<BottomNavigation showLabels>
-
 				<BottomNavigationAction
 					label="Pesquisar"
 					href="/"
@@ -57,8 +68,6 @@ function Header() {
 			</BottomNavigation>
 			<button type="submit">Sair</button>
 		</div>
-
-		
 	);
 }
 

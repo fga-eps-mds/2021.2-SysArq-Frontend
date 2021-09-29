@@ -2,7 +2,7 @@
     height: 5rem;
     width: 100%;
     background-color: rgba(31, 53, 65, 1);
-    z-index: 10;
+    z-index: 1000;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -17,6 +17,8 @@
     flex-direction: row;
     justify-content: flex-start;
     margin-left: 2rem;
+    z-index: 1000;
+
 }
 
 .header > div a {
@@ -36,7 +38,6 @@
     font-size: 1rem;
     margin-left: auto;
     flex-direction: row;
-    
 }
 
 label[for="bt_menu"]{
@@ -47,33 +48,38 @@ label[for="bt_menu"]{
     text-align: center;
     cursor: pointer;
     width: 50px;
-    height: 50px;
-  }  
+    height: 50px; 
+}
 
   #bt_menu{
     display: none;
-  }
+  
+}
 
   label[for="bt_menu"]{
     display: none;
-  } 
+  
+} 
 
   .div-media {
     display: none !important;
     margin-left: 0 !important;
-  }
+  
+}
 
   .div-media ul {
     list-style: none;
     position: relative;
     padding: 0;
-  }
+  
+}
 
   .div-media ul li {
     
     text-align: center;
     
-  }
+  
+}
   .div-media a{
       padding: 16px;
       display: block;
@@ -81,27 +87,32 @@ label[for="bt_menu"]{
       text-align: center;
       background-color: rgba(31, 53, 65, 1);
       border-bottom: solid 1px #eee;
-  }
+  
+    }
 
 
 @media(max-width: 880px){
     label[for="bt_menu"]{
         display: block;
-      }
+      
+    }
 
     #bt_menu:checked ~ .div-media{
       margin-top: 44px;
+    
     }
 
     .div-media{
       display: block !important;
       transition: all 0.4s;
       margin-top: -500%;
+    
     }
     
     .MuiBottomNavigation-root{
           display: none !important;
-    }
+    
+        }
 
     .header {
         max-height: 250px !important;
@@ -109,9 +120,11 @@ label[for="bt_menu"]{
         background-color: rgba(31, 53, 65, 1);
         display: flex; 
        
+    
     }
     .header button {
       display: none;
+    
     }
 
   
