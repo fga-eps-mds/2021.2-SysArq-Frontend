@@ -22,47 +22,59 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
+const testEvent1 = async (object, findText) => {
+	render(<CreateBoxAbbreviation />);
+	for (let i = 0; i < object.length; i += 2) {
+		inputChange(object[i], object[i + 1]);
+	}
+	fireEvent.click(screen.getByTestId("click"));
+
+	await screen.findByText(findText);
+	act(() => {
+		jest.advanceTimersByTime(3000);
+	});
+};
+
 describe("Page test", () => {
-	it("axios success", async () => {
-		render(<CreateBoxAbbreviation />);
-
-		inputChange("Número da caixa", "201");
-		inputChange("Sigla da caixa", "ASD");
-		inputChange("Nome completo", "Polícia Civil do Goias");
-		inputChange("Ano", "2021");
-
-		fireEvent.click(screen.getByTestId("click"));
-
-		await screen.findByText("Campo cadastrado!");
-		act(() => {
-			jest.advanceTimersByTime(3000);
-		});
+	it("axios sucess", async () => {
+		const objSucess = [
+			"Número da caixa",
+			"201",
+			"Sigla da caixa",
+			"ASD",
+			"Nome completo",
+			"Polícia Civil do Goias",
+			"Ano",
+			"2021"
+		];
+		await testEvent1(objSucess, "Campo cadastrado!");
 	});
 
 	it("axios fail", async () => {
-		render(<CreateBoxAbbreviation />);
-
-		inputChange("Número da caixa", "401");
-		inputChange("Sigla da caixa", "ASD");
-		inputChange("Nome completo", "Polícia Civil do Goias");
-		inputChange("Ano", "2021");
-		fireEvent.click(screen.getByTestId("click"));
-
-		await screen.findByText("Erro de conexão!");
-		act(() => {
-			jest.advanceTimersByTime(3000);
-		});
+		const objFail = [
+			"Número da caixa",
+			"401",
+			"Sigla da caixa",
+			"ASD",
+			"Nome completo",
+			"Polícia Civil do Goias",
+			"Ano",
+			"2021"
+		];
+		await testEvent1(objFail, "Erro de conexão!");
 	});
 
 	it("year error", async () => {
-		render(<CreateBoxAbbreviation />);
-
-		inputChange("Número da caixa", "345");
-		inputChange("Sigla da caixa", "BOB");
-		inputChange("Nome completo", "Bobilson");
-		inputChange("Ano", "3");
-		fireEvent.click(screen.getByTestId("click"));
-
-		await screen.findByText("Ano inválido");
+		const objFail = [
+			"Número da caixa",
+			"345",
+			"Sigla da caixa",
+			"BOB",
+			"Nome completo",
+			"Polícia Civil do Goias",
+			"Ano",
+			"3"
+		];
+		await testEvent1(objFail, "Ano inválido");
 	});
 });
