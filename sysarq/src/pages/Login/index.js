@@ -179,6 +179,7 @@ const Login = () => {
 			.then((response) => {
 				localStorage.setItem("tk", response.data.access);
 				localStorage.setItem("tkr", response.data.refresh);
+				localStorage.setItem("isLogged", true);
 				window.location = "/";
 			})
 			.catch((error) => {

@@ -6,8 +6,19 @@ import "./styles.css";
 
 import imgFolders from "../../../assets/logo.png";
 
+function logout() {
+	localStorage.removeItem("tk");
+	localStorage.removeItem("tkr");
+	localStorage.removeItem("isLogged");
+	window.location = "/login";
+}
+
 function Header() {
-	if (window.location.pathname === "/login") return null;
+	if (
+		window.location.pathname === "/login" ||
+		window.location.pathname === "/login/"
+	)
+		return null;
 
 	return (
 		<div className="header">
@@ -16,6 +27,7 @@ function Header() {
 			</a>
 
 			<input type="checkbox" id="bt_menu" />
+			<label htmlFor="bt_menu">&#9776;</label>
 
 			<div className="div-media">
 				<ul>
@@ -67,7 +79,9 @@ function Header() {
 					icon={<StarsIcon />}
 				/>
 			</BottomNavigation>
-			<button type="submit">Sair</button>
+			<button type="submit" onClick={logout}>
+				Sair
+			</button>
 		</div>
 	);
 }

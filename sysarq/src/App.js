@@ -16,6 +16,7 @@ import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
 import Login from "./pages/Login/index";
+import PrivateRoute from "./Routes/privateRoute";
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -25,57 +26,66 @@ function App() {
 		<Router>
 			<Header />
 			<Switch>
-				<Route exact path="/">
+				<PrivateRoute exact path="/">
 					<Home />
-				</Route>
+				</PrivateRoute>
 				<Route exact path="/login">
 					<Login />
 				</Route>
-				<Route path="/fields-register">
-					<Route exact path="/fields-register">
+				<PrivateRoute exact={false} path="/fields-register">
+					<PrivateRoute exact path="/fields-register">
 						<FieldsRegister />
-					</Route>
-					<Route path="/fields-register/document-subject">
-						<Route exact path="/fields-register/document-subject">
+					</PrivateRoute>
+					<PrivateRoute exact={false} path="/fields-register/document-subject">
+						<PrivateRoute exact path="/fields-register/document-subject">
 							<DocumentSubject />
-						</Route>
-						<Route path="/fields-register/document-subject/create">
+						</PrivateRoute>
+						<PrivateRoute
+							exact={false}
+							path="/fields-register/document-subject/create"
+						>
 							<CreateDocumentSubject />
-						</Route>
-					</Route>
-					<Route path="/fields-register/box-abbreviation">
-						<Route exact path="/fields-register/box-abbreviation">
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute exact={false} path="/fields-register/box-abbreviation">
+						<PrivateRoute exact path="/fields-register/box-abbreviation">
 							<BoxAbbreviation />
-						</Route>
-						<Route path="/fields-register/box-abbreviation/create">
+						</PrivateRoute>
+						<PrivateRoute
+							exact={false}
+							path="/fields-register/box-abbreviation/create"
+						>
 							<CreateBoxAbbreviation />
-						</Route>
-					</Route>
-					<Route path="/fields-register/unity">
-						<Route exact path="/fields-register/unity">
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute exact={false} path="/fields-register/unity">
+						<PrivateRoute exact path="/fields-register/unity">
 							<Unity />
-						</Route>
-						<Route path="/fields-register/unity/create">
+						</PrivateRoute>
+						<PrivateRoute exact={false} path="/fields-register/unity/create">
 							<CreateUnity />
-						</Route>
-					</Route>
-					<Route path="/fields-register/document-type">
-						<Route exact path="/fields-register/document-type">
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute exact={false} path="/fields-register/document-type">
+						<PrivateRoute exact path="/fields-register/document-type">
 							<DocumentType />
-						</Route>
-						<Route path="/fields-register/document-type/create">
+						</PrivateRoute>
+						<PrivateRoute
+							exact={false}
+							path="/fields-register/document-type/create"
+						>
 							<CreateDocumentType />
-						</Route>
-					</Route>
-					<Route path="/fields-register/shelf">
-						<Route exact path="/fields-register/shelf">
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute exact={false} path="/fields-register/shelf">
+						<PrivateRoute exact path="/fields-register/shelf">
 							<Shelf />
-						</Route>
-						<Route path="/fields-register/shelf/create">
+						</PrivateRoute>
+						<PrivateRoute exact={false} path="/fields-register/shelf/create">
 							<CreateShelf />
-						</Route>
-					</Route>
-				</Route>
+						</PrivateRoute>
+					</PrivateRoute>
+				</PrivateRoute>
 			</Switch>
 			<Footer />
 		</Router>
