@@ -28,16 +28,17 @@ const useStyles = makeStyles({
 
 	select: {
 		marginTop: 50,
-		marginLeft: 10,
+		marginLeft: 100,
 	},
 
 	select_box: {
 		minWidth: 200,
+		height: 40,
 	},
 
 	select_label: {
-		marginTop: -1,
-		marginLeft: 60,
+		marginTop: -15,
+		marginLeft: 20,
 	},
 });
 
@@ -96,9 +97,7 @@ export default function Search() {
 								value={value}
 								onChange={handleChange}
 								variant="outlined"
-								labelId="Resultado de pesquisa"
-								autoWidth
-								id="select"
+								label="dropdown"
 							>
 								<MenuItem value="">
 									<em>None</em>
