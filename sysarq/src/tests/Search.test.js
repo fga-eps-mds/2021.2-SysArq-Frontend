@@ -15,8 +15,10 @@ const testType = (title, valueTest) => {
 describe("Main component", () => {
 	it("Show page components", () => {
 		render(<Search />);
-		expect(screen.getByText("Arquivo Geral da Polícia Civil do Goiás")).toBeInTheDocument();
-        expect(screen.getByAltText("Logo")).toBeInTheDocument();
-        testType("Pesquisa", "teste");
+		expect(
+			screen.getByText("Arquivo Geral da Polícia Civil do Goiás")
+		).toBeInTheDocument();
+		expect(screen.getByAltText("Logo")).toBeInTheDocument();
+		testType("Pesquisa", "teste");
 	});
 });

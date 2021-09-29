@@ -23,29 +23,27 @@ const useStyles = makeStyles({
 	button: {
 		marginTop: 50,
 		marginLeft: 10,
+		borderRadius: 4,
 	},
 
 	select: {
-		marginTop: 40,
-		marginLeft: 100,
+		marginTop: 50,
+		marginLeft: 10,
 	},
 
-
-	select_box: {	
-		marginTop: 5,
-		marginLeft: 60,
-		minWidth: 150,
+	select_box: {
+		minWidth: 200,
 	},
 
 	select_label: {
-		marginLeft: 70,
+		marginTop: -1,
+		marginLeft: 60,
 	},
 });
 
-
-
 export default function Search() {
 	const classes = useStyles();
+	const [value, setValue] = React.useState("");
 
 	const theme = createTheme({
 		palette: {
@@ -55,18 +53,15 @@ export default function Search() {
 		},
 	});
 
-	const [value, setValue] = React.useState('');
-
-  	const handleChange = (event) => {
-    	setValue(event.target.value);
-  	};
-
+	const handleChange = (event) => {
+		setValue(event.target.value);
+	};
 
 	return (
 		<div>
 			<body id="body">
 				<img id="logo" src={imgBox} alt="Logo" />
-				<h1 id="Search_title">Arquivo Geral da Polícia Civil do Goiás</h1>
+				<h1 id="search_title">Arquivo Geral da Polícia Civil do Goiás</h1>
 
 				<ThemeProvider theme={theme}>
 					<TextField
@@ -74,7 +69,6 @@ export default function Search() {
 						placeholder="Pesquisar:"
 						variant="outlined"
 						color="primary"
-						label="Pesquisa"
 					/>
 				</ThemeProvider>
 
@@ -90,30 +84,35 @@ export default function Search() {
 							Ir
 						</Button>
 
-						<FormControl sx={{ m: 1, minWidth: 120 }} className={classes.select}>
-							<InputLabel className={classes.select_label}>Filtrar por:</InputLabel>
+						<FormControl
+							sx={{ m: 1, minWidth: 120 }}
+							className={classes.select}
+						>
+							<InputLabel className={classes.select_label}>
+								Filtrar por:
+							</InputLabel>
 							<Select
-							className={classes.select_box}
-							value={value}
-							onChange={handleChange}
-							variant="outlined"
-							labelId="Resultado de pesquisa"
-							autoWidth
-							id="select"
+								className={classes.select_box}
+								value={value}
+								onChange={handleChange}
+								variant="outlined"
+								labelId="Resultado de pesquisa"
+								autoWidth
+								id="select"
 							>
-							<MenuItem value="">
-								<em>None</em>
-							</MenuItem>
-							<MenuItem value="process_number">Número de processo</MenuItem>
-							<MenuItem value="shelf">Estante</MenuItem>
-							<MenuItem value="hack">Prateleira</MenuItem>
-							<MenuItem value="abbreviation">Sigla da caixa</MenuItem>
-							<MenuItem value="is_filed">Enviado</MenuItem>
-							<MenuItem value="is_eliminated">Eliminado</MenuItem>
-							<MenuItem value="user">Usuário</MenuItem>
-							<MenuItem value="document_type">Tipo de documento</MenuItem>
+								<MenuItem value="">
+									<em>None</em>
+								</MenuItem>
+								<MenuItem value="process_number">Número de processo</MenuItem>
+								<MenuItem value="shelf">Estante</MenuItem>
+								<MenuItem value="hack">Prateleira</MenuItem>
+								<MenuItem value="abbreviation">Sigla da caixa</MenuItem>
+								<MenuItem value="is_filed">Enviado</MenuItem>
+								<MenuItem value="is_eliminated">Eliminado</MenuItem>
+								<MenuItem value="user">Usuário</MenuItem>
+								<MenuItem value="document_type">Tipo de documento</MenuItem>
 							</Select>
-							</FormControl>
+						</FormControl>
 					</ThemeProvider>
 				</Grid>
 			</body>
