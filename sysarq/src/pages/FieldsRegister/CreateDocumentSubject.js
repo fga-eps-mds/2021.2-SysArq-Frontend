@@ -1,73 +1,96 @@
-import React, { useState } from "react";
-
-import { Button, TextField } from "@material-ui/core";
+import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
-import axios from "axios";
-
-const hostApi = `${process.env.REACT_APP_URL_API}document_suject`;
+import { axiosArchives } from "../../Api";
+import createForm from "./form";
 
 const useStyles = makeStyles({
-	fields: {
-		marginTop: 20,
-		marginBotton: 20,
-		display: "block",
+	input: {
+		width: "100%",
+		height: 36,
+		marginBottom: "1rem",
+		maxWidth: 908,
+	},
+	inputDate: {
+		width: "100%",
+		height: 36,
+		marginTop: "2rem",
+		marginBottom: "2rem",
+		maxWidth: 908,
 	},
 });
 
 export default function CreateDocumentSubject() {
-	const [documentSubject, setDocumentSubject] = useState("");
-	const [temporality, setTemporality] = useState(0);
 	const classes = useStyles();
 
+	const [documentSubject, setDocumentSubject] = useState("");
+	const [temporalityValue, setTemporality] = useState("2021-01-01");
+
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+
+	const [showError, setShowError] = useState(false);
+	const handleCloseError = () => setShowError(false);
+	const handleShowError = () => setShowError(true);
+
+	const fields = [
+		{
+			type: "text",
+			placeholder: "Assunto do documento",
+			setValue: setDocumentSubject,
+			value: documentSubject,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "date",
+			placeholder: "Temporalidade",
+			setValue: setTemporality,
+			value: temporalityValue,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+	];
+
 	const onClick = () => {
-		axios
-			.post(hostApi, {
+		axiosArchives
+			.post(`document-subject/`, {
 				subject_name: documentSubject,
-				temporality,
+				temporality: temporalityValue,
 			})
-			.then(() => {})
-			.catch(() => {});
+			.then(() => {
+				handleShow();
+				setTimeout(handleClose, 3000);
+			})
+			.catch(() => {
+				handleShowError();
+				setTimeout(handleCloseError, 3000);
+			});
 	};
 
-	const onChangeDocumentSubject = (event) => {
-		setDocumentSubject(event.target.value);
-	};
+	const title = "Arquivo Geral da Policia Civil de Goiás";
+	const subtitle = "Cadastrar assunto do documento";
 
-	const onChangeTemporality = (event) => {
-		setTemporality(event.target.value);
-	};
-
-	return (
-		<div>
-			<h1>Assunto do Documento</h1>
-			<TextField
-				id="nome-do-documento-input"
-				className={classes.fields}
-				onChange={onChangeDocumentSubject}
-				type="document_subject"
-				value={documentSubject}
-				label="Nome do documento"
-				variant="filled"
-			/>
-			<TextField
-				id="temporalidade-input"
-				className={classes.fields}
-				onChange={onChangeTemporality}
-				type="number"
-				label="Temporalidade"
-				value={temporality}
-				variant="filled"
-			/>
-			<Button
-				data-testid="click"
-				onClick={onClick}
-				style={{ marginTop: "20px" }}
-				variant="contained"
-				color="primary"
-			>
-				Salvar
-			</Button>
-		</div>
+	return createForm(
+		fields,
+		title,
+		subtitle,
+		classes,
+		show,
+		showError,
+		onClick,
+		null
 	);
 }

@@ -1,7 +1,7 @@
 import React from "react";
 
-import DataTable from "../components/DataTable/DataTable";
+import DataTable from "../components/DataTable";
 
 export default function DocumentType() {
-	return <DataTable title="Tipo de Documento" url="document_type/" />;
+	return <DataTable title="Tipo de Documento" url="document-type/" />;
 }

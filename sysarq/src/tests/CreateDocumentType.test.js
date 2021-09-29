@@ -1,54 +1,52 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import CreateDocumentType from "../pages/FieldsRegister/CreateDocumentType";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
+import inputChange from "./serverTest";
 
-const testType = (title, valueTest) => {
-	expect(screen.getByText(title)).toBeInTheDocument();
+const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}document-type/`;
 
-	const input = screen.getByLabelText(title);
-	fireEvent.change(input, { target: { value: valueTest } });
-	const value = screen.getByLabelText(title).value;
-	expect(value === valueTest).toBe(true);
-};
+const server = setupServer(
+	rest.post(axiosArchives, (req, res, ctx) => {
+		if (req.body.document_name === "201") {
+			return res(ctx.status(201));
+		} else {
+			return res(ctx.status(404));
+		}
+	})
+);
 
-describe("Main component", () => {
-	it("Show page title", () => {
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+jest.useFakeTimers();
+
+describe("Page test", () => {
+	it("axios sucess", async () => {
 		render(<CreateDocumentType />);
 
-		expect(screen.getByText("Tipo de Documento")).toBeInTheDocument();
-	});
-});
+		inputChange("Nome do documento", "201");
+		inputChange("Temporalidade", "2022-01-01");
 
-describe("Ensure that the document type input fields exist", () => {
-	it("Full name and temporality", () => {
-		render(<CreateDocumentType />);
+		fireEvent.click(screen.getByTestId("click"));
 
-		testType("Nome do Documento", "teste");
-		testType("Temporalidade", "12");
-	});
-});
-
-const hostApi = `${process.env.REACT_APP_URL_API}document_type`;
-
-describe("Button test", () => {
-	it("Save button", () => {
-		const mock = new MockAdapter(axios);
-
-		render(<CreateDocumentType />);
-
-		const click = screen.getByTestId("click");
-		expect(fireEvent.click(click)).toBe(true);
-
-		mock.onPost(hostApi).reply(function () {
-			return [201];
+		await screen.findByText("Campo cadastrado!");
+		act(() => {
+			jest.advanceTimersByTime(3000);
 		});
+	});
+	it("axios fail", async () => {
+		render(<CreateDocumentType />);
 
-		expect(mock.history.post.length).toBe(1);
-		expect(mock.history.post[0].data).toBe(
-			JSON.stringify({ document_name: "", temporality: 0 })
-		);
+		inputChange("Nome do documento", "401");
+		inputChange("Temporalidade", "2022-01-01");
+
+		fireEvent.click(screen.getByTestId("click"));
+
+		await screen.findByText("Erro de conexão!");
+		act(() => {
+			jest.advanceTimersByTime(3000);
+		});
 	});
 });
