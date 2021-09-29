@@ -20,17 +20,16 @@ import "date-fns";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
-		paddingTop: theme.spacing(2),
-		paddingBottom: theme.spacing(2),
+		paddingTop: theme.spacing(4),
+		paddingBottom: theme.spacing(4),
 
 		width: "85%",
-		margin: "auto",
 		textAlign: "center",
 	},
 
 	card: {
-		paddingTop: theme.spacing(6),
-		paddingBottom: theme.spacing(6),
+		paddingTop: theme.spacing(4),
+		paddingBottom: theme.spacing(4),
 		paddingLeft: theme.spacing(4),
 		paddingRight: theme.spacing(4),
 
@@ -40,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 
 	title: {
-		paddingBottom: theme.spacing(5),
+		paddingBottom: theme.spacing(4),
 
 		color: "#1f3541",
 		fontSize: "25px",

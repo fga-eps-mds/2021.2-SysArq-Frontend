@@ -14,7 +14,7 @@ import MuiLink from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
 	box: {
-		paddingTop: theme.spacing(5),
+		paddingTop: theme.spacing(4),
 
 		display: "flex",
 		height: "100%",
