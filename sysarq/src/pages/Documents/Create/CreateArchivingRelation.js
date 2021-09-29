@@ -218,6 +218,24 @@ const CreateArchivingRelation = () => {
 		return "added originBoxSubject";
 	};
 
+	const handleDeleteOriginBoxSubject = (
+		originBoxIndex,
+		originBoxSubjectIndex
+	) => {
+		const newOriginBoxesList = [];
+
+		for (let i = 0; i < originBoxes.length; i += 1) {
+			if (i === originBoxIndex) {
+				originBoxes[i].subjects_list.splice(originBoxSubjectIndex, 1);
+				newOriginBoxesList.push(originBoxes[i]);
+			} else {
+				newOriginBoxesList.push(originBoxes[i]);
+			}
+		}
+
+		setOriginBoxes(newOriginBoxesList);
+	};
+
 	const handleOpenNewOriginBoxSubjectDateDialog = (
 		originBoxIndex,
 		originBoxSubjectIndex
