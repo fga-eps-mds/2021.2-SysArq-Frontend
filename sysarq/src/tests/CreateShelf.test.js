@@ -74,4 +74,12 @@ describe("inputs", () => {
 		const failShelf = ["Estante", "Número da estante", "401"];
 		await testEvent(failShelf, "Erro de conexão!");
 	});
+	it("empty shelf", async () => {
+		const failShelf = ["Estante", "Número da estante", ""];
+		await testEvent(failShelf, "Estante não pode ser vazia");
+	});
+	it("empty rack", async () => {
+		const failRack = ["Prateleira", "Número da prateleira", ""];
+		await testEvent(failRack, "Prateleira não pode ser vazia");
+	});
 });

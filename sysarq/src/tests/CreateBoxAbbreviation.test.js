@@ -53,4 +53,16 @@ describe("Page test", () => {
 			jest.advanceTimersByTime(3000);
 		});
 	});
+
+	it("year error", async () => {
+		render(<CreateBoxAbbreviation />);
+
+		inputChange("Número da caixa", "345");
+		inputChange("Sigla da caixa", "BOB");
+		inputChange("Nome completo", "Bobilson");
+		inputChange("Ano", "3");
+		fireEvent.click(screen.getByTestId("click"));
+
+		await screen.findByText("Ano inválido");
+	});
 });
