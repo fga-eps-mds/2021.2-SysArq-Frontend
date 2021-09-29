@@ -3,7 +3,7 @@ import { render, screen, fireEvent, act, within } from "@testing-library/react";
 import CreateShelf from "../pages/FieldsRegister/CreateShelf";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { inputChange } from "./inputTest";
+import { inputChange } from "./inputTest.test";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
 

@@ -2,7 +2,7 @@ import React from "react";
 import CreateBoxAbbreviation from "../pages/FieldsRegister/CreateBoxAbbreviation";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { testEvent } from "./inputTest";
+import { testEvent } from "./inputTest.test";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}box-abbreviation/`;
 
@@ -21,16 +21,21 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
+const BOX_NUMBER = "Número da caixa";
+const BOX_ABBREVIATION = "Sigla da caixa";
+const BOX_NAME = "Nome completo";
+const BOX_YEAR = "Ano";
+
 describe("Page test", () => {
 	it("axios sucess", async () => {
 		const objSucess = [
-			"Número da caixa",
+			BOX_NUMBER,
 			"201",
-			"Sigla da caixa",
+			BOX_ABBREVIATION,
 			"ASD",
-			"Nome completo",
+			BOX_NAME,
 			"Polícia Civil do Goias",
-			"Ano",
+			BOX_YEAR,
 			"2021",
 		];
 		await testEvent(<CreateBoxAbbreviation />, objSucess, "Campo cadastrado!");
@@ -38,13 +43,13 @@ describe("Page test", () => {
 
 	it("axios fail", async () => {
 		const objFail = [
-			"Número da caixa",
+			BOX_NUMBER,
 			"401",
-			"Sigla da caixa",
+			BOX_ABBREVIATION,
 			"ASD",
-			"Nome completo",
+			BOX_NAME,
 			"Polícia Civil do Goias",
-			"Ano",
+			BOX_YEAR,
 			"2021",
 		];
 		await testEvent(<CreateBoxAbbreviation />, objFail, "Erro de conexão!");
@@ -52,13 +57,13 @@ describe("Page test", () => {
 
 	it("year error", async () => {
 		const objFail = [
-			"Número da caixa",
+			BOX_NUMBER,
 			"345",
-			"Sigla da caixa",
+			BOX_ABBREVIATION,
 			"BOB",
-			"Nome completo",
+			BOX_NAME,
 			"Polícia Civil do Goias",
-			"Ano",
+			BOX_YEAR,
 			"3",
 		];
 		await testEvent(<CreateBoxAbbreviation />, objFail, "Ano inválido");

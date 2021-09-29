@@ -19,3 +19,6 @@ export async function testEvent(component, object, findText) {
 		jest.advanceTimersByTime(3000);
 	});
 }
+describe("pass", () => {
+	it("pass", () => {});
+});

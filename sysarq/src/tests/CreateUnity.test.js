@@ -2,7 +2,7 @@ import React from "react";
 import CreateUnity from "../pages/FieldsRegister/CreateUnity";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { testEvent } from "./inputTest";
+import { testEvent } from "./inputTest.test";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}unity/`;
 
