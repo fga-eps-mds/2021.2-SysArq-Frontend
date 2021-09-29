@@ -112,7 +112,6 @@ afterAll(() => server.close());
 describe("DataTable and tablesHeadCells Test", () => {
 	it("test components flow", async () => {
 		render(<DataTable title="Assunto do documento" url="document-subject/" />);
-		screen.findByText("Verifique sua conexão com a internet e recarregue a página.")
 
 		expect(screen.getByText("Nome do Assunto")).toBeInTheDocument();
 		expect(screen.getByText("Temporalidade")).toBeInTheDocument();
