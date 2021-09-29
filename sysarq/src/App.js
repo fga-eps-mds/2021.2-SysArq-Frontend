@@ -1,22 +1,18 @@
 import React from "react";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Navbar, Container, Nav } from "react-bootstrap";
-
+import Header from "./pages/components/Header";
 import Home from "./pages/Home";
+import Footer from "./pages/components/Footer";
+
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
 import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
-import PublicWorker from "./pages/FieldsRegister/PublicWorker";
 import DocumentType from "./pages/FieldsRegister/DocumentType";
 import Unity from "./pages/FieldsRegister/Unity";
 import Shelf from "./pages/FieldsRegister/Shelf";
-import Status from "./pages/FieldsRegister/Status";
 import CreateDocumentSubject from "./pages/FieldsRegister/CreateDocumentSubject";
-import CreateStatus from "./pages/FieldsRegister/CreateStatus";
 import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation";
 import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
-import CreatePublicWorker from "./pages/FieldsRegister/CreatePublicWorker";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
 
@@ -30,15 +26,7 @@ import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdminist
 function App() {
 	return (
 		<Router>
-			<Navbar bg="dark" variant="dark">
-				<Container>
-					<Nav className="me-auto">
-						<Nav.Link href="/">Home</Nav.Link>
-						<Nav.Link href="/fields-register">Cadastro de Campos</Nav.Link>
-					</Nav>
-				</Container>
-			</Navbar>
-
+			<Header />
 			<Switch>
 				<Route exact path="/">
 					<Home />
@@ -61,14 +49,6 @@ function App() {
 						</Route>
 						<Route path="/fields-register/box-abbreviation/create">
 							<CreateBoxAbbreviation />
-						</Route>
-					</Route>
-					<Route path="/fields-register/public-worker">
-						<Route exact path="/fields-register/public-worker">
-							<PublicWorker />
-						</Route>
-						<Route path="/fields-register/public-worker/create">
-							<CreatePublicWorker />
 						</Route>
 					</Route>
 					<Route path="/fields-register/unity">
@@ -95,14 +75,6 @@ function App() {
 							<CreateShelf />
 						</Route>
 					</Route>
-					<Route path="/fields-register/status">
-						<Route exact path="/fields-register/status">
-							<Status />
-						</Route>
-						<Route path="/fields-register/status/create">
-							<CreateStatus />
-						</Route>
-					</Route>
 				</Route>
 
 				<Route path="/documents">
@@ -119,6 +91,7 @@ function App() {
 					</Route>
 				</Route>
 			</Switch>
+			<Footer />
 		</Router>
 	);
 }
