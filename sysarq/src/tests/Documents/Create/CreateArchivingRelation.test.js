@@ -21,100 +21,100 @@ const isNotOnTheScreen = (text) => {
 };
 
 describe("Create Archiving Relation Screen Test", () => {
-    it("complete test", async () => {
-        render(<CreateArchivingRelation/>);
+	it("complete test", async () => {
+		render(<CreateArchivingRelation />);
 
-        fireEvent.click(screen.getByText("Adicionar"));
-        isOnTheScreen("Nova Caixa de Origem");
+		fireEvent.click(screen.getByText("Adicionar"));
+		isOnTheScreen("Nova Caixa de Origem");
 
-        fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-        isOnTheScreen("Insira um número");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("Insira um número");
 
-        input("Número da Caixa*", "9");
+		input("Número da Caixa*", "9");
 		isNotOnTheScreen("Insira um número");
 
-        fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-        isOnTheScreen("Insira um ano");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("Insira um ano");
 
-        input("Ano*", "199o");
+		input("Ano*", "199o");
 		isNotOnTheScreen("Insira um ano");
 
-        fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-        isOnTheScreen("Insira um ano válido");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("Insira um ano válido");
 
-        input("Ano*", "1899");
+		input("Ano*", "1899");
 		isNotOnTheScreen("Insira um ano válido");
 
-        fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-        isOnTheScreen("Insira um ano válido");
-    
-        input("Ano*", "1900");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("Insira um ano válido");
+
+		input("Ano*", "1900");
 		isNotOnTheScreen("Insira um ano válido");
 
-        fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		
-        screen.debug();
-        
-        isOnTheScreen("9/1900");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
-        fireEvent.click(screen.getByText("9/1900"));
+		screen.debug();
 
-        fireEvent.click(screen.getByText("Adicionar Assunto"));
-        isOnTheScreen("Novo Assunto");
+		isOnTheScreen("9/1900");
 
-        input("Assunto*", "");
+		fireEvent.click(screen.getByText("9/1900"));
 
-        fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		fireEvent.click(screen.getByText("Adicionar Assunto"));
+		isOnTheScreen("Novo Assunto");
 
-        isOnTheScreen("Insira um assunto");
+		input("Assunto*", "");
 
-        input("Assunto*", "subject_test");
-        isNotOnTheScreen("Insira um assunto");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
-        fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("Insira um assunto");
 
-        fireEvent.click(screen.getByText("Adicionar Data"));
+		input("Assunto*", "subject_test");
+		isNotOnTheScreen("Insira um assunto");
 
-        input("Data*", "");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
-        fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		fireEvent.click(screen.getByText("Adicionar Data"));
 
-        isOnTheScreen("Insira uma data");
+		input("Data*", "");
 
-        input("Data*", "12/30/2021");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
-        fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("Insira uma data");
 
-        isOnTheScreen("Insira uma data válida");
+		input("Data*", "12/30/2021");
 
-        input("Data*", "12/03/2021");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
-        fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("Insira uma data válida");
 
-        fireEvent.click(screen.getByText("Adicionar Data"));
+		input("Data*", "12/03/2021");
 
-        input("Data*", "12/03/2021");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
-        fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
+		fireEvent.click(screen.getByText("Adicionar Data"));
+
+		input("Data*", "12/03/2021");
+
+		fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
 
 		await screen.findByText("CADASTRAR");
-        
-        isOnTheScreen("2021-03-12");
+
+		isOnTheScreen("2021-03-12");
 
 		fireEvent.click(screen.getByText("CADASTRAR"));
 
-        fireEvent.click(screen.getByTestId("delete"));
+		fireEvent.click(screen.getByTestId("delete"));
 
-        fireEvent.click(screen.getByText("Excluir"));
-        fireEvent.click(screen.getByText("Excluir Caixa de Origem"));
+		fireEvent.click(screen.getByText("Excluir"));
+		fireEvent.click(screen.getByText("Excluir Caixa de Origem"));
 
-        fireEvent.mouseDown(screen.getByLabelText("Unidade que Encaminhou*"));
+		fireEvent.mouseDown(screen.getByLabelText("Unidade que Encaminhou*"));
 		const senderUnitOptions = within(screen.getByRole("listbox"));
 		await senderUnitOptions.findByText("destination_unit_name_test");
 		fireEvent.click(senderUnitOptions.getByText(/destination_unit_name_test/i));
 		isNotOnTheScreen("Selecione uma unidade");
 
-        input("Nº de Caixas", "12");
-        input("Número do Processo*", "13");
-    });
+		input("Nº de Caixas", "12");
+		input("Número do Processo*", "13");
+	});
 });

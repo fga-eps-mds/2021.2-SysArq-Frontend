@@ -83,7 +83,7 @@ function App() {
 					</Route>
 					<Route path="/documents/administrative-process">
 						<Route exact path="/documents/administrative-process">
-							<Status />
+							<div />
 						</Route>
 						<Route path="/documents/administrative-process/create">
 							<CreateAdministrativeProcess />
