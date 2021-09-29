@@ -77,7 +77,7 @@ describe("Create Administrative Process Screen Test", () => {
 		submitClick();
 		expect(screen.getByText("Insira um período válido")).toBeInTheDocument();
 
-		input("Referência", "04/2015");
+		input("Referência", "");
 
 		expect(
 			screen.queryByText("Insira um período válido")
@@ -105,7 +105,7 @@ describe("Create Administrative Process Screen Test", () => {
 
 		expect(screen.getByText("Insira um CPF/CNPJ válido")).toBeInTheDocument();
 
-		input("CPF/CNPJ", "28293031323");
+		input("CPF/CNPJ", "");
 
 		expect(
 			screen.queryByText("Insira um CPF/CNPJ válido")
@@ -207,6 +207,10 @@ describe("Create Administrative Process Screen Test", () => {
 
 		input(UNARCHIVE_PROCESS_NUMBER_LABEL, "50");
 
+		input(UNARCHIVE_DATE_LABEL, "");
+		submitClick();
+		await screen.findByRole("alert");
+
 		input(UNARCHIVE_DATE_LABEL, "/06/2052");
 		submitClick();
 		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
@@ -216,6 +220,10 @@ describe("Create Administrative Process Screen Test", () => {
 		expect(
 			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
 		).not.toBeInTheDocument();
+
+		input("Referência", "04/2015");
+
+		input("CPF/CNPJ", "28293031323");
 
 		input("Observação", "notes_test");
 

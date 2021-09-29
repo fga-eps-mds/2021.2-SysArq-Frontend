@@ -3,6 +3,18 @@ import { rest } from "msw";
 
 const hostApiArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
 
+export const failedUnitServer = setupServer(
+	rest.get(`${hostApiArchives}unity/`, (req, res, ctx) =>
+		res(res(ctx.status(404)))
+	)
+);
+
+export const failedDocumentSubjectServer = setupServer(
+	rest.get(`${hostApiArchives}document-subject/`, (req, res, ctx) =>
+		res(res(ctx.status(404)))
+	)
+);
+
 export const failedShelfServer = setupServer(
 	rest.get(`${hostApiArchives}shelf/`, (req, res, ctx) =>
 		res(res(ctx.status(404)))
