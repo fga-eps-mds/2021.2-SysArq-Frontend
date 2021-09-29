@@ -31,10 +31,10 @@ const useStyles = makeStyles({
 	},
 
 
-	select_box: {
+	select_box: {	
 		marginTop: 5,
 		marginLeft: 60,
-		
+		minWidth: 150,
 	},
 
 	select_label: {
@@ -98,15 +98,19 @@ export default function Search() {
 							variant="outlined"
 							labelId="Resultado de pesquisa"
 							autoWidth
+							id="select"
 							>
 							<MenuItem value="">
 								<em>None</em>
 							</MenuItem>
-							<MenuItem value="name">Número de processo</MenuItem>
+							<MenuItem value="process_number">Número de processo</MenuItem>
 							<MenuItem value="shelf">Estante</MenuItem>
 							<MenuItem value="hack">Prateleira</MenuItem>
+							<MenuItem value="abbreviation">Sigla da caixa</MenuItem>
 							<MenuItem value="is_filed">Enviado</MenuItem>
 							<MenuItem value="is_eliminated">Eliminado</MenuItem>
+							<MenuItem value="user">Usuário</MenuItem>
+							<MenuItem value="document_type">Tipo de documento</MenuItem>
 							</Select>
 							</FormControl>
 					</ThemeProvider>
