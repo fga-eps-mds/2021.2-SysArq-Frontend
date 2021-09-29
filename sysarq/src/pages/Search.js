@@ -7,6 +7,11 @@ import {
 	createTheme,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import * as React from "react";
 import imgBox from "./assets/logo.png";
 
 const useStyles = makeStyles({
@@ -19,7 +24,25 @@ const useStyles = makeStyles({
 		marginTop: 50,
 		marginLeft: 10,
 	},
+
+	select: {
+		marginTop: 40,
+		marginLeft: 100,
+	},
+
+
+	select_box: {
+		marginTop: 5,
+		marginLeft: 60,
+		
+	},
+
+	select_label: {
+		marginLeft: 70,
+	},
 });
+
+
 
 export default function Search() {
 	const classes = useStyles();
@@ -31,6 +54,13 @@ export default function Search() {
 			},
 		},
 	});
+
+	const [value, setValue] = React.useState('');
+
+  	const handleChange = (event) => {
+    	setValue	(event.target.value);
+  	};
+
 
 	return (
 		<div>
@@ -59,15 +89,26 @@ export default function Search() {
 							Ir
 						</Button>
 
-						<Button
-							className={classes.button}
-							color="primary"
-							variant="contained"
-							id="button"
-							size="large"
-						>
-							Filtrar por:
-						</Button>
+						<FormControl sx={{ m: 1, minWidth: 120 }} className={classes.select}>
+							<InputLabel className={classes.select_label}>Filtrar por:</InputLabel>
+							<Select
+							className={classes.select_box}
+							value={value}
+							onChange={handleChange}
+							variant="outlined"
+							labelId="Resultado de pesquisa"
+							autoWidth
+							>
+							<MenuItem value="">
+								<em>None</em>
+							</MenuItem>
+							<MenuItem value="name">Número de processo</MenuItem>
+							<MenuItem value="shelf">Estante</MenuItem>
+							<MenuItem value="hack">Prateleira</MenuItem>
+							<MenuItem value="is_filed">Enviado</MenuItem>
+							<MenuItem value="is_eliminated">Eliminado</MenuItem>
+							</Select>
+							</FormControl>
 					</ThemeProvider>
 				</Grid>
 			</body>
