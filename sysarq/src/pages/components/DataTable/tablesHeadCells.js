@@ -104,16 +104,11 @@ const documentTypeHeadCells = [
 
 const shelfHeadCells = [
 	{
-		id: "shelfe_number",
+		id: "number",
 		numeric: true,
 		label: "Estante",
-	},
+	}
 
-	{
-		id: "shelfp_number",
-		numeric: true,
-		label: "Prateleira",
-	},
 ];
 
 const statusHeadCells = [
