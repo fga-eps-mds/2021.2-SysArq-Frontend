@@ -128,7 +128,7 @@ export const server = setupServer(
 		)
 	),
 
-	rest.post(`${hostApiArchives}frequency-relation/`, (req, res, ctx) => {
+	rest.post(`${hostApiArchives}frequency-relation/`, (req, res, ctx) =>
 		// if (
 		// 	req.body.process_number === "28" &&
 		// 	req.body.notes === "n_test" &&
@@ -143,8 +143,8 @@ export const server = setupServer(
 		// ) {
 		// 	return res(ctx.status(201));
 		// }
-		return res(ctx.status(404));
-	}),
+		res(ctx.status(404))
+	),
 
 	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
 		if (
@@ -173,7 +173,7 @@ export const server = setupServer(
 		return res(ctx.status(404));
 	}),
 
-	rest.post(`${hostApiArchives}archival-relation/`, (req, res, ctx) => {
+	rest.post(`${hostApiArchives}archival-relation/`, (req, res, ctx) =>
 		// if (
 		// 	req.body.box_list === [] &&
 		// 	req.body.process_number === "3" &&
@@ -189,6 +189,6 @@ export const server = setupServer(
 		// ) {
 		// 	return res(ctx.status(201));
 		// }
-		return res(ctx.status(404));
-	})
+		res(ctx.status(404))
+	)
 );
