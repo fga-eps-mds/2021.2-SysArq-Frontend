@@ -180,7 +180,6 @@ describe("DataTable and tablesHeadCells Test", () => {
 		render(<DataTable title="Estante e Prateleira" url="shelf/" />);
 
 		expect(screen.getByText("Estante")).toBeInTheDocument();
-		expect(screen.getByText("Prateleira")).toBeInTheDocument();
 	});
 
 	it("test status table head cells", async () => {

@@ -107,8 +107,7 @@ const shelfHeadCells = [
 		id: "number",
 		numeric: true,
 		label: "Estante",
-	}
-
+	},
 ];
 
 const statusHeadCells = [
