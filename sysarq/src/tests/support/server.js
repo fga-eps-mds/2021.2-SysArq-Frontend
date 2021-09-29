@@ -3,7 +3,31 @@ import { rest } from "msw";
 
 const hostApiArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
 
-const server = setupServer(
+export const failedShelfServer = setupServer(
+	rest.get(`${hostApiArchives}shelf/`, (req, res, ctx) =>
+		res(res(ctx.status(404)))
+	)
+);
+
+export const failedRackServer = setupServer(
+	rest.get(`${hostApiArchives}rack/`, (req, res, ctx) =>
+		res(res(ctx.status(404)))
+	)
+);
+
+export const failedDocumentTypeServer = setupServer(
+	rest.get(`${hostApiArchives}document-type/`, (req, res, ctx) =>
+		res(res(ctx.status(404)))
+	)
+);
+
+export const failedAbbreviationServer = setupServer(
+	rest.get(`${hostApiArchives}box-abbreviation//`, (req, res, ctx) =>
+		res(res(ctx.status(404)))
+	)
+);
+
+export const server = setupServer(
 	rest.get(`${hostApiArchives}document-subject/`, (req, res, ctx) =>
 		res(
 			ctx.json([
@@ -105,20 +129,20 @@ const server = setupServer(
 	),
 
 	rest.post(`${hostApiArchives}frequency-relation/`, (req, res, ctx) => {
-		if (
-			req.body.process_number === "28" &&
-			req.body.notes === "n_test" &&
-			req.body.number === "27" &&
-			req.body.received_date === "" &&
-			req.body.reference_period === [] &&
-			req.body.sender_unit === 0 &&
-			req.body.abbreviation_id === 0 &&
-			req.body.shelf_id === 0 &&
-			req.body.rack_id === 0 &&
-			req.body.dcoument_type_id === 0
-		) {
-			return res(ctx.status(201));
-		}
+		// if (
+		// 	req.body.process_number === "28" &&
+		// 	req.body.notes === "n_test" &&
+		// 	req.body.number === "27" &&
+		// 	req.body.received_date === "" &&
+		// 	req.body.reference_period === [] &&
+		// 	req.body.sender_unit === 0 &&
+		// 	req.body.abbreviation_id === 0 &&
+		// 	req.body.shelf_id === 0 &&
+		// 	req.body.rack_id === 0 &&
+		// 	req.body.document_type_id === 0
+		// ) {
+		// 	return res(ctx.status(201));
+		// }
 		return res(ctx.status(404));
 	}),
 
@@ -147,7 +171,24 @@ const server = setupServer(
 			return res(ctx.status(201));
 		}
 		return res(ctx.status(404));
+	}),
+
+	rest.post(`${hostApiArchives}archival-relation/`, (req, res, ctx) => {
+		// if (
+		// 	req.body.box_list === [] &&
+		// 	req.body.process_number === "3" &&
+		// 	req.body.sender_unity === 38 &&
+		// 	req.body.notes === "notes_test" &&
+		// 	req.body.number === "2" &&
+		// 	req.body.received_date === "2006-05-04" &&
+		// 	req.number_of_boxes === "1" &&
+		// 	req.body.abbreviation_id === 43 &&
+		// 	req.body.shelf_id === 46 &&
+		// 	req.body.rack_id === 48 &&
+		// 	req.body.document_type_id === 34
+		// ) {
+		// 	return res(ctx.status(201));
+		// }
+		return res(ctx.status(404));
 	})
 );
-
-export default server;

@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 
-import server from "../../support/server";
+import { server } from "../../support/server";
 import { input, submitClick } from "../../support";
 
 import CreateFrequencyRelation from "../../../pages/Documents/Create/CreateFrequencyRelation";

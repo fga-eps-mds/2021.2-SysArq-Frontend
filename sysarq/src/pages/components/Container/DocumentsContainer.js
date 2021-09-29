@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const theme = createTheme({
+const colorTheme = createTheme({
 	palette: {
 		primary: {
 			main: "#1f3541",
@@ -63,7 +63,7 @@ const DocumentsContainer = ({ title, spacing, children }) => {
 	const classes = useStyles();
 
 	return (
-		<ThemeProvider theme={theme}>
+		<ThemeProvider theme={colorTheme}>
 			<MuiPickersUtilsProvider locale={ptBR} utils={DateFnsUtils}>
 				<Container className={classes.container}>
 					<Grid container>

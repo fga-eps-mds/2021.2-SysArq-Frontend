@@ -413,9 +413,9 @@ const CreateArchivingRelation = () => {
 				number,
 				received_date: formatDate(receivedDate),
 				number_of_boxes: numberOfBoxes === "" ? 0 : numberOfBoxes,
-				document_url: "",
-				cover_sheet: "",
-				filer_user: "filer_user",
+				document_url: "", //
+				cover_sheet: "", //
+				filer_user: "filer_user", //
 				abbreviation_id: abbreviation.id === undefined ? "" : abbreviation.id,
 				shelf_id: shelf.id === undefined ? "" : shelf.id,
 				rack_id: rack.id === undefined ? "" : rack.id, //
@@ -441,9 +441,12 @@ const CreateArchivingRelation = () => {
 					fullWidth
 					id="numberOfBoxes"
 					label="Nº de Caixas"
+					type="number"
 					value={numberOfBoxes}
 					onChange={handleNumberOfBoxesChange}
 					inputProps={{ maxLength: 20 }}
+					error={numberOfBoxesHelperText !== ""}
+					helperText={numberOfBoxesHelperText}
 				/>
 			</Grid>
 

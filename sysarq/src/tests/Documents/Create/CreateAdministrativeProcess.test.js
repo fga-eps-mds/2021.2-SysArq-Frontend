@@ -1,11 +1,11 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 
-import server from "../../support/server";
+import { server } from "../../support/server";
 import { input, submitClick } from "../../support";
 
 import CreateAdministrativeProcess from "../../../pages/Documents/Create/CreateAdministrativeProcess";
 
-jest.setTimeout(30000);
+jest.setTimeout(40000);
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
