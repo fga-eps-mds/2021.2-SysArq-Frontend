@@ -58,7 +58,7 @@ export default function Search() {
 	const [value, setValue] = React.useState('');
 
   	const handleChange = (event) => {
-    	setValue	(event.target.value);
+    	setValue(event.target.value);
   	};
 
 
@@ -74,10 +74,11 @@ export default function Search() {
 						placeholder="Pesquisar:"
 						variant="outlined"
 						color="primary"
+						label="Pesquisa"
 					/>
 				</ThemeProvider>
 
-				<Grid item xs={12} sm={12} md={15}>
+				<Grid item xs={12} sm={12} md={12}>
 					<ThemeProvider theme={theme}>
 						<Button
 							className={classes.button}
