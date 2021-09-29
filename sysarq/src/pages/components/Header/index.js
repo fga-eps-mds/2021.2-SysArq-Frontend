@@ -4,13 +4,13 @@ import StarsIcon from "@material-ui/icons/Stars";
 
 import "./styles.css";
 
-import imgFolders from "../../../assets/folders.png";
+import imgFolders from "../../../assets/logo.png";
 
 function Header() {
 	return (
 		<div className="header">
 			<a href="/">
-				<img src={imgFolders} alt="Logo" />
+				<img src={imgFolders} alt="Logo" height="40" width="40" />
 			</a>
 
 			<input type="checkbox" id="bt_menu" />
