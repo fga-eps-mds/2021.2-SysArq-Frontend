@@ -5,9 +5,9 @@ import Chip from "@material-ui/core/Chip";
 
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
-const AddChip = ({ onClick }) => (
+const AddChip = ({ label, onClick }) => (
 	<Chip
-		label="Adicionar"
+		label={label}
 		icon={<AddCircleIcon />}
 		color="primary"
 		onClick={onClick}
@@ -16,6 +16,7 @@ const AddChip = ({ onClick }) => (
 );
 
 AddChip.propTypes = {
+	label: PropTypes.string.isRequired,
 	onClick: PropTypes.func.isRequired,
 };
 

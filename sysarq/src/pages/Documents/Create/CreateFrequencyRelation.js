@@ -312,7 +312,7 @@ const CreateFrequencyRelation = () => {
 						/>
 					))}
 
-					<AddChip onClick={handleOpenNewPeriodDialog} />
+					<AddChip label="Adicionar" onClick={handleOpenNewPeriodDialog} />
 				</ChipsContainer>
 			</Grid>
 

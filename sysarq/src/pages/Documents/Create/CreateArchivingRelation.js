@@ -31,7 +31,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-import { DropzoneDialog } from "material-ui-dropzone";
+// import { DropzoneDialog } from "material-ui-dropzone";
 
 import {
 	initialDate,
@@ -433,6 +433,7 @@ const CreateArchivingRelation = () => {
 											<TableRow>
 												<TableCell>Assunto</TableCell>
 												<TableCell>Datas</TableCell>
+												<TableCell>{}</TableCell>
 											</TableRow>
 										</TableHead>
 										<TableBody>
@@ -446,7 +447,6 @@ const CreateArchivingRelation = () => {
 														>
 															{row.dates.map((addedPeriod) => (
 																<Chip
-																	key={addedPeriod}
 																	icon={<TimelapseIcon />}
 																	label={`${addedPeriod}`}
 																	color="secondary"
@@ -464,11 +464,29 @@ const CreateArchivingRelation = () => {
 															))}
 
 															<AddChip
+																label="Adicionar Data"
 																onClick={() =>
 																	handleOpenNewOriginBoxSubjectDateDialog(
 																		index,
 																		index1
 																	)
+																}
+															/>
+														</ChipsContainer>
+													</TableCell>
+													<TableCell>
+														<ChipsContainer
+															justifyContent="right"
+															marginTop="0%"
+														>
+															<Chip
+																variant="outlined"
+																label="Excluir"
+																icon={<CloseIcon />}
+																color="secondary"
+																clickable
+																onClick={() =>
+																	handleDeleteOriginBoxSubject(index, index1)
 																}
 															/>
 														</ChipsContainer>
@@ -479,15 +497,29 @@ const CreateArchivingRelation = () => {
 									</Table>
 								</TableContainer>
 
-								<ChipsContainer justifyContent="right" marginTop="0.5%">
-									<Chip
-										label="Adicionar Assunto"
-										icon={<AddCircleIcon />}
-										color="primary"
-										onClick={() => handleOpenNewOriginBoxSubjectDialog(index)}
-										clickable
-									/>
-								</ChipsContainer>
+								<div
+									style={{ display: "flex", justifyContent: "space-between" }}
+								>
+									<ChipsContainer justifyContent="left" marginTop="0.5%">
+										<Chip
+											variant="outlined"
+											color="secondary"
+											label="Excluir Caixa de Origem"
+											icon={<DeleteForeverRoundedIcon />}
+											onClick={() => handleDeleteOriginBox(index)}
+											clickable
+										/>
+									</ChipsContainer>
+									<ChipsContainer justifyContent="right" marginTop="0.5%">
+										<Chip
+											label="Adicionar Assunto"
+											icon={<AddCircleIcon />}
+											color="primary"
+											onClick={() => handleOpenNewOriginBoxSubjectDialog(index)}
+											clickable
+										/>
+									</ChipsContainer>
+								</div>
 							</div>
 						</AccordionDetails>
 					</Accordion>
@@ -495,11 +527,11 @@ const CreateArchivingRelation = () => {
 
 				{originBoxes.length ? (
 					<ChipsContainer justifyContent="right" marginTop="0.5%">
-						<AddChip onClick={handleOpenNewOriginBoxDialog} />
+						<AddChip label="Adicionar" onClick={handleOpenNewOriginBoxDialog} />
 					</ChipsContainer>
 				) : (
 					<ChipsContainer justifyContent="left" marginTop="0%">
-						<AddChip onClick={handleOpenNewOriginBoxDialog} />
+						<AddChip label="Adicionar" onClick={handleOpenNewOriginBoxDialog} />
 					</ChipsContainer>
 				)}
 			</Grid>
@@ -518,7 +550,7 @@ const CreateArchivingRelation = () => {
 					<TextField
 						fullWidth
 						id="newOriginBoxNumber"
-						label="Número*"
+						label="Número da Caixa*"
 						value={newOriginBoxNumber}
 						onChange={handleNewOriginBoxNumberChange}
 						error={newOriginBoxNumberHelperText !== ""}
@@ -555,7 +587,7 @@ const CreateArchivingRelation = () => {
 				aria-labelledby="newOriginBoxSubject-dialog-title"
 			>
 				<DialogTitle id="newOriginBoxSubject-dialog-title">
-					{ originBoxEdit ? "Editar Assunto" : "Novo Assunto" }
+					Novo Assunto
 				</DialogTitle>
 				<DialogContent>
 					<TextField
@@ -627,7 +659,7 @@ const CreateArchivingRelation = () => {
 				</DialogActions>
 			</Dialog>
 
-			<DropzoneDialog
+			{/* <DropzoneDialog
 				// <Button onClick={() => setOpen(true)}>Abrir</Button>
 				dropzoneClass={{ color: "#fff" }}
 				dropzoneParagraphClass={{ text: { color: "#fff" } }}
@@ -648,7 +680,7 @@ const CreateArchivingRelation = () => {
 				getFileAddedMessage={(rejected) => `${rejected}Alo`}
 				getFileRemovedMessage
 				getDropRejectMessage
-			/>
+			/> */}
 
 			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
 
