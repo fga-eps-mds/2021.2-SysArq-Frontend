@@ -17,10 +17,7 @@ const ChipsContainer = ({ children, marginTop, justifyContent }) => {
 	const classes = useStyles();
 
 	return (
-		<div
-			style={{ marginTop, justifyContent }}
-			className={classes.chips}
-		>
+		<div style={{ marginTop, justifyContent }} className={classes.chips}>
 			{children}
 		</div>
 	);

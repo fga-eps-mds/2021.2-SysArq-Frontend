@@ -6,7 +6,12 @@ export const initialPeriod = new Date(
 	"01"
 );
 
-export const formatDate = (date) => date.toISOString().substring(0, 10);
+const formatDateNumber = (number) => `0${number}`.slice(-2);
+
+export const formatDate = (date) =>
+	`${date.getFullYear()}-${formatDateNumber(
+		date.getMonth() + 1
+	)}-${formatDateNumber(date.getDate())}`;
 
 export const isInt = (number) => /^\d+$/.test(number);
 
