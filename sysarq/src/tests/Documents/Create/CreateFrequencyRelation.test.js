@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 
-import server from "../../support/testServer";
+import server from "../../support/server";
 import { input, submitClick } from "../../support";
 
 import CreateFrequencyRelation from "../../../pages/Documents/Create/CreateFrequencyRelation";
@@ -19,6 +19,8 @@ const isNotOnTheScreen = (text) => {
 	expect(screen.queryByText(text)).not.toBeInTheDocument();
 };
 
+const RECEIVED_DATE = "Data de Recebimento*";
+
 describe("Create Administrative Process Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateFrequencyRelation />);
@@ -35,16 +37,16 @@ describe("Create Administrative Process Screen Test", () => {
 		input("Número do Processo*", "28");
 		isNotOnTheScreen("Insira o número do processo");
 
-		input("Data de Recebimento*", "");
+		input(RECEIVED_DATE, "");
 		submitClick();
 		isOnTheScreen("Insira uma data");
 
-		input("Data de Recebimento*", "29/03/");
+		input(RECEIVED_DATE, "29/03/");
 		isNotOnTheScreen("Insira uma data");
 		submitClick();
 		isOnTheScreen("Insira uma data válida");
 
-		input("Data de Recebimento*", "31/05/2033");
+		input(RECEIVED_DATE, "31/05/2033");
 		isNotOnTheScreen("Insira uma data válida");
 
 		submitClick();

@@ -2,9 +2,9 @@ import { render, fireEvent, screen, within } from "@testing-library/react";
 
 import CreateArchivingRelation from "../../../pages/Documents/Create/CreateArchivingRelation";
 
-import server from "../../support/testServer";
+import server from "../../support/server";
 
-import { input, submitClick } from "../../support";
+import { input } from "../../support";
 
 jest.setTimeout(30000);
 
@@ -19,6 +19,8 @@ const isOnTheScreen = (text) => {
 const isNotOnTheScreen = (text) => {
 	expect(screen.queryByText(text)).not.toBeInTheDocument();
 };
+
+const INVALID_YEAR_ERROR_MESSAGE = "Insira um ano válido";
 
 describe("Create Archiving Relation Screen Test", () => {
 	it("complete test", async () => {
@@ -40,16 +42,16 @@ describe("Create Archiving Relation Screen Test", () => {
 		isNotOnTheScreen("Insira um ano");
 
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("Insira um ano válido");
+		isOnTheScreen(INVALID_YEAR_ERROR_MESSAGE);
 
 		input("Ano*", "1899");
-		isNotOnTheScreen("Insira um ano válido");
+		isNotOnTheScreen(INVALID_YEAR_ERROR_MESSAGE);
 
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("Insira um ano válido");
+		isOnTheScreen(INVALID_YEAR_ERROR_MESSAGE);
 
 		input("Ano*", "1900");
-		isNotOnTheScreen("Insira um ano válido");
+		isNotOnTheScreen(INVALID_YEAR_ERROR_MESSAGE);
 
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 

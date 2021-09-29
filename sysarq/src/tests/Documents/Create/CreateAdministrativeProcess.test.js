@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 
-import server from "../../support/testServer";
+import server from "../../support/server";
 import { input, submitClick } from "../../support";
 
 import CreateAdministrativeProcess from "../../../pages/Documents/Create/CreateAdministrativeProcess";
