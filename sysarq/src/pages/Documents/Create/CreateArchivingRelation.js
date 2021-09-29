@@ -65,7 +65,7 @@ import PopUpAlert from "../../components/PopUpAlert";
 const CreateArchivingRelation = () => {
 	const [units, setUnits] = useState([]);
 
-	const [numberOfBoxes, setNumberOfBoxes] = useState("");
+	const [numberOfBoxes, setNumberOfBoxes] = useState(0);
 	const [number, setNumber] = useState("");
 	const [processNumber, setProcessNumber] = useState("");
 	const [receivedDate, setReceivedDate] = useState(initialDate);
@@ -78,6 +78,7 @@ const CreateArchivingRelation = () => {
 	const [originBoxes, setOriginBoxes] = useState([]);
 	// const [file, setFile] = useState("");
 
+	const [numberOfBoxesHelperText, setNumberOfBoxesHelperText] = useState("");
 	const [numberHelperText, setNumberHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
@@ -124,8 +125,10 @@ const CreateArchivingRelation = () => {
 
 	const [loading, setLoading] = useState(false);
 
-	const handleNumberOfBoxesChange = (event) =>
+	const handleNumberOfBoxesChange = (event) => {
+		setNumberOfBoxesHelperText("");
 		setNumberOfBoxes(event.target.value);
+	};
 
 	const handleOpenNewOriginBoxDialog = () => setOpenNewOriginBoxDialog(true);
 
@@ -319,7 +322,7 @@ const CreateArchivingRelation = () => {
 		setOriginBoxes(newOriginBoxesList);
 	};
 
-	const handleAlertClose = () => setOpenAlert(false); //
+	const handleAlertClose = () => setOpenAlert(false);
 
 	const connectionError = () => {
 		setLoading(false);
@@ -332,8 +335,96 @@ const CreateArchivingRelation = () => {
 		);
 	};
 
+	const onSuccess = () => {
+		setLoading(false);
+
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Documento cadastrado!");
+
+		setNumberOfBoxes("");
+		setNumber("");
+		setProcessNumber("");
+		setReceivedDate(initialDate);
+		setDocumentType("");
+		setSenderUnit("");
+		setAbbreviation("");
+		setShelf("");
+		setRack("");
+		setNotes("");
+		setOriginBoxes([]);
+		setNewOriginBoxNumber("");
+		setNewOriginBoxYear("");
+		setNewOriginBoxSubject("");
+		setNewOriginBoxSubjectDate(initialDate);
+	};
+
 	const onSubmit = () => {
-		console.log("SUBMIT");
+		setLoading(true);
+
+		if (numberOfBoxes !== "" && parseInt(numberOfBoxes, 10) < 0) {
+			setNumberOfBoxesHelperText("Insira um número válido");
+			setLoading(false);
+			return "numberOfBoxes error";
+		}
+
+		if (number === "") {
+			setNumberHelperText("Insira o número");
+			setLoading(false);
+			return "number error";
+		}
+
+		if (processNumber === "") {
+			setProcessNumberHelperText("Insira o número do processo");
+			setLoading(false);
+			return "processNumber error";
+		}
+
+		if (
+			isDateNotValid(
+				receivedDate,
+				setReceivedDateHelperText,
+				"date",
+				"required"
+			)
+		) {
+			setLoading(false);
+			return "noticeDate error";
+		}
+
+		if (documentType === "") {
+			setDocumentTypeHelperText("Selecione um tipo de documento");
+			setLoading(false);
+			return "documentType error";
+		}
+
+		if (senderUnit === "") {
+			setSenderUnitHelperText("Selecione uma unidade");
+			setLoading(false);
+			return "senderUnit error";
+		}
+
+		axiosArchives
+			.post("archival-relation/", {
+				box_list: originBoxes,
+				process_number: processNumber,
+				sender_unity: senderUnit.id,
+				notes,
+				number,
+				received_date: formatDate(receivedDate),
+				number_of_boxes: numberOfBoxes === "" ? 0 : numberOfBoxes,
+				document_url: "",
+				cover_sheet: "",
+				filer_user: "filer_user",
+				abbreviation_id: abbreviation.id === undefined ? "" : abbreviation.id,
+				shelf_id: shelf.id === undefined ? "" : shelf.id,
+				rack_id: rack.id === undefined ? "" : rack.id, //
+				document_type_id: documentType.id,
+			})
+			.then(() => onSuccess())
+			.catch(() => connectionError());
+
+		return "post done";
 	};
 
 	useEffect(() => {
