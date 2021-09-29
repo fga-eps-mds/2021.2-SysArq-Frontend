@@ -5,25 +5,18 @@ import Login from "../pages/Login/index";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
-
 const hostApi = `${process.env.REACT_APP_URL_API_PROFILE}api/token/`;
 
 const server = setupServer(
 	rest.post(hostApi, (req, res, ctx) => {
-        if (req.body.username === "teste201") {
-            return res(
-                ctx.status(201)
-            )
-        } else if (req.body.username === "teste401"){
-            return res(
-                ctx.status(401)
-            )
-        } else {
-            return res(
-                ctx.status(404)
-            )
-        }
-    })
+		if (req.body.username === "teste201") {
+			return res(ctx.status(201));
+		} else if (req.body.username === "teste401") {
+			return res(ctx.status(401));
+		} else {
+			return res(ctx.status(404));
+		}
+	})
 );
 
 beforeAll(() => server.listen());
@@ -31,106 +24,106 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("Login Screen Test", () => {
-    it("showPass button test", () => {
-        render(<Login />);
+	it("showPass button test", () => {
+		render(<Login />);
 
-        const usernameInput = screen.getByLabelText("Nome de Usuário");
-        fireEvent.change(usernameInput, { target: { value: "teste" } });
+		const usernameInput = screen.getByLabelText("Nome de Usuário");
+		fireEvent.change(usernameInput, { target: { value: "teste" } });
 
-        const usernameValue = screen.getByLabelText("Nome de Usuário").value;
-        expect(usernameValue === "teste").toBe(true);
+		const usernameValue = screen.getByLabelText("Nome de Usuário").value;
+		expect(usernameValue === "teste").toBe(true);
 
-        const passwordInput = screen.getByLabelText("Senha");
-        fireEvent.change(passwordInput, { target: { value: "teste123" } });
-        
-        const password = screen.getByLabelText("Senha");
-        expect(password.value === "teste123").toBe(true);
-        expect(password.type === "password").toBe(true);
+		const passwordInput = screen.getByLabelText("Senha");
+		fireEvent.change(passwordInput, { target: { value: "teste123" } });
 
-        const clickShow = screen.getByTestId("showPass");
-        expect(fireEvent.mouseDown(clickShow)).toBe(false);
-        expect(fireEvent.click(clickShow)).toBe(true);
+		const password = screen.getByLabelText("Senha");
+		expect(password.value === "teste123").toBe(true);
+		expect(password.type === "password").toBe(true);
 
-        const visiblePassword = screen.getByLabelText("Senha");
-        expect(visiblePassword.type === "text").toBe(true);
-    });
+		const clickShow = screen.getByTestId("showPass");
+		expect(fireEvent.mouseDown(clickShow)).toBe(false);
+		expect(fireEvent.click(clickShow)).toBe(true);
 
-    it("test username field validation", () => {
-        render(<Login />);
+		const visiblePassword = screen.getByLabelText("Senha");
+		expect(visiblePassword.type === "text").toBe(true);
+	});
 
-        const usernameInput = screen.getByLabelText("Nome de Usuário");
-        fireEvent.change(usernameInput, { target: { value: "te" } });
+	it("test username field validation", () => {
+		render(<Login />);
 
-        const usernameValue = screen.getByLabelText("Nome de Usuário").value;
-        expect(usernameValue === "te").toBe(true);
+		const usernameInput = screen.getByLabelText("Nome de Usuário");
+		fireEvent.change(usernameInput, { target: { value: "te" } });
 
-        const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
-        expect(fireEvent.click(clickLogIn)).toBe(true);
+		const usernameValue = screen.getByLabelText("Nome de Usuário").value;
+		expect(usernameValue === "te").toBe(true);
 
-        expect(screen.getByText("Digite um nome de usuário válido"));
-    });
+		const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
+		expect(fireEvent.click(clickLogIn)).toBe(true);
 
-    it("test password field validation", () => {
-        render(<Login />);
+		expect(screen.getByText("Digite um nome de usuário válido"));
+	});
 
-        const usernameInput = screen.getByLabelText("Nome de Usuário");
-        fireEvent.change(usernameInput, { target: { value: "teste" } });
+	it("test password field validation", () => {
+		render(<Login />);
 
-        const usernameValue = screen.getByLabelText("Nome de Usuário").value;
-        expect(usernameValue === "teste").toBe(true);
+		const usernameInput = screen.getByLabelText("Nome de Usuário");
+		fireEvent.change(usernameInput, { target: { value: "teste" } });
 
-        const passwordInput = screen.getByLabelText("Senha");
-        fireEvent.change(passwordInput, { target: { value: "teste" } });
+		const usernameValue = screen.getByLabelText("Nome de Usuário").value;
+		expect(usernameValue === "teste").toBe(true);
 
-        const password = screen.getByLabelText("Senha");
-        expect(password.value === "teste").toBe(true);
+		const passwordInput = screen.getByLabelText("Senha");
+		fireEvent.change(passwordInput, { target: { value: "teste" } });
 
-        const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
-        expect(fireEvent.click(clickLogIn)).toBe(true);
+		const password = screen.getByLabelText("Senha");
+		expect(password.value === "teste").toBe(true);
 
-        expect(screen.getByText("Digite uma senha válida"));
-    });
+		const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
+		expect(fireEvent.click(clickLogIn)).toBe(true);
+
+		expect(screen.getByText("Digite uma senha válida"));
+	});
 
 	it("axios success", async () => {
-        render(<Login/>);
+		render(<Login />);
 
-        const usernameInput = screen.getByLabelText("Nome de Usuário");
-        fireEvent.change(usernameInput, { target: { value: "teste201" } });
-        
-        const passwordInput = screen.getByLabelText("Senha");
-        fireEvent.change(passwordInput, { target: { value: "teste201" } });
+		const usernameInput = screen.getByLabelText("Nome de Usuário");
+		fireEvent.change(usernameInput, { target: { value: "teste201" } });
 
-        const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
-        expect(fireEvent.click(clickLogIn)).toBe(true);
+		const passwordInput = screen.getByLabelText("Senha");
+		fireEvent.change(passwordInput, { target: { value: "teste201" } });
+
+		const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
+		expect(fireEvent.click(clickLogIn)).toBe(true);
 	});
 
 	it("axios error 404", async () => {
-        render(<Login/>);
+		render(<Login />);
 
-        const usernameInput = screen.getByLabelText("Nome de Usuário");
-        fireEvent.change(usernameInput, { target: { value: "teste" } });
-        
-        const passwordInput = screen.getByLabelText("Senha");
-        fireEvent.change(passwordInput, { target: { value: "teste123" } });
+		const usernameInput = screen.getByLabelText("Nome de Usuário");
+		fireEvent.change(usernameInput, { target: { value: "teste" } });
 
-        const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
-        expect(fireEvent.click(clickLogIn)).toBe(true);
+		const passwordInput = screen.getByLabelText("Senha");
+		fireEvent.change(passwordInput, { target: { value: "teste123" } });
 
-        await screen.findByText("Erro de conexão!");
+		const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
+		expect(fireEvent.click(clickLogIn)).toBe(true);
+
+		await screen.findByText("Erro de conexão!");
 	});
 
 	it("axios error 401", async () => {
-        render(<Login/>);
+		render(<Login />);
 
-        const usernameInput = screen.getByLabelText("Nome de Usuário");
-        fireEvent.change(usernameInput, { target: { value: "teste401" } });
-        
-        const passwordInput = screen.getByLabelText("Senha");
-        fireEvent.change(passwordInput, { target: { value: "teste123" } });
+		const usernameInput = screen.getByLabelText("Nome de Usuário");
+		fireEvent.change(usernameInput, { target: { value: "teste401" } });
 
-        const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
-        expect(fireEvent.click(clickLogIn)).toBe(true);
+		const passwordInput = screen.getByLabelText("Senha");
+		fireEvent.change(passwordInput, { target: { value: "teste123" } });
 
-        await screen.findByText("Nome de Usuário e/ou Senha incorreto!");
+		const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
+		expect(fireEvent.click(clickLogIn)).toBe(true);
+
+		await screen.findByText("Nome de Usuário e/ou Senha incorreto!");
 	});
 });

@@ -31,7 +31,6 @@ import { axiosArchives, axiosProfile } from "../../../Api";
 
 import tableHeadCells from "./tablesHeadCells";
 
-
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		marginTop: theme.spacing(3),
@@ -112,19 +111,16 @@ const DataTable = ({ url, title }) => {
 	useEffect(() => {
 		setHeadCells(tableHeadCells(url));
 		axiosProfile
-			.post(
-				`api/token/refresh/`,
-				{
-					"refresh": localStorage.getItem("tkr"),
-				}
-			)
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				const token = localStorage.getItem("tk");
-				
+
 				axiosArchives
-					.get(url, {headers: {'Authorization': `JWT ${token}`}})
+					.get(url, { headers: { Authorization: `JWT ${token}` } })
 					.then((response) => {
 						setRows(response.data);
 					})
@@ -136,9 +132,7 @@ const DataTable = ({ url, title }) => {
 					});
 				return res;
 			})
-			.catch(() => {
-			});
-
+			.catch(() => {});
 	}, []);
 
 	const handleRequestSort = (event, property) => {

@@ -6,8 +6,16 @@ import { setupServer } from "msw/node";
 import { inputChange } from "./inputTest.test";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
+const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
 
 const server = setupServer(
+	rest.post(`${axiosProfile}api/token/refresh/`, (req, res, ctx) => {
+		if (req.body.refresh === localStorage.getItem("tkr")) {
+			return res(ctx.status(200));
+		} else {
+			return res(ctx.status(404));
+		}
+	}),
 	rest.post(axiosArchives + `shelf/`, (req, res, ctx) => {
 		if (req.body.number === "201") {
 			return res(ctx.status(201));

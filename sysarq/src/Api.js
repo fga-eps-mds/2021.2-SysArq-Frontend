@@ -10,8 +10,7 @@ const axiosProfile = axios.create({
 
 const axiosArchives = axios.create({
 	baseURL: hostApiArchives,
-	headers: { 'Authorization': `JWT ${token}` }
+	headers: { Authorization: `JWT ${token}` },
 });
-
 
 export { axiosProfile, axiosArchives };

@@ -7,6 +7,8 @@ import "./styles.css";
 import imgFolders from "../../../assets/logo.png";
 
 function Header() {
+	if (window.location.pathname === "/login") return null;
+
 	return (
 		<div className="header">
 			<a href="/">
@@ -14,7 +16,6 @@ function Header() {
 			</a>
 
 			<input type="checkbox" id="bt_menu" />
-			<label htmlFor="bt_menu">&#9776;</label>
 
 			<div className="div-media">
 				<ul>

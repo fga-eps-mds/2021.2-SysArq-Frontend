@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { axiosArchives } from "../../Api";
+import { axiosArchives, axiosProfile } from "../../Api";
 import createForm from "./form";
 
 export default function CreateUnity() {
@@ -39,25 +39,34 @@ export default function CreateUnity() {
 	const handleShowError = () => setShowError(true);
 
 	const onClick = () => {
-		axiosArchives
-			.post(`unity/`, {
-				unity_name: unityName,
-				unity_abbreviation: unityAbbreviation,
-				administrative_bond: administrativeBond,
-				bond_abbreviation: bondAbbreviation,
-				type_of_unity: unityType,
-				municipality: county,
-				telephone_number: telephoneNumber,
-				notes: note,
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
 			})
-			.then(() => {
-				handleShow();
-				setTimeout(handleClose, 3000);
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.post(`unity/`, {
+						unity_name: unityName,
+						unity_abbreviation: unityAbbreviation,
+						administrative_bond: administrativeBond,
+						bond_abbreviation: bondAbbreviation,
+						type_of_unity: unityType,
+						municipality: county,
+						telephone_number: telephoneNumber,
+						notes: note,
+					})
+					.then(() => {
+						handleShow();
+						setTimeout(handleClose, 3000);
+					})
+					.catch(() => {
+						handleShowError();
+						setTimeout(handleCloseError, 3000);
+					});
 			})
-			.catch(() => {
-				handleShowError();
-				setTimeout(handleCloseError, 3000);
-			});
+			.catch(() => {});
 	};
 
 	const fields = [
