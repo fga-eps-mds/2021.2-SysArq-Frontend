@@ -1,104 +1,143 @@
-import React, { useState } from "react";
-
-import { Button, TextField } from "@material-ui/core";
+import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { axiosArchives } from "../../Api";
+import createForm from "./form";
 
-import axios from "axios";
-
-const hostApi = `${process.env.REACT_APP_URL_API}box_abbreviation`;
-const useStyles = makeStyles({
-	fields: {
-		marginTop: 20,
-		marginBotton: 20,
-		display: "block",
+const useStyles = makeStyles((theme) => ({
+	input: {
+		width: "100%",
+		height: 36,
+		marginBottom: "1rem",
+		maxWidth: 908,
 	},
-});
+	inputDate: {
+		width: "100%",
+		height: 36,
+		marginTop: "2rem",
+		marginBottom: "2rem",
+		maxWidth: 908,
+	},
+	container: {
+		paddingTop: theme.spacing(2),
+		paddingBottom: theme.spacing(2),
+
+		margin: "auto",
+		textAlign: "center",
+	},
+}));
 
 export default function CreateBoxAbbreviation() {
-	const [number, setNumber] = useState("");
-	const [abbreviation, setAbbreviation] = useState("");
-	const [name, setName] = useState("");
-	const [year, setBondYear] = useState("");
-
 	const classes = useStyles();
+	const [boxNumber, setBoxNumber] = useState("");
+	const [boxAbbreviation, setBoxAbbreviation] = useState("");
+	const [boxName, setBoxName] = useState("");
+	const [boxYear, setBoxYear] = useState("");
+
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+
+	const [showError, setShowError] = useState(false);
+
+	const [yearHelperText, setYearHelperText] = useState("");
+
+	const [yearError, setYearError] = useState(false);
+
+	const handleCloseError = () => setShowError(false);
+	const handleShowError = () => setShowError(true);
 
 	const onClick = () => {
-		axios
-			.post(hostApi, {
-				number,
-				abbreviation,
-				name,
-				year,
+		if (parseInt(boxYear, 10) < 1900) {
+			setYearError(true);
+			setYearHelperText("Ano inválido");
+			return "Erro";
+		}
+		axiosArchives
+			.post(`box-abbreviation/`, {
+				number: boxNumber,
+				abbreviation: boxAbbreviation,
+				name: boxName,
+				year: boxYear,
 			})
-			.then(() => {})
-			.catch(() => {});
+			.then(() => {
+				handleShow();
+				setTimeout(handleClose, 3000);
+			})
+			.catch(() => {
+				handleShowError();
+				setTimeout(handleCloseError, 3000);
+			});
+		setYearError(false);
+		setYearHelperText("");
+		return null;
 	};
 
-	const onChangeNumber = (event) => {
-		setNumber(event.target.value);
-	};
+	const fields = [
+		{
+			type: "number",
+			placeholder: "Número da caixa",
+			setValue: setBoxNumber,
+			value: boxNumber,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "text",
+			placeholder: "Sigla da caixa",
+			setValue: setBoxAbbreviation,
+			value: boxAbbreviation,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "text",
+			placeholder: "Nome completo",
+			setValue: setBoxName,
+			value: boxName,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "number",
+			placeholder: "Ano",
+			setValue: setBoxYear,
+			value: boxYear,
+			helperText: yearHelperText,
+			error: yearError,
+			setHelperText: setYearHelperText,
+			setError: setYearError,
+		},
+	];
 
-	const onChangeAbrevviation = (event) => {
-		setAbbreviation(event.target.value);
-	};
+	const title = "Arquivo Geral da Policia Civil de Goiás";
+	const subtitle = "Cadastrar caixa";
 
-	const onChangeName = (event) => {
-		setName(event.target.value);
-	};
-
-	const onChangeYear = (event) => {
-		setBondYear(event.target.value);
-	};
-
-	return (
-		<div>
-			<h1>Sigla da Caixa</h1>
-			<TextField
-				id="numero-da-caixa-input"
-				className={classes.fields}
-				onChange={onChangeNumber}
-				type="number"
-				value={number}
-				label="Número da caixa"
-				variant="filled"
-			/>
-			<TextField
-				id="sigla-da-caixa-input"
-				className={classes.fields}
-				onChange={onChangeAbrevviation}
-				type="abbreviation"
-				value={abbreviation}
-				label="Sigla da caixa"
-				variant="filled"
-			/>
-			<TextField
-				id="nome-completo-input"
-				className={classes.fields}
-				onChange={onChangeName}
-				type="name"
-				value={name}
-				label="Nome completo"
-				variant="filled"
-			/>
-			<TextField
-				id="ano-input"
-				className={classes.fields}
-				onChange={onChangeYear}
-				type="year"
-				value={year}
-				label="Ano"
-				variant="filled"
-			/>
-
-			<Button
-				data-testid="click"
-				onClick={onClick}
-				style={{ marginTop: "20px" }}
-				variant="contained"
-				color="primary"
-			>
-				Salvar
-			</Button>
-		</div>
+	return createForm(
+		fields,
+		title,
+		subtitle,
+		classes,
+		show,
+		showError,
+		onClick,
+		true
 	);
 }

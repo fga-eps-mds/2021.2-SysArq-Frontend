@@ -57,7 +57,7 @@ function Header() {
 				/>
 				<BottomNavigationAction
 					label="Configurações"
-					href="/"
+					href="#"
 					icon={<StarsIcon />}
 				/>
 				<BottomNavigationAction

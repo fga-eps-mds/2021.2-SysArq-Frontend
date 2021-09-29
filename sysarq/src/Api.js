@@ -1,7 +1,12 @@
 import axios from "axios";
 
-const hostApi = `${process.env.REACT_APP_URL_API}`;
+const hostApiProfile = `${process.env.REACT_APP_URL_API_PROFILE}`;
+const hostApiArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
 
-export default axios.create({
-	baseURL: hostApi,
+export const axiosProfile = axios.create({
+	baseURL: hostApiProfile,
+});
+
+export const axiosArchives = axios.create({
+	baseURL: hostApiArchives,
 });

@@ -1,26 +1,20 @@
 import React from "react";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
-import Home from "./pages/Home";
 import Header from "./pages/components/Header";
+import Home from "./pages/Home";
 import Footer from "./pages/components/Footer";
+
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
 import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
-import PublicWorker from "./pages/FieldsRegister/PublicWorker";
 import DocumentType from "./pages/FieldsRegister/DocumentType";
 import Unity from "./pages/FieldsRegister/Unity";
 import Shelf from "./pages/FieldsRegister/Shelf";
-import Status from "./pages/FieldsRegister/Status";
 import CreateDocumentSubject from "./pages/FieldsRegister/CreateDocumentSubject";
-import CreateStatus from "./pages/FieldsRegister/CreateStatus";
 import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation";
 import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
-import CreatePublicWorker from "./pages/FieldsRegister/CreatePublicWorker";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
-
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -29,7 +23,6 @@ function App() {
 	return (
 		<Router>
 			<Header />
-
 			<Switch>
 				<Route exact path="/">
 					<Home />
@@ -54,14 +47,6 @@ function App() {
 							<CreateBoxAbbreviation />
 						</Route>
 					</Route>
-					<Route path="/fields-register/public-worker">
-						<Route exact path="/fields-register/public-worker">
-							<PublicWorker />
-						</Route>
-						<Route path="/fields-register/public-worker/create">
-							<CreatePublicWorker />
-						</Route>
-					</Route>
 					<Route path="/fields-register/unity">
 						<Route exact path="/fields-register/unity">
 							<Unity />
@@ -84,14 +69,6 @@ function App() {
 						</Route>
 						<Route path="/fields-register/shelf/create">
 							<CreateShelf />
-						</Route>
-					</Route>
-					<Route path="/fields-register/status">
-						<Route exact path="/fields-register/status">
-							<Status />
-						</Route>
-						<Route path="/fields-register/status/create">
-							<CreateStatus />
 						</Route>
 					</Route>
 				</Route>
