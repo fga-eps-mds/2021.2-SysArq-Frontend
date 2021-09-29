@@ -1,10 +1,9 @@
 import React from "react";
 import { render, screen, fireEvent, act, within } from "@testing-library/react";
-
 import CreateShelf from "../pages/FieldsRegister/CreateShelf";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import inputChange from "./serverTest";
+import { inputChange } from "./inputTest.test";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
 
@@ -73,5 +72,13 @@ describe("inputs", () => {
 	it("axios fail shelf", async () => {
 		const failShelf = ["Estante", "Número da estante", "401"];
 		await testEvent(failShelf, "Erro de conexão!");
+	});
+	it("empty shelf", async () => {
+		const failShelf = ["Estante", "Número da estante", ""];
+		await testEvent(failShelf, "Estante não pode ser vazia");
+	});
+	it("empty rack", async () => {
+		const failRack = ["Prateleira", "Número da prateleira", ""];
+		await testEvent(failRack, "Prateleira não pode ser vazia");
 	});
 });

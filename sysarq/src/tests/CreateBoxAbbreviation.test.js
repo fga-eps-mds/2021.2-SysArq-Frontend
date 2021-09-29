@@ -1,9 +1,8 @@
 import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
 import CreateBoxAbbreviation from "../pages/FieldsRegister/CreateBoxAbbreviation";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import inputChange from "./serverTest";
+import { testEvent } from "./inputTest.test";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}box-abbreviation/`;
 
@@ -22,35 +21,51 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
+const BOX_NUMBER = "Número da caixa";
+const BOX_ABBREVIATION = "Sigla da caixa";
+const BOX_NAME = "Nome completo";
+const BOX_YEAR = "Ano";
+
 describe("Page test", () => {
-	it("axios success", async () => {
-		render(<CreateBoxAbbreviation />);
-
-		inputChange("Número da caixa", "201");
-		inputChange("Sigla da caixa", "ASD");
-		inputChange("Nome completo", "Polícia Civil do Goias");
-		inputChange("Ano", "2021");
-
-		fireEvent.click(screen.getByTestId("click"));
-
-		await screen.findByText("Campo cadastrado!");
-		act(() => {
-			jest.advanceTimersByTime(3000);
-		});
+	it("axios sucess", async () => {
+		const objSucess = [
+			BOX_NUMBER,
+			"201",
+			BOX_ABBREVIATION,
+			"ASD",
+			BOX_NAME,
+			"Polícia Civil do Goias",
+			BOX_YEAR,
+			"2021",
+		];
+		await testEvent(<CreateBoxAbbreviation />, objSucess, "Campo cadastrado!");
 	});
 
 	it("axios fail", async () => {
-		render(<CreateBoxAbbreviation />);
+		const objFail = [
+			BOX_NUMBER,
+			"401",
+			BOX_ABBREVIATION,
+			"ASD",
+			BOX_NAME,
+			"Polícia Civil do Goias",
+			BOX_YEAR,
+			"2021",
+		];
+		await testEvent(<CreateBoxAbbreviation />, objFail, "Erro de conexão!");
+	});
 
-		inputChange("Número da caixa", "401");
-		inputChange("Sigla da caixa", "ASD");
-		inputChange("Nome completo", "Polícia Civil do Goias");
-		inputChange("Ano", "2021");
-		fireEvent.click(screen.getByTestId("click"));
-
-		await screen.findByText("Erro de conexão!");
-		act(() => {
-			jest.advanceTimersByTime(3000);
-		});
+	it("year error", async () => {
+		const objFail = [
+			BOX_NUMBER,
+			"345",
+			BOX_ABBREVIATION,
+			"BOB",
+			BOX_NAME,
+			"Polícia Civil do Goias",
+			BOX_YEAR,
+			"3",
+		];
+		await testEvent(<CreateBoxAbbreviation />, objFail, "Ano inválido");
 	});
 });
