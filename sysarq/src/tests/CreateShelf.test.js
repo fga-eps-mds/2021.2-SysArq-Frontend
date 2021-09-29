@@ -1,10 +1,9 @@
 import React from "react";
 import { render, screen, fireEvent, act, within } from "@testing-library/react";
-
 import CreateShelf from "../pages/FieldsRegister/CreateShelf";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import inputChange from "./serverTest";
+import { inputChange } from "./inputTest";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
 

@@ -1,9 +1,8 @@
 import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
 import CreateUnity from "../pages/FieldsRegister/CreateUnity";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import inputChange from "./serverTest";
+import { testEvent } from "./inputTest";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}unity/`;
 
@@ -21,19 +20,6 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
-
-const testEvent = async (object, findText) => {
-	render(<CreateUnity />);
-	for (let i = 0; i < object.length; i += 2) {
-		inputChange(object[i], object[i + 1]);
-	}
-	fireEvent.click(screen.getByTestId("click"));
-
-	await screen.findByText(findText);
-	act(() => {
-		jest.advanceTimersByTime(3000);
-	});
-};
 
 describe("Button test", () => {
 	it("axios success", async () => {
@@ -55,7 +41,7 @@ describe("Button test", () => {
 			"Observações",
 			"Robson",
 		];
-		await testEvent(objSucess, "Campo cadastrado!");
+		await testEvent(<CreateUnity />, objSucess, "Campo cadastrado!");
 	});
 	it("axios fail", async () => {
 		const objFail = [
@@ -76,6 +62,6 @@ describe("Button test", () => {
 			"Observações",
 			"Robson",
 		];
-		await testEvent(objFail, "Erro de conexão!");
+		await testEvent(<CreateUnity />, objFail, "Erro de conexão!");
 	});
 });
