@@ -31,7 +31,7 @@ const UNARCHIVE_PROCESS_NUMBER_LABEL = "Nº do Processo do Desarquivamento";
 
 const UNARCHIVE_DATE_LABEL = "Data de Desarquivamento";
 
-const REFERENCE_FIELD_LABEL = "Referência"
+const REFERENCE_FIELD_LABEL = "Referência";
 
 describe("Create Administrative Process Screen Test", () => {
 	it("complete test", async () => {
