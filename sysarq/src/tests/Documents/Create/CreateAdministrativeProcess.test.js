@@ -31,6 +31,8 @@ const UNARCHIVE_PROCESS_NUMBER_LABEL = "Nº do Processo do Desarquivamento";
 
 const UNARCHIVE_DATE_LABEL = "Data de Desarquivamento";
 
+const REFERENCE_FIELD_LABEL = "Referência"
+
 describe("Create Administrative Process Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateAdministrativeProcess />);
@@ -73,11 +75,11 @@ describe("Create Administrative Process Screen Test", () => {
 			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
 		).not.toBeInTheDocument();
 
-		input("Referência", "13/2012");
+		input(REFERENCE_FIELD_LABEL, "13/2012");
 		submitClick();
 		expect(screen.getByText("Insira um período válido")).toBeInTheDocument();
 
-		input("Referência", "");
+		input(REFERENCE_FIELD_LABEL, "");
 
 		expect(
 			screen.queryByText("Insira um período válido")
@@ -149,7 +151,7 @@ describe("Create Administrative Process Screen Test", () => {
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
 
-		input("Referência", "04/2015");
+		input(REFERENCE_FIELD_LABEL, "04/2015");
 
 		input("CPF/CNPJ", "28293031323");
 

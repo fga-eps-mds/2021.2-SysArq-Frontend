@@ -41,4 +41,4 @@ export const senderUnitSelector = async () => {
 	const senderUnitOptions = within(screen.getByRole("listbox"));
 	await senderUnitOptions.findByText("sender_unit_name_test");
 	fireEvent.click(senderUnitOptions.getByText(/sender_unit_name_test/i));
-}
+};

@@ -242,28 +242,28 @@ const CreateFrequencyRelation = () => {
 			</Grid>
 
 			<CommonSet
-				setReceivedDateHelperText={setReceivedDateHelperText}
-				setReceivedDate={setReceivedDate}
-				receivedDate={receivedDate}
-				receivedDateHelperText={receivedDateHelperText}
-				setDocumentTypeHelperText={setDocumentTypeHelperText}
-				setDocumentType={setDocumentType}
-				connectionError={connectionError}
-				documentType={documentType}
-				documentTypeHelperText={documentTypeHelperText}
-				setSenderUnitHelperText={setSenderUnitHelperText}
-				setSenderUnit={setSenderUnit}
-				senderUnit={senderUnit}
 				units={units}
-				senderUnitHelperText={senderUnitHelperText}
+				receivedDate={receivedDate}
+				setReceivedDate={setReceivedDate}
+				documentType={documentType}
+				setDocumentType={setDocumentType}
+				senderUnit={senderUnit}
+				setSenderUnit={setSenderUnit}
 				abbreviation={abbreviation}
 				setAbbreviation={setAbbreviation}
 				shelf={shelf}
 				setShelf={setShelf}
 				rack={rack}
 				setRack={setRack}
-				setNotes={setNotes}
 				notes={notes}
+				setNotes={setNotes}
+				setReceivedDateHelperText={setReceivedDateHelperText}
+				receivedDateHelperText={receivedDateHelperText}
+				documentTypeHelperText={documentTypeHelperText}
+				setDocumentTypeHelperText={setDocumentTypeHelperText}
+				senderUnitHelperText={senderUnitHelperText}
+				setSenderUnitHelperText={setSenderUnitHelperText}
+				connectionError={connectionError}
 			/>
 
 			<Grid item xs={12} sm={12} md={12}>
