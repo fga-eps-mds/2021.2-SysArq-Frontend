@@ -1,9 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./pages/components/Header";
-import Home from "./pages/Home";
 import Footer from "./pages/components/Footer";
-
+import Home from "./pages/Home";
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
 import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
@@ -17,6 +16,12 @@ import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
 import Login from "./pages/Login/index";
 import PrivateRoute from "./Routes/privateRoute";
+import Documents from "./pages/Documents";
+import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdministrativeProcess";
+import CreateFrequencyRelation from "./pages/Documents/Create/CreateFrequencyRelation";
+import CreateFrequencySheet from "./pages/Documents/Create/CreateFrequencySheet";
+import CreateArchivingRelation from "./pages/Documents/Create/CreateArchivingRelation";
+
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -83,6 +88,43 @@ function App() {
 						</PrivateRoute>
 						<PrivateRoute exact={false} path="/fields-register/shelf/create">
 							<CreateShelf />
+						</PrivateRoute>
+					</PrivateRoute>
+				</PrivateRoute>
+				<PrivateRoute path="/documents">
+					<PrivateRoute exact path="/documents">
+						<Documents />
+					</PrivateRoute>
+					<PrivateRoute path="/documents/administrative-process">
+						<PrivateRoute exact path="/documents/administrative-process">
+							<CreateAdministrativeProcess />
+						</PrivateRoute>
+						<PrivateRoute path="/documents/administrative-process/create">
+							<CreateAdministrativeProcess />
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute path="/documents/frequency-relation">
+						<PrivateRoute exact path="/documents/frequency-relation">
+							<CreateFrequencyRelation />
+						</PrivateRoute>
+						<PrivateRoute path="/documents/frequency-relation/create">
+							<CreateFrequencyRelation />
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute path="/documents/archiving-relation">
+						<PrivateRoute exact path="/documents/archiving-relation">
+							<CreateArchivingRelation />
+						</PrivateRoute>
+						<PrivateRoute path="/documents/archiving-relation/create">
+							<CreateArchivingRelation />
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute path="/documents/frequency-sheet">
+						<PrivateRoute exact path="/documents/frequency-sheet">
+							<CreateFrequencySheet />
+						</PrivateRoute>
+						<PrivateRoute path="/documents/frequency-sheet/create">
+							<CreateFrequencySheet />
 						</PrivateRoute>
 					</PrivateRoute>
 				</PrivateRoute>
