@@ -211,15 +211,11 @@ describe("Create Administrative Process Screen Test", () => {
 
 		input(UNARCHIVE_PROCESS_NUMBER_LABEL, "50");
 
-		input(UNARCHIVE_DATE_LABEL, "");
-		submitClick();
-		await screen.findByRole("alert");
-
 		input(UNARCHIVE_DATE_LABEL, "/06/2052");
 		submitClick();
 		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
 
-		input(UNARCHIVE_DATE_LABEL, "08/09/2055");
+		input(UNARCHIVE_DATE_LABEL, "");
 
 		expect(
 			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)

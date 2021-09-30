@@ -159,6 +159,8 @@ export const server = setupServer(
 	),
 
 	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
+		console.log(req.body);
+
 		if (
 			req.body.notice_date === "2005-04-03" &&
 			req.body.archiving_date === "2011-10-09" &&
@@ -177,7 +179,7 @@ export const server = setupServer(
 			req.body.is_eliminated === false &&
 			req.body.unity_id === 41 &&
 			req.body.administrative_process_number === "50" &&
-			req.body.send_date === "2055-09-08" &&
+			req.body.send_date === null &&
 			req.body.notes === "notes_test"
 		) {
 			return res(ctx.status(201));
