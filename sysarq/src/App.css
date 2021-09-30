@@ -10,7 +10,7 @@ html, body, #root {
   flex-direction: column;
   min-height: 100vh !important;
   min-width: 100%;
-  background-color: #E5E5E5;
+  background-color: #F6F6F6;
 }
 
 .App {

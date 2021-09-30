@@ -18,7 +18,7 @@ const Documents = () => (
 		<MenuCard
 			icon="frequency-sheet-icon"
 			title="Folha de Frequências"
-			url="/documents/frequecy-sheet/create"
+			url="/documents/frequency-sheet/create"
 		/>
 		<MenuCard
 			icon="archiving-relation-icon"

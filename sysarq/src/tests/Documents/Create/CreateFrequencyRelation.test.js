@@ -129,6 +129,8 @@ describe("Create Frequency Relation Screen Test", () => {
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
 
+		await screen.findByText("CADASTRAR");
+
 		await abbreviationSelector();
 
 		await shelfSelector();
