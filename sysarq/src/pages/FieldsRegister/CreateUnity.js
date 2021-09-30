@@ -30,13 +30,13 @@ export default function CreateUnity() {
 	const [telephoneNumber, setTelephoneNumber] = useState("");
 	const [note, setNote] = useState("");
 
-	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
-
 	const [showError, setShowError] = useState(false);
 	const handleCloseError = () => setShowError(false);
 	const handleShowError = () => setShowError(true);
+
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 
 	const onClick = () => {
 		axiosProfile
