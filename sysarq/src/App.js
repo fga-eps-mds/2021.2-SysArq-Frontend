@@ -47,9 +47,12 @@ function App() {
 				<Route exact path="/search">
 					<Search />
 				</Route>
-				<Route exact path="/searchList">
-					<SearchList />
-				</Route>
+				<Route exact path="/search">
+                    <Search />
+                </Route>
+                <Route path="/search/list/:field/:content">
+                    <SearchList />
+                </Route>
 				<Route path="/fields-register">
 					<Route exact path="/fields-register">
 						<FieldsRegister />

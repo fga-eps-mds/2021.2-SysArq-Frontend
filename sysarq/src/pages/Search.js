@@ -6,14 +6,13 @@ import {
 	ThemeProvider,
 	createTheme,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles} from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import * as React from "react";
+import React, {useState} from "react";
 import imgBox from "./assets/logo.png";
-// import SearchList from "./SearchList";
 
 
 
@@ -47,30 +46,29 @@ const useStyles = makeStyles({
 
 export default function Search() {
 	const classes = useStyles();
-	// const [value1, setValue1] = React.useState("");
-	// const [value2, setValue2] = React.useState("");
+	const [value, setValue] = useState("");
+    const [inputValue, setInputValue] = useState("");
+    const [urllist, setUrllist] = useState("");
 
-	const theme = createTheme({
-		palette: {
-			primary: {
-				main: "#5289B5",
-			},
-		},
-	});
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: "#5289B5",
+            },
+        },
+    });
 
-	// const handleChangeofvalue1 = (event) => {
-	// 	setValue1(event.target.value);
-	// };
+    const handleChange = (event) => {
+        setValue(event.target.value);
+        const valueChange = `${event.target.value}/${inputValue}`;
+        setUrllist(`search/list/${valueChange}`);
+    };
 
-	// const handleChangeofvalue2 = (event) => {
-	// 	setValue2(event.target.value);
-	// };
-
-	// const onClick = () => (
-	// 	SearchList(value1,value2)
-	// 	);
-
-	
+    const onchangeInputValue = (event) => {
+        setInputValue(event.target.value);
+        const valueChange = `${value}/${event.target.value}`;
+        setUrllist(`search/list/${valueChange}`);
+    };
 
 	return (
 		<div>
@@ -80,28 +78,28 @@ export default function Search() {
 
 				<ThemeProvider theme={theme}>
 					<TextField
-						className={classes.input}
-						placeholder="Pesquisar:"
-						variant="outlined"
-						color="primary"
-						// value={value1}
-						// onChange={handleChangeofvalue1}
-					/>
+                        className={classes.input}
+                        value={inputValue}
+                        onChange={onchangeInputValue}
+                        type="text"
+                        placeholder="Pesquisar:"
+                        variant="outlined"
+                        color="primary"
+                    />
 				</ThemeProvider>
 
 				<Grid item xs={12} sm={12} md={12}>
 					<ThemeProvider theme={theme}>
-						<Button
-							className={classes.button}
-							color="primary"
-							variant="contained"
-							id="button"
-							size="large"
-							// onclick={onClick}
-							href="/searchList/"
-						>
-							Ir
-						</Button>
+					<Button
+                            href={urllist}
+                            className={classes.button}
+                            color="primary"
+                            variant="contained"
+                            id="button"
+                            size="large"
+                        >
+                            Ir
+                        </Button>
 
 						<FormControl
 							sx={{ m: 1, minWidth: 120 }}
@@ -111,12 +109,12 @@ export default function Search() {
 								Filtrar por:
 							</InputLabel>
 							<Select
-								className={classes.select_box}
-								// value={value2}
-								// onChange={handleChangeofvalue2}
-								variant="outlined"
-								label="dropdown"
-							>
+                                className={classes.select_box}
+                                value={value}
+                                onChange={handleChange}
+                                variant="outlined"
+                                label="dropdown"
+                            >
 								<MenuItem value="">
 									<em>None</em>
 								</MenuItem>
@@ -136,3 +134,4 @@ export default function Search() {
 		</div>
 	);
 }
+
