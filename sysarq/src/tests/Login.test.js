@@ -38,8 +38,7 @@ const test = (psw) => {
 	expect(password.type === "password").toBe(true);
 };
 
-const test2 = async (userName,psw,msgError)=> {
-	
+const test2 = async (userName, psw, msgError) => {
 	const usernameInput = screen.getByLabelText("Nome de Usuário");
 	fireEvent.change(usernameInput, { target: { value: userName } });
 
@@ -50,9 +49,7 @@ const test2 = async (userName,psw,msgError)=> {
 	expect(fireEvent.click(clickLogIn)).toBe(true);
 
 	await screen.findByText(msgError);
-
-
-}
+};
 
 describe("Login Screen Test", () => {
 	it("showPass button test", () => {
@@ -107,11 +104,15 @@ describe("Login Screen Test", () => {
 
 	it("axios error 404", async () => {
 		render(<Login />);
-		await test2("teste","teste123","Erro de conexão!");
+		await test2("teste", "teste123", "Erro de conexão!");
 	});
 
 	it("axios error 401", async () => {
 		render(<Login />);
-		await test2("teste401","teste123","Nome de Usuário e/ou Senha incorreto!");
+		await test2(
+			"teste401",
+			"teste123",
+			"Nome de Usuário e/ou Senha incorreto!"
+		);
 	});
 });
