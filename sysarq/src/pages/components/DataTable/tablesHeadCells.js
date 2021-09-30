@@ -19,17 +19,17 @@ const headCellsSearch = [
         label: "Número do processo"
     },
     {
-        id: "shelf",
+        id: "shelf_number",
         numeric: false,
         label: "Estante"
     },
     {
-        id: "rack_id",
+        id: "rack_number",
         numeric: false,
         label: "Prateleira"
     },
     {
-        id: "abbreviation_id",
+        id: "abbreviation_name",
         numeric: false,
         label: "Sigla da caixa"
     },

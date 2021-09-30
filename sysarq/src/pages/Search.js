@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 	},
 
 	select_label: {
-		marginTop: -15,
+		marginTop: -17.5,
 		marginLeft: 20,
 	},
 });
@@ -119,13 +119,9 @@ export default function Search() {
 									<em>None</em>
 								</MenuItem>
 								<MenuItem value="process_number">Número de processo</MenuItem>
-								<MenuItem value="shelf">Estante</MenuItem>
-								<MenuItem value="hack">Prateleira</MenuItem>
-								<MenuItem value="abbreviation">Sigla da caixa</MenuItem>
-								<MenuItem value="is_filed">Enviado</MenuItem>
-								<MenuItem value="is_eliminated">Eliminado</MenuItem>
-								<MenuItem value="user">Usuário</MenuItem>
-								<MenuItem value="document_type">Tipo de documento</MenuItem>
+                                <MenuItem value="is_filed">Arquivado</MenuItem>
+                                <MenuItem value="is_eliminated">Eliminado</MenuItem>
+                                <MenuItem value="filer_user">Usuário</MenuItem>
 							</Select>
 						</FormControl>
 					</ThemeProvider>

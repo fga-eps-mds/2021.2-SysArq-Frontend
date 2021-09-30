@@ -98,7 +98,12 @@ const DataTable = ({ url, title }) => {
         Api.get(url)
             .then((response) => {
                 if (url && url.includes('search')) {
-                    setRows(response.data.archival_relation)
+					const listTable = [];
+                    listTable.push(...response.data.archival_relation);
+                    // listTable.push(...response.data.frequency_sheet);
+                    listTable.push(...response.data.administrative_process);
+                    listTable.push(...response.data.frequecy_relation);
+                    setRows(listTable);
                     return;
                 }
                 setRows(response.data);
