@@ -491,7 +491,7 @@ const CreateArchivingRelation = () => {
 			<Grid item xs={12} sm={12} md={12}>
 				<SpecialLabels label="Caixas de Origem" />
 
-				{originBoxes.map((originBoxAdded, index) => (
+				{originBoxes.map((originBoxAdded, originBoxIndex) => (
 					<Accordion>
 						<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 							<Typography>
@@ -510,62 +510,73 @@ const CreateArchivingRelation = () => {
 											</TableRow>
 										</TableHead>
 										<TableBody>
-											{originBoxAdded.subjects_list.map((row, index1) => (
-												<TableRow key={row.name}>
-													<TableCell>{row.name}</TableCell>
-													<TableCell>
-														<ChipsContainer
-															justifyContent="left"
-															marginTop="0%"
-														>
-															{row.dates.map((addedPeriod) => (
-																<Chip
-																	icon={<TimelapseIcon />}
-																	label={`${addedPeriod}`}
-																	color="secondary"
-																	deleteIcon={
-																		<CancelIcon data-testid="delete" />
-																	}
-																	onDelete={() =>
-																		handleDeleteOriginBoxSubjectDate(
-																			index,
-																			index1,
-																			addedPeriod
+											{originBoxAdded.subjects_list.map(
+												(subject, subjectIndex) => (
+													<TableRow key={subject.name}>
+														<TableCell>{subject.name}</TableCell>
+														<TableCell>
+															<ChipsContainer
+																justifyContent="left"
+																marginTop="0%"
+															>
+																{subject.dates.map((addedDate) => (
+																	<Chip
+																		icon={<TimelapseIcon />}
+																		label={`${addedDate.substring(
+																			8,
+																			10
+																		)}/${addedDate.substring(
+																			5,
+																			7
+																		)}/${addedDate.substring(0, 4)}`}
+																		color="secondary"
+																		deleteIcon={
+																			<CancelIcon data-testid="delete" />
+																		}
+																		onDelete={() =>
+																			handleDeleteOriginBoxSubjectDate(
+																				originBoxIndex,
+																				subjectIndex,
+																				addedDate
+																			)
+																		}
+																	/>
+																))}
+
+																<AddChip
+																	label="Adicionar Data"
+																	onClick={() =>
+																		handleOpenNewOriginBoxSubjectDateDialog(
+																			originBoxIndex,
+																			subjectIndex
 																		)
 																	}
 																/>
-															))}
-
-															<AddChip
-																label="Adicionar Data"
-																onClick={() =>
-																	handleOpenNewOriginBoxSubjectDateDialog(
-																		index,
-																		index1
-																	)
-																}
-															/>
-														</ChipsContainer>
-													</TableCell>
-													<TableCell>
-														<ChipsContainer
-															justifyContent="right"
-															marginTop="0%"
-														>
-															<Chip
-																variant="outlined"
-																label="Excluir"
-																icon={<CloseIcon />}
-																color="secondary"
-																clickable
-																onClick={() =>
-																	handleDeleteOriginBoxSubject(index, index1)
-																}
-															/>
-														</ChipsContainer>
-													</TableCell>
-												</TableRow>
-											))}
+															</ChipsContainer>
+														</TableCell>
+														<TableCell>
+															<ChipsContainer
+																justifyContent="right"
+																marginTop="0%"
+															>
+																<Chip
+																	variant="outlined"
+																	label="Excluir"
+																	icon={<CloseIcon />}
+																	color="secondary"
+																	clickable
+																	onClick={() =>
+																		handleDeleteOriginBoxSubject(
+																			originBoxIndex,
+																			subjectIndex
+																		)
+																	}
+																/>
+															</ChipsContainer>
+														</TableCell>
+													</TableRow>
+												)
+											)}
 										</TableBody>
 									</Table>
 								</TableContainer>
@@ -579,7 +590,7 @@ const CreateArchivingRelation = () => {
 											color="secondary"
 											label="Excluir Caixa de Origem"
 											icon={<DeleteForeverRoundedIcon />}
-											onClick={() => handleDeleteOriginBox(index)}
+											onClick={() => handleDeleteOriginBox(originBoxIndex)}
 											clickable
 										/>
 									</ChipsContainer>
@@ -588,7 +599,9 @@ const CreateArchivingRelation = () => {
 											label="Adicionar Assunto"
 											icon={<AddCircleIcon />}
 											color="primary"
-											onClick={() => handleOpenNewOriginBoxSubjectDialog(index)}
+											onClick={() =>
+												handleOpenNewOriginBoxSubjectDialog(originBoxIndex)
+											}
 											clickable
 										/>
 									</ChipsContainer>
@@ -768,27 +781,3 @@ const CreateArchivingRelation = () => {
 };
 
 export default CreateArchivingRelation;
-
-// Adicionar Caixa de Origem
-
-// Número e Ano da Caixa de Origem
-
-// Assunto -> Suas Datas
-
-// Assunto -> Suas Datas
-
-// Quantidade de caixas box recebidas para arquivamento
-
-// Sigla da caixa - Estante - Prateleira
-
-// Observação
-
-// Capa de rosto da caixa para impressão - 12 (Desabilitado)
-
-// Anexar documento externo (pdf, jpeg)
-
-// caixa de origem (Número e ano) tem que ter opção para preencher muitos itens
-
-// Assuntos (por caixa de origem) tem que ter opção para preencher muitos itens
-
-// Data (dos assuntos por caixa de origem) tem que ter opção para preencher muitos itens
