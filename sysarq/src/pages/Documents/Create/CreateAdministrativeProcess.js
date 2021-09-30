@@ -276,14 +276,20 @@ const CreateAdministrativeProcess = () => {
 				rack_id: rack.id,
 				is_filed: isStatusFiled(status),
 				is_eliminated: status === "Eliminado",
-				unity_id: unarchiveDestinationUnit.id,
-				send_date: unarchiveDate !== null ? formatDate(unarchiveDate) : null,
-				administrative_process_number: unarchiveProcessNumber,
+				unity_id: status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
+				send_date:
+					unarchiveDate !== null && status === "Desarquivado"
+						? formatDate(unarchiveDate)
+						: null,
+				administrative_process_number:
+					status === "Desarquivado" ? unarchiveProcessNumber : "",
 				notes,
 				filer_user: "filer_user", //
 			})
 			.then(() => onSuccess())
-			.catch(() => connectionError());
+			.catch(() => {
+				connectionError();
+			});
 
 		return "post done";
 	};
