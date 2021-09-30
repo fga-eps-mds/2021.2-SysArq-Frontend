@@ -1,11 +1,20 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 
 import { server } from "../../support/server";
-import { input, submitClick } from "../../support";
 
 import CreateFrequencyRelation from "../../../pages/Documents/Create/CreateFrequencyRelation";
 
-jest.setTimeout(30000);
+import {
+	submitClick,
+	input,
+	abbreviationSelector,
+	shelfSelector,
+	rackSelector,
+} from "../../support";
+
+import { formatDate, initialPeriod } from "../../../support";
+
+jest.setTimeout(40000);
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
@@ -21,7 +30,7 @@ const isNotOnTheScreen = (text) => {
 
 const RECEIVED_DATE = "Data de Recebimento*";
 
-describe("Create Administrative Process Screen Test", () => {
+describe("Create Frequency Relation Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateFrequencyRelation />);
 
@@ -67,11 +76,12 @@ describe("Create Administrative Process Screen Test", () => {
 		fireEvent.click(senderUnitOptions.getByText(/destination_unit_name_test/i));
 		isNotOnTheScreen("Selecione uma unidade");
 
-		isOnTheScreen("09/2021");
+		const today = formatDate(initialPeriod);
+		isOnTheScreen(`${today.substring(5, 7)}/${today.substring(0, 4)}`);
 
 		fireEvent.click(screen.getByTestId("delete"));
 
-		isNotOnTheScreen("09/2021");
+		isNotOnTheScreen(`${today.substring(5, 7)}/${today.substring(0, 4)}`);
 
 		submitClick();
 
@@ -90,13 +100,18 @@ describe("Create Administrative Process Screen Test", () => {
 		isOnTheScreen("Insira um período");
 
 		input("Período", "13/2022");
+		isNotOnTheScreen("Insira um período");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("Insira um período válido");
 
 		input("Período", "10/2022");
+		isNotOnTheScreen("Insira um período válido");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
 		isOnTheScreen("10/2022");
+		isNotOnTheScreen(
+			"Não é possível criar uma Relação de Frequências sem um Período de Referência."
+		);
 
 		fireEvent.click(screen.getByText("Adicionar"));
 		input("Período", "10/2022");
@@ -113,5 +128,18 @@ describe("Create Administrative Process Screen Test", () => {
 		expect(errorAlert).toHaveTextContent(
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
+
+		await abbreviationSelector();
+
+		await shelfSelector();
+
+		await rackSelector();
+
+		input("Observação", "note_test");
+
+		submitClick();
+
+		const successAlert = await screen.findByRole("alert");
+		expect(successAlert).toHaveTextContent(/Documento cadastrado!/i);
 	});
 });

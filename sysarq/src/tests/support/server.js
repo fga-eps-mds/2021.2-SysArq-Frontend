@@ -140,23 +140,22 @@ export const server = setupServer(
 		)
 	),
 
-	rest.post(`${hostApiArchives}frequency-relation/`, (req, res, ctx) =>
-		// if (
-		// 	req.body.process_number === "28" &&
-		// 	req.body.notes === "n_test" &&
-		// 	req.body.number === "27" &&
-		// 	req.body.received_date === "" &&
-		// 	req.body.reference_period === [] &&
-		// 	req.body.sender_unit === 0 &&
-		// 	req.body.abbreviation_id === 0 &&
-		// 	req.body.shelf_id === 0 &&
-		// 	req.body.rack_id === 0 &&
-		// 	req.body.document_type_id === 0
-		// ) {
-		// 	return res(ctx.status(201));
-		// }
-		res(ctx.status(404))
-	),
+	rest.post(`${hostApiArchives}frequency-relation/`, (req, res, ctx) => {
+		if (
+			req.body.number === "27" &&
+			req.body.process_number === "28" &&
+			req.body.received_date === "2033-05-31" &&
+			req.body.notes === "note_test" &&
+			req.body.document_type_id === 34 &&
+			req.body.sender_unity === 40 &&
+			req.body.abbreviation_id === 43 &&
+			req.body.shelf_id === 46 &&
+			req.body.rack_id === 48
+		) {
+			return res(ctx.status(201));
+		}
+		res(ctx.status(404));
+	}),
 
 	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
 		console.log(req.body);
