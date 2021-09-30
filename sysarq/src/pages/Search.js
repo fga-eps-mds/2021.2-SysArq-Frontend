@@ -85,6 +85,8 @@ export default function Search() {
                         placeholder="Pesquisar:"
                         variant="outlined"
                         color="primary"
+						inputProps={{"data-testid":"InputBox"}}
+
                     />
 				</ThemeProvider>
 
@@ -114,6 +116,8 @@ export default function Search() {
                                 onChange={handleChange}
                                 variant="outlined"
                                 label="dropdown"
+								inputProps={{"data-testid":"FilterSelect"}}
+
                             >
 								<MenuItem value="">
 									<em>None</em>
