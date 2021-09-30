@@ -23,23 +23,26 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+const test = (psw) => {
+	const usernameInput = screen.getByLabelText("Nome de Usuário");
+	fireEvent.change(usernameInput, { target: { value: "teste" } });
+
+	const usernameValue = screen.getByLabelText("Nome de Usuário").value;
+	expect(usernameValue === "teste").toBe(true);
+
+	const passwordInput = screen.getByLabelText("Senha");
+	fireEvent.change(passwordInput, { target: { value: psw } });
+
+	const password = screen.getByLabelText("Senha");
+	expect(password.value === psw).toBe(true);
+	expect(password.type === "password").toBe(true);
+};
+
 describe("Login Screen Test", () => {
 	it("showPass button test", () => {
 		render(<Login />);
 
-		const usernameInput = screen.getByLabelText("Nome de Usuário");
-		fireEvent.change(usernameInput, { target: { value: "teste" } });
-
-		const usernameValue = screen.getByLabelText("Nome de Usuário").value;
-		expect(usernameValue === "teste").toBe(true);
-
-		const passwordInput = screen.getByLabelText("Senha");
-		fireEvent.change(passwordInput, { target: { value: "teste123" } });
-
-		const password = screen.getByLabelText("Senha");
-		expect(password.value === "teste123").toBe(true);
-		expect(password.type === "password").toBe(true);
-
+		test("teste123");
 		const clickShow = screen.getByTestId("showPass");
 		expect(fireEvent.mouseDown(clickShow)).toBe(false);
 		expect(fireEvent.click(clickShow)).toBe(true);
@@ -65,18 +68,7 @@ describe("Login Screen Test", () => {
 
 	it("test password field validation", () => {
 		render(<Login />);
-
-		const usernameInput = screen.getByLabelText("Nome de Usuário");
-		fireEvent.change(usernameInput, { target: { value: "teste" } });
-
-		const usernameValue = screen.getByLabelText("Nome de Usuário").value;
-		expect(usernameValue === "teste").toBe(true);
-
-		const passwordInput = screen.getByLabelText("Senha");
-		fireEvent.change(passwordInput, { target: { value: "teste" } });
-
-		const password = screen.getByLabelText("Senha");
-		expect(password.value === "teste").toBe(true);
+		test("test");
 
 		const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
 		expect(fireEvent.click(clickLogIn)).toBe(true);
