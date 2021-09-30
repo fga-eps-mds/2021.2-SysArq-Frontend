@@ -152,7 +152,6 @@ export const server = setupServer(
 			req.body.shelf_id === 46 &&
 			req.body.rack_id === 48
 		) {
-			console.log("ENTREI");
 			return res(ctx.status(201));
 		}
 		return res(ctx.status(404));
