@@ -11,7 +11,7 @@ import {
 
 import CreateAdministrativeProcess from "../../../pages/Documents/Create/CreateAdministrativeProcess";
 
-jest.setTimeout(40000);
+jest.setTimeout(50000);
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

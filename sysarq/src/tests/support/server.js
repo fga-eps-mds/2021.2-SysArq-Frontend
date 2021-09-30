@@ -141,7 +141,6 @@ export const server = setupServer(
 	),
 
 	rest.post(`${hostApiArchives}frequency-relation/`, (req, res, ctx) => {
-		console.log(req.body);
 		if (
 			req.body.number === "27" &&
 			req.body.process_number === "28" &&
@@ -153,6 +152,7 @@ export const server = setupServer(
 			req.body.shelf_id === 46 &&
 			req.body.rack_id === 48
 		) {
+			console.log("ENTREI");
 			return res(ctx.status(201));
 		}
 		return res(ctx.status(404));
