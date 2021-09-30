@@ -10,7 +10,7 @@ import {
 	FormHelperText,
 } from "@material-ui/core";
 
-import { axiosArchives } from "../../../Api";
+import { axiosArchives, axiosProfile } from "../../../Api";
 
 const DocumentTypeInput = ({
 	setHelperText,
@@ -27,10 +27,19 @@ const DocumentTypeInput = ({
 	};
 
 	useEffect(() => {
-		axiosArchives
-			.get("document-type/")
-			.then((response) => setDocumentTypes(response.data))
-			.catch(() => connectionError());
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.get("document-type/")
+					.then((response) => setDocumentTypes(response.data))
+					.catch(() => connectionError());
+			})
+			.catch(() => {});
 	}, []);
 
 	return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { axiosArchives } from "../../Api";
+import { axiosArchives, axiosProfile } from "../../Api";
 import createForm from "./form";
 
 const useStyles = makeStyles({
@@ -34,19 +34,28 @@ export default function CreateDocumentType() {
 	const handleShowError = () => setShowError(true);
 
 	const onClick = () => {
-		axiosArchives
-			.post(`document-type/`, {
-				document_name: documentName,
-				temporality: temporalityValue,
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
 			})
-			.then(() => {
-				handleShow();
-				setTimeout(handleClose, 3000);
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.post(`document-type/`, {
+						document_name: documentName,
+						temporality: temporalityValue,
+					})
+					.then(() => {
+						handleShow();
+						setTimeout(handleClose, 3000);
+					})
+					.catch(() => {
+						handleShowError();
+						setTimeout(handleCloseError, 3000);
+					});
 			})
-			.catch(() => {
-				handleShowError();
-				setTimeout(handleCloseError, 3000);
-			});
+			.catch(() => {});
 	};
 
 	const fields = [

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { axiosArchives } from "../../Api";
+import { axiosArchives, axiosProfile } from "../../Api";
 import createForm from "./form";
 
 const useStyles = makeStyles({
@@ -65,19 +65,30 @@ export default function CreateDocumentSubject() {
 	];
 
 	const onClick = () => {
-		axiosArchives
-			.post(`document-subject/`, {
-				subject_name: documentSubject,
-				temporality: temporalityValue,
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
 			})
-			.then(() => {
-				handleShow();
-				setTimeout(handleClose, 3000);
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.post(`document-subject/`, {
+						subject_name: documentSubject,
+						temporality: temporalityValue,
+					})
+					.then(() => {
+						handleShow();
+						setTimeout(handleClose, 3000);
+					})
+					.catch(() => {
+						handleShowError();
+						setTimeout(handleCloseError, 3000);
+					});
+
+				return res;
 			})
-			.catch(() => {
-				handleShowError();
-				setTimeout(handleCloseError, 3000);
-			});
+			.catch(() => {});
 	};
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";

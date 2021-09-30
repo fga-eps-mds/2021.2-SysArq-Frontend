@@ -27,7 +27,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { Alert, AlertTitle } from "@material-ui/lab";
 
-import { axiosArchives } from "../../../Api";
+import { axiosArchives, axiosProfile } from "../../../Api";
 
 import tableHeadCells from "./tablesHeadCells";
 
@@ -110,18 +110,29 @@ const DataTable = ({ url, title }) => {
 
 	useEffect(() => {
 		setHeadCells(tableHeadCells(url));
-
-		axiosArchives
-			.get(url)
-			.then((response) => {
-				setRows(response.data);
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
 			})
-			.catch(() => {
-				setOpenAlert(true);
-				setAlertHelperText(
-					"Verifique sua conexão com a internet e recarregue a página."
-				);
-			});
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				const token = localStorage.getItem("tk");
+
+				axiosArchives
+					.get(url, { headers: { Authorization: `JWT ${token}` } })
+					.then((response) => {
+						setRows(response.data);
+					})
+					.catch(() => {
+						setOpenAlert(true);
+						setAlertHelperText(
+							"Verifique sua conexão com a internet e recarregue a página."
+						);
+					});
+				return res;
+			})
+			.catch(() => {});
 	}, []);
 
 	const handleRequestSort = (event, property) => {

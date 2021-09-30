@@ -2,44 +2,62 @@ import { setupServer } from "msw/node";
 import { rest } from "msw";
 
 const hostApiArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
+const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
+
+const refreshTokenRequest = rest.post(
+	`${axiosProfile}api/token/refresh/`,
+	(req, res, ctx) => {
+		if (req.body.refresh === localStorage.getItem("tkr")) {
+			return res(ctx.status(200));
+		}
+		return res(ctx.status(404));
+	}
+);
 
 export const failedUnitServer = setupServer(
+	refreshTokenRequest,
 	rest.get(`${hostApiArchives}unity/`, (req, res, ctx) =>
 		res(res(ctx.status(404)))
 	)
 );
 
 export const failedDocumentSubjectServer = setupServer(
+	refreshTokenRequest,
 	rest.get(`${hostApiArchives}document-subject/`, (req, res, ctx) =>
 		res(res(ctx.status(404)))
 	)
 );
 
 export const failedShelfServer = setupServer(
+	refreshTokenRequest,
 	rest.get(`${hostApiArchives}shelf/`, (req, res, ctx) =>
 		res(res(ctx.status(404)))
 	)
 );
 
 export const failedRackServer = setupServer(
+	refreshTokenRequest,
 	rest.get(`${hostApiArchives}rack/`, (req, res, ctx) =>
 		res(res(ctx.status(404)))
 	)
 );
 
 export const failedDocumentTypeServer = setupServer(
+	refreshTokenRequest,
 	rest.get(`${hostApiArchives}document-type/`, (req, res, ctx) =>
 		res(res(ctx.status(404)))
 	)
 );
 
 export const failedAbbreviationServer = setupServer(
+	refreshTokenRequest,
 	rest.get(`${hostApiArchives}box-abbreviation//`, (req, res, ctx) =>
 		res(res(ctx.status(404)))
 	)
 );
 
 export const server = setupServer(
+	refreshTokenRequest,
 	rest.get(`${hostApiArchives}document-subject/`, (req, res, ctx) =>
 		res(
 			ctx.json([

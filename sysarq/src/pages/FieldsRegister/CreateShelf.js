@@ -11,7 +11,7 @@ import {
 	TextField,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { axiosArchives } from "../../Api";
+import { axiosArchives, axiosProfile } from "../../Api";
 
 const useStyles = makeStyles({
 	input: {
@@ -67,31 +67,49 @@ export default function CreateShelf() {
 			return "Erro";
 		}
 		if (type === "Estante") {
-			axiosArchives
-				.post(`shelf/`, {
-					number: numberE,
+			axiosProfile
+				.post(`api/token/refresh/`, {
+					refresh: localStorage.getItem("tkr"),
 				})
-				.then(() => {
-					handleShow();
-					setTimeout(handleClose, 3000);
+				.then((res) => {
+					localStorage.setItem("tk", res.data.access);
+					localStorage.setItem("tkr", res.data.refresh);
+					axiosArchives
+						.post(`shelf/`, {
+							number: numberE,
+						})
+						.then(() => {
+							handleShow();
+							setTimeout(handleClose, 3000);
+						})
+						.catch(() => {
+							handleShowError();
+							setTimeout(handleCloseError, 3000);
+						});
 				})
-				.catch(() => {
-					handleShowError();
-					setTimeout(handleCloseError, 3000);
-				});
+				.catch(() => {});
 		} else {
-			axiosArchives
-				.post(`rack/`, {
-					number: numberP,
+			axiosProfile
+				.post(`api/token/refresh/`, {
+					refresh: localStorage.getItem("tkr"),
 				})
-				.then(() => {
-					handleShow();
-					setTimeout(handleClose, 3000);
+				.then((res) => {
+					localStorage.setItem("tk", res.data.access);
+					localStorage.setItem("tkr", res.data.refresh);
+					axiosArchives
+						.post(`rack/`, {
+							number: numberP,
+						})
+						.then(() => {
+							handleShow();
+							setTimeout(handleClose, 3000);
+						})
+						.catch(() => {
+							handleShowError();
+							setTimeout(handleCloseError, 3000);
+						});
 				})
-				.catch(() => {
-					handleShowError();
-					setTimeout(handleCloseError, 3000);
-				});
+				.catch(() => {});
 		}
 		setShelfNumberError(false);
 		setShelfHelperText("");

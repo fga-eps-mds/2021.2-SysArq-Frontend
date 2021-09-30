@@ -9,7 +9,7 @@ import {
 	MenuItem,
 } from "@material-ui/core";
 
-import { axiosArchives } from "../../../Api";
+import { axiosArchives, axiosProfile } from "../../../Api";
 
 const RackInput = ({ set, connectionError, rack }) => {
 	const [racks, setRacks] = useState([]);
@@ -17,10 +17,19 @@ const RackInput = ({ set, connectionError, rack }) => {
 	const handleChange = (event) => set(event.target.value);
 
 	useEffect(() => {
-		axiosArchives
-			.get("rack/")
-			.then((response) => setRacks(response.data))
-			.catch(() => connectionError());
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.get("rack/")
+					.then((response) => setRacks(response.data))
+					.catch(() => connectionError());
+			})
+			.catch(() => {});
 	}, []);
 
 	return (

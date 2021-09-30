@@ -4,7 +4,7 @@ import { Grid, TextField } from "@material-ui/core";
 
 import { formatDate, initialPeriod, isInt } from "../../../support";
 
-import { axiosArchives } from "../../../Api";
+import { axiosArchives, axiosProfile } from "../../../Api";
 
 import DocumentsContainer from "../../components/Container/DocumentsContainer";
 
@@ -158,23 +158,32 @@ const CreateFrequencySheet = () => {
 			return "referencePeriod error";
 		}
 
-		axiosArchives
-			.post("frequency-sheet/", {
-				person_name: workerName,
-				cpf,
-				role,
-				category: workerClass,
-				workplace,
-				municipal_area: district,
-				reference_period: referencePeriod,
-				notes,
-				process_number: senderProcessNumber,
-				abbreviation_id: abbreviation.id,
-				shelf_id: shelf.id,
-				rack_id: rack.id,
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
 			})
-			.then(() => onSuccess())
-			.catch(() => connectionError());
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.post("frequency-sheet/", {
+						person_name: workerName,
+						cpf,
+						role,
+						category: workerClass,
+						workplace,
+						municipal_area: district,
+						reference_period: referencePeriod,
+						notes,
+						process_number: senderProcessNumber,
+						abbreviation_id: abbreviation.id,
+						shelf_id: shelf.id,
+						rack_id: rack.id,
+					})
+					.then(() => onSuccess())
+					.catch(() => connectionError());
+			})
+			.catch(() => {});
 
 		return "post done";
 	};

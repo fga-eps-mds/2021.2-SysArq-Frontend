@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { axiosArchives } from "../../Api";
+import { axiosArchives, axiosProfile } from "../../Api";
 import createForm from "./form";
 
 const useStyles = makeStyles((theme) => ({
@@ -52,21 +52,31 @@ export default function CreateBoxAbbreviation() {
 			setYearHelperText("Ano inválido");
 			return "Erro";
 		}
-		axiosArchives
-			.post(`box-abbreviation/`, {
-				number: boxNumber,
-				abbreviation: boxAbbreviation,
-				name: boxName,
-				year: boxYear,
+
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
 			})
-			.then(() => {
-				handleShow();
-				setTimeout(handleClose, 3000);
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.post(`box-abbreviation/`, {
+						number: boxNumber,
+						abbreviation: boxAbbreviation,
+						name: boxName,
+						year: boxYear,
+					})
+					.then(() => {
+						handleShow();
+						setTimeout(handleClose, 3000);
+					})
+					.catch(() => {
+						handleShowError();
+						setTimeout(handleCloseError, 3000);
+					});
 			})
-			.catch(() => {
-				handleShowError();
-				setTimeout(handleCloseError, 3000);
-			});
+			.catch(() => {});
 		setYearError(false);
 		setYearHelperText("");
 		return null;

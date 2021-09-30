@@ -6,7 +6,20 @@ import "./styles.css";
 
 import imgFolders from "../../../assets/logo.png";
 
+function logout() {
+	localStorage.removeItem("tk");
+	localStorage.removeItem("tkr");
+	localStorage.removeItem("isLogged");
+	window.location = "/login";
+}
+
 function Header() {
+	if (
+		window.location.pathname === "/login" ||
+		window.location.pathname === "/login/"
+	)
+		return null;
+
 	return (
 		<div className="header">
 			<a href="/">
@@ -66,7 +79,9 @@ function Header() {
 					icon={<StarsIcon />}
 				/>
 			</BottomNavigation>
-			<button type="submit">Sair</button>
+			<button type="submit" onClick={logout}>
+				Sair
+			</button>
 		</div>
 	);
 }

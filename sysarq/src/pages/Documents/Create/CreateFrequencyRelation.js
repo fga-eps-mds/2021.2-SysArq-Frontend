@@ -9,7 +9,7 @@ import {
 	isDateNotValid,
 } from "../../../support";
 
-import { axiosArchives } from "../../../Api";
+import { axiosArchives, axiosProfile } from "../../../Api";
 
 import DocumentsContainer from "../../components/Container/DocumentsContainer";
 
@@ -131,31 +131,49 @@ const CreateFrequencyRelation = () => {
 			return "referencePeriod error";
 		}
 
-		axiosArchives
-			.post("frequency-relation/", {
-				process_number: processNumber,
-				notes,
-				filer_user: "filer_user",
-				number,
-				received_date: formatDate(receivedDate),
-				reference_period: referencePeriod,
-				sender_unity: senderUnit.id,
-				abbreviation_id: abbreviation.id,
-				shelf_id: shelf.id,
-				rack_id: rack.id,
-				document_type_id: documentType.id,
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
 			})
-			.then(() => onSuccess())
-			.catch(() => connectionError());
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.post("frequency-relation/", {
+						process_number: processNumber,
+						notes,
+						filer_user: "filer_user",
+						number,
+						received_date: formatDate(receivedDate),
+						reference_period: referencePeriod,
+						sender_unity: senderUnit.id,
+						abbreviation_id: abbreviation.id,
+						shelf_id: shelf.id,
+						rack_id: rack.id,
+						document_type_id: documentType.id,
+					})
+					.then(() => onSuccess())
+					.catch(() => connectionError());
+			})
+			.catch(() => {});
 
 		return "post done";
 	};
 
 	useEffect(() => {
-		axiosArchives
-			.get("unity/")
-			.then((response) => setUnits(response.data))
-			.catch(() => connectionError());
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.get("unity/")
+					.then((response) => setUnits(response.data))
+					.catch(() => connectionError());
+			})
+			.catch(() => {});
 	}, []);
 
 	return (

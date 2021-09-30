@@ -20,7 +20,7 @@ import {
 	formatDate,
 } from "../../../support";
 
-import { axiosArchives } from "../../../Api";
+import { axiosArchives, axiosProfile } from "../../../Api";
 
 import DocumentsContainer from "../../components/Container/DocumentsContainer";
 
@@ -259,51 +259,71 @@ const CreateAdministrativeProcess = () => {
 			return "unarchiveDate error";
 		}
 
-		axiosArchives
-			.post("administrative-process/", {
-				notice_date: formatDate(noticeDate),
-				archiving_date: formatDate(archivingDate),
-				reference_month_year: reference !== null ? formatDate(reference) : null,
-				process_number: processNumber,
-				cpf_cnpj: personRegistry,
-				interested,
-				subject_id: subject.id,
-				dest_unity_id: destinationUnit.id,
-				sender_unity: senderUnit.id,
-				sender_user: senderWorker,
-				abbreviation_id: abbreviation.id,
-				shelf_id: shelf.id,
-				rack_id: rack.id,
-				is_filed: isStatusFiled(status),
-				is_eliminated: status === "Eliminado",
-				unity_id: status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
-				send_date:
-					unarchiveDate !== null && status === "Desarquivado"
-						? formatDate(unarchiveDate)
-						: null,
-				administrative_process_number:
-					status === "Desarquivado" ? unarchiveProcessNumber : "",
-				notes,
-				filer_user: "filer_user", //
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
 			})
-			.then(() => onSuccess())
-			.catch(() => {
-				connectionError();
-			});
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.post("administrative-process/", {
+						notice_date: formatDate(noticeDate),
+						archiving_date: formatDate(archivingDate),
+						reference_month_year:
+							reference !== null ? formatDate(reference) : null,
+						process_number: processNumber,
+						cpf_cnpj: personRegistry,
+						interested,
+						subject_id: subject.id,
+						dest_unity_id: destinationUnit.id,
+						sender_unity: senderUnit.id,
+						sender_user: senderWorker,
+						abbreviation_id: abbreviation.id,
+						shelf_id: shelf.id,
+						rack_id: rack.id,
+						is_filed: isStatusFiled(status),
+						is_eliminated: status === "Eliminado",
+						unity_id:
+							status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
+						send_date:
+							unarchiveDate !== null && status === "Desarquivado"
+								? formatDate(unarchiveDate)
+								: null,
+						administrative_process_number:
+							status === "Desarquivado" ? unarchiveProcessNumber : "",
+						notes,
+						filer_user: "filer_user", //
+					})
+					.then(() => onSuccess())
+					.catch(() => {
+						connectionError();
+					});
+			})
+			.catch(() => {});
 
 		return "post done";
 	};
 
 	useEffect(() => {
-		axiosArchives
-			.get("document-subject/")
-			.then((response) => setSubjects(response.data))
-			.catch(() => connectionError());
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.get("document-subject/")
+					.then((response) => setSubjects(response.data))
+					.catch(() => connectionError());
 
-		axiosArchives
-			.get("unity/")
-			.then((response) => setUnits(response.data))
-			.catch(() => connectionError());
+				axiosArchives
+					.get("unity/")
+					.then((response) => setUnits(response.data))
+					.catch(() => connectionError());
+			})
+			.catch(() => {});
 	}, []);
 
 	return (

@@ -7,8 +7,16 @@ import { render, fireEvent, screen, within } from "@testing-library/react";
 import DataTable from "../pages/components/DataTable";
 
 const axiosArchives = process.env.REACT_APP_URL_API_ARCHIVES;
+const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
 
 const server = setupServer(
+	rest.post(`${axiosProfile}api/token/refresh/`, (req, res, ctx) => {
+		if (req.body.refresh === localStorage.getItem("tkr")) {
+			return res(ctx.status(200));
+		} else {
+			return res(ctx.status(404));
+		}
+	}),
 	rest.get(`${axiosArchives}document-subject/`, async (req, res, ctx) => {
 		return res(
 			ctx.json([

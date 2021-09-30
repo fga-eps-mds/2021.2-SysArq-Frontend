@@ -14,7 +14,7 @@ import CreateFrequencyRelation from "../../../pages/Documents/Create/CreateFrequ
 
 import { formatDate, initialPeriod } from "../../../support";
 
-jest.setTimeout(50000);
+jest.setTimeout(60000);
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
