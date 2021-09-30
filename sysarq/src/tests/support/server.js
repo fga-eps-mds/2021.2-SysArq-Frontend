@@ -154,7 +154,7 @@ export const server = setupServer(
 		) {
 			return res(ctx.status(201));
 		}
-		res(ctx.status(404));
+		return res(ctx.status(404));
 	}),
 
 	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
