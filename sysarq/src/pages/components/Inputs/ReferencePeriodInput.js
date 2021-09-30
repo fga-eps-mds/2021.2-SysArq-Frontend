@@ -8,16 +8,22 @@ import {
 	DialogTitle,
 	DialogContent,
 	DialogActions,
+	Button,
 } from "@material-ui/core";
 
 import Alert from "@material-ui/lab/Alert";
 
+import { KeyboardDatePicker } from "@material-ui/pickers";
+
+import TimelapseIcon from "@material-ui/icons/Timelapse";
+import CancelIcon from "@material-ui/icons/Cancel";
+
 import { initialPeriod, isDateNotValid, formatDate } from "../../../support";
 
-import SpecialLabels from "../../components/SpecialLabels";
+import SpecialLabels from "../SpecialLabels";
 
-import ChipsContainer from "../../components/Container/ChipsContainer";
-import AddChip from "../../components/AddChip";
+import ChipsContainer from "../Container/ChipsContainer";
+import AddChip from "../AddChip";
 
 const ReferencePeriodInput = ({
 	referencePeriod,
