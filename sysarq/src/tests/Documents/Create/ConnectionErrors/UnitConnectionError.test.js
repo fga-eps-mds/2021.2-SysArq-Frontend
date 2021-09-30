@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 
 import CreateAdministrativeProcess from "../../../../pages/Documents/Create/CreateAdministrativeProcess";
+import CreateFrequencyRelation from "../../../../pages/Documents/Create/CreateFrequencyRelation";
 
 import { failedUnitServer } from "../../../support/server";
 
@@ -9,8 +10,17 @@ afterEach(() => failedUnitServer.resetHandlers());
 afterAll(() => failedUnitServer.close());
 
 describe("Unit Connection Error Test", () => {
-	it("connectionError test", async () => {
+	it("CreateAdministrativeProcess connectionError test", async () => {
 		render(<CreateAdministrativeProcess />);
+
+		const errorAlert = await screen.findByRole("alert");
+		expect(errorAlert).toHaveTextContent(
+			/Verifique sua conexão com a internet e recarregue a página./i
+		);
+	});
+
+	it("CreateFrequencyRelation connectionError test", async () => {
+		render(<CreateFrequencyRelation />);
 
 		const errorAlert = await screen.findByRole("alert");
 		expect(errorAlert).toHaveTextContent(
