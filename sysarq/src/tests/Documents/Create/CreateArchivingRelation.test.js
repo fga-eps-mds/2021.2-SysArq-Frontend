@@ -5,6 +5,8 @@ import { server } from "../../support/server";
 import {
 	input,
 	submitClick,
+	documentTypeSelector,
+	senderUnitSelector,
 	abbreviationSelector,
 	shelfSelector,
 	rackSelector,
@@ -79,19 +81,13 @@ describe("Create Archiving Relation Screen Test", () => {
 		submitClick();
 		isOnTheScreen("Selecione um tipo de documento");
 
-		fireEvent.mouseDown(screen.getByLabelText("Tipo de Documento*"));
-		const documentTypeOptions = within(screen.getByRole("listbox"));
-		await documentTypeOptions.findByText("documentType_name_test");
-		fireEvent.click(documentTypeOptions.getByText(/documentType_name_test/i));
+		await documentTypeSelector();
 		isNotOnTheScreen("Selecione um tipo de documento");
 
 		submitClick();
 		isOnTheScreen("Selecione uma unidade");
 
-		fireEvent.mouseDown(screen.getByLabelText("Unidade que Encaminhou*"));
-		const senderUnitOptions = within(screen.getByRole("listbox"));
-		await senderUnitOptions.findByText("sender_unit_name_test");
-		fireEvent.click(senderUnitOptions.getByText(/sender_unit_name_test/i));
+		await senderUnitSelector();
 		isNotOnTheScreen("Selecione uma unidade");
 
 		submitClick();
