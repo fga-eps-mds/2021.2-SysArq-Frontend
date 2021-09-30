@@ -1,8 +1,11 @@
 import React from "react";
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import Header from "./pages/components/Header";
-import Home from "./pages/Home";
 import Footer from "./pages/components/Footer";
+
+import Home from "./pages/Home";
 
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
@@ -15,6 +18,13 @@ import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation"
 import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
+
+import Documents from "./pages/Documents";
+import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdministrativeProcess";
+import CreateFrequencyRelation from "./pages/Documents/Create/CreateFrequencyRelation";
+import CreateFrequencySheet from "./pages/Documents/Create/CreateFrequencySheet";
+import CreateArchivingRelation from "./pages/Documents/Create/CreateArchivingRelation";
+
 import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -69,6 +79,44 @@ function App() {
 						</Route>
 						<Route path="/fields-register/shelf/create">
 							<CreateShelf />
+						</Route>
+					</Route>
+				</Route>
+
+				<Route path="/documents">
+					<Route exact path="/documents">
+						<Documents />
+					</Route>
+					<Route path="/documents/administrative-process">
+						<Route exact path="/documents/administrative-process">
+							<CreateAdministrativeProcess />
+						</Route>
+						<Route path="/documents/administrative-process/create">
+							<CreateAdministrativeProcess />
+						</Route>
+					</Route>
+					<Route path="/documents/frequency-relation">
+						<Route exact path="/documents/frequency-relation">
+							<CreateFrequencyRelation />
+						</Route>
+						<Route path="/documents/frequency-relation/create">
+							<CreateFrequencyRelation />
+						</Route>
+					</Route>
+					<Route path="/documents/archiving-relation">
+						<Route exact path="/documents/archiving-relation">
+							<CreateArchivingRelation />
+						</Route>
+						<Route path="/documents/archiving-relation/create">
+							<CreateArchivingRelation />
+						</Route>
+					</Route>
+					<Route path="/documents/frequency-sheet">
+						<Route exact path="/documents/frequency-sheet">
+							<CreateFrequencySheet />
+						</Route>
+						<Route path="/documents/frequency-sheet/create">
+							<CreateFrequencySheet />
 						</Route>
 					</Route>
 				</Route>
