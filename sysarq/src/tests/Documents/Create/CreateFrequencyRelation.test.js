@@ -1,8 +1,6 @@
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { screen, render, fireEvent, within } from "@testing-library/react";
 
 import { server } from "../../support/server";
-
-import CreateFrequencyRelation from "../../../pages/Documents/Create/CreateFrequencyRelation";
 
 import {
 	submitClick,
@@ -11,6 +9,8 @@ import {
 	shelfSelector,
 	rackSelector,
 } from "../../support";
+
+import CreateFrequencyRelation from "../../../pages/Documents/Create/CreateFrequencyRelation";
 
 import { formatDate, initialPeriod } from "../../../support";
 
