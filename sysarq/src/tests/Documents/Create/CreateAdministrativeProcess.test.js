@@ -149,6 +149,10 @@ describe("Create Administrative Process Screen Test", () => {
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
 
+		input("Referência", "04/2015");
+
+		input("CPF/CNPJ", "28293031323");
+
 		fireEvent.mouseDown(screen.getByLabelText("Status*"));
 		const statusOptions1 = within(screen.getByRole("listbox"));
 		fireEvent.click(statusOptions1.getByText("Arquivado"));
@@ -220,10 +224,6 @@ describe("Create Administrative Process Screen Test", () => {
 		expect(
 			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
 		).not.toBeInTheDocument();
-
-		input("Referência", "04/2015");
-
-		input("CPF/CNPJ", "28293031323");
 
 		input("Observação", "notes_test");
 
