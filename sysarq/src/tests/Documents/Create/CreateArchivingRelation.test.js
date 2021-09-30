@@ -1,7 +1,14 @@
 import { screen, render, fireEvent, within } from "@testing-library/react";
 
 import { server } from "../../support/server";
-import { abbreviationSelector, input, rackSelector, shelfSelector, submitClick } from "../../support";
+
+import {
+	input,
+	submitClick,
+	abbreviationSelector,
+	shelfSelector,
+	rackSelector,
+} from "../../support";
 
 import CreateArchivingRelation from "../../../pages/Documents/Create/CreateArchivingRelation";
 
@@ -77,6 +84,8 @@ describe("Create Archiving Relation Screen Test", () => {
 		expect(errorAlert).toHaveTextContent(
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
+
+		input("Nº de Caixas", 10);
 
 		await abbreviationSelector();
 
@@ -172,5 +181,10 @@ describe("Create Archiving Relation Screen Test", () => {
 		expect(screen.getAllByText("Excluir Caixa de Origem").length).toBe(2);
 		fireEvent.click(screen.getAllByText("Excluir Caixa de Origem")[1]);
 		expect(screen.getAllByText("Excluir Caixa de Origem").length).toBe(1);
+
+		fireEvent.click(screen.getByText("CADASTRAR"));
+
+		const successAlert = await screen.findByRole("alert");
+		expect(successAlert).toHaveTextContent(/Documento cadastrado!/i);
 	});
 });
