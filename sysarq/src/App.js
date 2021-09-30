@@ -6,6 +6,7 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 
 import Home from "./pages/Home";
 import Search from "./pages/Search";
+import SearchList from "./pages/SearchList";
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
 import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
@@ -45,6 +46,9 @@ function App() {
 				</Route>
 				<Route exact path="/search">
 					<Search />
+				</Route>
+				<Route exact path="/searchList">
+					<SearchList />
 				</Route>
 				<Route path="/fields-register">
 					<Route exact path="/fields-register">

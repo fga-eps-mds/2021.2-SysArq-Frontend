@@ -13,6 +13,9 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import * as React from "react";
 import imgBox from "./assets/logo.png";
+// import SearchList from "./SearchList";
+
+
 
 const useStyles = makeStyles({
 	input: {
@@ -44,7 +47,8 @@ const useStyles = makeStyles({
 
 export default function Search() {
 	const classes = useStyles();
-	const [value, setValue] = React.useState("");
+	// const [value1, setValue1] = React.useState("");
+	// const [value2, setValue2] = React.useState("");
 
 	const theme = createTheme({
 		palette: {
@@ -54,9 +58,19 @@ export default function Search() {
 		},
 	});
 
-	const handleChange = (event) => {
-		setValue(event.target.value);
-	};
+	// const handleChangeofvalue1 = (event) => {
+	// 	setValue1(event.target.value);
+	// };
+
+	// const handleChangeofvalue2 = (event) => {
+	// 	setValue2(event.target.value);
+	// };
+
+	// const onClick = () => (
+	// 	SearchList(value1,value2)
+	// 	);
+
+	
 
 	return (
 		<div>
@@ -70,6 +84,8 @@ export default function Search() {
 						placeholder="Pesquisar:"
 						variant="outlined"
 						color="primary"
+						// value={value1}
+						// onChange={handleChangeofvalue1}
 					/>
 				</ThemeProvider>
 
@@ -81,6 +97,8 @@ export default function Search() {
 							variant="contained"
 							id="button"
 							size="large"
+							// onclick={onClick}
+							href="/searchList/"
 						>
 							Ir
 						</Button>
@@ -94,8 +112,8 @@ export default function Search() {
 							</InputLabel>
 							<Select
 								className={classes.select_box}
-								value={value}
-								onChange={handleChange}
+								// value={value2}
+								// onChange={handleChangeofvalue2}
 								variant="outlined"
 								label="dropdown"
 							>

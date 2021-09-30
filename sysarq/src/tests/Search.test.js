@@ -12,6 +12,5 @@ describe("Main component", () => {
 		expect(screen.getByAltText("Logo")).toBeInTheDocument();
         expect(screen.getByText("Filtrar por:")).toBeInTheDocument();
         expect(screen.getByPlaceholderText("Pesquisar:")).toBeInTheDocument();
-
 	});
 });
