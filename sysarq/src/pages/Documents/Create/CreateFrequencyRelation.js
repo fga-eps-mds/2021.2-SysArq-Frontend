@@ -155,8 +155,7 @@ const CreateFrequencyRelation = () => {
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
-			.catch(() => { });
-
+			.catch(() => {});
 
 		return "post done";
 	};
@@ -173,9 +172,8 @@ const CreateFrequencyRelation = () => {
 					.get("unity/")
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
-
 			})
-			.catch(() => { });
+			.catch(() => {});
 	}, []);
 
 	return (

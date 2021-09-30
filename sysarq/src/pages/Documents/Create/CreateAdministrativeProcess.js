@@ -270,7 +270,8 @@ const CreateAdministrativeProcess = () => {
 					.post("administrative-process/", {
 						notice_date: formatDate(noticeDate),
 						archiving_date: formatDate(archivingDate),
-						reference_month_year: reference !== null ? formatDate(reference) : null,
+						reference_month_year:
+							reference !== null ? formatDate(reference) : null,
 						process_number: processNumber,
 						cpf_cnpj: personRegistry,
 						interested,
@@ -283,7 +284,8 @@ const CreateAdministrativeProcess = () => {
 						rack_id: rack.id,
 						is_filed: isStatusFiled(status),
 						is_eliminated: status === "Eliminado",
-						unity_id: status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
+						unity_id:
+							status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
 						send_date:
 							unarchiveDate !== null && status === "Desarquivado"
 								? formatDate(unarchiveDate)
@@ -298,13 +300,12 @@ const CreateAdministrativeProcess = () => {
 						connectionError();
 					});
 			})
-			.catch(() => { });
+			.catch(() => {});
 
 		return "post done";
 	};
 
 	useEffect(() => {
-
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -321,9 +322,8 @@ const CreateAdministrativeProcess = () => {
 					.get("unity/")
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
-
 			})
-			.catch(() => { });
+			.catch(() => {});
 	}, []);
 
 	return (
@@ -444,8 +444,8 @@ const CreateAdministrativeProcess = () => {
 					{subjectHelperText ? (
 						<FormHelperText>{subjectHelperText}</FormHelperText>
 					) : (
-							""
-						)}
+						""
+					)}
 				</FormControl>
 			</Grid>
 
@@ -530,8 +530,8 @@ const CreateAdministrativeProcess = () => {
 					{statusHelperText ? (
 						<FormHelperText>{statusHelperText}</FormHelperText>
 					) : (
-							""
-						)}
+						""
+					)}
 				</FormControl>
 			</Grid>
 
@@ -594,8 +594,8 @@ const CreateAdministrativeProcess = () => {
 					</Grid>
 				</>
 			) : (
-					""
-				)}
+				""
+			)}
 
 			<NotesInput set={setNotes} notes={notes} />
 

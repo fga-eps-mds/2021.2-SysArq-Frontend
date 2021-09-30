@@ -29,7 +29,7 @@ const ShelfInput = ({ set, connectionError, shelf }) => {
 					.then((response) => setShelves(response.data))
 					.catch(() => connectionError());
 			})
-			.catch(() => { });
+			.catch(() => {});
 	}, []);
 
 	return (

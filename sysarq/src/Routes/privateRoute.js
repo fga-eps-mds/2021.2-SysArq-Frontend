@@ -10,9 +10,9 @@ const PrivateRoute = ({ children, exact, path }) => {
 		);
 	}
 
-    localStorage.removeItem("tk");
-    localStorage.removeItem("tkr");
-    localStorage.removeItem("isLogged");
+	localStorage.removeItem("tk");
+	localStorage.removeItem("tkr");
+	localStorage.removeItem("isLogged");
 
 	window.location = "/login";
 

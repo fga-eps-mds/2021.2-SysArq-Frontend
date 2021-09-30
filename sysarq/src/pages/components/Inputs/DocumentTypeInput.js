@@ -39,7 +39,7 @@ const DocumentTypeInput = ({
 					.then((response) => setDocumentTypes(response.data))
 					.catch(() => connectionError());
 			})
-			.catch(() => { });
+			.catch(() => {});
 	}, []);
 
 	return (
@@ -69,8 +69,8 @@ const DocumentTypeInput = ({
 				{documentTypeHelperText ? (
 					<FormHelperText>{documentTypeHelperText}</FormHelperText>
 				) : (
-						""
-					)}
+					""
+				)}
 			</FormControl>
 		</Grid>
 	);

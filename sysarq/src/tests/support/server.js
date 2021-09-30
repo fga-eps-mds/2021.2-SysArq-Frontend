@@ -4,13 +4,15 @@ import { rest } from "msw";
 const hostApiArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}`;
 const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
 
-const refreshTokenRequest = rest.post(`${axiosProfile}api/token/refresh/`, (req, res, ctx) => {
-	if (req.body.refresh === localStorage.getItem("tkr")) {
-		return res(ctx.status(200));
-	} else {
+const refreshTokenRequest = rest.post(
+	`${axiosProfile}api/token/refresh/`,
+	(req, res, ctx) => {
+		if (req.body.refresh === localStorage.getItem("tkr")) {
+			return res(ctx.status(200));
+		}
 		return res(ctx.status(404));
 	}
-})
+);
 
 export const failedUnitServer = setupServer(
 	refreshTokenRequest,

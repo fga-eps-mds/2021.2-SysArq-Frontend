@@ -418,7 +418,8 @@ const CreateArchivingRelation = () => {
 						document_url: "", //
 						cover_sheet: "", //
 						filer_user: "filer_user", //
-						abbreviation_id: abbreviation.id === undefined ? "" : abbreviation.id,
+						abbreviation_id:
+							abbreviation.id === undefined ? "" : abbreviation.id,
 						shelf_id: shelf.id === undefined ? "" : shelf.id,
 						rack_id: rack.id === undefined ? "" : rack.id, //
 						document_type_id: documentType.id,
@@ -426,8 +427,7 @@ const CreateArchivingRelation = () => {
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
-			.catch(() => { });
-
+			.catch(() => {});
 
 		return "post done";
 	};
@@ -445,9 +445,8 @@ const CreateArchivingRelation = () => {
 					.get("unity/")
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
-
 			})
-			.catch(() => { });
+			.catch(() => {});
 	}, []);
 
 	return (
@@ -637,10 +636,10 @@ const CreateArchivingRelation = () => {
 						<AddChip label="Adicionar" onClick={handleOpenNewOriginBoxDialog} />
 					</ChipsContainer>
 				) : (
-						<ChipsContainer justifyContent="left" marginTop="0%">
-							<AddChip label="Adicionar" onClick={handleOpenNewOriginBoxDialog} />
-						</ChipsContainer>
-					)}
+					<ChipsContainer justifyContent="left" marginTop="0%">
+						<AddChip label="Adicionar" onClick={handleOpenNewOriginBoxDialog} />
+					</ChipsContainer>
+				)}
 			</Grid>
 
 			<Dialog

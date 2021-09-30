@@ -28,9 +28,8 @@ const AbbreviationInput = ({ set, connectionError, abbreviation }) => {
 					.get("box-abbreviation/")
 					.then((response) => setAbbreviations(response.data))
 					.catch(() => connectionError());
-
 			})
-			.catch(() => { });
+			.catch(() => {});
 	}, []);
 
 	return (

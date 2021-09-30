@@ -181,10 +181,9 @@ const CreateFrequencySheet = () => {
 						rack_id: rack.id,
 					})
 					.then(() => onSuccess())
-					.catch(() => connectionError());			
+					.catch(() => connectionError());
 			})
-			.catch(() => { });
-
+			.catch(() => {});
 
 		return "post done";
 	};

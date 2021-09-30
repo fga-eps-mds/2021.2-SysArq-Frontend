@@ -27,9 +27,9 @@ const RackInput = ({ set, connectionError, rack }) => {
 				axiosArchives
 					.get("rack/")
 					.then((response) => setRacks(response.data))
-					.catch(() => connectionError());			
+					.catch(() => connectionError());
 			})
-			.catch(() => { });
+			.catch(() => {});
 	}, []);
 
 	return (
