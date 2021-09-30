@@ -141,6 +141,7 @@ export const server = setupServer(
 	),
 
 	rest.post(`${hostApiArchives}frequency-relation/`, (req, res, ctx) => {
+		console.log(req.body);
 		if (
 			req.body.number === "27" &&
 			req.body.process_number === "28" &&
@@ -158,8 +159,6 @@ export const server = setupServer(
 	}),
 
 	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
-		console.log(req.body);
-
 		if (
 			req.body.notice_date === "2005-04-03" &&
 			req.body.archiving_date === "2011-10-09" &&
