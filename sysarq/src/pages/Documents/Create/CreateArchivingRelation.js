@@ -46,13 +46,8 @@ import DocumentsContainer from "../../components/Container/DocumentsContainer";
 
 import NumberInput from "../../components/Inputs/NumberInput";
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
-import ReceivedDateInput from "../../components/Inputs/ReceivedDateInput";
-import DocumentTypeInput from "../../components/Inputs/DocumentTypeInput";
-import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
-import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
-import ShelfInput from "../../components/Inputs/ShelfInput";
-import RackInput from "../../components/Inputs/RackInput";
-import NotesInput from "../../components/Inputs/NotesInput";
+
+import CommonSet from "../../components/CommonSet/CommonSet";
 
 import SpecialLabels from "../../components/SpecialLabels";
 
@@ -468,46 +463,30 @@ const CreateArchivingRelation = () => {
 				/>
 			</Grid>
 
-			<Grid item xs={12} sm={6} md={4}>
-				<ReceivedDateInput
-					setHelperText={setReceivedDateHelperText}
-					set={setReceivedDate}
-					receivedDate={receivedDate}
-					helperText={receivedDateHelperText}
-				/>
-			</Grid>
-
-			<DocumentTypeInput
-				setHelperText={setDocumentTypeHelperText}
-				set={setDocumentType}
+			<CommonSet
+				setReceivedDateHelperText={setReceivedDateHelperText}
+				setReceivedDate={setReceivedDate}
+				receivedDate={receivedDate}
+				receivedDateHelperText={receivedDateHelperText}
+				setDocumentTypeHelperText={setDocumentTypeHelperText}
+				setDocumentType={setDocumentType}
 				connectionError={connectionError}
 				documentType={documentType}
 				documentTypeHelperText={documentTypeHelperText}
-			/>
-
-			<SenderUnitInput
-				setHelperText={setSenderUnitHelperText}
-				set={setSenderUnit}
+				setSenderUnitHelperText={setSenderUnitHelperText}
+				setSenderUnit={setSenderUnit}
 				senderUnit={senderUnit}
 				units={units}
-				senderUnitHelperText={senderUnitHelperText}
-			/>
-
-			<AbbreviationInput
+				senderUnitHelperText={senderUnitHelperText}	
 				abbreviation={abbreviation}
-				set={setAbbreviation}
-				connectionError={connectionError}
-			/>
-
-			<ShelfInput
+				setAbbreviation={setAbbreviation}	
 				shelf={shelf}
-				set={setShelf}
-				connectionError={connectionError}
+				setShelf={setShelf}
+				rack={rack}
+				setRack={setRack}
+				setNotes={setNotes}
+				notes={notes}
 			/>
-
-			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
-
-			<NotesInput set={setNotes} notes={notes} />
 
 			<Grid item xs={12} sm={12} md={12}>
 				<SpecialLabels label="Caixas de Origem" />
