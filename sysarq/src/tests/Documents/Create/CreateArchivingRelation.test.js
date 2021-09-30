@@ -28,15 +28,31 @@ const isNotOnTheScreen = (text) => {
 
 const INVALID_YEAR_ERROR_MESSAGE = "Insira um ano válido";
 
+const DELETE_ORIGIN_BOX_BUTTON_LABEL = "Excluir Caixa de Origem";
+
+const A_SUBJECT_DATE = "12/01/2020";
+
+const ADD_ORIGIN_BOX_SUBJECT_DATE_BUTTON_LABEL = "Adicionar Data";
+
+const ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL = "Adicionar Assunto";
+
+const INVALID_DATE_ERROR_MESSAGE = "Insira uma data válida";
+
+const REQUIRED_DATE_ERROR_MESSAGE = "Insira uma data";
+
+const RECEIVED_DATE_FIELD_LABEL = "Data de Recebimento*";
+
+const NUMBER_OF_BOXES_FIELD_LABEL = "Nº de Caixas";
+
 describe("Create Archiving Relation Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateArchivingRelation />);
 
-		input("Nº de Caixas", "-1");
+		input(NUMBER_OF_BOXES_FIELD_LABEL, "-1");
 		submitClick();
 		isOnTheScreen("Insira um número válido");
 
-		input("Nº de Caixas", "");
+		input(NUMBER_OF_BOXES_FIELD_LABEL, "");
 		isNotOnTheScreen("Insira um número válido");
 		submitClick();
 		isOnTheScreen("Insira o número");
@@ -49,17 +65,17 @@ describe("Create Archiving Relation Screen Test", () => {
 		input("Número do Processo*", "3");
 		isNotOnTheScreen("Insira o número do processo");
 
-		input("Data de Recebimento*", "");
+		input(RECEIVED_DATE_FIELD_LABEL, "");
 		submitClick();
-		isOnTheScreen("Insira uma data");
+		isOnTheScreen(REQUIRED_DATE_ERROR_MESSAGE);
 
-		input("Data de Recebimento*", "04/");
-		isNotOnTheScreen("Insira uma data");
+		input(RECEIVED_DATE_FIELD_LABEL, "04/");
+		isNotOnTheScreen(REQUIRED_DATE_ERROR_MESSAGE);
 		submitClick();
-		isOnTheScreen("Insira uma data válida");
+		isOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
 
-		input("Data de Recebimento*", "04/05/2006");
-		isNotOnTheScreen("Insira uma data válida");
+		input(RECEIVED_DATE_FIELD_LABEL, "04/05/2006");
+		isNotOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
 		submitClick();
 		isOnTheScreen("Selecione um tipo de documento");
 
@@ -85,7 +101,7 @@ describe("Create Archiving Relation Screen Test", () => {
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
 
-		input("Nº de Caixas", 10);
+		input(NUMBER_OF_BOXES_FIELD_LABEL, 10);
 
 		await abbreviationSelector();
 
@@ -127,10 +143,16 @@ describe("Create Archiving Relation Screen Test", () => {
 		isOnTheScreen("9/2010");
 
 		fireEvent.click(screen.getByText("7/2008"));
-		fireEvent.click(screen.getAllByText("Adicionar Assunto")[0]);
+		fireEvent.click(
+			screen.getAllByText(ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL)[0]
+		);
+
 		fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
 
-		fireEvent.click(screen.getAllByText("Adicionar Assunto")[0]);
+		fireEvent.click(
+			screen.getAllByText(ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL)[0]
+		);
+
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("Insira um assunto");
 
@@ -138,30 +160,42 @@ describe("Create Archiving Relation Screen Test", () => {
 		isNotOnTheScreen("Insira um assunto");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
-		fireEvent.click(screen.getAllByText("Adicionar Assunto")[0]);
+		fireEvent.click(
+			screen.getAllByText(ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL)[0]
+		);
+
 		input("Assunto*", "differentSubject_test");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
-		fireEvent.click(screen.getAllByText("Adicionar Data")[0]);
+		fireEvent.click(
+			screen.getAllByText(ADD_ORIGIN_BOX_SUBJECT_DATE_BUTTON_LABEL)[0]
+		);
+
 		fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
 
-		fireEvent.click(screen.getAllByText("Adicionar Data")[0]);
+		fireEvent.click(
+			screen.getAllByText(ADD_ORIGIN_BOX_SUBJECT_DATE_BUTTON_LABEL)[0]
+		);
+
 		input("Data*", "");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("Insira uma data");
+		isOnTheScreen(REQUIRED_DATE_ERROR_MESSAGE);
 
 		input("Data*", "12/");
-		isNotOnTheScreen("Insira uma data");
+		isNotOnTheScreen(REQUIRED_DATE_ERROR_MESSAGE);
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("Insira uma data válida");
+		isOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
 
-		input("Data*", "12/01/2020");
-		isNotOnTheScreen("Insira uma data válida");
+		input("Data*", A_SUBJECT_DATE);
+		isNotOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("12/01/2020");
+		isOnTheScreen(A_SUBJECT_DATE);
 
-		fireEvent.click(screen.getAllByText("Adicionar Data")[0]);
-		input("Data*", "12/01/2020");
+		fireEvent.click(
+			screen.getAllByText(ADD_ORIGIN_BOX_SUBJECT_DATE_BUTTON_LABEL)[0]
+		);
+
+		input("Data*", A_SUBJECT_DATE);
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("Data já adicionada");
 
@@ -178,9 +212,9 @@ describe("Create Archiving Relation Screen Test", () => {
 		fireEvent.click(screen.getAllByText("Excluir")[1]);
 		expect(screen.getAllByText("Excluir").length).toBe(1);
 
-		expect(screen.getAllByText("Excluir Caixa de Origem").length).toBe(2);
-		fireEvent.click(screen.getAllByText("Excluir Caixa de Origem")[1]);
-		expect(screen.getAllByText("Excluir Caixa de Origem").length).toBe(1);
+		expect(screen.getAllByText(DELETE_ORIGIN_BOX_BUTTON_LABEL).length).toBe(2);
+		fireEvent.click(screen.getAllByText(DELETE_ORIGIN_BOX_BUTTON_LABEL)[1]);
+		expect(screen.getAllByText(DELETE_ORIGIN_BOX_BUTTON_LABEL).length).toBe(1);
 
 		fireEvent.click(screen.getByText("CADASTRAR"));
 
