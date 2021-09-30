@@ -255,9 +255,9 @@ const CreateFrequencyRelation = () => {
 				setSenderUnit={setSenderUnit}
 				senderUnit={senderUnit}
 				units={units}
-				senderUnitHelperText={senderUnitHelperText}	
+				senderUnitHelperText={senderUnitHelperText}
 				abbreviation={abbreviation}
-				setAbbreviation={setAbbreviation}	
+				setAbbreviation={setAbbreviation}
 				shelf={shelf}
 				setShelf={setShelf}
 				rack={rack}
