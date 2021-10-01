@@ -6,15 +6,13 @@ import {
 	ThemeProvider,
 	createTheme,
 } from "@material-ui/core";
-import { makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import imgBox from "./assets/logo.png";
-
-
 
 const useStyles = makeStyles({
 	input: {
@@ -47,28 +45,28 @@ const useStyles = makeStyles({
 export default function Search() {
 	const classes = useStyles();
 	const [value, setValue] = useState("");
-    const [inputValue, setInputValue] = useState("");
-    const [urllist, setUrllist] = useState("");
+	const [inputValue, setInputValue] = useState("");
+	const [urllist, setUrllist] = useState("");
 
-    const theme = createTheme({
-        palette: {
-            primary: {
-                main: "#5289B5",
-            },
-        },
-    });
+	const theme = createTheme({
+		palette: {
+			primary: {
+				main: "#5289B5",
+			},
+		},
+	});
 
-    const handleChange = (event) => {
-        setValue(event.target.value);
-        const valueChange = `${event.target.value}/${inputValue}`;
-        setUrllist(`search/list/${valueChange}`);
-    };
+	const handleChange = (event) => {
+		setValue(event.target.value);
+		const valueChange = `${event.target.value}/${inputValue}`;
+		setUrllist(`search/list/${valueChange}`);
+	};
 
-    const onchangeInputValue = (event) => {
-        setInputValue(event.target.value);
-        const valueChange = `${value}/${event.target.value}`;
-        setUrllist(`search/list/${valueChange}`);
-    };
+	const onchangeInputValue = (event) => {
+		setInputValue(event.target.value);
+		const valueChange = `${value}/${event.target.value}`;
+		setUrllist(`search/list/${valueChange}`);
+	};
 
 	return (
 		<div>
@@ -78,30 +76,29 @@ export default function Search() {
 
 				<ThemeProvider theme={theme}>
 					<TextField
-                        className={classes.input}
-                        value={inputValue}
-                        onChange={onchangeInputValue}
-                        type="text"
-                        placeholder="Pesquisar:"
-                        variant="outlined"
-                        color="primary"
-						inputProps={{"data-testid":"InputBox"}}
-
-                    />
+						className={classes.input}
+						value={inputValue}
+						onChange={onchangeInputValue}
+						type="text"
+						placeholder="Pesquisar:"
+						variant="outlined"
+						color="primary"
+						inputProps={{ "data-testid": "InputBox" }}
+					/>
 				</ThemeProvider>
 
 				<Grid item xs={12} sm={12} md={12}>
 					<ThemeProvider theme={theme}>
-					<Button
-                            href={urllist}
-                            className={classes.button}
-                            color="primary"
-                            variant="contained"
-                            id="button"
-                            size="large"
-                        >
-                            Ir
-                        </Button>
+						<Button
+							href={urllist}
+							className={classes.button}
+							color="primary"
+							variant="contained"
+							id="button"
+							size="large"
+						>
+							Ir
+						</Button>
 
 						<FormControl
 							sx={{ m: 1, minWidth: 120 }}
@@ -111,21 +108,20 @@ export default function Search() {
 								Filtrar por:
 							</InputLabel>
 							<Select
-                                className={classes.select_box}
-                                value={value}
-                                onChange={handleChange}
-                                variant="outlined"
-                                label="dropdown"
-								inputProps={{"data-testid":"FilterSelect"}}
-
-                            >
+								className={classes.select_box}
+								value={value}
+								onChange={handleChange}
+								variant="outlined"
+								label="dropdown"
+								inputProps={{ "data-testid": "FilterSelect" }}
+							>
 								<MenuItem value="">
 									<em>None</em>
 								</MenuItem>
 								<MenuItem value="process_number">Número de processo</MenuItem>
-                                <MenuItem value="is_filed">Arquivado</MenuItem>
-                                <MenuItem value="is_eliminated">Eliminado</MenuItem>
-                                <MenuItem value="filer_user">Usuário</MenuItem>
+								<MenuItem value="is_filed">Arquivado</MenuItem>
+								<MenuItem value="is_eliminated">Eliminado</MenuItem>
+								<MenuItem value="filer_user">Usuário</MenuItem>
 							</Select>
 						</FormControl>
 					</ThemeProvider>
@@ -134,4 +130,3 @@ export default function Search() {
 		</div>
 	);
 }
-

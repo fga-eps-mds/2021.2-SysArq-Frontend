@@ -94,24 +94,23 @@ const DataTable = ({ url, title }) => {
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
 	useEffect(() => {
-        setHeadCells(tableHeadCells(url));
-        Api.get(url)
-            .then((response) => {
-                if (url && url.includes('search')) {
+		setHeadCells(tableHeadCells(url));
+		Api.get(url)
+			.then((response) => {
+				if (url && url.includes("search")) {
 					const listTable = [];
-                    listTable.push(...response.data.archival_relation);
-                    // listTable.push(...response.data.frequency_sheet);
-                    listTable.push(...response.data.administrative_process);
-                    listTable.push(...response.data.frequecy_relation);
-                    setRows(listTable);
-                    return;
-                }
-                setRows(response.data);
-            })
-            .catch(() => {})
-            .then(() => {});
-    }, []);
-
+					listTable.push(...response.data.archival_relation);
+					// listTable.push(...response.data.frequency_sheet);
+					listTable.push(...response.data.administrative_process);
+					listTable.push(...response.data.frequecy_relation);
+					setRows(listTable);
+					return;
+				}
+				setRows(response.data);
+			})
+			.catch(() => {})
+			.then(() => {});
+	}, []);
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
