@@ -32,7 +32,7 @@ function Header() {
 			<div className="div-media">
 				<ul>
 					<li>
-						<a href="/">Pesquisar</a>
+						<a href="/search">Pesquisar</a>
 					</li>
 					<li>
 						<a href="/fields-register">Campos</a>
@@ -55,7 +55,7 @@ function Header() {
 			<BottomNavigation showLabels>
 				<BottomNavigationAction
 					label="Pesquisar"
-					href="/"
+					href="/search"
 					icon={<StarsIcon />}
 				/>
 				<BottomNavigationAction

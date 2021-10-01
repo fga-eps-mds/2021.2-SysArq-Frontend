@@ -34,12 +34,12 @@ const headCellsSearch = [
 		label: "Sigla da caixa",
 	},
 	{
-		id: "",
+		id: "is_filed",
 		numeric: false,
 		label: "Enviado",
 	},
 	{
-		id: "",
+		id: "is_eliminated",
 		numeric: false,
 		label: "Eliminado",
 	},
@@ -185,7 +185,7 @@ const tableHeadCells = (url) => {
 	if (url === "document-subject/") {
 		headCells = documentSubjectHeadCells;
 	} else if (url === "box-abbreviation/") {
-		headCells = boxAbbreviationHeadCells;
+		headCells = headCellsBoxAbbreviation;
 	} else if (url === "unity/") {
 		headCells = unityHeadCells;
 	} else if (url === "document-type/") {
@@ -193,7 +193,7 @@ const tableHeadCells = (url) => {
 	} else if (url === "shelf/") {
 		headCells = shelfHeadCells;
 	} else if (url === "status/") {
-		headCells = headCellsStatus;
+		headCells = statusHeadCells;
 	} else if (url && url.includes("search")) {
 		headCells = headCellsSearch;
 	}

@@ -1,4 +1,4 @@
-import "./Search.css";
+import React, { useState } from "react";
 import {
 	TextField,
 	Button,
@@ -6,13 +6,15 @@ import {
 	ThemeProvider,
 	createTheme,
 } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import React, { useState } from "react";
 import imgBox from "./assets/logo.png";
+
+import "./Search.css";
 
 const useStyles = makeStyles({
 	input: {
@@ -37,7 +39,7 @@ const useStyles = makeStyles({
 	},
 
 	select_label: {
-		marginTop: -17.5,
+		marginTop: -15.5,
 		marginLeft: 20,
 	},
 });
@@ -45,6 +47,14 @@ const useStyles = makeStyles({
 export default function Search() {
 	const classes = useStyles();
 	const [value, setValue] = useState("");
+	const [show, setShow] = useState(false);
+	const handleShow = () => setShow(true);
+	const [show2, setShow2] = useState(false);
+	const handleShow2 = () => setShow2(true);
+	const handleClose = () => {
+		setShow(false);
+		setShow2(false);
+	};
 	const [inputValue, setInputValue] = useState("");
 	const [urllist, setUrllist] = useState("");
 
@@ -56,16 +66,30 @@ export default function Search() {
 		},
 	});
 
-	const handleChange = (event) => {
+	const handleSelect = (event) => {
+		handleClose();
 		setValue(event.target.value);
 		const valueChange = `${event.target.value}/${inputValue}`;
 		setUrllist(`search/list/${valueChange}`);
 	};
 
 	const onchangeInputValue = (event) => {
+		handleClose();
 		setInputValue(event.target.value);
 		const valueChange = `${value}/${event.target.value}`;
 		setUrllist(`search/list/${valueChange}`);
+	};
+
+	const handleButton = () => {
+		if (inputValue === "") {
+			handleShow2();
+			return;
+		}
+		if (value === "") {
+			handleShow();
+			return;
+		}
+		window.location = urllist;
 	};
 
 	return (
@@ -73,6 +97,16 @@ export default function Search() {
 			<body id="body">
 				<img id="logo" src={imgBox} alt="Logo" />
 				<h1 id="search_title">Arquivo Geral da Polícia Civil do Goiás</h1>
+				{show === true ? (
+					<Alert severity="error">Selecione algum filtro</Alert>
+				) : (
+					""
+				)}
+				{show2 === true ? (
+					<Alert severity="error">Pesquise por algum valor</Alert>
+				) : (
+					""
+				)}
 
 				<ThemeProvider theme={theme}>
 					<TextField
@@ -80,7 +114,7 @@ export default function Search() {
 						value={inputValue}
 						onChange={onchangeInputValue}
 						type="text"
-						placeholder="Pesquisar:"
+						placeholder="Pesquisar"
 						variant="outlined"
 						color="primary"
 						inputProps={{ "data-testid": "InputBox" }}
@@ -90,7 +124,7 @@ export default function Search() {
 				<Grid item xs={12} sm={12} md={12}>
 					<ThemeProvider theme={theme}>
 						<Button
-							href={urllist}
+							onClick={handleButton}
 							className={classes.button}
 							color="primary"
 							variant="contained"
@@ -104,23 +138,18 @@ export default function Search() {
 							sx={{ m: 1, minWidth: 120 }}
 							className={classes.select}
 						>
-							<InputLabel className={classes.select_label}>
+							<InputLabel id="selectLabel" className={classes.select_label}>
 								Filtrar por:
 							</InputLabel>
 							<Select
 								className={classes.select_box}
 								value={value}
-								onChange={handleChange}
+								onChange={handleSelect}
 								variant="outlined"
-								label="dropdown"
+								labelId="selectLabel"
 								inputProps={{ "data-testid": "FilterSelect" }}
 							>
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
 								<MenuItem value="process_number">Número de processo</MenuItem>
-								<MenuItem value="is_filed">Arquivado</MenuItem>
-								<MenuItem value="is_eliminated">Eliminado</MenuItem>
 								<MenuItem value="filer_user">Usuário</MenuItem>
 							</Select>
 						</FormControl>

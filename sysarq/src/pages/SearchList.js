@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import DataTable from "./components/DataTable/DataTable";
+import DataTable from "./components/DataTable/index";
 
 export default function SearchList() {
 	const url = `search/?filter=%7B%22${useParams().field}%22:%22${
