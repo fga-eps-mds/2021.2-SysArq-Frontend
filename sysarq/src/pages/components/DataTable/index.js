@@ -122,6 +122,15 @@ const DataTable = ({ url, title }) => {
 				axiosArchives
 					.get(url, { headers: { Authorization: `JWT ${token}` } })
 					.then((response) => {
+						if (url && url.includes("search")) {
+							const listTable = [];
+							listTable.push(...response.data.archival_relation);
+							listTable.push(...response.data.frequency_sheet);
+							listTable.push(...response.data.administrative_process);
+							listTable.push(...response.data.frequecy_relation);
+							setRows(listTable);
+							return;
+						}
 						setRows(response.data);
 					})
 					.catch(() => {

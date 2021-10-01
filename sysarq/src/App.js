@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./pages/components/Header";
 import Footer from "./pages/components/Footer";
 import Home from "./pages/Home";
+import Search from "./pages/Search";
+import SearchList from "./pages/SearchList";
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
 import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
@@ -37,6 +39,12 @@ function App() {
 				<Route exact path="/login">
 					<Login />
 				</Route>
+				<PrivateRoute exact path="/search">
+					<Search />
+				</PrivateRoute>
+				<PrivateRoute exact={false} path="/search/list/:field/:content">
+					<SearchList />
+				</PrivateRoute>
 				<PrivateRoute exact={false} path="/fields-register">
 					<PrivateRoute exact path="/fields-register">
 						<FieldsRegister />

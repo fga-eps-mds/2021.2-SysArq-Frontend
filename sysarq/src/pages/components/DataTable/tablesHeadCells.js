@@ -12,7 +12,37 @@ const documentSubjectHeadCells = [
 	},
 ];
 
-const boxAbbreviationHeadCells = [
+const headCellsSearch = () => {
+	const idList = [
+		"process_number",
+		"Número do processo",
+		"shelf_number",
+		"Estante",
+		"rack_number",
+		"Prateleira",
+		"abbreviation_name",
+		"Sigla da caixa",
+		"is_filled",
+		"Enviado",
+		"is_eliminated",
+		"Eliminado",
+		"filer_user",
+		"Usuário",
+		"document_type_id",
+		"Tipo de documento",
+	];
+	const headCellsSearchList = [];
+	for (let i = 0; i < idList.length; i += 2) {
+		headCellsSearchList.push({
+			id: idList[i],
+			numeric: false,
+			label: idList[i + 1],
+		});
+	}
+	return headCellsSearchList;
+};
+
+const headCellsBoxAbbreviation = [
 	{
 		id: "number",
 		numeric: true,
@@ -142,7 +172,7 @@ const tableHeadCells = (url) => {
 	if (url === "document-subject/") {
 		headCells = documentSubjectHeadCells;
 	} else if (url === "box-abbreviation/") {
-		headCells = boxAbbreviationHeadCells;
+		headCells = headCellsBoxAbbreviation;
 	} else if (url === "unity/") {
 		headCells = unityHeadCells;
 	} else if (url === "document-type/") {
@@ -151,6 +181,8 @@ const tableHeadCells = (url) => {
 		headCells = shelfHeadCells;
 	} else if (url === "status/") {
 		headCells = statusHeadCells;
+	} else if (url && url.includes("search")) {
+		headCells = headCellsSearch();
 	}
 	return headCells;
 };
