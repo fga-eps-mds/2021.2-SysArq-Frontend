@@ -12,7 +12,7 @@
 		"sourceType": "module"
 	},
 	"plugins": ["react", "prettier"],
-	"ignorePatterns": ["*.test.js"],
+	"ignorePatterns": ["*.test.js", "build/*"],
 	"rules": {
 		// Define a extensão dos arquivos analisados
 		"react/jsx-filename-extension": [1, { "extensions": [".js"] }],
