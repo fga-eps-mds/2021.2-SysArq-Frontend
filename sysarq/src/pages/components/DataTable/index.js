@@ -170,15 +170,15 @@ const DataTable = ({ url, title }) => {
 	const test = (row, id) => {
 		if (id === "is_filed") {
 			if (row[id] === true) {
-				return "Arquivado";
+				return "Sim";
 			}
-			return "Desarquivado";
+			return "Não";
 		}
 		if (id === "is_eliminated") {
 			if (row[id] === true) {
-				return "Eliminado";
+				return "Sim";
 			}
-			return row[id];
+			return "Não";
 		}
 		return row[id];
 	};

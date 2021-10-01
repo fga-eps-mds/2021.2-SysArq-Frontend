@@ -87,6 +87,82 @@ const server = setupServer(
 	rest.get(`${axiosArchives}box-abbreviation/`, async (req, res, ctx) => {
 		return res(ctx.json([]));
 	}),
+	rest.get(`${axiosArchives}search/`, async (req, res, ctx) => {
+		const value = req.url.searchParams.get("filter");
+		if (value === '{"process_number":"111"}') {
+			return res(
+				ctx.json({
+					archival_relation: [],
+					frequecy_relation: [],
+					frequency_sheet: [],
+					administrative_process: [
+						{
+							id: 5,
+							process_number: "111",
+							notes: "",
+							filer_user: "filer_user",
+							notice_date: "2021-10-01",
+							interested: "paulao",
+							cpf_cnpj: "",
+							reference_month_year: "2021-10-01",
+							sender_user: "",
+							archiving_date: "2021-10-01",
+							is_filed: true,
+							is_eliminated: false,
+							send_date: null,
+							administrative_process_number: "",
+							sender_unity: 1,
+							abbreviation_name: "babababa",
+							subject_id: 1,
+							dest_unity_id: 1,
+							unity_id: null,
+							shelf_number: 3,
+							rack_number: 2,
+							abbreviation_id: 2,
+							shelf_id: 1,
+							rack_id: 1,
+						},
+					],
+				})
+			);
+		} else {
+			return res(
+				ctx.json({
+					archival_relation: [],
+					frequecy_relation: [],
+					frequency_sheet: [],
+					administrative_process: [
+						{
+							id: 5,
+							process_number: "222",
+							notes: "",
+							filer_user: "filer_user",
+							notice_date: "2021-10-01",
+							interested: "paulao",
+							cpf_cnpj: "",
+							reference_month_year: "2021-10-01",
+							sender_user: "",
+							archiving_date: "2021-10-01",
+							is_filed: false,
+							is_eliminated: true,
+							send_date: null,
+							administrative_process_number: "",
+							sender_unity: 1,
+							abbreviation_name: "babababa",
+							subject_id: 1,
+							dest_unity_id: 1,
+							unity_id: null,
+							shelf_number: 3,
+							rack_number: 2,
+							abbreviation_id: 2,
+							shelf_id: 1,
+							rack_id: 1,
+						},
+					],
+				})
+			);
+		}
+	}),
 
 	rest.get(`${axiosArchives}unity/`, async (req, res, ctx) => {
 		return res(ctx.json([]));
@@ -197,5 +273,28 @@ describe("DataTable and tablesHeadCells Test", () => {
 		expect(screen.getByText("Unidade que Encaminhou")).toBeInTheDocument();
 		expect(screen.getByText("Documento Solicitado")).toBeInTheDocument();
 		expect(screen.getByText("Data de Envio")).toBeInTheDocument();
+	});
+
+	it("test is_filed", async () => {
+		render(
+			<DataTable
+				title="Resultado da Pesquisa"
+				url="search/?filter=%7B%22process_number%22:%22111%22%7D"
+			/>
+		);
+		await screen.findByText("111");
+		expect(screen.getByText("Sim")).toBeInTheDocument();
+		expect(screen.getByText("Não")).toBeInTheDocument();
+	});
+	it("test is_eliminated", async () => {
+		render(
+			<DataTable
+				title="Resultado da Pesquisa"
+				url="search/?filter=%7B%22process_number%22:%22222%22%7D"
+			/>
+		);
+		await screen.findByText("222");
+		expect(screen.getByText("Sim")).toBeInTheDocument();
+		expect(screen.getByText("Não")).toBeInTheDocument();
 	});
 });
