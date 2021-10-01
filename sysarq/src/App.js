@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./pages/components/Header";
 import Footer from "./pages/components/Footer";
-import Home from "./pages/Home";
 import Search from "./pages/Search";
 import SearchList from "./pages/SearchList";
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
@@ -34,7 +33,7 @@ function App() {
 			<Header />
 			<Switch>
 				<PrivateRoute exact path="/">
-					<Home />
+					<Search />
 				</PrivateRoute>
 				<Route exact path="/login">
 					<Login />

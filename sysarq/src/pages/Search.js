@@ -150,7 +150,6 @@ export default function Search() {
 								inputProps={{ "data-testid": "FilterSelect" }}
 							>
 								<MenuItem value="process_number">Número de processo</MenuItem>
-								<MenuItem value="filer_user">Usuário</MenuItem>
 							</Select>
 						</FormControl>
 					</ThemeProvider>

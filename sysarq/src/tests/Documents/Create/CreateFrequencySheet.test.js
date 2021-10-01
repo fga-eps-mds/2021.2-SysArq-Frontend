@@ -31,6 +31,13 @@ const isNotOnTheScreen = (text) => {
 describe("Create Frequency Relation Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateFrequencySheet />);
+		submitClick();
+		isOnTheScreen("Insira um CPF");
+
+		input("CPF*", "13421.53253");
+		submitClick();
+
+		isOnTheScreen("Insira um CPF válido");
 
 		fireEvent.click(screen.getByText("Adicionar"));
 
