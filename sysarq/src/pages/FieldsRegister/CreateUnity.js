@@ -1,21 +1,26 @@
-import React, { useState } from "react";
-
-import { Button, TextField } from "@material-ui/core";
+import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
-import axios from "axios";
-
-const hostApi = `${process.env.REACT_APP_URL_API}unity`;
-
-const useStyles = makeStyles({
-	fields: {
-		marginTop: 20,
-		marginBotton: 20,
-		display: "block",
-	},
-});
+import { axiosArchives, axiosProfile } from "../../Api";
+import createForm from "./form";
 
 export default function CreateUnity() {
+	const useStyles = makeStyles({
+		input: {
+			width: "100%",
+			height: 36,
+			marginBottom: "1rem",
+			maxWidth: 908,
+		},
+		inputDate: {
+			width: "100%",
+			height: 36,
+			marginTop: "2rem",
+			marginBottom: "2rem",
+			maxWidth: 908,
+		},
+	});
+	const classes = useStyles();
+
 	const [unityName, setUnityName] = useState("");
 	const [unityAbbreviation, setUnityAbbreviation] = useState("");
 	const [administrativeBond, setAdiministrativeBond] = useState("");
@@ -25,139 +30,171 @@ export default function CreateUnity() {
 	const [telephoneNumber, setTelephoneNumber] = useState("");
 	const [note, setNote] = useState("");
 
-	const classes = useStyles();
+	const [showError, setShowError] = useState(false);
+	const handleCloseError = () => setShowError(false);
+	const handleShowError = () => setShowError(true);
+
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 
 	const onClick = () => {
-		axios
-			.post(hostApi, {
-				unity_name: unityName,
-				unity_abbreviation: unityAbbreviation,
-				administrative_bond: administrativeBond,
-				bond_abbreviation: bondAbbreviation,
-				type_of_unity: unityType,
-				telephone_number: telephoneNumber,
-				county,
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
 			})
-			.then(() => {})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.post(`unity/`, {
+						unity_name: unityName,
+						unity_abbreviation: unityAbbreviation,
+						administrative_bond: administrativeBond,
+						bond_abbreviation: bondAbbreviation,
+						type_of_unity: unityType,
+						municipality: county,
+						telephone_number: telephoneNumber,
+						notes: note,
+					})
+					.then(() => {
+						handleShow();
+						setTimeout(handleClose, 3000);
+					})
+					.catch(() => {
+						handleShowError();
+						setTimeout(handleCloseError, 3000);
+					});
+			})
 			.catch(() => {});
 	};
 
-	const onChangeUnityName = (event) => {
-		setUnityName(event.target.value);
-	};
+	const fields = [
+		{
+			type: "text",
+			placeholder: "Nome da unidade",
+			setValue: setUnityName,
+			value: unityName,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "ShortText",
+			placeholder: "Sigla da unidade",
+			setValue: setUnityAbbreviation,
+			value: unityAbbreviation,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "text",
+			placeholder: "Vínculo administrativo",
+			setValue: setAdiministrativeBond,
+			value: administrativeBond,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "ShortText",
+			placeholder: "Sigla do vínculo",
+			setValue: setBondAbbreviation,
+			value: bondAbbreviation,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "MiddleText",
+			placeholder: "Tipo de unidade",
+			setValue: setUnityType,
+			value: unityType,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "text",
+			placeholder: "Município",
+			setValue: setCounty,
+			value: county,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "phone",
+			placeholder: "Telefone",
+			setValue: setTelephoneNumber,
+			value: telephoneNumber,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+		{
+			type: "text",
+			placeholder: "Observações",
+			setValue: setNote,
+			value: note,
+			helperText: "",
+			error: false,
+			setHelperText: () => {
+				"";
+			},
+			setError: () => {
+				"";
+			},
+		},
+	];
 
-	const onChangeUnityAbbreviation = (event) => {
-		setUnityAbbreviation(event.target.value);
-	};
+	const title = "Arquivo Geral da Policia Civil de Goiás";
+	const subtitle = "Cadastrar unidade";
 
-	const onChangeAdministrativeBond = (event) => {
-		setAdiministrativeBond(event.target.value);
-	};
-
-	const onChangeBondAbbreviation = (event) => {
-		setBondAbbreviation(event.target.value);
-	};
-
-	const onChangeUnityType = (event) => {
-		setUnityType(event.target.value);
-	};
-
-	const onChangeCounty = (event) => {
-		setCounty(event.target.value);
-	};
-
-	const onChangeTelephoneNumber = (event) => {
-		setTelephoneNumber(event.target.value);
-	};
-
-	const onChangeNote = (event) => {
-		setNote(event.target.value);
-	};
-
-	return (
-		<div>
-			<h1>Unidade</h1>
-			<TextField
-				id="nome-da-unidade-input"
-				className={classes.fields}
-				onChange={onChangeUnityName}
-				type="unity_name"
-				value={unityName}
-				label="Nome da unidade"
-				variant="filled"
-			/>
-			<TextField
-				id="sigla-da-unidade-input"
-				className={classes.fields}
-				onChange={onChangeUnityAbbreviation}
-				type="unity_abbreviation"
-				value={unityAbbreviation}
-				label="Sigla da unidade"
-				variant="filled"
-			/>
-			<TextField
-				id="vinculo-administrativo-input"
-				className={classes.fields}
-				onChange={onChangeAdministrativeBond}
-				type="administrative_bond"
-				value={administrativeBond}
-				label="Vínculo administrativo"
-				variant="filled"
-			/>
-			<TextField
-				id="sigla-do-vinculo-input"
-				className={classes.fields}
-				onChange={onChangeBondAbbreviation}
-				type="bond_abbreviation"
-				value={bondAbbreviation}
-				label="Sigla do vínculo"
-				variant="filled"
-			/>
-			<TextField
-				id="tipo-de-unidade-input"
-				className={classes.fields}
-				onChange={onChangeUnityType}
-				type="unityType"
-				value={unityType}
-				label="Tipo de unidade"
-				variant="filled"
-			/>
-			<TextField
-				id="municipio-input"
-				className={classes.fields}
-				onChange={onChangeCounty}
-				type="county"
-				value={county}
-				label="Município"
-				variant="filled"
-			/>
-			<TextField
-				id="numero-de-telefone-input"
-				className={classes.fields}
-				onChange={onChangeTelephoneNumber}
-				type="telephone_number"
-				value={telephoneNumber}
-				label="Número de telefone"
-				variant="filled"
-			/>
-			<TextField
-				id="observacoes-input"
-				className={classes.fields}
-				onChange={onChangeNote}
-				type="note"
-				value={note}
-				label="Observações"
-				variant="filled"
-			/>
-			<Button
-				data-testid="click"
-				onClick={onClick}
-				style={{ marginTop: "20px" }}
-				variant="contained"
-				color="primary"
-			>
-				Salvar
-			</Button>
-		</div>
+	return createForm(
+		fields,
+		title,
+		subtitle,
+		classes,
+		show,
+		showError,
+		onClick,
+		false
 	);
 }

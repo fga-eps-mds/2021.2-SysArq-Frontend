@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import MenuCard from "../pages/components/MenuCard";
+import MenuCard from "../pages/components/MenuCard/Fields";
 
 const renderMenuCard = (icon, title, createUrl, listUrl) => {
 	render(
@@ -36,12 +36,6 @@ const obj = [
 		title: "Sigla da Caixa",
 		createUrl: "/fields-register/box-abbreviation/create",
 		listUrl: "/fields-register/box-abbreviation",
-	},
-	{
-		icon: "icone-servidor",
-		title: "Servidor",
-		createUrl: "/fields-register/public-worker/create",
-		listUrl: "/fields-register/public-worker",
 	},
 	{
 		icon: "icone-unidade",

@@ -1,69 +1,79 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-
 import CreateBoxAbbreviation from "../pages/FieldsRegister/CreateBoxAbbreviation";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
+import { testEvent } from "./inputTest.test";
 
-describe("Main component", () => {
-	it("Show page title", () => {
-		render(<CreateBoxAbbreviation />);
+const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}box-abbreviation/`;
+const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
 
-		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
+const server = setupServer(
+	rest.post(`${axiosProfile}api/token/refresh/`, (req, res, ctx) => {
+		if (req.body.refresh === localStorage.getItem("tkr")) {
+			return res(ctx.status(200));
+		} else {
+			return res(ctx.status(404));
+		}
+	}),
+	rest.post(axiosArchives, (req, res, ctx) => {
+		if (req.body.number === "201") {
+			return res(ctx.status(201));
+		} else {
+			return res(ctx.status(404));
+		}
+	})
+);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+jest.useFakeTimers();
+
+const BOX_NUMBER = "Número da caixa";
+const BOX_ABBREVIATION = "Sigla da caixa";
+const BOX_NAME = "Nome completo";
+const BOX_YEAR = "Ano";
+
+describe("Page test", () => {
+	it("axios sucess", async () => {
+		const objSucess = [
+			BOX_NUMBER,
+			"201",
+			BOX_ABBREVIATION,
+			"ASD",
+			BOX_NAME,
+			"Polícia Civil do Goias",
+			BOX_YEAR,
+			"2021",
+		];
+		await testEvent(<CreateBoxAbbreviation />, objSucess, "Campo cadastrado!");
 	});
-});
 
-describe("Ensure that the input fields of the box abbreviation exist", () => {
-	it("box number, box abbreviation, full name and year", () => {
-		render(<CreateBoxAbbreviation />);
-
-		expect(screen.getByText("Número da caixa")).toBeInTheDocument();
-		expect(screen.getByText("Sigla da caixa")).toBeInTheDocument();
-		expect(screen.getByText("Nome completo")).toBeInTheDocument();
-		expect(screen.getByText("Ano")).toBeInTheDocument();
-
-		const inputBoxNumner = screen.getByLabelText("Número da caixa");
-		fireEvent.change(inputBoxNumner, { target: { value: "10" } });
-		const valueBoxNumber = screen.getByLabelText("Número da caixa").value;
-		expect(valueBoxNumber === "10").toBe(true);
-
-		const inputBoxAbbreviation = screen.getByLabelText("Sigla da caixa");
-		fireEvent.change(inputBoxAbbreviation, { target: { value: "PC-GO" } });
-		const valueBoxAbbreviation = screen.getByLabelText("Sigla da caixa").value;
-		expect(valueBoxAbbreviation === "PC-GO").toBe(true);
-
-		const inputFullName = screen.getByLabelText("Nome completo");
-		fireEvent.change(inputFullName, {
-			target: { value: "Polícia Civil do Goias" },
-		});
-		const valueFullName = screen.getByLabelText("Nome completo").value;
-		expect(valueFullName === "Polícia Civil do Goias").toBe(true);
-
-		const inputYear = screen.getByLabelText("Ano");
-		fireEvent.change(inputYear, { target: { value: "2021" } });
-		const valueYear = screen.getByLabelText("Ano").value;
-		expect(valueYear === "2021").toBe(true);
+	it("axios fail", async () => {
+		const objFail = [
+			BOX_NUMBER,
+			"401",
+			BOX_ABBREVIATION,
+			"ASD",
+			BOX_NAME,
+			"Polícia Civil do Goias",
+			BOX_YEAR,
+			"2021",
+		];
+		await testEvent(<CreateBoxAbbreviation />, objFail, "Erro de conexão!");
 	});
-});
 
-const hostApi = `${process.env.REACT_APP_URL_API}box_abbreviation`;
-
-describe("Button test", () => {
-	it("Save button", () => {
-		const mock = new MockAdapter(axios);
-
-		render(<CreateBoxAbbreviation />);
-
-		const click = screen.getByTestId("click");
-		expect(fireEvent.click(click)).toBe(true);
-
-		mock.onPost(hostApi).reply(function () {
-			return [201];
-		});
-
-		expect(mock.history.post.length).toBe(1);
-		expect(mock.history.post[0].data).toBe(
-			JSON.stringify({ number: "", abbreviation: "", name: "", year: "" })
-		);
+	it("year error", async () => {
+		const objFail = [
+			BOX_NUMBER,
+			"345",
+			BOX_ABBREVIATION,
+			"BOB",
+			BOX_NAME,
+			"Polícia Civil do Goias",
+			BOX_YEAR,
+			"3",
+		];
+		await testEvent(<CreateBoxAbbreviation />, objFail, "Ano inválido");
 	});
 });
