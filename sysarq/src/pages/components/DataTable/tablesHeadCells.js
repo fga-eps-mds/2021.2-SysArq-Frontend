@@ -22,14 +22,10 @@ const headCellsSearch = () => {
 		"Prateleira",
 		"abbreviation_name",
 		"Sigla da caixa",
-		"is_filled",
-		"Enviado",
+		"is_filed",
+		"Arquivado",
 		"is_eliminated",
 		"Eliminado",
-		"filer_user",
-		"Usuário",
-		"document_type_id",
-		"Tipo de documento",
 	];
 	const headCellsSearchList = [];
 	for (let i = 0; i < idList.length; i += 2) {

@@ -167,6 +167,22 @@ const DataTable = ({ url, title }) => {
 		setOpenAlert(false);
 	};
 
+	const test = (row, id) => {
+		if (id === "is_filed") {
+			if (row[id] === true) {
+				return "Sim";
+			}
+			return "Não";
+		}
+		if (id === "is_eliminated") {
+			if (row[id] === true) {
+				return "Sim";
+			}
+			return "Não";
+		}
+		return row[id];
+	};
+
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -226,7 +242,7 @@ const DataTable = ({ url, title }) => {
 														key={row[headCells[headCellIndex].id]}
 														align={headCellIndex === 0 ? "left" : "right"}
 													>
-														{row[headCells[headCellIndex].id]}
+														{test(row, headCells[headCellIndex].id)}
 													</TableCell>
 												)
 											)}
