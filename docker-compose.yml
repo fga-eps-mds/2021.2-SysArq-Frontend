@@ -4,7 +4,7 @@ services:
   app:
     build: .
 
-    command: yarn start
+    command: yarn dev
 
     env_file:
       - ./.env
