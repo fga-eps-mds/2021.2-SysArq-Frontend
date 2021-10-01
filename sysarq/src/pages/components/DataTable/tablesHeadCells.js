@@ -12,48 +12,35 @@ const documentSubjectHeadCells = [
 	},
 ];
 
-const headCellsSearch = [
-	{
-		id: "process_number",
-		numeric: false,
-		label: "Número do processo",
-	},
-	{
-		id: "shelf_number",
-		numeric: false,
-		label: "Estante",
-	},
-	{
-		id: "rack_number",
-		numeric: false,
-		label: "Prateleira",
-	},
-	{
-		id: "abbreviation_name",
-		numeric: false,
-		label: "Sigla da caixa",
-	},
-	{
-		id: "is_filed",
-		numeric: false,
-		label: "Enviado",
-	},
-	{
-		id: "is_eliminated",
-		numeric: false,
-		label: "Eliminado",
-	},
-	{
-		id: "filer_user",
-		numeric: false,
-		label: "Usuário",
-	},
-	{
-		id: "document_type_id",
-		numeric: false,
-		label: "Tipo de documento",
-	},
-];
+const headCellsSearch = () => {
+	const idList = [
+		"process_number",
+		"Número do processo",
+		"shelf_number",
+		"Estante",
+		"rack_number",
+		"Prateleira",
+		"abbreviation_name",
+		"Sigla da caixa",
+		"is_filled",
+		"Enviado",
+		"is_eliminated",
+		"Eliminado",
+		"filer_user",
+		"Usuário",
+		"document_type_id",
+		"Tipo de documento",
+	];
+	const headCellsSearchList = [];
+	for (let i = 0; i < idList.length; i += 2) {
+		headCellsSearchList.push({
+			id: idList[i],
+			numeric: false,
+			label: idList[i + 1],
+		});
+	}
+	return headCellsSearchList;
+};
 
 const headCellsBoxAbbreviation = [
 	{
@@ -195,7 +182,7 @@ const tableHeadCells = (url) => {
 	} else if (url === "status/") {
 		headCells = statusHeadCells;
 	} else if (url && url.includes("search")) {
-		headCells = headCellsSearch;
+		headCells = headCellsSearch();
 	}
 	return headCells;
 };
