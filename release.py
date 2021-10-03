@@ -13,17 +13,24 @@ if __name__ == "__main__":
 
     contributors = []
 
-    pr_commits = requests.get(
-        "https://api.github.com/repos/fga-eps-mds/2021.1-PC-GO1-Frontend/pulls/" +
-        pr_number + "/commits", auth=requests.auth.HTTPBasicAuth(user, token)
-    )
+    for page_number in range(1, 4): # GitHub API limit
+        payload = {"per_page": "100", "page": page_number}
+    
+        pr_commits = requests.get(
+            "https://api.github.com/repos/fga-eps-mds/2021.1-PC-GO1-Frontend/pulls/" +
+            pr_number + "/commits", params=payload,
+            auth=requests.auth.HTTPBasicAuth(user, token)
+        )
 
-    try:
-        for pr_commit in pr_commits.json():
-            contributor = pr_commit["author"]["login"]
-            contributors.append(contributor) if contributor not in contributors else None
-    except:
-        raise Exception("Unable to collect PR contributors.")
+        pr_commits_json = pr_commits.json()
+        if len(pr_commits_json) == 0: break
+
+        try:
+            for pr_commit in pr_commits_json:
+                contributor = pr_commit["author"]["login"]
+                contributors.append(contributor) if contributor not in contributors else None
+        except:
+            raise Exception("Unable to collect PR contributors.")
 
     pr_body = open("pr_body.txt", "r")
 
@@ -140,12 +147,12 @@ if __name__ == "__main__":
     now = datetime.now()
 
     data_release = (
-        f"{now.day:02d}-{now.month:02d}-" + str(now.year) + f"-{now.hour:02d}"
+        f"{now.day:02d}-{now.month:02d}-" + str(now.year) + f"-{now.hour:02d} +
+        "f"-{now.minute:02d}"
     )
 
     analytics_path = (
-        "fga-eps-mds-2021_1-PC-GO1-Frontend-"
-        + new_tag.replace(".", "_") + "-" + data_release + ".json"
+        "fga-eps-mds-2021_1-PC-GO1-Frontend-" + data_release + ".json"
     )
 
     with open(analytics_path, "w") as file:
