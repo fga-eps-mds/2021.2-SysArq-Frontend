@@ -26,15 +26,15 @@ jobs:
 
       - name: Lançamento MAJOR
         if: contains( github.event.pull_request.labels.*.name, 'MAJOR' )
-        run: python3 release.py J-Matheus $GITHUB_TOKEN $PR_NUMBER MAJOR
+        run: python3 release.py github-actions $GITHUB_TOKEN $PR_NUMBER MAJOR
 
       - name: Lançamento MINOR
         if: contains( github.event.pull_request.labels.*.name, 'MINOR' )
-        run: python3 release.py J-Matheus $GITHUB_TOKEN $PR_NUMBER MINOR
+        run: python3 release.py github-actions $GITHUB_TOKEN $PR_NUMBER MINOR
 
       - name: Lançamento PATCH
         if: contains( github.event.pull_request.labels.*.name, 'PATCH' )
-        run: python3 release.py J-Matheus $GITHUB_TOKEN $PR_NUMBER PATCH
+        run: python3 release.py github-actions $GITHUB_TOKEN $PR_NUMBER PATCH
 
       - name: Criar Novo Lançamento
         run: chmod +x ./create_release.sh && ./create_release.sh
