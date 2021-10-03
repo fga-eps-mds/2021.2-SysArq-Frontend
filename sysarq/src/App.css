@@ -1,3 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+html, body, #root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh !important;
+  min-width: 100%;
+  background-color: #F6F6F6;
+}
+
 .App {
   text-align: center;
 }

@@ -24,7 +24,8 @@ jobs:
       - name: Criar arquivo .env
         run: |
           touch .env
-          echo REACT_APP_URL_API="http://0.0.0.0:8002/" >> .env
+          echo REACT_APP_URL_API_PROFILE="http://0.0.0.0:8001/" >> .env
+          echo REACT_APP_URL_API_ARCHIVES="http://0.0.0.0:8002/" >> .env
           cat .env
 
       - name: Executar teste 

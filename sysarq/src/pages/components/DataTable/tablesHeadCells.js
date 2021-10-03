@@ -1,4 +1,4 @@
-const headCellsDocumentSubject = [
+const documentSubjectHeadCells = [
 	{
 		id: "subject_name",
 		numeric: false,
@@ -7,10 +7,36 @@ const headCellsDocumentSubject = [
 
 	{
 		id: "temporality",
-		numeric: true,
+		numeric: false,
 		label: "Temporalidade",
 	},
 ];
+
+const headCellsSearch = () => {
+	const idList = [
+		"process_number",
+		"Número do processo",
+		"shelf_number",
+		"Estante",
+		"rack_number",
+		"Prateleira",
+		"abbreviation_name",
+		"Sigla da caixa",
+		"is_filed",
+		"Arquivado",
+		"is_eliminated",
+		"Eliminado",
+	];
+	const headCellsSearchList = [];
+	for (let i = 0; i < idList.length; i += 2) {
+		headCellsSearchList.push({
+			id: idList[i],
+			numeric: false,
+			label: idList[i + 1],
+		});
+	}
+	return headCellsSearchList;
+};
 
 const headCellsBoxAbbreviation = [
 	{
@@ -38,47 +64,9 @@ const headCellsBoxAbbreviation = [
 	},
 ];
 
-const headCellsPublicWorker = [
+const unityHeadCells = [
 	{
-		id: "name",
-		numeric: false,
-		label: "Nome",
-	},
-
-	{
-		id: "cpf",
-		numeric: false,
-		label: "CPF",
-	},
-
-	{
-		id: "office",
-		numeric: false,
-		label: "Cargo",
-	},
-
-	{
-		id: "class_worker",
-		numeric: false,
-		label: "Classe",
-	},
-
-	{
-		id: "capacity",
-		numeric: false,
-		label: "Lotação",
-	},
-
-	{
-		id: "county",
-		numeric: false,
-		label: "Município",
-	},
-];
-
-const headCellsUnity = [
-	{
-		id: "name_of_unity",
+		id: "unity_name",
 		numeric: false,
 		label: "Nome da Unidade",
 	},
@@ -120,13 +108,13 @@ const headCellsUnity = [
 	},
 
 	{
-		id: "note",
+		id: "notes",
 		numeric: false,
 		label: "Observações",
 	},
 ];
 
-const headCellsDocumentType = [
+const documentTypeHeadCells = [
 	{
 		id: "document_name",
 		numeric: false,
@@ -135,26 +123,20 @@ const headCellsDocumentType = [
 
 	{
 		id: "temporality",
-		numeric: true,
+		numeric: false,
 		label: "Temporalidade",
 	},
 ];
 
-const headCellsShelf = [
+const shelfHeadCells = [
 	{
 		id: "number",
 		numeric: true,
 		label: "Estante",
 	},
-
-	{
-		id: "number",
-		numeric: true,
-		label: "Prateleira",
-	},
 ];
 
-const headCellsStatus = [
+const statusHeadCells = [
 	{
 		id: "filed",
 		numeric: false,
@@ -162,41 +144,41 @@ const headCellsStatus = [
 	},
 
 	{
-		id: "unity_that_forwarded",
+		id: "sent_from",
 		numeric: false,
-		label: "Unidade que encaminhou",
+		label: "Unidade que Encaminhou",
 	},
 
 	{
-		id: "document_requested",
+		id: "requested_document",
 		numeric: false,
-		label: "Documento solicitado",
+		label: "Documento Solicitado",
 	},
 
 	{
 		id: "send_date",
 		numeric: true,
-		label: "Data de envio",
+		label: "Data de Envio",
 	},
 ];
 
 const tableHeadCells = (url) => {
 	let headCells = [];
 
-	if (url === "document_subject/") {
-		headCells = headCellsDocumentSubject;
-	} else if (url === "box_abbreviation/") {
+	if (url === "document-subject/") {
+		headCells = documentSubjectHeadCells;
+	} else if (url === "box-abbreviation/") {
 		headCells = headCellsBoxAbbreviation;
-	} else if (url === "public_worker/") {
-		headCells = headCellsPublicWorker;
 	} else if (url === "unity/") {
-		headCells = headCellsUnity;
-	} else if (url === "document_type/") {
-		headCells = headCellsDocumentType;
+		headCells = unityHeadCells;
+	} else if (url === "document-type/") {
+		headCells = documentTypeHeadCells;
 	} else if (url === "shelf/") {
-		headCells = headCellsShelf;
+		headCells = shelfHeadCells;
 	} else if (url === "status/") {
-		headCells = headCellsStatus;
+		headCells = statusHeadCells;
+	} else if (url && url.includes("search")) {
+		headCells = headCellsSearch();
 	}
 	return headCells;
 };

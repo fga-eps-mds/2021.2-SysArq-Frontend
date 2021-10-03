@@ -12,11 +12,11 @@
 		"sourceType": "module"
 	},
 	"plugins": ["react", "prettier"],
-	"ignorePatterns": ["*.test.js"],
+	"ignorePatterns": ["*.test.js", "build/*"],
 	"rules": {
 		// Define a extensão dos arquivos analisados
 		"react/jsx-filename-extension": [1, { "extensions": [".js"] }],
-
+		"jsx-a11y/label-has-associated-control": "off",
 		// Desabilitar a necessidade de import React em todo arquivo do projeto
 		"react/react-in-jsx-scope": "off"
 	}

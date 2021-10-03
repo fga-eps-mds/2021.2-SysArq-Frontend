@@ -1,25 +1,27 @@
 import React from "react";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
-import { Navbar, Container, Nav } from "react-bootstrap";
-
-import Home from "./pages/Home";
+import Header from "./pages/components/Header";
+import Footer from "./pages/components/Footer";
+import Search from "./pages/Search";
+import SearchList from "./pages/SearchList";
 import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
 import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
 import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
-import PublicWorker from "./pages/FieldsRegister/PublicWorker";
 import DocumentType from "./pages/FieldsRegister/DocumentType";
 import Unity from "./pages/FieldsRegister/Unity";
 import Shelf from "./pages/FieldsRegister/Shelf";
-import Status from "./pages/FieldsRegister/Status";
 import CreateDocumentSubject from "./pages/FieldsRegister/CreateDocumentSubject";
-import CreateStatus from "./pages/FieldsRegister/CreateStatus";
 import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation";
 import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
-import CreatePublicWorker from "./pages/FieldsRegister/CreatePublicWorker";
 import CreateUnity from "./pages/FieldsRegister/CreateUnity";
 import CreateShelf from "./pages/FieldsRegister/CreateShelf";
+import Login from "./pages/Login/index";
+import PrivateRoute from "./Routes/privateRoute";
+import Documents from "./pages/Documents";
+import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdministrativeProcess";
+import CreateFrequencyRelation from "./pages/Documents/Create/CreateFrequencyRelation";
+import CreateFrequencySheet from "./pages/Documents/Create/CreateFrequencySheet";
+import CreateArchivingRelation from "./pages/Documents/Create/CreateArchivingRelation";
 
 import "./App.css";
 
@@ -28,81 +30,113 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
 	return (
 		<Router>
-			<Navbar bg="dark" variant="dark">
-				<Container>
-					<Nav className="me-auto">
-						<Nav.Link href="/">Home</Nav.Link>
-						<Nav.Link href="/fields-register">Cadastro de Campos</Nav.Link>
-					</Nav>
-				</Container>
-			</Navbar>
-
+			<Header />
 			<Switch>
-				<Route exact path="/">
-					<Home />
+				<PrivateRoute exact path="/">
+					<Search />
+				</PrivateRoute>
+				<Route exact path="/login">
+					<Login />
 				</Route>
-				<Route path="/fields-register">
-					<Route exact path="/fields-register">
+				<PrivateRoute exact path="/search">
+					<Search />
+				</PrivateRoute>
+				<PrivateRoute exact={false} path="/search/list/:field/:content">
+					<SearchList />
+				</PrivateRoute>
+				<PrivateRoute exact={false} path="/fields-register">
+					<PrivateRoute exact path="/fields-register">
 						<FieldsRegister />
-					</Route>
-					<Route path="/fields-register/document-subject">
-						<Route exact path="/fields-register/document-subject">
+					</PrivateRoute>
+					<PrivateRoute exact={false} path="/fields-register/document-subject">
+						<PrivateRoute exact path="/fields-register/document-subject">
 							<DocumentSubject />
-						</Route>
-						<Route path="/fields-register/document-subject/create">
+						</PrivateRoute>
+						<PrivateRoute
+							exact={false}
+							path="/fields-register/document-subject/create"
+						>
 							<CreateDocumentSubject />
-						</Route>
-					</Route>
-					<Route path="/fields-register/box-abbreviation">
-						<Route exact path="/fields-register/box-abbreviation">
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute exact={false} path="/fields-register/box-abbreviation">
+						<PrivateRoute exact path="/fields-register/box-abbreviation">
 							<BoxAbbreviation />
-						</Route>
-						<Route path="/fields-register/box-abbreviation/create">
+						</PrivateRoute>
+						<PrivateRoute
+							exact={false}
+							path="/fields-register/box-abbreviation/create"
+						>
 							<CreateBoxAbbreviation />
-						</Route>
-					</Route>
-					<Route path="/fields-register/public-worker">
-						<Route exact path="/fields-register/public-worker">
-							<PublicWorker />
-						</Route>
-						<Route path="/fields-register/public-worker/create">
-							<CreatePublicWorker />
-						</Route>
-					</Route>
-					<Route path="/fields-register/unity">
-						<Route exact path="/fields-register/unity">
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute exact={false} path="/fields-register/unity">
+						<PrivateRoute exact path="/fields-register/unity">
 							<Unity />
-						</Route>
-						<Route path="/fields-register/unity/create">
+						</PrivateRoute>
+						<PrivateRoute exact={false} path="/fields-register/unity/create">
 							<CreateUnity />
-						</Route>
-					</Route>
-					<Route path="/fields-register/document-type">
-						<Route exact path="/fields-register/document-type">
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute exact={false} path="/fields-register/document-type">
+						<PrivateRoute exact path="/fields-register/document-type">
 							<DocumentType />
-						</Route>
-						<Route path="/fields-register/document-type/create">
+						</PrivateRoute>
+						<PrivateRoute
+							exact={false}
+							path="/fields-register/document-type/create"
+						>
 							<CreateDocumentType />
-						</Route>
-					</Route>
-					<Route path="/fields-register/shelf">
-						<Route exact path="/fields-register/shelf">
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute exact={false} path="/fields-register/shelf">
+						<PrivateRoute exact path="/fields-register/shelf">
 							<Shelf />
-						</Route>
-						<Route path="/fields-register/shelf/create">
+						</PrivateRoute>
+						<PrivateRoute exact={false} path="/fields-register/shelf/create">
 							<CreateShelf />
-						</Route>
-					</Route>
-					<Route path="/fields-register/status">
-						<Route exact path="/fields-register/status">
-							<Status />
-						</Route>
-						<Route path="/fields-register/status/create">
-							<CreateStatus />
-						</Route>
-					</Route>
-				</Route>
+						</PrivateRoute>
+					</PrivateRoute>
+				</PrivateRoute>
+				<PrivateRoute path="/documents">
+					<PrivateRoute exact path="/documents">
+						<Documents />
+					</PrivateRoute>
+					<PrivateRoute path="/documents/administrative-process">
+						<PrivateRoute exact path="/documents/administrative-process">
+							<CreateAdministrativeProcess />
+						</PrivateRoute>
+						<PrivateRoute path="/documents/administrative-process/create">
+							<CreateAdministrativeProcess />
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute path="/documents/frequency-relation">
+						<PrivateRoute exact path="/documents/frequency-relation">
+							<CreateFrequencyRelation />
+						</PrivateRoute>
+						<PrivateRoute path="/documents/frequency-relation/create">
+							<CreateFrequencyRelation />
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute path="/documents/archiving-relation">
+						<PrivateRoute exact path="/documents/archiving-relation">
+							<CreateArchivingRelation />
+						</PrivateRoute>
+						<PrivateRoute path="/documents/archiving-relation/create">
+							<CreateArchivingRelation />
+						</PrivateRoute>
+					</PrivateRoute>
+					<PrivateRoute path="/documents/frequency-sheet">
+						<PrivateRoute exact path="/documents/frequency-sheet">
+							<CreateFrequencySheet />
+						</PrivateRoute>
+						<PrivateRoute path="/documents/frequency-sheet/create">
+							<CreateFrequencySheet />
+						</PrivateRoute>
+					</PrivateRoute>
+				</PrivateRoute>
 			</Switch>
+			<Footer />
 		</Router>
 	);
 }
