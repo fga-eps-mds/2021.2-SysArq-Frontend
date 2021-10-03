@@ -147,8 +147,8 @@ if __name__ == "__main__":
     now = datetime.now()
 
     data_release = (
-        f"{now.day:02d}-{now.month:02d}-" + str(now.year) + f"-{now.hour:02d} +
-        "f"-{now.minute:02d}"
+        f"{now.day:02d}-{now.month:02d}-" + str(now.year) + f"-{now.hour:02d}" +
+        f"-{now.minute:02d}"
     )
 
     analytics_path = (
