@@ -89,6 +89,7 @@ export default function Search() {
 			handleShow();
 			return;
 		}
+
 		window.location = urllist;
 	};
 
@@ -100,13 +101,13 @@ export default function Search() {
 				{show === true ? (
 					<Alert severity="error">Selecione algum filtro</Alert>
 				) : (
-					""
-				)}
+						""
+					)}
 				{show2 === true ? (
 					<Alert severity="error">Pesquise por algum valor</Alert>
 				) : (
-					""
-				)}
+						""
+					)}
 
 				<ThemeProvider theme={theme}>
 					<TextField
@@ -150,6 +151,9 @@ export default function Search() {
 								inputProps={{ "data-testid": "FilterSelect" }}
 							>
 								<MenuItem value="process_number">Número de processo</MenuItem>
+								<MenuItem value="shelf_id">Estante</MenuItem>
+								<MenuItem value="rack_id">Prateleira</MenuItem>
+								<MenuItem value="abbreviation_id">Sigla da caixa</MenuItem>
 							</Select>
 						</FormControl>
 					</ThemeProvider>
