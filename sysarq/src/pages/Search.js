@@ -96,7 +96,13 @@ export default function Search() {
 
 	const handleClick = () => {
 		setIsDisabled(false);
-		setInputValue("");
+		if (
+			inputValue === "Eliminado" ||
+			inputValue === "Arquivado" ||
+			inputValue === "Desarquivado"
+		) {
+			setInputValue("");
+		}
 	};
 
 	const handleClickEliminated = () => {
