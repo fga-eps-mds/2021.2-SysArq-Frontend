@@ -47,6 +47,10 @@ describe("Test onClick of status type searches", () => {
 
 const testSelect = (value) => {
 	render(<Search />);
+	const InputBox = screen.getByTestId("InputBox");
+	fireEvent.change(InputBox, {
+		target: { value: "asd" },
+	});
 
 	fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
 	const subjectsOptions = within(screen.getByRole("listbox"));
@@ -69,6 +73,9 @@ describe("Axios requests", () => {
 		});
 		fireEvent.click(screen.getByText("Ir"));
 		await screen.findByText("Selecione algum filtro");
+	});
+	it("axios success", async () => {
+		testSelect("Número de processo");
 	});
 	it("filed test", async () => {
 		testSelect("Arquivado");
