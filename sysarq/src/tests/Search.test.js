@@ -45,7 +45,6 @@ describe("Test onClick of status type searches", () => {
 	});
 });
 
-
 const selectValue = (title) => {
 	fireEvent.mouseDown(screen.getByLabelText("dropdown"));
 	const subjectsOptions = within(screen.getByRole("listbox"));
