@@ -99,6 +99,11 @@ export default function Search() {
 		setInputValue("");
 	};
 
+	const handleClickStatus = (v) => {
+		setIsDisabled(true);
+		setInputValue(v);
+	};
+
 	return (
 		<div>
 			<body id="body">
@@ -171,28 +176,19 @@ export default function Search() {
 								</MenuItem>
 								<MenuItem
 									value="is_filed/true"
-									onClick={() => {
-										setInputValue("Arquivado");
-										setIsDisabled(true);
-									}}
+									onClick={() => handleClickStatus("Arquivado")}
 								>
 									Arquivado
 								</MenuItem>
 								<MenuItem
 									value="is_filed/false"
-									onClick={() => {
-										setInputValue("Desarquivado");
-										setIsDisabled(true);
-									}}
+									onClick={() => handleClickStatus("Desarquivado")}
 								>
 									Desarquivado
 								</MenuItem>
 								<MenuItem
 									value="is_eliminated/true"
-									onClick={() => {
-										setInputValue("Eliminado");
-										setIsDisabled(true);
-									}}
+									onClick={() => handleClickStatus("Eliminado")}
 								>
 									Eliminado
 								</MenuItem>
