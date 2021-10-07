@@ -97,7 +97,7 @@ export default function Search() {
 	const handleClick = () => {
 		setIsDisabled(false);
 		setInputValue("");
-	}
+	};
 
 	return (
 		<div>
@@ -107,13 +107,13 @@ export default function Search() {
 				{show === true ? (
 					<Alert severity="error">Selecione algum filtro</Alert>
 				) : (
-						""
-					)}
+					""
+				)}
 				{show2 === true ? (
 					<Alert severity="error">Pesquise por algum valor</Alert>
 				) : (
-						""
-					)}
+					""
+				)}
 
 				<ThemeProvider theme={theme}>
 					<TextField
@@ -157,30 +157,45 @@ export default function Search() {
 								labelId="selectLabel"
 								inputProps={{ "data-testid": "FilterSelect" }}
 							>
-								<MenuItem value="process_number"
-									onClick={handleClick}>Número de processo</MenuItem>
-								<MenuItem value="shelf_id"
-									onClick={handleClick}>Estante</MenuItem>
-								<MenuItem value="rack_id"
-									onClick={handleClick}>Prateleira</MenuItem>
-								<MenuItem value="abbreviation_id"
-									onClick={handleClick}>Sigla da caixa</MenuItem>
-								<MenuItem value="is_filed/true"
+								<MenuItem value="process_number" onClick={handleClick}>
+									Número de processo
+								</MenuItem>
+								<MenuItem value="shelf_id" onClick={handleClick}>
+									Estante
+								</MenuItem>
+								<MenuItem value="rack_id" onClick={handleClick}>
+									Prateleira
+								</MenuItem>
+								<MenuItem value="abbreviation_id" onClick={handleClick}>
+									Sigla da caixa
+								</MenuItem>
+								<MenuItem
+									value="is_filed/true"
 									onClick={() => {
-										setInputValue('Arquivado')
-										setIsDisabled(true)
+										setInputValue("Arquivado");
+										setIsDisabled(true);
 									}}
-								>Arquivado</MenuItem>
-								<MenuItem value="is_filed/false"
+								>
+									Arquivado
+								</MenuItem>
+								<MenuItem
+									value="is_filed/false"
 									onClick={() => {
-										setInputValue('Desarquivado')
-										setIsDisabled(true)
-									}}>Desarquivado</MenuItem>
-								<MenuItem value="is_eliminated/true"
+										setInputValue("Desarquivado");
+										setIsDisabled(true);
+									}}
+								>
+									Desarquivado
+								</MenuItem>
+								<MenuItem
+									value="is_eliminated/true"
 									onClick={() => {
-										setInputValue('Eliminado')
-										setIsDisabled(true)
-									}}>Eliminado</MenuItem>
+										setInputValue("Eliminado");
+										setIsDisabled(true);
+									}}
+								>
+									Eliminado
+								</MenuItem>
 							</Select>
 						</FormControl>
 					</ThemeProvider>
