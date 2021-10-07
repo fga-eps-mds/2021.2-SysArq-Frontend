@@ -33,6 +33,19 @@ describe("Ensure that is receiving inputs form select and textfield", () => {
 	});
 });
 
+describe("Test onClick of status type searches", () => {
+	it("onClickStatus test", async () => {
+		render(<Search />);
+
+		const FilterSelect = screen.getByTestId("FilterSelect");
+		fireEvent.change(FilterSelect, {
+			target: { value: "is_filed/true" },
+		});
+		await screen.findByText("Arquivado");
+	});
+});
+
+
 const selectValue = (title) => {
 	fireEvent.mouseDown(screen.getByLabelText("dropdown"));
 	const subjectsOptions = within(screen.getByRole("listbox"));
