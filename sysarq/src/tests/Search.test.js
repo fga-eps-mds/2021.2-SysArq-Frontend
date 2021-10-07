@@ -45,21 +45,14 @@ describe("Test onClick of status type searches", () => {
 	});
 });
 
-const selectValue = (title) => {
-	fireEvent.mouseDown(screen.getByLabelText("dropdown"));
-	const subjectsOptions = within(screen.getByRole("listbox"));
-	fireEvent.click(subjectsOptions.getByText(title));
-};
-
-const testEvent = async (object, findTextMsg) => {
+const testSelect = (value) => {
 	render(<Search />);
-	selectValue(object[0]);
-	inputChange(object[1], object[2]);
-	fireEvent.click(screen.getByTestId("click"));
-	await screen.findByText(findTextMsg);
-	act(() => {
-		jest.advanceTimersByTime(3000);
-	});
+
+	fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
+	const subjectsOptions = within(screen.getByRole("listbox"));
+	fireEvent.click(subjectsOptions.getByText(value));
+
+	fireEvent.click(screen.getByText("Ir"));
 };
 
 describe("Axios requests", () => {
@@ -77,47 +70,13 @@ describe("Axios requests", () => {
 		fireEvent.click(screen.getByText("Ir"));
 		await screen.findByText("Selecione algum filtro");
 	});
-	it("axios success", async () => {
-		render(<Search />);
-		const InputBox = screen.getByTestId("InputBox");
-		fireEvent.change(InputBox, {
-			target: { value: "asd" },
-		});
-		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
-		const subjectsOptions = within(screen.getByRole("listbox"));
-		fireEvent.click(subjectsOptions.getByText("Número de processo"));
-
-		fireEvent.click(screen.getByText("Ir"));
-		// await screen.findByText("Selecione algum filtro");
+	it("filed test", async () => {
+		testSelect("Arquivado");
 	});
-	it("axios success 2", async () => {
-		render(<Search />);
-		
-		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
-		const subjectsOptions = within(screen.getByRole("listbox"));
-		fireEvent.click(subjectsOptions.getByText("Arquivado"));
-
-		fireEvent.click(screen.getByText("Ir"));
-		// await screen.findByText("Selecione algum filtro");
+	it("unfiled test", async () => {
+		testSelect("Desarquivado");
 	});
-	it("axios success 3", async () => {
-		render(<Search />);
-		
-		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
-		const subjectsOptions = within(screen.getByRole("listbox"));
-		fireEvent.click(subjectsOptions.getByText("Desarquivado"));
-
-		fireEvent.click(screen.getByText("Ir"));
-		// await screen.findByText("Selecione algum filtro");
-	});
-	it("axios success 3", async () => {
-		render(<Search />);
-		
-		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
-		const subjectsOptions = within(screen.getByRole("listbox"));
-		fireEvent.click(subjectsOptions.getByText("Eliminado"));
-
-		fireEvent.click(screen.getByText("Ir"));
-		// await screen.findByText("Selecione algum filtro");
+	it("eliminated test", async () => {
+		testSelect("Eliminado");
 	});
 });

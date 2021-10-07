@@ -5,11 +5,12 @@ import DataTable from "./components/DataTable/index";
 
 export default function SearchList() {
 	let url = "";
-	if (useParams().field === "is_filed") {
+	if (
+		useParams().field === "is_filed" ||
+		useParams().field === "is_eliminated"
+	) {
 		const isTrue = useParams().content === "true";
-		url = `search/?filter={"is_filed":${isTrue}}`;
-	} else if (useParams().field === "is_eliminated") {
-		url = `search/?filter={"is_eliminated":${true}}`;
+		url = `search/?filter={"${useParams().field}":${isTrue}}`;
 	} else {
 		url = `search/?filter=%7B%22${useParams().field}%22:%22${
 			useParams().content
