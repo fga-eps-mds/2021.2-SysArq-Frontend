@@ -57,6 +57,7 @@ export default function Search() {
 	};
 	const [inputValue, setInputValue] = useState("");
 	const [urllist, setUrllist] = useState("");
+	const [isDisabled, setIsDisabled] = useState(false);
 
 	const theme = createTheme({
 		palette: {
@@ -93,6 +94,11 @@ export default function Search() {
 		window.location = urllist;
 	};
 
+	const handleClick = () => {
+		setIsDisabled(false);
+		setInputValue("");
+	}
+
 	return (
 		<div>
 			<body id="body">
@@ -119,6 +125,7 @@ export default function Search() {
 						variant="outlined"
 						color="primary"
 						inputProps={{ "data-testid": "InputBox" }}
+						disabled={isDisabled}
 					/>
 				</ThemeProvider>
 
@@ -150,10 +157,30 @@ export default function Search() {
 								labelId="selectLabel"
 								inputProps={{ "data-testid": "FilterSelect" }}
 							>
-								<MenuItem value="process_number">Número de processo</MenuItem>
-								<MenuItem value="shelf_id">Estante</MenuItem>
-								<MenuItem value="rack_id">Prateleira</MenuItem>
-								<MenuItem value="abbreviation_id">Sigla da caixa</MenuItem>
+								<MenuItem value="process_number"
+									onClick={handleClick}>Número de processo</MenuItem>
+								<MenuItem value="shelf_id"
+									onClick={handleClick}>Estante</MenuItem>
+								<MenuItem value="rack_id"
+									onClick={handleClick}>Prateleira</MenuItem>
+								<MenuItem value="abbreviation_id"
+									onClick={handleClick}>Sigla da caixa</MenuItem>
+								<MenuItem value="is_filed/true"
+									onClick={() => {
+										setInputValue('Arquivado')
+										setIsDisabled(true)
+									}}
+								>Arquivado</MenuItem>
+								<MenuItem value="is_filed/false"
+									onClick={() => {
+										setInputValue('Desarquivado')
+										setIsDisabled(true)
+									}}>Desarquivado</MenuItem>
+								<MenuItem value="is_eliminated/true"
+									onClick={() => {
+										setInputValue('Eliminado')
+										setIsDisabled(true)
+									}}>Eliminado</MenuItem>
 							</Select>
 						</FormControl>
 					</ThemeProvider>
