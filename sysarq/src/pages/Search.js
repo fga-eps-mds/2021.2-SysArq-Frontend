@@ -100,18 +100,15 @@ export default function Search() {
 	};
 
 	const handleClickEliminated = () => {
-		setIsDisabled(true);
 		setInputValue("Eliminado");
 	};
 
 	const handleClickFiled = () => {
-		setIsDisabled(true);
 		setInputValue("Arquivado");
 	};
 
 	const handleClickUnfiled = () => {
-		setIsDisabled(true);
-		setInputValue("Arquivado");
+		setInputValue("Desarquivado");
 	};
 
 	return (

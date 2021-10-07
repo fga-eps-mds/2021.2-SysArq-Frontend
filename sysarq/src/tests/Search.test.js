@@ -34,14 +34,14 @@ describe("Ensure that is receiving inputs form select and textfield", () => {
 });
 
 describe("Test onClick of status type searches", () => {
-	it("onClickStatus test", async () => {
+	it("onClickStatus test", () => {
 		render(<Search />);
 
 		const FilterSelect = screen.getByTestId("FilterSelect");
 		fireEvent.change(FilterSelect, {
 			target: { value: "is_filed/true" },
 		});
-		await screen.findByText("Arquivado");
+		expect(screen.getByText("Arquivado")).toBeInTheDocument();
 	});
 });
 
