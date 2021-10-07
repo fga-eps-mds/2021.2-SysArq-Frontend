@@ -90,4 +90,34 @@ describe("Axios requests", () => {
 		fireEvent.click(screen.getByText("Ir"));
 		// await screen.findByText("Selecione algum filtro");
 	});
+	it("axios success 2", async () => {
+		render(<Search />);
+		
+		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
+		const subjectsOptions = within(screen.getByRole("listbox"));
+		fireEvent.click(subjectsOptions.getByText("Arquivado"));
+
+		fireEvent.click(screen.getByText("Ir"));
+		// await screen.findByText("Selecione algum filtro");
+	});
+	it("axios success 3", async () => {
+		render(<Search />);
+		
+		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
+		const subjectsOptions = within(screen.getByRole("listbox"));
+		fireEvent.click(subjectsOptions.getByText("Desarquivado"));
+
+		fireEvent.click(screen.getByText("Ir"));
+		// await screen.findByText("Selecione algum filtro");
+	});
+	it("axios success 3", async () => {
+		render(<Search />);
+		
+		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
+		const subjectsOptions = within(screen.getByRole("listbox"));
+		fireEvent.click(subjectsOptions.getByText("Eliminado"));
+
+		fireEvent.click(screen.getByText("Ir"));
+		// await screen.findByText("Selecione algum filtro");
+	});
 });

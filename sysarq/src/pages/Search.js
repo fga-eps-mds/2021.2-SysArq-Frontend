@@ -100,14 +100,17 @@ export default function Search() {
 	};
 
 	const handleClickEliminated = () => {
+		setIsDisabled(true);
 		setInputValue("Eliminado");
 	};
 
 	const handleClickFiled = () => {
+		setIsDisabled(true);
 		setInputValue("Arquivado");
 	};
 
 	const handleClickUnfiled = () => {
+		setIsDisabled(true);
 		setInputValue("Desarquivado");
 	};
 
@@ -181,10 +184,16 @@ export default function Search() {
 								<MenuItem value="abbreviation_id" onClick={handleClick}>
 									Sigla da caixa
 								</MenuItem>
-								<MenuItem value="is_filed/true" onClick={handleClickFiled}>
+								<MenuItem
+									value="is_filed/true"
+									onClick={handleClickFiled}
+								>
 									Arquivado
 								</MenuItem>
-								<MenuItem value="is_filed/false" onClick={handleClickUnfiled}>
+								<MenuItem
+									value="is_filed/false"
+									onClick={handleClickUnfiled}
+								>
 									Desarquivado
 								</MenuItem>
 								<MenuItem
