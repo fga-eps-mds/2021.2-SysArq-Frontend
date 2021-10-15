@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Login from "./pages/Login/index";
 
-import PrivateRoute from "./Routes/privateRoute";
+import PrivateRoute from "./routes/privateRoute";
 
 import Search from "./pages/Search";
 import SearchList from "./pages/SearchList";

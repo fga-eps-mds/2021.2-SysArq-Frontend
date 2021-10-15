@@ -191,7 +191,7 @@ const Login = () => {
 
 	return (
 		<div style={{ background: "#1f3541" }} id="root">
-			<Container className={classes.container} minWidth="xs" maxWidth="sm">
+			<Container className={classes.container} maxWidth="sm">
 				<Grid container>
 					<Grid item xs={12}>
 						<Card className={classes.card}>
