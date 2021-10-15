@@ -1,11 +1,16 @@
 import { Route } from "react-router-dom";
 import PropTypes from "prop-types";
 
+import Header from "../pages/components/Header";
+import Footer from "../pages/components/Footer";
+
 const PrivateRoute = ({ children, exact, path }) => {
 	if (localStorage.getItem("isLogged") === "true") {
 		return (
 			<Route exact={exact} path={path}>
+				<Header />
 				{children}
+				<Footer />
 			</Route>
 		);
 	}
