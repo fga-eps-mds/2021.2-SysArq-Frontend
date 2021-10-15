@@ -2,9 +2,7 @@ import React, { useState } from "react";
 
 import {
 	makeStyles,
-	createTheme,
 	withStyles,
-	ThemeProvider,
 	Container,
 	Grid,
 	Card,
@@ -38,9 +36,9 @@ const useStyles = makeStyles((theme) => ({
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(8),
 
-		borderRadius: "15px",
+		borderRadius: "10px",
 		backgroundColor: "#f6f6f6",
-		boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.5)",
+		boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.5)",
 	},
 
 	title: {
@@ -48,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 		color: "#1f3541",
 		fontSize: "30px",
-		fontWeight: "700",
+		fontWeight: "bold",
 		fontFamily: ['"Montserrat"', "sans-serif"],
 	},
 
@@ -88,14 +86,6 @@ const useStyles = makeStyles((theme) => ({
 		fontFamily: ['"Montserrat"', "sans-serif"],
 	},
 }));
-
-const theme = createTheme({
-	palette: {
-		primary: {
-			main: "#1f3541",
-		},
-	},
-});
 
 const Link = withStyles({
 	root: {
@@ -159,7 +149,7 @@ const Login = () => {
 
 			setLoading(false);
 
-			return null;
+			return "username error";
 		}
 
 		if (password.length < 8) {
@@ -168,7 +158,7 @@ const Login = () => {
 
 			setLoading(false);
 
-			return null;
+			return "password error";
 		}
 
 		axiosProfile
@@ -180,121 +170,121 @@ const Login = () => {
 				localStorage.setItem("tk", response.data.access);
 				localStorage.setItem("tkr", response.data.refresh);
 				localStorage.setItem("isLogged", true);
+
 				window.location = "/";
+
+				setLoading(false);
 			})
 			.catch((error) => {
-				if (error.response.status === 401) {
+				if (error.response && error.response.status === 401) {
 					setLoginHelperText("Nome de Usuário e/ou Senha incorreto!");
 				} else {
 					setLoginHelperText("Erro de conexão!");
 				}
 
 				setLoginError(true);
+				setLoading(false);
 			});
 
-		setLoading(false);
-
-		return null;
+		return "post done";
 	};
 
 	return (
 		<div style={{ background: "#1f3541" }} id="root">
-			<ThemeProvider theme={theme}>
-				<Container className={classes.container} maxWidth="sm">
-					<Grid container>
-						<Grid item xs={12}>
-							<Card className={classes.card}>
-								<CardContent>
-									<img src={logo} alt="Logo" height="42" width="42" />
-									<Typography className={classes.title}>Entrar</Typography>
+			<Container className={classes.container} minWidth="xs" maxWidth="sm">
+				<Grid container>
+					<Grid item xs={12}>
+						<Card className={classes.card}>
+							<CardContent>
+								<img src={logo} alt="Logo" height="42" width="42" />
+								<Typography className={classes.title}>Entrar</Typography>
 
-									<TextField
-										fullWidth
-										className={classes.input}
-										margin="normal"
-										id="username"
-										label="Nome de Usuário"
-										value={username}
-										onChange={handleUsernameChange}
-										error={usernameError}
-										helperText={usernameHelperText}
-									/>
-									<TextField
-										fullWidth
-										className={classes.input}
-										margin="normal"
-										id="password"
-										label="Senha"
-										type={showPassword ? "text" : "password"}
-										value={password}
-										onChange={handlePasswordChange}
-										error={passwordError}
-										helperText={passwordHelperText}
-										InputProps={{
-											endAdornment: (
-												<InputAdornment position="end">
-													<IconButton
-														aria-label="toggle password visibility"
-														onClick={handleClickShowPassword}
-														onMouseDown={handleMouseDownPassword}
-														data-testid="showPass"
-													>
-														{showPassword ? <Visibility /> : <VisibilityOff />}
-													</IconButton>
-												</InputAdornment>
-											),
-										}}
-									/>
+								<TextField
+									fullWidth
+									className={classes.input}
+									margin="normal"
+									id="username"
+									label="Nome de Usuário"
+									value={username}
+									onChange={handleUsernameChange}
+									error={usernameError}
+									helperText={usernameHelperText}
+								/>
+								<TextField
+									fullWidth
+									className={classes.input}
+									margin="normal"
+									id="password"
+									label="Senha"
+									type={showPassword ? "text" : "password"}
+									value={password}
+									onChange={handlePasswordChange}
+									error={passwordError}
+									helperText={passwordHelperText}
+									InputProps={{
+										endAdornment: (
+											<InputAdornment position="end">
+												<IconButton
+													aria-label="toggle password visibility"
+													onClick={handleClickShowPassword}
+													onMouseDown={handleMouseDownPassword}
+													data-testid="showPass"
+												>
+													{showPassword ? <Visibility /> : <VisibilityOff />}
+												</IconButton>
+											</InputAdornment>
+										),
+									}}
+								/>
 
-									{loginError === true ? (
-										<Alert className={classes.alert} severity="error">
-											{loginHelperText}
-										</Alert>
-									) : (
-										""
-									)}
+								{loginError === true ? (
+									<Alert className={classes.alert} severity="error">
+										{loginHelperText}
+									</Alert>
+								) : (
+									""
+								)}
 
-									<Box className={`${classes.spreadBox} ${classes.box}`}>
-										<Typography>
-											<Link
-												className={classes.link}
-												target="_blank"
-												href="https://github.com/fga-eps-mds/2021.1-PC-GO1/issues"
-											>
-												Ajuda?
-											</Link>
-										</Typography>
-
-										{loading ? (
-											<CircularProgress />
-										) : (
-											<Button
-												style={{ fontWeight: "bold" }}
-												variant="contained"
-												color="primary"
-												onClick={onPush}
-											>
-												Entrar
-											</Button>
-										)}
-									</Box>
-
-									<Typography className={classes.reference}>
-										Logo made by{" "}
-										<Link target="_blank" href="https://www.freepik.com/">
-											Freepik
-										</Link>{" "}
-										from{" "}
-										<Link target="_blank" href="https://www.flaticon.com/">
-											www.flaticon.com
+								<Box className={`${classes.spreadBox} ${classes.box}`}>
+									<Typography>
+										<Link
+											className={classes.link}
+											target="_blank"
+											href="https://github.com/fga-eps-mds/2021.1-PC-GO1/issues"
+										>
+											Ajuda?
 										</Link>
 									</Typography>
-								</CardContent>
-							</Card>
-						</Grid>
+
+									{loading ? (
+										<CircularProgress />
+									) : (
+										<Button
+											style={{ fontWeight: "bold" }}
+											variant="contained"
+											color="primary"
+											onClick={onPush}
+										>
+											Entrar
+										</Button>
+									)}
+								</Box>
+
+								<Typography className={classes.reference}>
+									Logo made by{" "}
+									<Link target="_blank" href="https://www.freepik.com/">
+										Freepik
+									</Link>{" "}
+									from{" "}
+									<Link target="_blank" href="https://www.flaticon.com/">
+										www.flaticon.com
+									</Link>
+								</Typography>
+							</CardContent>
+						</Card>
 					</Grid>
-				</Container>
-			</ThemeProvider>
+				</Grid>
+			</Container>
 		</div>
 	);
 };
