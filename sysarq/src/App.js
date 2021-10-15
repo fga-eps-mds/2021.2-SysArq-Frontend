@@ -96,7 +96,7 @@ function App() {
 								<CreateUnity />
 							</PrivateRoute>
 						</Route>
-						
+
 						<Route path="/fields-register/document-type">
 							<PrivateRoute exact path="/fields-register/document-type">
 								<DocumentType />
