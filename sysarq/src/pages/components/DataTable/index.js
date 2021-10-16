@@ -6,12 +6,12 @@ import {
 	createTheme,
 	ThemeProvider,
 	Paper,
-	Typography,
 	Toolbar,
+	Typography,
 	Tooltip,
 	IconButton,
-	Table,
 	TableContainer,
+	Table,
 	TableHead,
 	TableRow,
 	TableCell,
@@ -27,9 +27,9 @@ import AddIcon from "@material-ui/icons/Add";
 
 import { Alert, AlertTitle } from "@material-ui/lab";
 
-import { axiosArchives, axiosProfile } from "../../../Api";
-
 import tableHeadCells from "./tablesHeadCells";
+
+import { axiosProfile, axiosArchives } from "../../../Api";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: theme.spacing(2),
 
 		margin: "auto",
-		width: "80%",
+		width: "85%",
 	},
 
 	title: {
@@ -55,6 +55,8 @@ const useStyles = makeStyles((theme) => ({
 		width: 1,
 	},
 }));
+
+// TO-DO: Transferir tema para App.js
 
 const theme = createTheme(
 	{
@@ -78,13 +80,12 @@ function stableSort(array, comparator) {
 }
 
 function descendingComparator(a, b, orderBy) {
-	if (b[orderBy] < a[orderBy]) {
-		return -1;
-	}
-	if (b[orderBy] > a[orderBy]) {
-		return 1;
-	}
-	return 0;
+	return b[orderBy] && a[orderBy]
+		? b[orderBy].localeCompare(a[orderBy], undefined, {
+				numeric: true,
+				sensitivity: "base",
+		  })
+		: null;
 }
 
 function getComparator(order, orderBy) {
