@@ -235,6 +235,7 @@ const Login = () => {
 											</InputAdornment>
 										),
 									}}
+									onKeyUp={(event) => (event.key === "Enter" ? onPush() : null)}
 								/>
 
 								{loginError === true ? (
