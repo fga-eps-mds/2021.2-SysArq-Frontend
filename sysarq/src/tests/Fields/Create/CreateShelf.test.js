@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, act, within } from "@testing-library/react";
-import CreateShelf from "../pages/FieldsRegister/CreateShelf";
+import CreateShelf from "../../../pages/Fields/Create/CreateShelf";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { inputChange } from "./inputTest.test";

@@ -1,8 +1,7 @@
 import CardContainer from "../components/Container/CardContainer";
 import MenuCard from "../components/MenuCard";
 
-export default function FieldsRegister() {
-	return (
+const Fields = () => (
 		<CardContainer title="Campos" spacing={2}>
 			<MenuCard
 				icon="subject-icon"
@@ -35,5 +34,6 @@ export default function FieldsRegister() {
 				lg={6}
 			/>
 		</CardContainer>
-	);
-}
+);
+
+export default Fields;

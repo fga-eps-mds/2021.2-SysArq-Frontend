@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import FrontCover from "../pages/FieldsRegister/FrontCover";
+import FrontCover from "../pages/Fields/FrontCover";
 
 describe("Main component", () => {
 	it("Title", () => {

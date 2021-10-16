@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import CreateDocumentType from "../pages/FieldsRegister/CreateDocumentType";
+import CreateDocumentType from "../../../pages/Fields/Create/CreateDocumentType";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { inputChange } from "./inputTest.test";

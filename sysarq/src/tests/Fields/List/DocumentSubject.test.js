@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import DocumentSubject from "../pages/FieldsRegister/DocumentSubject";
+import DocumentSubject from "../../../pages/Fields/List/DocumentSubject";
 
 describe("Main component", () => {
 	it("Title", () => {

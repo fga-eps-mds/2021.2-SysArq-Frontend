@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import Unity from "../pages/FieldsRegister/Unity";
+import Unity from "../../../pages/Fields/List/Unity";
 
 describe("Main component", () => {
 	it("Title", () => {

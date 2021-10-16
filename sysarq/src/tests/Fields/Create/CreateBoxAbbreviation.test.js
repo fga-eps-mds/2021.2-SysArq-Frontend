@@ -1,5 +1,5 @@
 import React from "react";
-import CreateBoxAbbreviation from "../pages/FieldsRegister/CreateBoxAbbreviation";
+import CreateBoxAbbreviation from "../../../pages/Fields/Create/CreateBoxAbbreviation";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { testEvent } from "./inputTest.test";

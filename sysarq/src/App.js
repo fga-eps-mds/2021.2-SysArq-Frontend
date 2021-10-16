@@ -4,17 +4,17 @@ import Header from "./pages/components/Header";
 import Footer from "./pages/components/Footer";
 import Search from "./pages/Search";
 import SearchList from "./pages/SearchList";
-import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
-import DocumentSubject from "./pages/FieldsRegister/List/DocumentSubject";
-import BoxAbbreviation from "./pages/FieldsRegister/List/BoxAbbreviation";
-import DocumentType from "./pages/FieldsRegister/List/DocumentType";
-import Unity from "./pages/FieldsRegister/List/Unity";
-import Shelf from "./pages/FieldsRegister/List/Shelf";
-import CreateDocumentSubject from "./pages/FieldsRegister/Create/CreateDocumentSubject";
-import CreateBoxAbbreviation from "./pages/FieldsRegister/Create/CreateBoxAbbreviation";
-import CreateDocumentType from "./pages/FieldsRegister/Create/CreateDocumentType";
-import CreateUnity from "./pages/FieldsRegister/Create/CreateUnity";
-import CreateShelf from "./pages/FieldsRegister/Create/CreateShelf";
+import Fields from "./pages/Fields";
+import DocumentSubject from "./pages/Fields/List/DocumentSubject";
+import BoxAbbreviation from "./pages/Fields/List/BoxAbbreviation";
+import DocumentType from "./pages/Fields/List/DocumentType";
+import Unity from "./pages/Fields/List/Unity";
+import Shelf from "./pages/Fields/List/Shelf";
+import CreateDocumentSubject from "./pages/Fields/Create/CreateDocumentSubject";
+import CreateBoxAbbreviation from "./pages/Fields/Create/CreateBoxAbbreviation";
+import CreateDocumentType from "./pages/Fields/Create/CreateDocumentType";
+import CreateUnity from "./pages/Fields/Create/CreateUnity";
+import CreateShelf from "./pages/Fields/Create/CreateShelf";
 import Login from "./pages/Login/index";
 import PrivateRoute from "./Routes/privateRoute";
 import Documents from "./pages/Documents";
@@ -46,7 +46,7 @@ function App() {
 				</PrivateRoute>
 				<PrivateRoute exact={false} path="/fields-register">
 					<PrivateRoute exact path="/fields-register">
-						<FieldsRegister />
+						<Fields />
 					</PrivateRoute>
 					<PrivateRoute exact={false} path="/fields-register/document-subject">
 						<PrivateRoute exact path="/fields-register/document-subject">
