@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { axiosArchives, axiosProfile } from "../../Api";
-import createForm from "./form";
+import { axiosArchives, axiosProfile } from "../../../Api";
+import createForm from "../form";
 
 const useStyles = makeStyles({
 	input: {
