@@ -83,8 +83,18 @@ describe("Login Screen Test", () => {
 		render(<Login />);
 		test("test");
 
-		const clickLogIn = screen.getByRole("button", { name: /Entrar/ });
-		expect(fireEvent.click(clickLogIn)).toBe(true);
+		fireEvent.keyUp(screen.getByLabelText("Senha"), {
+			key: "Escape",
+			code: "Escape",
+			keyCode: 27,
+			charCode: 27,
+		});
+
+		fireEvent.keyUp(screen.getByLabelText("Senha"), {
+			key: "Enter",
+			keyCode: 13,
+			which: 13,
+		});
 
 		expect(screen.getByText("Digite uma senha válida"));
 	});
