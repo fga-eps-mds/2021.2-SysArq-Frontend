@@ -6,7 +6,7 @@ import { formatDate, initialPeriod, isInt } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
 
-import DocumentsContainer from "../../components/Container/DocumentsContainer";
+import CardContainer from "../../components/Container/CardContainer";
 
 import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
 import ShelfInput from "../../components/Inputs/ShelfInput";
@@ -189,7 +189,7 @@ const CreateFrequencySheet = () => {
 	};
 
 	return (
-		<DocumentsContainer title="Folha de Frequências" spacing={1}>
+		<CardContainer title="Folha de Frequências" spacing={1}>
 			<Grid item xs={12} sm={12} md={6}>
 				<TextField
 					fullWidth
@@ -313,7 +313,7 @@ const CreateFrequencySheet = () => {
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-		</DocumentsContainer>
+		</CardContainer>
 	);
 };
 

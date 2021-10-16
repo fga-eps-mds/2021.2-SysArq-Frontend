@@ -22,7 +22,7 @@ import {
 
 import { axiosArchives, axiosProfile } from "../../../Api";
 
-import DocumentsContainer from "../../components/Container/DocumentsContainer";
+import CardContainer from "../../components/Container/CardContainer";
 
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
@@ -327,7 +327,7 @@ const CreateAdministrativeProcess = () => {
 	}, []);
 
 	return (
-		<DocumentsContainer title="Processo Administrativo" spacing={1}>
+		<CardContainer title="Processo Administrativo" spacing={1}>
 			<Grid item xs={12} sm={6} md={4}>
 				<KeyboardDatePicker
 					okLabel="Confirmar"
@@ -607,7 +607,7 @@ const CreateAdministrativeProcess = () => {
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-		</DocumentsContainer>
+		</CardContainer>
 	);
 };
 

@@ -11,7 +11,7 @@ import {
 
 import { axiosArchives, axiosProfile } from "../../../Api";
 
-import DocumentsContainer from "../../components/Container/DocumentsContainer";
+import CardContainer from "../../components/Container/CardContainer";
 
 import NumberInput from "../../components/Inputs/NumberInput";
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
@@ -177,7 +177,7 @@ const CreateFrequencyRelation = () => {
 	}, []);
 
 	return (
-		<DocumentsContainer title="Relação de Frequências" spacing={1}>
+		<CardContainer title="Relação de Frequências" spacing={1}>
 			<Grid item xs={12} sm={12} md={4}>
 				<NumberInput
 					setHelperText={setNumberHelperText}
@@ -236,7 +236,7 @@ const CreateFrequencyRelation = () => {
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-		</DocumentsContainer>
+		</CardContainer>
 	);
 };
 

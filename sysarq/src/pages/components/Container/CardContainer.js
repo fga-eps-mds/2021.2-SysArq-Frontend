@@ -48,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+// TO-DO: Transferir tema para App.js
+
 const colorTheme = createTheme({
 	palette: {
 		primary: {
@@ -59,7 +61,9 @@ const colorTheme = createTheme({
 	},
 });
 
-const DocumentsContainer = ({ title, spacing, children }) => {
+// TO-DO: Transferir MuiPickersUtilsProvider para App.js
+
+const CardContainer = ({ title, spacing, children }) => {
 	const classes = useStyles();
 
 	return (
@@ -82,10 +86,10 @@ const DocumentsContainer = ({ title, spacing, children }) => {
 	);
 };
 
-DocumentsContainer.propTypes = {
+CardContainer.propTypes = {
 	title: PropTypes.string.isRequired,
 	spacing: PropTypes.number.isRequired,
 	children: PropTypes.node.isRequired,
 };
 
-export default DocumentsContainer;
+export default CardContainer;
