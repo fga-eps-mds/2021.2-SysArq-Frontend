@@ -1,6 +1,8 @@
 import CardContainer from "../components/Container/CardContainer";
 import MenuCard from "../components/MenuCard";
 
+import "./styles.css";
+
 const Fields = () => (
 	<CardContainer title="Campos" spacing={2}>
 		<MenuCard
