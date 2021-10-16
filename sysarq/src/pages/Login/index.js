@@ -172,8 +172,6 @@ const Login = () => {
 				localStorage.setItem("isLogged", true);
 
 				window.location = "/";
-
-				setLoading(false);
 			})
 			.catch((error) => {
 				if (error.response && error.response.status === 401) {
