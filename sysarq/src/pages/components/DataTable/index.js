@@ -195,7 +195,11 @@ const DataTable = ({ url, title }) => {
 						{title}
 					</Typography>
 					<Tooltip title="Adicionar">
-						<IconButton aria-label="adicionar" data-testid="botao-adicionar">
+						<IconButton
+							href={`${url}create`}
+							aria-label="adicionar"
+							data-testid="botao-adicionar"
+						>
 							<AddIcon />
 						</IconButton>
 					</Tooltip>

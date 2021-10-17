@@ -42,7 +42,7 @@ import {
 
 import { axiosArchives, axiosProfile } from "../../../Api";
 
-import DocumentsContainer from "../../components/Container/DocumentsContainer";
+import CardContainer from "../../components/Container/CardContainer";
 
 import NumberInput from "../../components/Inputs/NumberInput";
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
@@ -450,7 +450,7 @@ const CreateArchivingRelation = () => {
 	}, []);
 
 	return (
-		<DocumentsContainer title="Relação de Arquivamento" spacing={1}>
+		<CardContainer title="Relação de Arquivamento" spacing={1}>
 			<Grid item xs={12} sm={6} md={2}>
 				<TextField
 					fullWidth
@@ -796,7 +796,7 @@ const CreateArchivingRelation = () => {
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-		</DocumentsContainer>
+		</CardContainer>
 	);
 };
 

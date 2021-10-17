@@ -9,19 +9,17 @@ import PrivateRoute from "./routes/privateRoute";
 
 import Search from "./pages/Search";
 import SearchList from "./pages/SearchList";
-
-import FieldsRegister from "./pages/FieldsRegister/FieldsRegister";
-import DocumentSubject from "./pages/FieldsRegister/DocumentSubject";
-import CreateDocumentSubject from "./pages/FieldsRegister/CreateDocumentSubject";
-import BoxAbbreviation from "./pages/FieldsRegister/BoxAbbreviation";
-import CreateBoxAbbreviation from "./pages/FieldsRegister/CreateBoxAbbreviation";
-import Unity from "./pages/FieldsRegister/Unity";
-import CreateUnity from "./pages/FieldsRegister/CreateUnity";
-import DocumentType from "./pages/FieldsRegister/DocumentType";
-import CreateDocumentType from "./pages/FieldsRegister/CreateDocumentType";
-import Shelf from "./pages/FieldsRegister/Shelf";
-import CreateShelf from "./pages/FieldsRegister/CreateShelf";
-
+import Fields from "./pages/Fields";
+import DocumentSubject from "./pages/Fields/List/DocumentSubject";
+import BoxAbbreviation from "./pages/Fields/List/BoxAbbreviation";
+import DocumentType from "./pages/Fields/List/DocumentType";
+import Unity from "./pages/Fields/List/Unity";
+import Shelf from "./pages/Fields/List/Shelf";
+import CreateDocumentSubject from "./pages/Fields/Create/CreateDocumentSubject";
+import CreateBoxAbbreviation from "./pages/Fields/Create/CreateBoxAbbreviation";
+import CreateDocumentType from "./pages/Fields/Create/CreateDocumentType";
+import CreateUnity from "./pages/Fields/Create/CreateUnity";
+import CreateShelf from "./pages/Fields/Create/CreateShelf";
 import Documents from "./pages/Documents";
 import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdministrativeProcess";
 import CreateFrequencyRelation from "./pages/Documents/Create/CreateFrequencyRelation";
@@ -59,7 +57,7 @@ function App() {
 
 					<Route path="/fields-register">
 						<PrivateRoute exact path="/fields-register">
-							<FieldsRegister />
+							<Fields />
 						</PrivateRoute>
 
 						<Route path="/fields-register/document-subject">
