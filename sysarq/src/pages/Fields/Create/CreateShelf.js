@@ -52,6 +52,15 @@ export default function CreateShelf() {
 		setOpenAlert(false);
 	};
 
+	const connectionError = () => {
+		setOpenAlert(true);
+		setAlertHelperText(
+			"Verifique sua conexão com a internet e recarregue a página."
+		);
+		setSeverityAlert("error");
+
+	}
+
 	const handleValueChange = (event) => {
 		setType(event.target.value);
 	};
@@ -67,14 +76,15 @@ export default function CreateShelf() {
 			setRackHelperText("Prateleira não pode ser vazia");
 			return "Erro";
 		}
-		if (type === "Estante") {
-			axiosProfile
-				.post(`api/token/refresh/`, {
-					refresh: localStorage.getItem("tkr"),
-				})
-				.then((res) => {
-					localStorage.setItem("tk", res.data.access);
-					localStorage.setItem("tkr", res.data.refresh);
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				
+				if (type === "Estante") {
 					axiosArchives
 						.post(`shelf/`, {
 							number: numberE,
@@ -85,31 +95,10 @@ export default function CreateShelf() {
 							setAlertHelperText("Estante cadastrada!");
 						})
 						.catch(() => {
-							setOpenAlert(true);
-							setAlertHelperText(
-								"Verifique sua conexão com a internet e recarregue a página."
-							);
-							setSeverityAlert("error");
+							connectionError();
 						});
-				})
-				.catch((error) => {
-					if (error.response && error.response.status === 401) logout();
-					else {
-						setOpenAlert(true);
-						setAlertHelperText(
-							"Verifique sua conexão com a internet e recarregue a página."
-						);
-						setSeverityAlert("error");
-					}
-				});
-		} else {
-			axiosProfile
-				.post(`api/token/refresh/`, {
-					refresh: localStorage.getItem("tkr"),
-				})
-				.then((res) => {
-					localStorage.setItem("tk", res.data.access);
-					localStorage.setItem("tkr", res.data.refresh);
+				}
+				else {
 					axiosArchives
 						.post(`rack/`, {
 							number: numberP,
@@ -120,24 +109,17 @@ export default function CreateShelf() {
 							setAlertHelperText("Prateleira cadastrada!");
 						})
 						.catch(() => {
-							setOpenAlert(true);
-							setAlertHelperText(
-								"Verifique sua conexão com a internet e recarregue a página."
-							);
-							setSeverityAlert("error");
+							connectionError();
 						});
-				})
+				}
+			})
 				.catch((error) => {
 					if (error.response && error.response.status === 401) logout();
 					else {
-						setOpenAlert(true);
-						setAlertHelperText(
-							"Verifique sua conexão com a internet e recarregue a página."
-						);
-						setSeverityAlert("error");
+						connectionError();
 					}
 				});
-		}
+		
 		setShelfNumberError(false);
 		setShelfHelperText("");
 

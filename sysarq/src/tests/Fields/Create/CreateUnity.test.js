@@ -31,45 +31,54 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
+const UNITY_NAME = "Nome da unidade*";
+const UNITY_ABBREVIATION = "Sigla da unidade";
+const UNITY_BOND = "Vínculo administrativo";
+const UNITY_BOND_ABR = "Sigla do vínculo";
+const UNITY_TYPE = "Tipo de unidade";
+const UNITY_MUNICIPALITY = "Município";
+const UNITY_TELEPHONE = "Telefone";
+const OBSERVATIONS = "Observações";
+
 describe("Button test", () => {
 	it("axios success", async () => {
 		const objSucess = [
-			"Nome da unidade*",
+			UNITY_NAME,
 			"201",
-			"Sigla da unidade",
+			UNITY_ABBREVIATION,
 			"20º DP",
-			"Vínculo administrativo",
+			UNITY_BOND,
 			"Jurídico",
-			"Sigla do vínculo",
+			UNITY_BOND_ABR,
 			"VJA",
-			"Tipo de unidade",
+			UNITY_TYPE,
 			"Administrativa",
-			"Município",
+			UNITY_MUNICIPALITY,
 			"Abadiânia",
-			"Telefone",
+			UNITY_TELEPHONE,
 			"912398734",
-			"Observações",
+			OBSERVATIONS,
 			"Robson",
 		];
 		await testEvent(<CreateUnity />, objSucess, "Unidade cadastrada!");
 	});
 	it("axios fail", async () => {
 		const objFail = [
-			"Nome da unidade*",
+			UNITY_NAME,
 			"401",
-			"Sigla da unidade",
+			UNITY_ABBREVIATION,
 			"20º DP",
-			"Vínculo administrativo",
+			UNITY_BOND,
 			"Jurídico",
-			"Sigla do vínculo",
+			UNITY_BOND_ABR,
 			"VJA",
-			"Tipo de unidade",
+			UNITY_TYPE,
 			"Administrativa",
-			"Município",
+			UNITY_MUNICIPALITY,
 			"Abadiânia",
-			"Telefone",
+			UNITY_TELEPHONE,
 			"912398734",
-			"Observações",
+			OBSERVATIONS,
 			"Robson",
 		];
 		await testEvent(
@@ -81,21 +90,21 @@ describe("Button test", () => {
 
 	it("unityName null", async () => {
 		const objFail = [
-			"Nome da unidade*",
+			UNITY_NAME,
 			"",
-			"Sigla da unidade",
+			UNITY_ABBREVIATION,
 			"20º DP",
-			"Vínculo administrativo",
+			UNITY_BOND,
 			"Jurídico",
-			"Sigla do vínculo",
+			UNITY_BOND_ABR,
 			"VJA",
-			"Tipo de unidade",
+			UNITY_TYPE,
 			"Administrativa",
-			"Município",
+			UNITY_MUNICIPALITY,
 			"Abadiânia",
-			"Telefone",
+			UNITY_TELEPHONE,
 			"912398734",
-			"Observações",
+			OBSERVATIONS,
 			"Robson",
 		];
 		await testEvent(
@@ -107,21 +116,21 @@ describe("Button test", () => {
 
 	it("localstorage fail", async () => {
 		const objFail = [
-			"Nome da unidade*",
+			UNITY_NAME,
 			"401",
-			"Sigla da unidade",
+			UNITY_ABBREVIATION,
 			"20º DP",
-			"Vínculo administrativo",
+			UNITY_BOND,
 			"Jurídico",
-			"Sigla do vínculo",
+			UNITY_BOND_ABR,
 			"VJA",
-			"Tipo de unidade",
+			UNITY_TYPE,
 			"Administrativa",
-			"Município",
+			UNITY_MUNICIPALITY,
 			"Abadiânia",
-			"Telefone",
+			UNITY_TELEPHONE,
 			"912398734",
-			"Observações",
+			OBSERVATIONS,
 			"Robson",
 		];
 		localStorage.setItem("tkr", 401);
@@ -130,21 +139,21 @@ describe("Button test", () => {
 
 	it("localstorage2 fail", async () => {
 		const objFail = [
-			"Nome da unidade*",
+			UNITY_NAME,
 			"401",
-			"Sigla da unidade",
+			UNITY_ABBREVIATION,
 			"20º DP",
-			"Vínculo administrativo",
+			UNITY_BOND,
 			"Jurídico",
-			"Sigla do vínculo",
+			UNITY_BOND_ABR,
 			"VJA",
-			"Tipo de unidade",
+			UNITY_TYPE,
 			"Administrativa",
-			"Município",
+			UNITY_MUNICIPALITY,
 			"Abadiânia",
-			"Telefone",
+			UNITY_TELEPHONE,
 			"912398734",
-			"Observações",
+			OBSERVATIONS,
 			"Robson",
 		];
 		localStorage.setItem("tkr", 404);
