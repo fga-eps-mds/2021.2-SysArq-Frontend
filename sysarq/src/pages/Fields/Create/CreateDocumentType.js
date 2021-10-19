@@ -76,8 +76,9 @@ export default function CreateDocumentType() {
 					});
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) logout();
-				else {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else {
 					setOpenAlert(true);
 					setAlertHelperText(
 						"Verifique sua conexão com a internet e recarregue a página."

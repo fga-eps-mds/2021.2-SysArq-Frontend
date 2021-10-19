@@ -157,8 +157,9 @@ const CreateFrequencyRelation = () => {
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) logout();
-				else connectionError();
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else connectionError();
 			});
 
 		return "post done";
@@ -178,8 +179,9 @@ const CreateFrequencyRelation = () => {
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) logout();
-				else connectionError();
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else connectionError();
 			});
 	}, []);
 

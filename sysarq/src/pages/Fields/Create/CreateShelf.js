@@ -112,8 +112,9 @@ export default function CreateShelf() {
 				}
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) logout();
-				else {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else {
 					connectionError();
 				}
 			});

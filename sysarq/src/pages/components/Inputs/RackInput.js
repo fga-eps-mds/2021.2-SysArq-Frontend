@@ -31,8 +31,9 @@ const RackInput = ({ set, connectionError, rack }) => {
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) logout();
-				else connectionError();
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else connectionError();
 			});
 	}, []);
 

@@ -42,6 +42,14 @@ export default function CreateUnity() {
 		setOpenAlert(false);
 	};
 
+	const connectionError = () => {
+		setOpenAlert(true);
+		setAlertHelperText(
+			"Verifique sua conexão com a internet e recarregue a página."
+		);
+		setSeverityAlert("error");
+	};
+
 	const onClick = () => {
 		if (unityName === "") {
 			setunityNameError(true);
@@ -72,21 +80,14 @@ export default function CreateUnity() {
 						setAlertHelperText("Unidade cadastrada!");
 					})
 					.catch(() => {
-						setOpenAlert(true);
-						setAlertHelperText(
-							"Verifique sua conexão com a internet e recarregue a página."
-						);
-						setSeverityAlert("error");
+						connectionError();
 					});
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) logout();
-				else {
-					setOpenAlert(true);
-					setAlertHelperText(
-						"Verifique sua conexão com a internet e recarregue a página."
-					);
-					setSeverityAlert("error");
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else {
+					connectionError();
 				}
 			});
 		return null;
