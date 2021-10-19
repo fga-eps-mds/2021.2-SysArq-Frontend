@@ -127,7 +127,6 @@ export default function CreateDocumentSubject() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText,
-		null
+		alertHelperText
 	);
 }

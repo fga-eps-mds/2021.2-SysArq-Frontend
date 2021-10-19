@@ -11,8 +11,7 @@ export default function createForm(
 	openAlert,
 	handleAlertClose,
 	severityAlert,
-	alertHelperText,
-	isBox
+	alertHelperText
 ) {
 	return (
 		<div className="create-form-container">
@@ -35,11 +34,7 @@ export default function createForm(
 												item.setHelperText("");
 												item.setError(false);
 											}}
-											className={
-												item.type !== "date" || isBox != null
-													? classes.input
-													: classes.inputDate
-											}
+											className={classes.input}
 											inputProps={{ maxLength: "100" }}
 											helperText={item.helperText}
 											error={item.error}

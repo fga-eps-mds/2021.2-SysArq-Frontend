@@ -174,7 +174,6 @@ export default function CreateBoxAbbreviation() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText,
-		true
+		alertHelperText
 	);
 }

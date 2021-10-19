@@ -186,7 +186,9 @@ const CreateFrequencySheet = () => {
 			.catch((error) => {
 				if (error.response && error.response.status === 401) {
 					logout();
-				} else connectionError();
+				} else {
+					connectionError();
+				}
 			});
 
 		return "post done";
