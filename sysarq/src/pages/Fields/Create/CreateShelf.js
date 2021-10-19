@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Alert from "@material-ui/lab/Alert";
 import {
 	FormControl,
 	Grid,
@@ -12,6 +11,8 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives, axiosProfile } from "../../../Api";
+import { logout } from "../../../support";
+import PopUpAlert from "../../components/PopUpAlert";
 
 const useStyles = makeStyles({
 	input: {
@@ -37,19 +38,19 @@ export default function CreateShelf() {
 	const [numberE, setNumberE] = useState("");
 	const [numberP, setNumberP] = useState("");
 
-	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
-
-	const [showError, setShowError] = useState(false);
-	const handleCloseError = () => setShowError(false);
-	const handleShowError = () => setShowError(true);
-
 	const [shelfHelperText, setShelfHelperText] = useState("");
 	const [shelfNumberError, setShelfNumberError] = useState(false);
 
 	const [rackHelperText, setRackHelperText] = useState("");
 	const [rackNumberError, setRackNumberError] = useState(false);
+
+	const [openAlert, setOpenAlert] = useState(false);
+	const [alertHelperText, setAlertHelperText] = useState("");
+	const [severityAlert, setSeverityAlert] = useState("error");
+
+	const handleAlertClose = () => {
+		setOpenAlert(false);
+	};
 
 	const handleValueChange = (event) => {
 		setType(event.target.value);
@@ -79,15 +80,28 @@ export default function CreateShelf() {
 							number: numberE,
 						})
 						.then(() => {
-							handleShow();
-							setTimeout(handleClose, 3000);
+							setOpenAlert(true);
+							setSeverityAlert("success");
+							setAlertHelperText("Estante cadastrada!");
 						})
 						.catch(() => {
-							handleShowError();
-							setTimeout(handleCloseError, 3000);
+							setOpenAlert(true);
+							setAlertHelperText(
+								"Verifique sua conexão com a internet e recarregue a página."
+							);
+							setSeverityAlert("error");
 						});
 				})
-				.catch(() => {});
+				.catch((error) => {
+					if (error.response && error.response.status === 401) logout();
+					else {
+						setOpenAlert(true);
+						setAlertHelperText(
+							"Verifique sua conexão com a internet e recarregue a página."
+						);
+						setSeverityAlert("error");
+					}
+				});
 		} else {
 			axiosProfile
 				.post(`api/token/refresh/`, {
@@ -101,15 +115,28 @@ export default function CreateShelf() {
 							number: numberP,
 						})
 						.then(() => {
-							handleShow();
-							setTimeout(handleClose, 3000);
+							setOpenAlert(true);
+							setSeverityAlert("success");
+							setAlertHelperText("Prateleira cadastrada!");
 						})
 						.catch(() => {
-							handleShowError();
-							setTimeout(handleCloseError, 3000);
+							setOpenAlert(true);
+							setAlertHelperText(
+								"Verifique sua conexão com a internet e recarregue a página."
+							);
+							setSeverityAlert("error");
 						});
 				})
-				.catch(() => {});
+				.catch((error) => {
+					if (error.response && error.response.status === 401) logout();
+					else {
+						setOpenAlert(true);
+						setAlertHelperText(
+							"Verifique sua conexão com a internet e recarregue a página."
+						);
+						setSeverityAlert("error");
+					}
+				});
 		}
 		setShelfNumberError(false);
 		setShelfHelperText("");
@@ -125,12 +152,6 @@ export default function CreateShelf() {
 
 	return (
 		<div className="create-form-container">
-			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
-			{showError === true ? (
-				<Alert severity="error">Erro de conexão!</Alert>
-			) : (
-				""
-			)}
 			<Paper className="form-cadastro-container" elevation={10}>
 				<h1>{title}</h1>
 				<h2>{subtitle}</h2>
@@ -163,7 +184,7 @@ export default function CreateShelf() {
 								<Grid item xs={12} sm={12} md={12} key={2}>
 									<TextField
 										id="Estante"
-										label="Número da estante"
+										label="Número da estante*"
 										type="number"
 										onChange={(event) => {
 											setNumberE(event.target.value);
@@ -180,7 +201,7 @@ export default function CreateShelf() {
 									<TextField
 										key={1}
 										id="Prateleira"
-										label="Número da prateleira"
+										label="Número da prateleira*"
 										type="number"
 										onChange={(event) => {
 											setNumberP(event.target.value);
@@ -200,6 +221,12 @@ export default function CreateShelf() {
 					CADASTRAR
 				</button>
 			</Paper>
+			<PopUpAlert
+				open={openAlert}
+				handleClose={handleAlertClose}
+				severity={severityAlert}
+				helperText={alertHelperText}
+			/>
 		</div>
 	);
 }

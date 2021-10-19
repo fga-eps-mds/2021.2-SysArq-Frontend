@@ -9,7 +9,7 @@ describe("Documents Menu", () => {
 
 		expect(screen.getByText("Assunto do Documento")).toBeInTheDocument();
 		expect(screen.getByText("Unidade")).toBeInTheDocument();
-		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
+		expect(screen.getByText("Caixa")).toBeInTheDocument();
 		expect(screen.getByText("Tipo de Documento")).toBeInTheDocument();
 		expect(screen.getByText("Estante e Prateleira")).toBeInTheDocument();
 	});

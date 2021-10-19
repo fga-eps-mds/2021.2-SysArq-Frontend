@@ -7,6 +7,7 @@ import {
 	formatDate,
 	initialPeriod,
 	isDateNotValid,
+	logout,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -47,7 +48,7 @@ const CreateFrequencyRelation = () => {
 		useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
-	const [severityAlert, setSeverityAlert] = useState("");
+	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
@@ -155,7 +156,10 @@ const CreateFrequencyRelation = () => {
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) logout();
+				else connectionError();
+			});
 
 		return "post done";
 	};
@@ -173,7 +177,10 @@ const CreateFrequencyRelation = () => {
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) logout();
+				else connectionError();
+			});
 	}, []);
 
 	return (

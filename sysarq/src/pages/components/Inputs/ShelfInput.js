@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
+import { logout } from "../../../support";
 
 const ShelfInput = ({ set, connectionError, shelf }) => {
 	const [shelves, setShelves] = useState([]);
@@ -29,7 +30,10 @@ const ShelfInput = ({ set, connectionError, shelf }) => {
 					.then((response) => setShelves(response.data))
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) logout();
+				else connectionError();
+			});
 	}, []);
 
 	return (

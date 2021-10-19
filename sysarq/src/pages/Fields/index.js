@@ -19,7 +19,7 @@ const Fields = () => (
 		/>
 		<MenuCard
 			icon="abbreviation-icon"
-			title="Sigla da Caixa"
+			title="Caixa"
 			url="/fields-register/box-abbreviation"
 			lg={4}
 		/>

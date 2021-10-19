@@ -37,3 +37,10 @@ export const isDateNotValid = (
 	}
 	return false;
 };
+
+export function logout() {
+	localStorage.removeItem("tk");
+	localStorage.removeItem("tkr");
+	localStorage.removeItem("isLogged");
+	window.location = "/login";
+}

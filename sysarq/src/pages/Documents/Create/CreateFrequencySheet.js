@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Grid, TextField } from "@material-ui/core";
 
-import { formatDate, initialPeriod, isInt } from "../../../support";
+import { formatDate, initialPeriod, isInt, logout } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
 
@@ -42,7 +42,7 @@ const CreateFrequencySheet = () => {
 		useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
-	const [severityAlert, setSeverityAlert] = useState("");
+	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
@@ -183,7 +183,10 @@ const CreateFrequencySheet = () => {
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) logout();
+				else connectionError();
+			});
 
 		return "post done";
 	};

@@ -1,25 +1,21 @@
 import React from "react";
-import Alert from "@material-ui/lab/Alert";
 import { Paper, TextField, Grid, Container } from "@material-ui/core";
+import PopUpAlert from "../components/PopUpAlert";
 
 export default function createForm(
 	fields,
 	title,
 	subtitle,
 	classes,
-	show,
-	showError,
 	onClick,
+	openAlert,
+	handleAlertClose,
+	severityAlert,
+	alertHelperText,
 	isBox
 ) {
 	return (
 		<div className="create-form-container">
-			{show === true ? <Alert severity="success">Campo cadastrado!</Alert> : ""}
-			{showError === true ? (
-				<Alert severity="error">Erro de conexão!</Alert>
-			) : (
-				""
-			)}
 			<Paper className="form-cadastro-container" elevation={10}>
 				<h1>{title}</h1>
 				<h2>{subtitle}</h2>
@@ -45,8 +41,8 @@ export default function createForm(
 													: classes.inputDate
 											}
 											inputProps={{ maxLength: "100" }}
-											helperText={isBox === true ? item.helperText : null}
-											error={isBox === true ? item.error : null}
+											helperText={item.helperText}
+											error={item.error}
 										/>
 									</Grid>
 								);
@@ -59,6 +55,12 @@ export default function createForm(
 					CADASTRAR
 				</button>
 			</Paper>
+			<PopUpAlert
+				open={openAlert}
+				handleClose={handleAlertClose}
+				severity={severityAlert}
+				helperText={alertHelperText}
+			/>
 		</div>
 	);
 }

@@ -18,6 +18,7 @@ import {
 	isDateNotValid,
 	isInt,
 	formatDate,
+	logout,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -84,7 +85,7 @@ const CreateAdministrativeProcess = () => {
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
-	const [severityAlert, setSeverityAlert] = useState("");
+	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
@@ -300,7 +301,10 @@ const CreateAdministrativeProcess = () => {
 						connectionError();
 					});
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) logout();
+				else connectionError();
+			});
 
 		return "post done";
 	};
@@ -323,7 +327,10 @@ const CreateAdministrativeProcess = () => {
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) logout();
+				else connectionError();
+			});
 	}, []);
 
 	return (

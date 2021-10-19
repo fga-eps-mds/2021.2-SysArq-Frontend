@@ -2,6 +2,7 @@ import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import createForm from "../form";
+import { logout } from "../../../support";
 
 const useStyles = makeStyles({
 	input: {
@@ -23,48 +24,56 @@ export default function CreateDocumentSubject() {
 	const classes = useStyles();
 
 	const [documentSubject, setDocumentSubject] = useState("");
-	const [temporalityValue, setTemporality] = useState("2021-01-01");
+	const [temporalityValue, setTemporality] = useState("");
 
-	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const [documentSubjectHelperText, setdocumentSubjectHelperText] =
+		useState("");
+	const [documentSubjectError, setdocumentSubjectError] = useState(false);
+	const [temporalityHelperText, settemporalityHelperText] = useState("");
+	const [temporalityError, settemporalityError] = useState(false);
 
-	const [showError, setShowError] = useState(false);
-	const handleCloseError = () => setShowError(false);
-	const handleShowError = () => setShowError(true);
+	const [openAlert, setOpenAlert] = useState(false);
+	const [alertHelperText, setAlertHelperText] = useState("");
+	const [severityAlert, setSeverityAlert] = useState("error");
+
+	const handleAlertClose = () => {
+		setOpenAlert(false);
+	};
 
 	const fields = [
 		{
 			type: "text",
-			placeholder: "Assunto do documento",
+			placeholder: "Assunto do documento*",
 			setValue: setDocumentSubject,
 			value: documentSubject,
-			helperText: "",
-			error: false,
-			setHelperText: () => {
-				"";
-			},
-			setError: () => {
-				"";
-			},
+			helperText: documentSubjectHelperText,
+			error: documentSubjectError,
+			setHelperText: setdocumentSubjectHelperText,
+			setError: setdocumentSubjectError,
 		},
 		{
-			type: "date",
-			placeholder: "Temporalidade",
+			type: "number",
+			placeholder: "Temporalidade (anos)*",
 			setValue: setTemporality,
 			value: temporalityValue,
-			helperText: "",
-			error: false,
-			setHelperText: () => {
-				"";
-			},
-			setError: () => {
-				"";
-			},
+			helperText: temporalityHelperText,
+			error: temporalityError,
+			setHelperText: settemporalityHelperText,
+			setError: settemporalityError,
 		},
 	];
 
 	const onClick = () => {
+		if (documentSubject === "") {
+			setdocumentSubjectError(true);
+			setdocumentSubjectHelperText("Assunto inválido");
+			return "Erro";
+		}
+		if (temporalityValue === "") {
+			settemporalityError(true);
+			settemporalityHelperText("Temporalidade inválida");
+			return "Erro";
+		}
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -78,17 +87,31 @@ export default function CreateDocumentSubject() {
 						temporality: temporalityValue,
 					})
 					.then(() => {
-						handleShow();
-						setTimeout(handleClose, 3000);
+						setOpenAlert(true);
+						setSeverityAlert("success");
+						setAlertHelperText("Assunto cadastrado!");
 					})
 					.catch(() => {
-						handleShowError();
-						setTimeout(handleCloseError, 3000);
+						setOpenAlert(true);
+						setAlertHelperText(
+							"Verifique sua conexão com a internet e recarregue a página."
+						);
+						setSeverityAlert("error");
 					});
 
 				return res;
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) logout();
+				else {
+					setOpenAlert(true);
+					setAlertHelperText(
+						"Verifique sua conexão com a internet e recarregue a página."
+					);
+					setSeverityAlert("error");
+				}
+			});
+		return null;
 	};
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
@@ -99,9 +122,11 @@ export default function CreateDocumentSubject() {
 		title,
 		subtitle,
 		classes,
-		show,
-		showError,
 		onClick,
+		openAlert,
+		handleAlertClose,
+		severityAlert,
+		alertHelperText,
 		null
 	);
 }

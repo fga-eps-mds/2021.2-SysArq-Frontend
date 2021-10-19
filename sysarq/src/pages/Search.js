@@ -188,7 +188,7 @@ export default function Search() {
 									Prateleira
 								</MenuItem>
 								<MenuItem value="abbreviation_id" onClick={handleClick}>
-									Sigla da caixa
+									Caixa
 								</MenuItem>
 								<MenuItem value="is_filed/true" onClick={handleClickFiled}>
 									Arquivado

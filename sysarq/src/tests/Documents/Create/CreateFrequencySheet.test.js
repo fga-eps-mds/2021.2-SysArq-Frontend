@@ -36,8 +36,27 @@ describe("Create Frequency Relation Screen Test", () => {
 
 		input("CPF*", "13421.53253");
 		submitClick();
-
 		isOnTheScreen("Insira um CPF válido");
+
+		input("CPF*", "12345");
+		submitClick();
+		isOnTheScreen("Insira um CPF válido");
+
+		input("CPF*", "12345678911");
+		submitClick();
+		isOnTheScreen("Insira o nome");
+
+		input("Nome do Servidor*", "Sandro da Silva");
+		submitClick();
+		isOnTheScreen("Insira um cargo");
+
+		input("Cargo*", "Chefe");
+		submitClick();
+		isOnTheScreen("Insira uma lotação");
+
+		input("Lotação*", "lotaçao");
+		submitClick();
+		isOnTheScreen("Insira um município");
 
 		fireEvent.click(screen.getByText("Adicionar"));
 

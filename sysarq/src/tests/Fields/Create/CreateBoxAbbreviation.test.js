@@ -9,10 +9,12 @@ const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
 
 const server = setupServer(
 	rest.post(`${axiosProfile}api/token/refresh/`, (req, res, ctx) => {
-		if (req.body.refresh === localStorage.getItem("tkr")) {
-			return res(ctx.status(200));
-		} else {
+		if (req.body.refresh === "401") {
+			return res(ctx.status(401));
+		} else if (req.body.refresh === "404") {
 			return res(ctx.status(404));
+		} else {
+			return res(ctx.status(200));
 		}
 	}),
 	rest.post(axiosArchives, (req, res, ctx) => {
@@ -29,10 +31,10 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
-const BOX_NUMBER = "Número da caixa";
-const BOX_ABBREVIATION = "Sigla da caixa";
+const BOX_NUMBER = "Número da caixa*";
+const BOX_ABBREVIATION = "Sigla da caixa*";
 const BOX_NAME = "Nome completo";
-const BOX_YEAR = "Ano";
+const BOX_YEAR = "Ano*";
 
 describe("Page test", () => {
 	it("axios sucess", async () => {
@@ -46,7 +48,7 @@ describe("Page test", () => {
 			BOX_YEAR,
 			"2021",
 		];
-		await testEvent(<CreateBoxAbbreviation />, objSucess, "Campo cadastrado!");
+		await testEvent(<CreateBoxAbbreviation />, objSucess, "Caixa cadastrada!");
 	});
 
 	it("axios fail", async () => {
@@ -60,7 +62,11 @@ describe("Page test", () => {
 			BOX_YEAR,
 			"2021",
 		];
-		await testEvent(<CreateBoxAbbreviation />, objFail, "Erro de conexão!");
+		await testEvent(
+			<CreateBoxAbbreviation />,
+			objFail,
+			"Verifique sua conexão com a internet e recarregue a página."
+		);
 	});
 
 	it("year error", async () => {
@@ -75,5 +81,67 @@ describe("Page test", () => {
 			"3",
 		];
 		await testEvent(<CreateBoxAbbreviation />, objFail, "Ano inválido");
+	});
+
+	it("boxNumber error", async () => {
+		const objFail = [
+			BOX_NUMBER,
+			"",
+			BOX_ABBREVIATION,
+			"BOB",
+			BOX_NAME,
+			"Polícia Civil do Goias",
+			BOX_YEAR,
+			"3",
+		];
+		await testEvent(<CreateBoxAbbreviation />, objFail, "Número inválido");
+	});
+
+	it("boxAbbreviation error", async () => {
+		const objFail = [
+			BOX_NUMBER,
+			"345",
+			BOX_ABBREVIATION,
+			"",
+			BOX_NAME,
+			"Polícia Civil do Goias",
+			BOX_YEAR,
+			"3",
+		];
+		await testEvent(<CreateBoxAbbreviation />, objFail, "Sigla inválida");
+	});
+
+	it("localStorage error", async () => {
+		const objFail = [
+			BOX_NUMBER,
+			"345",
+			BOX_ABBREVIATION,
+			"SAG",
+			BOX_NAME,
+			"Polícia Civil do Goias",
+			BOX_YEAR,
+			"3234",
+		];
+		localStorage.setItem("tkr", 401);
+		await testEvent(<CreateBoxAbbreviation />, objFail, "CADASTRAR");
+	});
+
+	it("localStorage2 error", async () => {
+		const objFail = [
+			BOX_NUMBER,
+			"345",
+			BOX_ABBREVIATION,
+			"SAG",
+			BOX_NAME,
+			"Polícia Civil do Goias",
+			BOX_YEAR,
+			"3234",
+		];
+		localStorage.setItem("tkr", 404);
+		await testEvent(
+			<CreateBoxAbbreviation />,
+			objFail,
+			"Verifique sua conexão com a internet e recarregue a página."
+		);
 	});
 });
