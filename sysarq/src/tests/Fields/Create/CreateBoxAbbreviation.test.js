@@ -42,9 +42,9 @@ describe("Page test", () => {
 			BOX_NUMBER,
 			"201",
 			BOX_ABBREVIATION,
-			"ASD",
+			"FDG",
 			BOX_NAME,
-			"Polícia Civil do Goias",
+			"PCGO",
 			BOX_YEAR,
 			"2021",
 		];
@@ -76,9 +76,9 @@ describe("Page test", () => {
 			BOX_ABBREVIATION,
 			"BOB",
 			BOX_NAME,
-			"Polícia Civil do Goias",
+			"NAME",
 			BOX_YEAR,
-			"3",
+			"4",
 		];
 		await testEvent(<CreateBoxAbbreviation />, objFail, "Ano inválido");
 	});
@@ -90,9 +90,9 @@ describe("Page test", () => {
 			BOX_ABBREVIATION,
 			"BOB",
 			BOX_NAME,
-			"Polícia Civil do Goias",
+			"BOXES",
 			BOX_YEAR,
-			"3",
+			"3546",
 		];
 		await testEvent(<CreateBoxAbbreviation />, objFail, "Número inválido");
 	});
@@ -100,13 +100,13 @@ describe("Page test", () => {
 	it("boxAbbreviation error", async () => {
 		const objFail = [
 			BOX_NUMBER,
-			"345",
+			"543",
 			BOX_ABBREVIATION,
 			"",
 			BOX_NAME,
-			"Polícia Civil do Goias",
+			"NAMEBOX",
 			BOX_YEAR,
-			"3",
+			"3453",
 		];
 		await testEvent(<CreateBoxAbbreviation />, objFail, "Sigla inválida");
 	});
@@ -114,13 +114,13 @@ describe("Page test", () => {
 	it("localStorage error", async () => {
 		const objFail = [
 			BOX_NUMBER,
-			"345",
+			"653",
 			BOX_ABBREVIATION,
 			"SAG",
 			BOX_NAME,
-			"Polícia Civil do Goias",
+			"ASD",
 			BOX_YEAR,
-			"3234",
+			"3333",
 		];
 		localStorage.setItem("tkr", 401);
 		await testEvent(<CreateBoxAbbreviation />, objFail, "CADASTRAR");
@@ -131,9 +131,9 @@ describe("Page test", () => {
 			BOX_NUMBER,
 			"345",
 			BOX_ABBREVIATION,
-			"SAG",
+			"GAD",
 			BOX_NAME,
-			"Polícia Civil do Goias",
+			"BDA",
 			BOX_YEAR,
 			"3234",
 		];

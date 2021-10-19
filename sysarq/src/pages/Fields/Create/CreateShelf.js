@@ -58,8 +58,7 @@ export default function CreateShelf() {
 			"Verifique sua conexão com a internet e recarregue a página."
 		);
 		setSeverityAlert("error");
-
-	}
+	};
 
 	const handleValueChange = (event) => {
 		setType(event.target.value);
@@ -83,7 +82,7 @@ export default function CreateShelf() {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
-				
+
 				if (type === "Estante") {
 					axiosArchives
 						.post(`shelf/`, {
@@ -97,8 +96,7 @@ export default function CreateShelf() {
 						.catch(() => {
 							connectionError();
 						});
-				}
-				else {
+				} else {
 					axiosArchives
 						.post(`rack/`, {
 							number: numberP,
@@ -113,13 +111,13 @@ export default function CreateShelf() {
 						});
 				}
 			})
-				.catch((error) => {
-					if (error.response && error.response.status === 401) logout();
-					else {
-						connectionError();
-					}
-				});
-		
+			.catch((error) => {
+				if (error.response && error.response.status === 401) logout();
+				else {
+					connectionError();
+				}
+			});
+
 		setShelfNumberError(false);
 		setShelfHelperText("");
 
