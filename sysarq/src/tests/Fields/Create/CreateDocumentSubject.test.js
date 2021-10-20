@@ -3,20 +3,12 @@ import CreateDocumentSubject from "../../../pages/Fields/Create/CreateDocumentSu
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { testEvent } from "./inputTest.test";
+import { auth } from "../../../support";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}document-subject/`;
-const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
 
 const server = setupServer(
-	rest.post(`${axiosProfile}api/token/refresh/`, (req, res, ctx) => {
-		if (req.body.refresh === "401") {
-			return res(ctx.status(401));
-		} else if (req.body.refresh === "404") {
-			return res(ctx.status(404));
-		} else {
-			return res(ctx.status(200));
-		}
-	}),
+	auth(),
 	rest.post(axiosArchives, (req, res, ctx) => {
 		if (req.body.subject_name === "201") {
 			return res(ctx.status(201));

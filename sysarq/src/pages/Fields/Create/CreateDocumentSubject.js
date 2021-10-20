@@ -40,6 +40,15 @@ export default function CreateDocumentSubject() {
 		setOpenAlert(false);
 	};
 
+	const connectionError = () => {
+		setOpenAlert(true);
+		setSeverityAlert("error");
+
+		setAlertHelperText(
+			"Verifique sua conexão com a internet e recarregue a página."
+		);
+	};
+
 	const fields = [
 		{
 			type: "text",
@@ -92,11 +101,7 @@ export default function CreateDocumentSubject() {
 						setAlertHelperText("Assunto cadastrado!");
 					})
 					.catch(() => {
-						setOpenAlert(true);
-						setAlertHelperText(
-							"Verifique sua conexão com a internet e recarregue a página."
-						);
-						setSeverityAlert("error");
+						connectionError();
 					});
 
 				return res;
@@ -105,11 +110,7 @@ export default function CreateDocumentSubject() {
 				if (error.response && error.response.status === 401) {
 					logout();
 				} else {
-					setOpenAlert(true);
-					setAlertHelperText(
-						"Verifique sua conexão com a internet e recarregue a página."
-					);
-					setSeverityAlert("error");
+					connectionError();
 				}
 			});
 		return null;

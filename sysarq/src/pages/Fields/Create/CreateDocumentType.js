@@ -39,6 +39,15 @@ export default function CreateDocumentType() {
 		setOpenAlert(false);
 	};
 
+	const connectionError = () => {
+		setOpenAlert(true);
+		setSeverityAlert("error");
+
+		setAlertHelperText(
+			"Verifique sua conexão com a internet e recarregue a página."
+		);
+	};
+
 	const onClick = () => {
 		if (documentName === "") {
 			setdocumentTypeError(true);
@@ -68,22 +77,14 @@ export default function CreateDocumentType() {
 						setAlertHelperText("Tipo cadastrado!");
 					})
 					.catch(() => {
-						setOpenAlert(true);
-						setAlertHelperText(
-							"Verifique sua conexão com a internet e recarregue a página."
-						);
-						setSeverityAlert("error");
+						connectionError();
 					});
 			})
 			.catch((error) => {
 				if (error.response && error.response.status === 401) {
 					logout();
 				} else {
-					setOpenAlert(true);
-					setAlertHelperText(
-						"Verifique sua conexão com a internet e recarregue a página."
-					);
-					setSeverityAlert("error");
+					connectionError();
 				}
 			});
 		return null;

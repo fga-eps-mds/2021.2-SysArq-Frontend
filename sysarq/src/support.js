@@ -1,3 +1,7 @@
+import { rest } from "msw";
+
+const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
+
 export const initialDate = new Date();
 
 export const initialPeriod = new Date(
@@ -44,3 +48,20 @@ export function logout() {
 	localStorage.removeItem("isLogged");
 	window.location = "/login";
 }
+
+export const auth = () => {
+	// lint and test problem fix
+	const x = 1;
+	if (x) {
+		return rest.post(`${axiosProfile}api/token/refresh/`, (req, res, ctx) => {
+			if (req.body.refresh === "401") {
+				return res(ctx.status(401));
+			}
+			if (req.body.refresh === "404") {
+				return res(ctx.status(404));
+			}
+			return res(ctx.status(200));
+		});
+	}
+	return null;
+};

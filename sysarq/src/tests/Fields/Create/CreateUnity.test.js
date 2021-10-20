@@ -3,20 +3,12 @@ import CreateUnity from "../../../pages/Fields/Create/CreateUnity";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { testEvent } from "./inputTest.test";
+import { auth } from "../../../support";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}unity/`;
-const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
 
 const server = setupServer(
-	rest.post(`${axiosProfile}api/token/refresh/`, (req, res, ctx) => {
-		if (req.body.refresh === "401") {
-			return res(ctx.status(401));
-		} else if (req.body.refresh === "404") {
-			return res(ctx.status(404));
-		} else {
-			return res(ctx.status(200));
-		}
-	}),
+	auth(),
 	rest.post(axiosArchives, (req, res, ctx) => {
 		if (req.body.unity_name === "201") {
 			return res(ctx.status(201));
@@ -33,12 +25,19 @@ jest.useFakeTimers();
 
 const UNITY_NAME = "Nome da unidade*";
 const UNITY_ABBREVIATION = "Sigla da unidade";
+const UNITY_ABBREVIATION_VALUE = "20º DP";
 const UNITY_BOND = "Vínculo administrativo";
+const UNITY_BOND_VALUE = "Jurídico";
 const UNITY_BOND_ABR = "Sigla do vínculo";
+const UNITY_BOND_ABR_VALUE = "SAG";
 const UNITY_TYPE = "Tipo de unidade";
+const UNITY_TYPE_VALUE = "Administrativa";
 const UNITY_MUNICIPALITY = "Município";
+const UNITY_MUNICIPALITY_VALUE = "Abadiania";
 const UNITY_TELEPHONE = "Telefone";
+const UNITY_TELEPHONE_VALUE = "6199563432";
 const OBSERVATIONS = "Observações";
+const OBSERVATIONS_VALUE = "obs1";
 
 describe("Button test", () => {
 	it("axios success", async () => {
@@ -46,19 +45,19 @@ describe("Button test", () => {
 			UNITY_NAME,
 			"201",
 			UNITY_ABBREVIATION,
-			"20º DP",
+			UNITY_ABBREVIATION_VALUE,
 			UNITY_BOND,
-			"Jurídico",
+			UNITY_BOND_VALUE,
 			UNITY_BOND_ABR,
-			"VJA",
+			UNITY_BOND_ABR_VALUE,
 			UNITY_TYPE,
-			"Administrativa",
+			UNITY_TYPE_VALUE,
 			UNITY_MUNICIPALITY,
-			"Abadiânia",
+			UNITY_MUNICIPALITY_VALUE,
 			UNITY_TELEPHONE,
-			"912398734",
+			UNITY_TELEPHONE_VALUE,
 			OBSERVATIONS,
-			"Robson",
+			OBSERVATIONS_VALUE,
 		];
 		await testEvent(<CreateUnity />, objSucess, "Unidade cadastrada!");
 	});
@@ -67,19 +66,19 @@ describe("Button test", () => {
 			UNITY_NAME,
 			"401",
 			UNITY_ABBREVIATION,
-			"20º DP",
+			UNITY_ABBREVIATION_VALUE,
 			UNITY_BOND,
-			"Jurídico",
+			UNITY_BOND_VALUE,
 			UNITY_BOND_ABR,
-			"VJA",
+			UNITY_BOND_ABR_VALUE,
 			UNITY_TYPE,
-			"Administrativa",
+			UNITY_TYPE_VALUE,
 			UNITY_MUNICIPALITY,
-			"Abadiânia",
+			UNITY_MUNICIPALITY_VALUE,
 			UNITY_TELEPHONE,
-			"912398734",
+			UNITY_TELEPHONE_VALUE,
 			OBSERVATIONS,
-			"Robson",
+			OBSERVATIONS_VALUE,
 		];
 		await testEvent(
 			<CreateUnity />,
@@ -93,19 +92,19 @@ describe("Button test", () => {
 			UNITY_NAME,
 			"",
 			UNITY_ABBREVIATION,
-			"20º DP",
+			UNITY_ABBREVIATION_VALUE,
 			UNITY_BOND,
-			"Jurídico",
+			UNITY_BOND_VALUE,
 			UNITY_BOND_ABR,
-			"VJA",
+			UNITY_BOND_ABR_VALUE,
 			UNITY_TYPE,
-			"Administrativa",
+			UNITY_TYPE_VALUE,
 			UNITY_MUNICIPALITY,
-			"Abadiânia",
+			UNITY_MUNICIPALITY_VALUE,
 			UNITY_TELEPHONE,
-			"912398734",
+			UNITY_TELEPHONE_VALUE,
 			OBSERVATIONS,
-			"Robson",
+			OBSERVATIONS_VALUE,
 		];
 		await testEvent(
 			<CreateUnity />,
@@ -117,21 +116,21 @@ describe("Button test", () => {
 	it("localstorage fail", async () => {
 		const objFail = [
 			UNITY_NAME,
-			"401",
+			"125",
 			UNITY_ABBREVIATION,
-			"20º DP",
+			UNITY_ABBREVIATION_VALUE,
 			UNITY_BOND,
-			"Jurídico",
+			UNITY_BOND_VALUE,
 			UNITY_BOND_ABR,
-			"VJA",
+			UNITY_BOND_ABR_VALUE,
 			UNITY_TYPE,
-			"Administrativa",
+			UNITY_TYPE_VALUE,
 			UNITY_MUNICIPALITY,
-			"Abadiânia",
+			UNITY_MUNICIPALITY_VALUE,
 			UNITY_TELEPHONE,
-			"912398734",
+			UNITY_TELEPHONE_VALUE,
 			OBSERVATIONS,
-			"Robson",
+			OBSERVATIONS_VALUE,
 		];
 		localStorage.setItem("tkr", 401);
 		await testEvent(<CreateUnity />, objFail, "Cadastrar unidade");
@@ -140,21 +139,21 @@ describe("Button test", () => {
 	it("localstorage2 fail", async () => {
 		const objFail = [
 			UNITY_NAME,
-			"401",
+			"302",
 			UNITY_ABBREVIATION,
-			"20º DP",
+			UNITY_ABBREVIATION_VALUE,
 			UNITY_BOND,
-			"Jurídico",
+			UNITY_BOND_VALUE,
 			UNITY_BOND_ABR,
-			"VJA",
+			UNITY_BOND_ABR_VALUE,
 			UNITY_TYPE,
-			"Administrativa",
+			UNITY_TYPE_VALUE,
 			UNITY_MUNICIPALITY,
-			"Abadiânia",
+			UNITY_MUNICIPALITY_VALUE,
 			UNITY_TELEPHONE,
-			"912398734",
+			UNITY_TELEPHONE_VALUE,
 			OBSERVATIONS,
-			"Robson",
+			OBSERVATIONS_VALUE,
 		];
 		localStorage.setItem("tkr", 404);
 		await testEvent(
