@@ -31,6 +31,8 @@ import tableHeadCells from "./tablesHeadCells";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
 
+import { logout } from "../../../support";
+
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		marginTop: theme.spacing(3),
@@ -142,7 +144,16 @@ const DataTable = ({ url, title }) => {
 					});
 				return res;
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else {
+					setOpenAlert(true);
+					setAlertHelperText(
+						"Verifique sua conexão com a internet e recarregue a página."
+					);
+				}
+			});
 	}, []);
 
 	const handleAlertClose = () => {

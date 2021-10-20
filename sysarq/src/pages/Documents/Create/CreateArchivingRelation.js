@@ -31,13 +31,12 @@ import CancelIcon from "@material-ui/icons/Cancel";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-// import { DropzoneDialog } from "material-ui-dropzone";
-
 import {
 	initialDate,
 	isInt,
 	isDateNotValid,
 	formatDate,
+	logout,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -115,7 +114,7 @@ const CreateArchivingRelation = () => {
 	] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
-	const [severityAlert, setSeverityAlert] = useState("");
+	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
@@ -427,7 +426,11 @@ const CreateArchivingRelation = () => {
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else connectionError();
+			});
 
 		return "post done";
 	};
@@ -446,7 +449,13 @@ const CreateArchivingRelation = () => {
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else {
+					connectionError();
+				}
+			});
 	}, []);
 
 	return (

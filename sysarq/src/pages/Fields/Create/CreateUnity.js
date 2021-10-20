@@ -2,6 +2,7 @@ import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import createForm from "../form";
+import { logout } from "../../../support";
 
 export default function CreateUnity() {
 	const useStyles = makeStyles({
@@ -30,15 +31,31 @@ export default function CreateUnity() {
 	const [telephoneNumber, setTelephoneNumber] = useState("");
 	const [note, setNote] = useState("");
 
-	const [showError, setShowError] = useState(false);
-	const handleCloseError = () => setShowError(false);
-	const handleShowError = () => setShowError(true);
+	const [unityNameHelperText, setunityNameHelperText] = useState("");
+	const [unityNameError, setunityNameError] = useState(false);
 
-	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const [openAlert, setOpenAlert] = useState(false);
+	const [alertHelperText, setAlertHelperText] = useState("");
+	const [severityAlert, setSeverityAlert] = useState("error");
+
+	const handleAlertClose = () => {
+		setOpenAlert(false);
+	};
+
+	const connectionError = () => {
+		setOpenAlert(true);
+		setAlertHelperText(
+			"Verifique sua conexão com a internet e recarregue a página."
+		);
+		setSeverityAlert("error");
+	};
 
 	const onClick = () => {
+		if (unityName === "") {
+			setunityNameError(true);
+			setunityNameHelperText("Nome da unidade não pode ser vazio");
+			return "Erro";
+		}
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -58,31 +75,34 @@ export default function CreateUnity() {
 						notes: note,
 					})
 					.then(() => {
-						handleShow();
-						setTimeout(handleClose, 3000);
+						setOpenAlert(true);
+						setSeverityAlert("success");
+						setAlertHelperText("Unidade cadastrada!");
 					})
 					.catch(() => {
-						handleShowError();
-						setTimeout(handleCloseError, 3000);
+						connectionError();
 					});
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else {
+					connectionError();
+				}
+			});
+		return null;
 	};
 
 	const fields = [
 		{
 			type: "text",
-			placeholder: "Nome da unidade",
+			placeholder: "Nome da unidade*",
 			setValue: setUnityName,
 			value: unityName,
-			helperText: "",
-			error: false,
-			setHelperText: () => {
-				"";
-			},
-			setError: () => {
-				"";
-			},
+			helperText: unityNameHelperText,
+			error: unityNameError,
+			setHelperText: setunityNameHelperText,
+			setError: setunityNameError,
 		},
 		{
 			type: "ShortText",
@@ -192,9 +212,10 @@ export default function CreateUnity() {
 		title,
 		subtitle,
 		classes,
-		show,
-		showError,
 		onClick,
-		false
+		openAlert,
+		handleAlertClose,
+		severityAlert,
+		alertHelperText
 	);
 }

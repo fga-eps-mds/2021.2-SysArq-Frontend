@@ -21,7 +21,7 @@ const headCellsSearch = () => {
 		"rack_number",
 		"Prateleira",
 		"abbreviation_name",
-		"Sigla da caixa",
+		"Caixa",
 		"is_filed",
 		"Arquivado",
 		"is_eliminated",

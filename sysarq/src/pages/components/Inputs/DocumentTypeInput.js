@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
+import { logout } from "../../../support";
 
 const DocumentTypeInput = ({
 	setHelperText,
@@ -39,7 +40,11 @@ const DocumentTypeInput = ({
 					.then((response) => setDocumentTypes(response.data))
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else connectionError();
+			});
 	}, []);
 
 	return (

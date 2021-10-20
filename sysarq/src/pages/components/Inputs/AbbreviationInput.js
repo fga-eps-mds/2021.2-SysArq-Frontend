@@ -10,10 +10,10 @@ import {
 } from "@material-ui/core";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
+import { logout } from "../../../support";
 
 const AbbreviationInput = ({ set, connectionError, abbreviation }) => {
 	const [abbreviations, setAbbreviations] = useState([]);
-
 	const handleChange = (event) => set(event.target.value);
 
 	useEffect(() => {
@@ -29,7 +29,11 @@ const AbbreviationInput = ({ set, connectionError, abbreviation }) => {
 					.then((response) => setAbbreviations(response.data))
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else connectionError();
+			});
 	}, []);
 
 	return (
