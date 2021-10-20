@@ -84,6 +84,11 @@ const CreateFrequencySheet = () => {
 		setDistrict(event.target.value);
 	};
 
+	const handleReferencePeriodChange = (date) => {
+		setReferencePeriodHelperText("");
+		setReferencePeriod(date);
+	};
+
 	const handleAlertClose = () => setOpenAlert(false);
 
 	const connectionError = () => {
@@ -321,7 +326,7 @@ const CreateFrequencySheet = () => {
 				label="Período de Referencia*"
 				format="MM/yyyy"
 				value={referencePeriod}
-				onChange={setReferencePeriod}
+				onChange={handleReferencePeriodChange}
 				openTo="month"
 				views={["month", "year"]}
 				okLabel="Confirmar"
