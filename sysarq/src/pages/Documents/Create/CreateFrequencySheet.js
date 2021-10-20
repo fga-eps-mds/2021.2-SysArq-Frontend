@@ -2,15 +2,7 @@ import React, { useState } from "react";
 
 import { Grid, TextField } from "@material-ui/core";
 
-import { KeyboardDatePicker } from "@material-ui/pickers";
-
-import {
-	formatDate,
-	initialPeriod,
-	isInt,
-	logout,
-	isDateNotValid,
-} from "../../../support";
+import { formatDate, initialPeriod, isInt, logout } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
 
@@ -20,6 +12,7 @@ import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
 import ShelfInput from "../../components/Inputs/ShelfInput";
 import RackInput from "../../components/Inputs/RackInput";
 import NotesInput from "../../components/Inputs/NotesInput";
+import ReferencePeriodInput from "../../components/Inputs/ReferencePeriodInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
@@ -36,9 +29,9 @@ const CreateFrequencySheet = () => {
 	const [shelf, setShelf] = useState("");
 	const [rack, setRack] = useState("");
 	const [notes, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState(
-		formatDate(initialPeriod)
-	);
+	const [referencePeriod, setReferencePeriod] = useState([
+		formatDate(initialPeriod),
+	]);
 
 	const [cpfHelperText, setCpfHelperText] = useState("");
 	const [workerNameHelperText, setWorkerNameHelperText] = useState("");
@@ -115,7 +108,7 @@ const CreateFrequencySheet = () => {
 		setShelf("");
 		setRack("");
 		setNotes("");
-		setReferencePeriod(formatDate(initialPeriod));
+		setReferencePeriod([formatDate(initialPeriod)]);
 	};
 
 	const onSubmit = () => {
@@ -157,16 +150,12 @@ const CreateFrequencySheet = () => {
 			return "district error";
 		}
 
-		if (
-			isDateNotValid(
-				referencePeriod,
-				setReferencePeriodHelperText,
-				"period",
-				"required"
-			)
-		) {
+		if (referencePeriod.length === 0) {
+			setReferencePeriodHelperText(
+				"Não é possível criar uma Folha de Frequências sem um Período de Referência."
+			);
 			setLoading(false);
-			return "reference error";
+			return "referencePeriod error";
 		}
 
 		axiosProfile
@@ -184,7 +173,7 @@ const CreateFrequencySheet = () => {
 						category: workerClass,
 						workplace,
 						municipal_area: district,
-						reference_period: formatDate(referencePeriod),
+						reference_period: referencePeriod,
 						notes,
 						process_number: senderProcessNumber,
 						abbreviation_id: abbreviation.id,
@@ -315,19 +304,11 @@ const CreateFrequencySheet = () => {
 
 			<NotesInput set={setNotes} notes={notes} />
 
-			<KeyboardDatePicker
-				style={{ width: "100%" }}
-				id="period-date-picker-dialog"
-				label="Período de Referencia*"
-				format="MM/yyyy"
-				value={referencePeriod}
-				onChange={setReferencePeriod}
-				openTo="month"
-				views={["month", "year"]}
-				okLabel="Confirmar"
-				cancelLabel="Cancelar"
-				error={referencePeriodHelperText !== ""}
-				helperText={referencePeriodHelperText}
+			<ReferencePeriodInput
+				referencePeriod={referencePeriod}
+				setReferencePeriod={setReferencePeriod}
+				setReferencePeriodHelperText={setReferencePeriodHelperText}
+				referencePeriodHelperText={referencePeriodHelperText}
 			/>
 
 			<DocumentsCreate loading={loading} onSubmit={onSubmit} />

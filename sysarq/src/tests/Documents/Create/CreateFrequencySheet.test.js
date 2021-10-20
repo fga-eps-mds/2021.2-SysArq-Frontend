@@ -58,17 +58,11 @@ describe("Create Frequency Relation Screen Test", () => {
 		submitClick();
 		isOnTheScreen("Insira um município");
 
-		input("Lotação*", "lotaçao");
-		submitClick();
-		isOnTheScreen("Insira um município");
+		fireEvent.click(screen.getByText("Adicionar"));
 
-		input("Período de Referencia*", "03/2021");
-		submitClick();
-		expect(screen.queryByText("Insira um período")).not.toBeInTheDocument();
-		expect(
-			screen.queryByText("Insira um período válido")
-		).not.toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
 
+		fireEvent.click(screen.getByText("Adicionar"));
 		input("Número do Processo Encaminhador", "1");
 		input("Nome do Servidor*", "teste");
 		input("Cargo*", "teste");
