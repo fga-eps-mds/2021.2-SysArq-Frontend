@@ -18,6 +18,27 @@ const server = setupServer(
 	})
 );
 
+const makeObject = (unity_name_value) => {
+	return [
+		UNITY_NAME,
+		unity_name_value,
+		UNITY_ABBREVIATION,
+		UNITY_ABBREVIATION_VALUE,
+		UNITY_BOND,
+		UNITY_BOND_VALUE,
+		UNITY_BOND_ABR,
+		UNITY_BOND_ABR_VALUE,
+		UNITY_TYPE,
+		UNITY_TYPE_VALUE,
+		UNITY_MUNICIPALITY,
+		UNITY_MUNICIPALITY_VALUE,
+		UNITY_TELEPHONE,
+		UNITY_TELEPHONE_VALUE,
+		OBSERVATIONS,
+		OBSERVATIONS_VALUE,
+	];
+};
+
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
@@ -41,45 +62,13 @@ const OBSERVATIONS_VALUE = "obs1";
 
 describe("Button test", () => {
 	it("axios success", async () => {
-		const objSucess = [
-			UNITY_NAME,
-			"201",
-			UNITY_ABBREVIATION,
-			UNITY_ABBREVIATION_VALUE,
-			UNITY_BOND,
-			UNITY_BOND_VALUE,
-			UNITY_BOND_ABR,
-			UNITY_BOND_ABR_VALUE,
-			UNITY_TYPE,
-			UNITY_TYPE_VALUE,
-			UNITY_MUNICIPALITY,
-			UNITY_MUNICIPALITY_VALUE,
-			UNITY_TELEPHONE,
-			UNITY_TELEPHONE_VALUE,
-			OBSERVATIONS,
-			OBSERVATIONS_VALUE,
-		];
+		const objSucess = makeObject("201");
+
 		await testEvent(<CreateUnity />, objSucess, "Unidade cadastrada!");
 	});
 	it("axios fail", async () => {
-		const objFail = [
-			UNITY_NAME,
-			"401",
-			UNITY_ABBREVIATION,
-			UNITY_ABBREVIATION_VALUE,
-			UNITY_BOND,
-			UNITY_BOND_VALUE,
-			UNITY_BOND_ABR,
-			UNITY_BOND_ABR_VALUE,
-			UNITY_TYPE,
-			UNITY_TYPE_VALUE,
-			UNITY_MUNICIPALITY,
-			UNITY_MUNICIPALITY_VALUE,
-			UNITY_TELEPHONE,
-			UNITY_TELEPHONE_VALUE,
-			OBSERVATIONS,
-			OBSERVATIONS_VALUE,
-		];
+		const objFail = makeObject("401");
+
 		await testEvent(
 			<CreateUnity />,
 			objFail,
@@ -88,24 +77,8 @@ describe("Button test", () => {
 	});
 
 	it("unityName null", async () => {
-		const objFail = [
-			UNITY_NAME,
-			"",
-			UNITY_ABBREVIATION,
-			UNITY_ABBREVIATION_VALUE,
-			UNITY_BOND,
-			UNITY_BOND_VALUE,
-			UNITY_BOND_ABR,
-			UNITY_BOND_ABR_VALUE,
-			UNITY_TYPE,
-			UNITY_TYPE_VALUE,
-			UNITY_MUNICIPALITY,
-			UNITY_MUNICIPALITY_VALUE,
-			UNITY_TELEPHONE,
-			UNITY_TELEPHONE_VALUE,
-			OBSERVATIONS,
-			OBSERVATIONS_VALUE,
-		];
+		const objFail = makeObject("");
+
 		await testEvent(
 			<CreateUnity />,
 			objFail,
@@ -114,51 +87,19 @@ describe("Button test", () => {
 	});
 
 	it("localstorage fail", async () => {
-		const objFail = [
-			UNITY_NAME,
-			"125",
-			UNITY_ABBREVIATION,
-			UNITY_ABBREVIATION_VALUE,
-			UNITY_BOND,
-			UNITY_BOND_VALUE,
-			UNITY_BOND_ABR,
-			UNITY_BOND_ABR_VALUE,
-			UNITY_TYPE,
-			UNITY_TYPE_VALUE,
-			UNITY_MUNICIPALITY,
-			UNITY_MUNICIPALITY_VALUE,
-			UNITY_TELEPHONE,
-			UNITY_TELEPHONE_VALUE,
-			OBSERVATIONS,
-			OBSERVATIONS_VALUE,
-		];
+		const localStFail = makeObject("254");
+
 		localStorage.setItem("tkr", 401);
-		await testEvent(<CreateUnity />, objFail, "Cadastrar unidade");
+		await testEvent(<CreateUnity />, localStFail, "Cadastrar unidade");
 	});
 
 	it("localstorage2 fail", async () => {
-		const objFail = [
-			UNITY_NAME,
-			"302",
-			UNITY_ABBREVIATION,
-			UNITY_ABBREVIATION_VALUE,
-			UNITY_BOND,
-			UNITY_BOND_VALUE,
-			UNITY_BOND_ABR,
-			UNITY_BOND_ABR_VALUE,
-			UNITY_TYPE,
-			UNITY_TYPE_VALUE,
-			UNITY_MUNICIPALITY,
-			UNITY_MUNICIPALITY_VALUE,
-			UNITY_TELEPHONE,
-			UNITY_TELEPHONE_VALUE,
-			OBSERVATIONS,
-			OBSERVATIONS_VALUE,
-		];
+		const localStFail2 = makeObject("436");
+
 		localStorage.setItem("tkr", 404);
 		await testEvent(
 			<CreateUnity />,
-			objFail,
+			localStFail2,
 			"Verifique sua conexão com a internet e recarregue a página."
 		);
 	});
