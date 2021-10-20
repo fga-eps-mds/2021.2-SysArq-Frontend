@@ -69,8 +69,15 @@ describe("Create Frequency Relation Screen Test", () => {
 
 		input("Município*", "teste");
 
+		input("Período de Referencia*", "");
+		submitClick();
+		isOnTheScreen("Insira um período");
+
 		input("Período de Referencia*", "03/");
 		submitClick();
 		isOnTheScreen("Insira um período válido");
+
+		input("Período de Referencia*", "03/2020");
+		submitClick();		
 	});
 });
