@@ -58,12 +58,6 @@ describe("Create Frequency Relation Screen Test", () => {
 		submitClick();
 		isOnTheScreen("Insira um município");
 
-		input("Período de Referencia*", "03/2021");
-		submitClick();
-		expect(screen.queryByText("Insira um período")).not.toBeInTheDocument();
-		expect(
-			screen.queryByText("Insira um período válido")
-		).not.toBeInTheDocument();
 		input("Número do Processo Encaminhador", "1");
 		input("Nome do Servidor*", "teste");
 		input("Cargo*", "teste");
@@ -72,5 +66,11 @@ describe("Create Frequency Relation Screen Test", () => {
 		await shelfSelector();
 
 		await rackSelector();
+
+		input("Município*", "teste");
+
+		input("Período de Referencia*", "03/");
+		submitClick();
+		isOnTheScreen("Insira um período válido");
 	});
 });
