@@ -58,11 +58,6 @@ describe("Create Frequency Relation Screen Test", () => {
 		submitClick();
 		isOnTheScreen("Insira um município");
 
-		fireEvent.click(screen.getByText("Adicionar"));
-
-		fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
-
-		fireEvent.click(screen.getByText("Adicionar"));
 		input("Número do Processo Encaminhador", "1");
 		input("Nome do Servidor*", "teste");
 		input("Cargo*", "teste");
@@ -71,5 +66,18 @@ describe("Create Frequency Relation Screen Test", () => {
 		await shelfSelector();
 
 		await rackSelector();
+
+		input("Município*", "teste");
+
+		input("Período de Referencia*", "");
+		submitClick();
+		isOnTheScreen("Insira um período");
+
+		input("Período de Referencia*", "03/");
+		submitClick();
+		isOnTheScreen("Insira um período válido");
+
+		input("Período de Referencia*", "03/2020");
+		submitClick();
 	});
 });
