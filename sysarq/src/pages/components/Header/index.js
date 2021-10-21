@@ -28,7 +28,7 @@ function Header() {
 						<a href="/search">Pesquisar</a>
 					</li>
 					<li>
-						<a href="/fields-register">Campos</a>
+						<a href="/fields">Campos</a>
 					</li>
 					<li>
 						<a href="/documents">Cadastro</a>
@@ -55,7 +55,7 @@ function Header() {
 				/>
 				<BottomNavigationAction
 					label="Campos"
-					href="/fields-register"
+					href="/fields"
 					icon={<StarsIcon />}
 				/>
 				<BottomNavigationAction

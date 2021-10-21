@@ -7,6 +7,6 @@ describe("Main component", () => {
 	it("Title", () => {
 		render(<BoxAbbreviation />);
 
-		expect(screen.getByText("Sigla da Caixa")).toBeInTheDocument();
+		expect(screen.getByText("Sigla")).toBeInTheDocument();
 	});
 });

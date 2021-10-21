@@ -1,17 +1,3 @@
-const documentSubjectHeadCells = [
-	{
-		id: "subject_name",
-		numeric: false,
-		label: "Nome do Assunto",
-	},
-
-	{
-		id: "temporality",
-		numeric: false,
-		label: "Temporalidade",
-	},
-];
-
 const headCellsSearch = () => {
 	const idList = [
 		"process_number",
@@ -27,7 +13,9 @@ const headCellsSearch = () => {
 		"is_eliminated",
 		"Eliminado",
 	];
+
 	const headCellsSearchList = [];
+
 	for (let i = 0; i < idList.length; i += 2) {
 		headCellsSearchList.push({
 			id: idList[i],
@@ -35,32 +23,21 @@ const headCellsSearch = () => {
 			label: idList[i + 1],
 		});
 	}
+
 	return headCellsSearchList;
 };
 
-const headCellsBoxAbbreviation = [
+const documentSubjectHeadCells = [
 	{
-		id: "number",
-		numeric: true,
-		label: "Número",
-	},
-
-	{
-		id: "abbreviation",
+		id: "subject_name",
 		numeric: false,
-		label: "Abreviação",
+		label: "Nome do Assunto",
 	},
 
 	{
-		id: "name",
+		id: "temporality",
 		numeric: false,
-		label: "Nome",
-	},
-
-	{
-		id: "year",
-		numeric: true,
-		label: "Ano",
+		label: "Temporalidade",
 	},
 ];
 
@@ -114,6 +91,32 @@ const unityHeadCells = [
 	},
 ];
 
+const headCellsBoxAbbreviation = [
+	{
+		id: "number",
+		numeric: true,
+		label: "Número",
+	},
+
+	{
+		id: "abbreviation",
+		numeric: false,
+		label: "Sigla",
+	},
+
+	{
+		id: "name",
+		numeric: false,
+		label: "Nome",
+	},
+
+	{
+		id: "year",
+		numeric: true,
+		label: "Ano",
+	},
+];
+
 const documentTypeHeadCells = [
 	{
 		id: "document_name",
@@ -132,33 +135,15 @@ const shelfHeadCells = [
 	{
 		id: "number",
 		numeric: true,
-		label: "Estante",
+		label: "Número de Estante",
 	},
 ];
 
-const statusHeadCells = [
+const rackHeadCells = [
 	{
-		id: "filed",
-		numeric: false,
-		label: "Arquivado",
-	},
-
-	{
-		id: "sent_from",
-		numeric: false,
-		label: "Unidade que Encaminhou",
-	},
-
-	{
-		id: "requested_document",
-		numeric: false,
-		label: "Documento Solicitado",
-	},
-
-	{
-		id: "send_date",
+		id: "number",
 		numeric: true,
-		label: "Data de Envio",
+		label: "Número de Prateleira",
 	},
 ];
 
@@ -167,16 +152,16 @@ const tableHeadCells = (url) => {
 
 	if (url === "document-subject/") {
 		headCells = documentSubjectHeadCells;
-	} else if (url === "box-abbreviation/") {
-		headCells = headCellsBoxAbbreviation;
 	} else if (url === "unity/") {
 		headCells = unityHeadCells;
+	} else if (url === "box-abbreviation/") {
+		headCells = headCellsBoxAbbreviation;
 	} else if (url === "document-type/") {
 		headCells = documentTypeHeadCells;
 	} else if (url === "shelf/") {
 		headCells = shelfHeadCells;
-	} else if (url === "status/") {
-		headCells = statusHeadCells;
+	} else if (url === "rack/") {
+		headCells = rackHeadCells;
 	} else if (url && url.includes("search")) {
 		headCells = headCellsSearch();
 	}

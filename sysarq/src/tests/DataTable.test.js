@@ -209,19 +209,17 @@ describe("DataTable and tablesHeadCells Test", () => {
 		).not.toBeInTheDocument();
 
 		expect(
-			screen.getByRole("button", { name: /Página anterior/ })
+			screen.getByRole("button", { name: /Previous page/ })
 		).toBeDisabled();
 		expect(
-			screen.getByRole("button", { name: /Próxima página/ })
+			screen.getByRole("button", { name: /Next page/ })
 		).not.toBeDisabled();
 
-		fireEvent.click(screen.getByRole("button", { name: /Próxima página/ }));
+		fireEvent.click(screen.getByRole("button", { name: /Next page/ }));
 
+		expect(screen.getByRole("button", { name: /Next page/ })).toBeDisabled();
 		expect(
-			screen.getByRole("button", { name: /Próxima página/ })
-		).toBeDisabled();
-		expect(
-			screen.getByRole("button", { name: /Página anterior/ })
+			screen.getByRole("button", { name: /Previous page/ })
 		).not.toBeDisabled();
 
 		fireEvent.mouseDown(screen.getByRole("button", { name: /10/ }));
@@ -235,7 +233,7 @@ describe("DataTable and tablesHeadCells Test", () => {
 		render(<DataTable title="Sigla da Caixa" url="box-abbreviation/" />);
 
 		expect(screen.getByText("Número")).toBeInTheDocument();
-		expect(screen.getByText("Abreviação")).toBeInTheDocument();
+		expect(screen.getByText("Sigla")).toBeInTheDocument();
 		expect(screen.getByText("Nome")).toBeInTheDocument();
 		expect(screen.getByText("Ano")).toBeInTheDocument();
 	});
@@ -263,16 +261,7 @@ describe("DataTable and tablesHeadCells Test", () => {
 	it("test shelf table head cells", async () => {
 		render(<DataTable title="Estante e Prateleira" url="shelf/" />);
 
-		expect(screen.getByText("Estante")).toBeInTheDocument();
-	});
-
-	it("test status table head cells", async () => {
-		render(<DataTable title="Status de Encaminhamento" url="status/" />);
-
-		expect(screen.getByText("Arquivado")).toBeInTheDocument();
-		expect(screen.getByText("Unidade que Encaminhou")).toBeInTheDocument();
-		expect(screen.getByText("Documento Solicitado")).toBeInTheDocument();
-		expect(screen.getByText("Data de Envio")).toBeInTheDocument();
+		expect(screen.getByText("Número de Estante")).toBeInTheDocument();
 	});
 
 	it("test is_filed", async () => {

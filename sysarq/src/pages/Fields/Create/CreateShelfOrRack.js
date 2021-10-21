@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+
 import {
 	FormControl,
 	Grid,
@@ -31,7 +33,7 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function CreateShelf() {
+export default function CreateShelfOrRack({ urlType }) {
 	const classes = useStyles();
 
 	const [type, setType] = useState("Estante");
@@ -131,6 +133,10 @@ export default function CreateShelf() {
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar estantes e prateleiras";
 
+	useEffect(() => {
+		setType(urlType === "shelf" ? "Estante" : "Prateleira");
+	}, []);
+
 	return (
 		<div className="create-form-container">
 			<Paper className="form-cadastro-container" elevation={10}>
@@ -211,3 +217,7 @@ export default function CreateShelf() {
 		</div>
 	);
 }
+
+CreateShelfOrRack.propTypes = {
+	urlType: PropTypes.string.isRequired,
+};
