@@ -1,7 +1,8 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { createTheme, ThemeProvider } from "@material-ui/core";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { ptBR } from "@material-ui/core/locale";
 
 import Login from "./pages/Login/index";
 
@@ -9,17 +10,20 @@ import PrivateRoute from "./routes/privateRoute";
 
 import Search from "./pages/Search";
 import SearchList from "./pages/SearchList";
+
 import Fields from "./pages/Fields";
 import DocumentSubject from "./pages/Fields/List/DocumentSubject";
-import BoxAbbreviation from "./pages/Fields/List/BoxAbbreviation";
-import DocumentType from "./pages/Fields/List/DocumentType";
-import Unity from "./pages/Fields/List/Unity";
-import Shelf from "./pages/Fields/List/Shelf";
 import CreateDocumentSubject from "./pages/Fields/Create/CreateDocumentSubject";
+import BoxAbbreviation from "./pages/Fields/List/BoxAbbreviation";
 import CreateBoxAbbreviation from "./pages/Fields/Create/CreateBoxAbbreviation";
-import CreateDocumentType from "./pages/Fields/Create/CreateDocumentType";
+import Unity from "./pages/Fields/List/Unity";
 import CreateUnity from "./pages/Fields/Create/CreateUnity";
-import CreateShelf from "./pages/Fields/Create/CreateShelf";
+import DocumentType from "./pages/Fields/List/DocumentType";
+import CreateDocumentType from "./pages/Fields/Create/CreateDocumentType";
+import Shelf from "./pages/Fields/List/Shelf";
+import Rack from "./pages/Fields/List/Rack";
+import CreateShelfOrRack from "./pages/Fields/Create/CreateShelfOrRack";
+
 import Documents from "./pages/Documents";
 import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdministrativeProcess";
 import CreateFrequencyRelation from "./pages/Documents/Create/CreateFrequencyRelation";
@@ -29,13 +33,19 @@ import CreateArchivingRelation from "./pages/Documents/Create/CreateArchivingRel
 import "./App.css";
 
 function App() {
-	const theme = createTheme({
-		palette: {
-			primary: {
-				main: "#1f3541",
+	const theme = createTheme(
+		{
+			palette: {
+				primary: {
+					main: "#1f3541",
+				},
+				secondary: {
+					main: "#5389b5",
+				},
 			},
 		},
-	});
+		ptBR
+	);
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -55,65 +65,70 @@ function App() {
 						<SearchList />
 					</PrivateRoute>
 
-					<Route path="/fields-register">
-						<PrivateRoute exact path="/fields-register">
+					<Route path="/fields">
+						<PrivateRoute exact path="/fields">
 							<Fields />
 						</PrivateRoute>
 
-						<Route path="/fields-register/document-subject">
-							<PrivateRoute exact path="/fields-register/document-subject">
+						<Route path="/fields/document-subject">
+							<PrivateRoute exact path="/fields/document-subject">
 								<DocumentSubject />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
-								path="/fields-register/document-subject/create"
+								path="/fields/document-subject/create"
 							>
 								<CreateDocumentSubject />
 							</PrivateRoute>
 						</Route>
 
-						<Route path="/fields-register/box-abbreviation">
-							<PrivateRoute exact path="/fields-register/box-abbreviation">
+						<Route path="/fields/box-abbreviation">
+							<PrivateRoute exact path="/fields/box-abbreviation">
 								<BoxAbbreviation />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
-								path="/fields-register/box-abbreviation/create"
+								path="/fields/box-abbreviation/create"
 							>
 								<CreateBoxAbbreviation />
 							</PrivateRoute>
 						</Route>
 
-						<Route path="/fields-register/unity">
-							<PrivateRoute exact path="/fields-register/unity">
+						<Route path="/fields/unity">
+							<PrivateRoute exact path="/fields/unity">
 								<Unity />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields-register/unity/create">
+							<PrivateRoute exact={false} path="/fields/unity/create">
 								<CreateUnity />
 							</PrivateRoute>
 						</Route>
 
-						<Route path="/fields-register/document-type">
-							<PrivateRoute exact path="/fields-register/document-type">
+						<Route path="/fields/document-type">
+							<PrivateRoute exact path="/fields/document-type">
 								<DocumentType />
 							</PrivateRoute>
-
-							<PrivateRoute
-								exact={false}
-								path="/fields-register/document-type/create"
-							>
+							<PrivateRoute exact={false} path="/fields/document-type/create">
 								<CreateDocumentType />
 							</PrivateRoute>
 						</Route>
 
-						<Route path="/fields-register/shelf">
-							<PrivateRoute exact path="/fields-register/shelf">
+						<Route path="/fields/shelf">
+							<PrivateRoute exact path="/fields/shelf">
 								<Shelf />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields-register/shelf/create">
-								<CreateShelf />
+							<PrivateRoute exact={false} path="/fields/shelf/create">
+								<CreateShelfOrRack type="shelf"/>
+							</PrivateRoute>
+						</Route>
+
+						<Route path="/fields/rack">
+							<PrivateRoute exact path="/fields/rack">
+								<Rack />
+							</PrivateRoute>
+							<PrivateRoute exact={false} path="/fields/rack/create">
+								<CreateShelfOrRack type="rack"/>
 							</PrivateRoute>
 						</Route>
 					</Route>

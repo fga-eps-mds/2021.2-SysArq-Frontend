@@ -3,13 +3,11 @@ import PropTypes from "prop-types";
 
 import {
 	makeStyles,
-	createTheme,
-	ThemeProvider,
+	withStyles,
 	Paper,
 	Toolbar,
 	Typography,
-	Tooltip,
-	IconButton,
+	Button,
 	TableContainer,
 	Table,
 	TableHead,
@@ -17,21 +15,22 @@ import {
 	TableCell,
 	TableSortLabel,
 	TableBody,
+	IconButton,
 	TablePagination,
-	Snackbar,
 } from "@material-ui/core";
 
-import { ptBR } from "@material-ui/core/locale";
+import MuiLink from "@material-ui/core/Link";
 
-import AddIcon from "@material-ui/icons/Add";
-
-import { Alert, AlertTitle } from "@material-ui/lab";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 import tableHeadCells from "./tablesHeadCells";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
 
 import { logout } from "../../../support";
+
+import PopUpAlert from "../PopUpAlert";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -56,18 +55,23 @@ const useStyles = makeStyles((theme) => ({
 		position: "absolute",
 		width: 1,
 	},
+
+	link: {
+		marginLeft: theme.spacing(3),
+
+		fontWeight: "bold",
+		fontSize: "14px",
+		color: "#5389b5",
+	},
 }));
 
-// TO-DO: Transferir tema para App.js
-
-const theme = createTheme(
-	{
-		palette: {
-			primary: { main: "#1f3541" },
+const Link = withStyles({
+	root: {
+		"&:hover": {
+			color: "#1f3541",
 		},
 	},
-	ptBR
-);
+})(MuiLink);
 
 function stableSort(array, comparator) {
 	const stabilizedThis = array.map((el, index) => [el, index]);
@@ -83,7 +87,7 @@ function stableSort(array, comparator) {
 
 function descendingComparator(a, b, orderBy) {
 	return b[orderBy] && a[orderBy]
-		? b[orderBy].localeCompare(a[orderBy], undefined, {
+		? b[orderBy].toString().localeCompare(a[orderBy].toString(), undefined, {
 				numeric: true,
 				sensitivity: "base",
 		  })
@@ -113,6 +117,7 @@ const DataTable = ({ url, title }) => {
 
 	useEffect(() => {
 		setHeadCells(tableHeadCells(url));
+
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -120,35 +125,41 @@ const DataTable = ({ url, title }) => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
-				const token = localStorage.getItem("tk");
 
 				axiosArchives
-					.get(url, { headers: { Authorization: `JWT ${token}` } })
+					.get(url, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => {
 						if (url && url.includes("search")) {
 							const listTable = [];
+
 							listTable.push(...response.data.archival_relation);
 							listTable.push(...response.data.frequency_sheet);
 							listTable.push(...response.data.administrative_process);
 							listTable.push(...response.data.frequecy_relation);
+
 							setRows(listTable);
-							return;
+						} else {
+							setRows(response.data);
 						}
-						setRows(response.data);
 					})
 					.catch(() => {
 						setOpenAlert(true);
+
 						setAlertHelperText(
 							"Verifique sua conexão com a internet e recarregue a página."
 						);
 					});
-				return res;
+
+				return "get done";
 			})
 			.catch((error) => {
 				if (error.response && error.response.status === 401) {
 					logout();
 				} else {
 					setOpenAlert(true);
+
 					setAlertHelperText(
 						"Verifique sua conexão com a internet e recarregue a página."
 					);
@@ -156,9 +167,7 @@ const DataTable = ({ url, title }) => {
 			});
 	}, []);
 
-	const handleAlertClose = () => {
-		setOpenAlert(false);
-	};
+	const handleAlertClose = () => setOpenAlert(false);
 
 	const handleChangeRowsPerPage = (event) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
@@ -199,48 +208,57 @@ const DataTable = ({ url, title }) => {
 	};
 
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<Paper className={classes.paper}>
 				<Toolbar>
 					<Typography className={classes.title} variant="h6" component="div">
 						{title}
 					</Typography>
-					<Tooltip title="Adicionar">
-						<IconButton
-							href={`${url}create`}
-							aria-label="adicionar"
-							data-testid="botao-adicionar"
-						>
-							<AddIcon />
-						</IconButton>
-					</Tooltip>
+					<Button
+						disableElevation
+						style={{ fontWeight: "bold" }}
+						variant="outlined"
+						color="secondary"
+						href={`${url}create`}
+					>
+						Adicionar
+					</Button>
 				</Toolbar>
 				<TableContainer>
 					<Table>
 						<TableHead>
 							<TableRow>
 								{headCells.map((headCell) => (
-									<TableCell
-										key={headCell.id}
-										align={headCells.indexOf(headCell) === 0 ? "left" : "right"}
-										padding="normal"
-										sortDirection={orderBy === headCell.id ? order : false}
-									>
-										<TableSortLabel
-											active={orderBy === headCell.id}
-											direction={orderBy === headCell.id ? order : "asc"}
-											onClick={createSortHandler(headCell.id)}
+									<>
+										<TableCell
+											key={headCell.id}
+											align={
+												headCells.indexOf(headCell) === 0 ? "left" : "right"
+											}
+											padding="normal"
+											sortDirection={orderBy === headCell.id ? order : false}
 										>
-											{headCell.label}
-											{orderBy === headCell.id ? (
-												<span className={classes.visuallyHidden}>
-													{order === "desc"
-														? "sorted descending"
-														: "sorted ascending"}
-												</span>
-											) : null}
-										</TableSortLabel>
-									</TableCell>
+											<TableSortLabel
+												active={orderBy === headCell.id}
+												direction={orderBy === headCell.id ? order : "asc"}
+												onClick={createSortHandler(headCell.id)}
+											>
+												{headCell.label}
+												{orderBy === headCell.id ? (
+													<span className={classes.visuallyHidden}>
+														{order === "desc"
+															? "sorted descending"
+															: "sorted ascending"}
+													</span>
+												) : null}
+											</TableSortLabel>
+										</TableCell>
+										{headCells.indexOf(headCell) === headCells.length - 1 ? (
+											<TableCell aling="right">{}</TableCell>
+										) : (
+											""
+										)}
+									</>
 								))}
 							</TableRow>
 						</TableHead>
@@ -251,12 +269,30 @@ const DataTable = ({ url, title }) => {
 									<TableRow hover tabIndex={-1} key={row.id}>
 										{Array.from(Array(headCells.length).keys()).map(
 											(headCellIndex) => (
-												<TableCell
-													key={row[headCells[headCellIndex].id]}
-													align={headCellIndex === 0 ? "left" : "right"}
-												>
-													{cellContent(row, headCells[headCellIndex].id)}
-												</TableCell>
+												<>
+													<TableCell
+														key={row[headCells[headCellIndex].id]}
+														align={headCellIndex === 0 ? "left" : "right"}
+													>
+														{cellContent(row, headCells[headCellIndex].id)}
+													</TableCell>
+													{headCellIndex === headCells.length - 1 ? (
+														<TableCell align="right">
+															<IconButton color="secondary" size="small">
+																<EditIcon />
+															</IconButton>
+															<IconButton
+																style={{ color: "#fe0000" }}
+																color="inherit"
+																size="small"
+															>
+																<DeleteIcon />
+															</IconButton>
+														</TableCell>
+													) : (
+														""
+													)}
+												</>
 											)
 										)}
 									</TableRow>
@@ -278,21 +314,28 @@ const DataTable = ({ url, title }) => {
 					onPageChange={handleChangePage}
 					onRowsPerPageChange={handleChangeRowsPerPage}
 				/>
+
+				{url === "shelf/" || url === "rack/" ? (
+					<Typography style={{ marginBottom: "1%" }}>
+						<Link
+							className={classes.link}
+							href={url === "shelf/" ? "/fields/rack" : "/fields/shelf"}
+						>
+							Ver {url === "shelf/" ? "Prateleiras" : "Estantes"}
+						</Link>
+					</Typography>
+				) : (
+					""
+				)}
 			</Paper>
 
-			<Snackbar
-				style={{ textAlign: "left" }}
-				anchorOrigin={{ vertical: "top", horizontal: "right" }}
+			<PopUpAlert
 				open={openAlert}
-				autoHideDuration={10000}
-				onClose={handleAlertClose}
-			>
-				<Alert variant="filled" onClose={handleAlertClose} severity="error">
-					<AlertTitle>Erro</AlertTitle>
-					{alertHelperText}
-				</Alert>
-			</Snackbar>
-		</ThemeProvider>
+				handleClose={handleAlertClose}
+				severity="error"
+				helperText={alertHelperText}
+			/>
+		</>
 	);
 };
 
