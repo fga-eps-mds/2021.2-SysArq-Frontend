@@ -217,9 +217,7 @@ describe("DataTable and tablesHeadCells Test", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: /Next page/ }));
 
-		expect(
-			screen.getByRole("button", { name: /Next page/ })
-		).toBeDisabled();
+		expect(screen.getByRole("button", { name: /Next page/ })).toBeDisabled();
 		expect(
 			screen.getByRole("button", { name: /Previous page/ })
 		).not.toBeDisabled();

@@ -132,7 +132,7 @@ const shelfHeadCells = [
 	{
 		id: "number",
 		numeric: true,
-		label: "Estante",
+		label: "Número de Estante",
 	},
 ];
 
