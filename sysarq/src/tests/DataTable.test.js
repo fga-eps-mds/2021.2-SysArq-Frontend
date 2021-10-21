@@ -209,19 +209,19 @@ describe("DataTable and tablesHeadCells Test", () => {
 		).not.toBeInTheDocument();
 
 		expect(
-			screen.getByRole("button", { name: /Página anterior/ })
+			screen.getByRole("button", { name: /Previous page/ })
 		).toBeDisabled();
 		expect(
-			screen.getByRole("button", { name: /Próxima página/ })
+			screen.getByRole("button", { name: /Next page/ })
 		).not.toBeDisabled();
 
-		fireEvent.click(screen.getByRole("button", { name: /Próxima página/ }));
+		fireEvent.click(screen.getByRole("button", { name: /Next page/ }));
 
 		expect(
-			screen.getByRole("button", { name: /Próxima página/ })
+			screen.getByRole("button", { name: /Next page/ })
 		).toBeDisabled();
 		expect(
-			screen.getByRole("button", { name: /Página anterior/ })
+			screen.getByRole("button", { name: /Previous page/ })
 		).not.toBeDisabled();
 
 		fireEvent.mouseDown(screen.getByRole("button", { name: /10/ }));
@@ -263,7 +263,7 @@ describe("DataTable and tablesHeadCells Test", () => {
 	it("test shelf table head cells", async () => {
 		render(<DataTable title="Estante e Prateleira" url="shelf/" />);
 
-		expect(screen.getByText("Estante")).toBeInTheDocument();
+		expect(screen.getByText("Número de Estante")).toBeInTheDocument();
 	});
 
 	it("test status table head cells", async () => {

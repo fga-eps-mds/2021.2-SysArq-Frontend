@@ -8,31 +8,26 @@ const Fields = () => (
 		<MenuCard
 			icon="subject-icon"
 			title="Assunto do Documento"
-			url="/fields-register/document-subject"
+			url="/fields/document-subject"
 			lg={4}
 		/>
-		<MenuCard
-			icon="unit-icon"
-			title="Unidade"
-			url="/fields-register/unity"
-			lg={4}
-		/>
+		<MenuCard icon="unit-icon" title="Unidade" url="/fields/unity" lg={4} />
 		<MenuCard
 			icon="abbreviation-icon"
 			title="Caixa"
-			url="/fields-register/box-abbreviation"
+			url="/fields/box-abbreviation"
 			lg={4}
 		/>
 		<MenuCard
 			icon="document-type-icon"
 			title="Tipo de Documento"
-			url="/fields-register/document-type"
+			url="/fields/document-type"
 			lg={6}
 		/>
 		<MenuCard
 			icon="shelf-rack-icon"
 			title="Estante e Prateleira"
-			url="/fields-register/shelf"
+			url="/fields/shelf"
 			lg={6}
 		/>
 	</CardContainer>

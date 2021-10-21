@@ -17,6 +17,6 @@ describe("DataTable Connection Error Test", () => {
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
 
-		fireEvent.click(screen.getByRole("button", { name: /Fechar/ }));
+		fireEvent.click(screen.getByRole("button", { name: /Close/ }));
 	});
 });

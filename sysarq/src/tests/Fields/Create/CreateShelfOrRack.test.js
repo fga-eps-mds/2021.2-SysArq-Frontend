@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, act, within } from "@testing-library/react";
-import CreateShelf from "../../../pages/Fields/Create/CreateShelf";
+import CreateShelfOrRack from "../../../pages/Fields/Create/CreateShelfOrRack";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { inputChange } from "./inputTest.test";
@@ -39,7 +39,7 @@ const selectValue = (title) => {
 
 describe("Main component", () => {
 	it("Show page title", () => {
-		render(<CreateShelf />);
+		render(<CreateShelfOrRack />);
 
 		expect(
 			screen.getByText("Cadastrar estantes e prateleiras")
@@ -48,7 +48,7 @@ describe("Main component", () => {
 });
 
 const testEvent = async (object, findTextMsg) => {
-	render(<CreateShelf />);
+	render(<CreateShelfOrRack />);
 	selectValue(object[0]);
 	inputChange(object[1], object[2]);
 	fireEvent.click(screen.getByTestId("click"));

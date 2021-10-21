@@ -119,7 +119,7 @@ function App() {
 								<Shelf />
 							</PrivateRoute>
 							<PrivateRoute exact={false} path="/fields/shelf/create">
-								<CreateShelfOrRack type="shelf"/>
+								<CreateShelfOrRack type="shelf" />
 							</PrivateRoute>
 						</Route>
 
@@ -128,7 +128,7 @@ function App() {
 								<Rack />
 							</PrivateRoute>
 							<PrivateRoute exact={false} path="/fields/rack/create">
-								<CreateShelfOrRack type="rack"/>
+								<CreateShelfOrRack type="rack" />
 							</PrivateRoute>
 						</Route>
 					</Route>
