@@ -233,7 +233,7 @@ describe("DataTable and tablesHeadCells Test", () => {
 		render(<DataTable title="Sigla da Caixa" url="box-abbreviation/" />);
 
 		expect(screen.getByText("Número")).toBeInTheDocument();
-		expect(screen.getByText("Abreviação")).toBeInTheDocument();
+		expect(screen.getByText("Sigla")).toBeInTheDocument();
 		expect(screen.getByText("Nome")).toBeInTheDocument();
 		expect(screen.getByText("Ano")).toBeInTheDocument();
 	});
@@ -262,15 +262,6 @@ describe("DataTable and tablesHeadCells Test", () => {
 		render(<DataTable title="Estante e Prateleira" url="shelf/" />);
 
 		expect(screen.getByText("Número de Estante")).toBeInTheDocument();
-	});
-
-	it("test status table head cells", async () => {
-		render(<DataTable title="Status de Encaminhamento" url="status/" />);
-
-		expect(screen.getByText("Arquivado")).toBeInTheDocument();
-		expect(screen.getByText("Unidade que Encaminhou")).toBeInTheDocument();
-		expect(screen.getByText("Documento Solicitado")).toBeInTheDocument();
-		expect(screen.getByText("Data de Envio")).toBeInTheDocument();
 	});
 
 	it("test is_filed", async () => {
