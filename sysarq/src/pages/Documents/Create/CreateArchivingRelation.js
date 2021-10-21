@@ -424,13 +424,14 @@ const CreateArchivingRelation = () => {
 							shelf_id: shelf.id === undefined ? "" : shelf.id,
 							rack_id: rack.id === undefined ? "" : rack.id, //
 							document_type_id: documentType.id,
-						}, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, }
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				axiosProfileError(error, connectionError)
+				axiosProfileError(error, connectionError);
 			});
 
 		return "post done";
@@ -446,12 +447,14 @@ const CreateArchivingRelation = () => {
 				localStorage.setItem("tkr", res.data.refresh);
 
 				axiosArchives
-					.get("unity/", { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, })
+					.get("unity/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				axiosProfileError(error, connectionError)
+				axiosProfileError(error, connectionError);
 			});
 	}, []);
 
@@ -532,7 +535,7 @@ const CreateArchivingRelation = () => {
 											<TableRow>
 												<TableCell>Assunto</TableCell>
 												<TableCell>Datas</TableCell>
-												<TableCell>{ }</TableCell>
+												<TableCell>{}</TableCell>
 											</TableRow>
 										</TableHead>
 										<TableBody>

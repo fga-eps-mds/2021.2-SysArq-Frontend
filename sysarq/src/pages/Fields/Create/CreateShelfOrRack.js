@@ -91,7 +91,10 @@ export default function CreateShelfOrRack({ urlType }) {
 							`shelf/`,
 							{
 								number: numberE,
-							}, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, }
+							},
+							{
+								headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+							}
 						)
 						.then(() => {
 							setOpenAlert(true);
@@ -107,7 +110,10 @@ export default function CreateShelfOrRack({ urlType }) {
 							`rack/`,
 							{
 								number: numberP,
-							}, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, }
+							},
+							{
+								headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+							}
 						)
 						.then(() => {
 							setOpenAlert(true);
@@ -120,7 +126,7 @@ export default function CreateShelfOrRack({ urlType }) {
 				}
 			})
 			.catch((error) => {
-				axiosProfileError(error, connectionError)
+				axiosProfileError(error, connectionError);
 			});
 
 		setShelfNumberError(false);

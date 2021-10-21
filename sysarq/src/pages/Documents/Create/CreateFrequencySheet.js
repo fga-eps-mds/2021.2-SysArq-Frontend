@@ -197,13 +197,14 @@ const CreateFrequencySheet = () => {
 							abbreviation_id: abbreviation.id,
 							shelf_id: shelf.id,
 							rack_id: rack.id,
-						}, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, }
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				axiosProfileError(error, connectionError)
+				axiosProfileError(error, connectionError);
 			});
 
 		return "post done";

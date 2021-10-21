@@ -75,7 +75,8 @@ export default function CreateUnity() {
 							municipality: county,
 							telephone_number: telephoneNumber,
 							notes: note,
-						}, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, }
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => {
 						setOpenAlert(true);
@@ -87,7 +88,7 @@ export default function CreateUnity() {
 					});
 			})
 			.catch((error) => {
-				axiosProfileError(error, connectionError)
+				axiosProfileError(error, connectionError);
 			});
 		return null;
 	};

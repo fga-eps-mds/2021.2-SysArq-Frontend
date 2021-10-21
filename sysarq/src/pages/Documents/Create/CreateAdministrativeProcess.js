@@ -297,7 +297,8 @@ const CreateAdministrativeProcess = () => {
 								status === "Desarquivado" ? unarchiveProcessNumber : "",
 							notes,
 							filer_user: "filer_user",
-						}, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, }
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => onSuccess())
 					.catch(() => {
@@ -305,7 +306,7 @@ const CreateAdministrativeProcess = () => {
 					});
 			})
 			.catch((error) => {
-				axiosProfileError(error, connectionError)
+				axiosProfileError(error, connectionError);
 			});
 
 		return "post done";
@@ -320,17 +321,21 @@ const CreateAdministrativeProcess = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.get("document-subject/", { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, })
+					.get("document-subject/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setSubjects(response.data))
 					.catch(() => connectionError());
 
 				axiosArchives
-					.get("unity/", { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, })
+					.get("unity/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				axiosProfileError(error, connectionError)
+				axiosProfileError(error, connectionError);
 			});
 	}, []);
 

@@ -96,7 +96,8 @@ export default function CreateDocumentSubject() {
 						{
 							subject_name: documentSubject,
 							temporality: temporalityValue,
-						}, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, }
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => {
 						setOpenAlert(true);
@@ -110,7 +111,7 @@ export default function CreateDocumentSubject() {
 				return res;
 			})
 			.catch((error) => {
-				axiosProfileError(error, connectionError)
+				axiosProfileError(error, connectionError);
 			});
 		return null;
 	};
