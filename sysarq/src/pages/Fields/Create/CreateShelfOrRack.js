@@ -87,9 +87,17 @@ export default function CreateShelfOrRack({ urlType }) {
 
 				if (type === "Estante") {
 					axiosArchives
-						.post(`shelf/`, {
-							number: numberE,
-						})
+						.post(
+							`shelf/`,
+							{
+								number: numberE,
+							},
+							{
+								headers: {
+									Authorization: `JWT ${localStorage.getItem("tk")}`,
+								},
+							}
+						)
 						.then(() => {
 							setOpenAlert(true);
 							setSeverityAlert("success");
@@ -100,9 +108,17 @@ export default function CreateShelfOrRack({ urlType }) {
 						});
 				} else {
 					axiosArchives
-						.post(`rack/`, {
-							number: numberP,
-						})
+						.post(
+							`rack/`,
+							{
+								number: numberP,
+							},
+							{
+								headers: {
+									Authorization: `JWT ${localStorage.getItem("tk")}`,
+								},
+							}
+						)
 						.then(() => {
 							setOpenAlert(true);
 							setSeverityAlert("success");

@@ -9,7 +9,6 @@ const axiosProfile = axios.create({
 
 const axiosArchives = axios.create({
 	baseURL: hostApiArchives,
-	headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 });
 
 export { axiosProfile, axiosArchives };

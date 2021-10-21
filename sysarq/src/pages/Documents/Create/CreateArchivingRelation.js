@@ -406,23 +406,31 @@ const CreateArchivingRelation = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post("archival-relation/", {
-						box_list: originBoxes,
-						process_number: processNumber,
-						sender_unity: senderUnit.id,
-						notes,
-						number,
-						received_date: formatDate(receivedDate),
-						number_of_boxes: numberOfBoxes === "" ? 0 : numberOfBoxes,
-						document_url: "", //
-						cover_sheet: "", //
-						filer_user: "filer_user", //
-						abbreviation_id:
-							abbreviation.id === undefined ? "" : abbreviation.id,
-						shelf_id: shelf.id === undefined ? "" : shelf.id,
-						rack_id: rack.id === undefined ? "" : rack.id, //
-						document_type_id: documentType.id,
-					})
+					.post(
+						"archival-relation/",
+						{
+							box_list: originBoxes,
+							process_number: processNumber,
+							sender_unity: senderUnit.id,
+							notes,
+							number,
+							received_date: formatDate(receivedDate),
+							number_of_boxes: numberOfBoxes === "" ? 0 : numberOfBoxes,
+							document_url: "", //
+							cover_sheet: "", //
+							filer_user: "filer_user", //
+							abbreviation_id:
+								abbreviation.id === undefined ? "" : abbreviation.id,
+							shelf_id: shelf.id === undefined ? "" : shelf.id,
+							rack_id: rack.id === undefined ? "" : rack.id, //
+							document_type_id: documentType.id,
+						},
+						{
+							headers: {
+								Authorization: `JWT ${localStorage.getItem("tk")}`,
+							},
+						}
+					)
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
@@ -445,7 +453,9 @@ const CreateArchivingRelation = () => {
 				localStorage.setItem("tkr", res.data.refresh);
 
 				axiosArchives
-					.get("unity/")
+					.get("unity/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
 			})

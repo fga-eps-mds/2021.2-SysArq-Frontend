@@ -67,10 +67,18 @@ export default function CreateDocumentType() {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post(`document-type/`, {
-						document_name: documentName,
-						temporality: temporalityValue,
-					})
+					.post(
+						`document-type/`,
+						{
+							document_name: documentName,
+							temporality: temporalityValue,
+						},
+						{
+							headers: {
+								Authorization: `JWT ${localStorage.getItem("tk")}`,
+							},
+						}
+					)
 					.then(() => {
 						setOpenAlert(true);
 						setSeverityAlert("success");

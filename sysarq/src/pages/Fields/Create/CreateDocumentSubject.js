@@ -91,10 +91,18 @@ export default function CreateDocumentSubject() {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post(`document-subject/`, {
-						subject_name: documentSubject,
-						temporality: temporalityValue,
-					})
+					.post(
+						`document-subject/`,
+						{
+							subject_name: documentSubject,
+							temporality: temporalityValue,
+						},
+						{
+							headers: {
+								Authorization: `JWT ${localStorage.getItem("tk")}`,
+							},
+						}
+					)
 					.then(() => {
 						setOpenAlert(true);
 						setSeverityAlert("success");

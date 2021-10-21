@@ -140,19 +140,27 @@ const CreateFrequencyRelation = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post("frequency-relation/", {
-						process_number: processNumber,
-						notes,
-						filer_user: "filer_user",
-						number,
-						received_date: formatDate(receivedDate),
-						reference_period: referencePeriod,
-						sender_unity: senderUnit.id,
-						abbreviation_id: abbreviation.id,
-						shelf_id: shelf.id,
-						rack_id: rack.id,
-						document_type_id: documentType.id,
-					})
+					.post(
+						"frequency-relation/",
+						{
+							process_number: processNumber,
+							notes,
+							filer_user: "filer_user",
+							number,
+							received_date: formatDate(receivedDate),
+							reference_period: referencePeriod,
+							sender_unity: senderUnit.id,
+							abbreviation_id: abbreviation.id,
+							shelf_id: shelf.id,
+							rack_id: rack.id,
+							document_type_id: documentType.id,
+						},
+						{
+							headers: {
+								Authorization: `JWT ${localStorage.getItem("tk")}`,
+							},
+						}
+					)
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
@@ -176,7 +184,9 @@ const CreateFrequencyRelation = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.get("unity/")
+					.get("unity/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
 			})

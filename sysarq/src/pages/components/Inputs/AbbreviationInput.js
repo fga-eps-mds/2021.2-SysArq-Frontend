@@ -25,7 +25,9 @@ const AbbreviationInput = ({ set, connectionError, abbreviation }) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.get("box-abbreviation/")
+					.get("box-abbreviation/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setAbbreviations(response.data))
 					.catch(() => connectionError());
 			})

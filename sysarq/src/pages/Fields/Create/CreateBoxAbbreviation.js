@@ -82,12 +82,20 @@ export default function CreateBoxAbbreviation() {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post(`box-abbreviation/`, {
-						number: boxNumber,
-						abbreviation: boxAbbreviation,
-						name: boxName,
-						year: boxYear,
-					})
+					.post(
+						`box-abbreviation/`,
+						{
+							number: boxNumber,
+							abbreviation: boxAbbreviation,
+							name: boxName,
+							year: boxYear,
+						},
+						{
+							headers: {
+								Authorization: `JWT ${localStorage.getItem("tk")}`,
+							},
+						}
+					)
 					.then(() => {
 						setOpenAlert(true);
 						setSeverityAlert("success");

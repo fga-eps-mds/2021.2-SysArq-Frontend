@@ -182,20 +182,28 @@ const CreateFrequencySheet = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post("frequency-sheet/", {
-						person_name: workerName,
-						cpf,
-						role,
-						category: workerClass,
-						workplace,
-						municipal_area: district,
-						reference_period: formatDate(referencePeriod),
-						notes,
-						process_number: senderProcessNumber,
-						abbreviation_id: abbreviation.id,
-						shelf_id: shelf.id,
-						rack_id: rack.id,
-					})
+					.post(
+						"frequency-sheet/",
+						{
+							person_name: workerName,
+							cpf,
+							role,
+							category: workerClass,
+							workplace,
+							municipal_area: district,
+							reference_period: formatDate(referencePeriod),
+							notes,
+							process_number: senderProcessNumber,
+							abbreviation_id: abbreviation.id,
+							shelf_id: shelf.id,
+							rack_id: rack.id,
+						},
+						{
+							headers: {
+								Authorization: `JWT ${localStorage.getItem("tk")}`,
+							},
+						}
+					)
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})

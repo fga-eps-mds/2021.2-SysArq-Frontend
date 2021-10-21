@@ -64,16 +64,24 @@ export default function CreateUnity() {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post(`unity/`, {
-						unity_name: unityName,
-						unity_abbreviation: unityAbbreviation,
-						administrative_bond: administrativeBond,
-						bond_abbreviation: bondAbbreviation,
-						type_of_unity: unityType,
-						municipality: county,
-						telephone_number: telephoneNumber,
-						notes: note,
-					})
+					.post(
+						`unity/`,
+						{
+							unity_name: unityName,
+							unity_abbreviation: unityAbbreviation,
+							administrative_bond: administrativeBond,
+							bond_abbreviation: bondAbbreviation,
+							type_of_unity: unityType,
+							municipality: county,
+							telephone_number: telephoneNumber,
+							notes: note,
+						},
+						{
+							headers: {
+								Authorization: `JWT ${localStorage.getItem("tk")}`,
+							},
+						}
+					)
 					.then(() => {
 						setOpenAlert(true);
 						setSeverityAlert("success");
