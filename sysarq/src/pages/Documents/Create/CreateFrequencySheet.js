@@ -8,8 +8,8 @@ import {
 	formatDate,
 	initialPeriod,
 	isInt,
-	logout,
 	isDateNotValid,
+	axiosProfileError,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -197,22 +197,13 @@ const CreateFrequencySheet = () => {
 							abbreviation_id: abbreviation.id,
 							shelf_id: shelf.id,
 							rack_id: rack.id,
-						},
-						{
-							headers: {
-								Authorization: `JWT ${localStorage.getItem("tk")}`,
-							},
-						}
+						}, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, }
 					)
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else {
-					connectionError();
-				}
+				axiosProfileError(error, connectionError)
 			});
 
 		return "post done";

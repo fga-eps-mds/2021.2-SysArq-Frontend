@@ -65,3 +65,11 @@ export const auth = () => {
 	}
 	return null;
 };
+
+export function axiosProfileError(error, connectionError) {
+	if (error.response && error.response.status === 401) {
+		logout();
+	} else {
+		connectionError();
+	}
+}

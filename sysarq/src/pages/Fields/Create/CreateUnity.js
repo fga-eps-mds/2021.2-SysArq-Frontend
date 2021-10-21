@@ -2,7 +2,7 @@ import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import createForm from "../form";
-import { logout } from "../../../support";
+import { axiosProfileError } from "../../../support";
 
 export default function CreateUnity() {
 	const useStyles = makeStyles({
@@ -75,12 +75,7 @@ export default function CreateUnity() {
 							municipality: county,
 							telephone_number: telephoneNumber,
 							notes: note,
-						},
-						{
-							headers: {
-								Authorization: `JWT ${localStorage.getItem("tk")}`,
-							},
-						}
+						}, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}`, }, }
 					)
 					.then(() => {
 						setOpenAlert(true);
@@ -92,11 +87,7 @@ export default function CreateUnity() {
 					});
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else {
-					connectionError();
-				}
+				axiosProfileError(error, connectionError)
 			});
 		return null;
 	};
