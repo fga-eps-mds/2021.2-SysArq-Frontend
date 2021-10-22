@@ -1,6 +1,6 @@
 import { rest } from "msw";
 
-const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
+import { axiosArchives, axiosProfile } from "./Api";
 
 export const initialDate = new Date();
 
@@ -72,4 +72,25 @@ export function axiosProfileError(error, connectionError) {
 	} else {
 		connectionError();
 	}
+}
+export function getUnits(setUnits, connectionError) {
+	axiosProfile
+		.post(`api/token/refresh/`, {
+			refresh: localStorage.getItem("tkr"),
+		})
+		.then((res) => {
+			localStorage.setItem("tk", res.data.access);
+			localStorage.setItem("tkr", res.data.refresh);
+			axiosArchives
+				.get("unity/", {
+					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+				})
+				.then((response) => {
+					setUnits(response.data);
+				})
+				.catch(() => connectionError());
+		})
+		.catch((error) => {
+			axiosProfileError(error, connectionError);
+		});
 }

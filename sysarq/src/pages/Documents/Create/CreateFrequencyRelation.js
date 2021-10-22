@@ -8,6 +8,7 @@ import {
 	initialPeriod,
 	isDateNotValid,
 	axiosProfileError,
+	getUnits,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -168,23 +169,7 @@ const CreateFrequencyRelation = () => {
 	};
 
 	useEffect(() => {
-		axiosProfile
-			.post(`api/token/refresh/`, {
-				refresh: localStorage.getItem("tkr"),
-			})
-			.then((res) => {
-				localStorage.setItem("tk", res.data.access);
-				localStorage.setItem("tkr", res.data.refresh);
-				axiosArchives
-					.get("unity/", {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
-					.then((response) => setUnits(response.data))
-					.catch(() => connectionError());
-			})
-			.catch((error) => {
-				axiosProfileError(error, connectionError);
-			});
+		getUnits(setUnits, connectionError);
 	}, []);
 
 	return (
