@@ -1,8 +1,4 @@
-import { rest } from "msw";
-
 import { axiosArchives, axiosProfile } from "./Api";
-
-const axiosProfileTest = process.env.REACT_APP_URL_API_PROFILE;
 
 export const initialDate = new Date();
 
@@ -50,26 +46,6 @@ export function logout() {
 	localStorage.removeItem("isLogged");
 	window.location = "/login";
 }
-
-export const auth = () => {
-	// lint and test problem fix
-	const x = 1;
-	if (x) {
-		return rest.post(
-			`${axiosProfileTest}api/token/refresh/`,
-			(req, res, ctx) => {
-				if (req.body.refresh === "401") {
-					return res(ctx.status(401));
-				}
-				if (req.body.refresh === "404") {
-					return res(ctx.status(404));
-				}
-				return res(ctx.status(200));
-			}
-		);
-	}
-	return null;
-};
 
 export function axiosProfileError(error, connectionError) {
 	if (error.response && error.response.status === 401) {

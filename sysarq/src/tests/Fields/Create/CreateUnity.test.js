@@ -3,7 +3,7 @@ import CreateUnity from "../../../pages/Fields/Create/CreateUnity";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { testEvent } from "./inputTest.test";
-import { auth } from "../../../support";
+import { auth } from "../../support";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}unity/`;
 
