@@ -7,7 +7,8 @@ import {
 	formatDate,
 	initialPeriod,
 	isDateNotValid,
-	logout,
+	axiosProfileError,
+	getUnits,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -140,51 +141,35 @@ const CreateFrequencyRelation = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post("frequency-relation/", {
-						process_number: processNumber,
-						notes,
-						filer_user: "filer_user",
-						number,
-						received_date: formatDate(receivedDate),
-						reference_period: referencePeriod,
-						sender_unity: senderUnit.id,
-						abbreviation_id: abbreviation.id,
-						shelf_id: shelf.id,
-						rack_id: rack.id,
-						document_type_id: documentType.id,
-					})
+					.post(
+						"frequency-relation/",
+						{
+							process_number: processNumber,
+							notes,
+							filer_user: "filer_user",
+							number,
+							received_date: formatDate(receivedDate),
+							reference_period: referencePeriod,
+							sender_unity: senderUnit.id,
+							abbreviation_id: abbreviation.id,
+							shelf_id: shelf.id,
+							rack_id: rack.id,
+							document_type_id: documentType.id,
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+					)
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else {
-					connectionError();
-				}
+				axiosProfileError(error, connectionError);
 			});
 
 		return "post done";
 	};
 
 	useEffect(() => {
-		axiosProfile
-			.post(`api/token/refresh/`, {
-				refresh: localStorage.getItem("tkr"),
-			})
-			.then((res) => {
-				localStorage.setItem("tk", res.data.access);
-				localStorage.setItem("tkr", res.data.refresh);
-				axiosArchives
-					.get("unity/")
-					.then((response) => setUnits(response.data))
-					.catch(() => connectionError());
-			})
-			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else connectionError();
-			});
+		getUnits(setUnits, connectionError);
 	}, []);
 
 	return (

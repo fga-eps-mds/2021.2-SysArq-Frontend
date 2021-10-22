@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives, axiosProfile } from "../../../Api";
-import { logout } from "../../../support";
+import { axiosProfileError } from "../../../support";
 import PopUpAlert from "../../components/PopUpAlert";
 
 const useStyles = makeStyles({
@@ -87,9 +87,15 @@ export default function CreateShelfOrRack({ urlType }) {
 
 				if (type === "Estante") {
 					axiosArchives
-						.post(`shelf/`, {
-							number: numberE,
-						})
+						.post(
+							`shelf/`,
+							{
+								number: numberE,
+							},
+							{
+								headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+							}
+						)
 						.then(() => {
 							setOpenAlert(true);
 							setSeverityAlert("success");
@@ -100,9 +106,15 @@ export default function CreateShelfOrRack({ urlType }) {
 						});
 				} else {
 					axiosArchives
-						.post(`rack/`, {
-							number: numberP,
-						})
+						.post(
+							`rack/`,
+							{
+								number: numberP,
+							},
+							{
+								headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+							}
+						)
 						.then(() => {
 							setOpenAlert(true);
 							setSeverityAlert("success");
@@ -114,11 +126,7 @@ export default function CreateShelfOrRack({ urlType }) {
 				}
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else {
-					connectionError();
-				}
+				axiosProfileError(error, connectionError);
 			});
 
 		setShelfNumberError(false);

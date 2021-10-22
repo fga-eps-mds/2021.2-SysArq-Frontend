@@ -18,7 +18,7 @@ import {
 	isDateNotValid,
 	isInt,
 	formatDate,
-	logout,
+	axiosProfileError,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -268,43 +268,45 @@ const CreateAdministrativeProcess = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post("administrative-process/", {
-						notice_date: formatDate(noticeDate),
-						archiving_date: formatDate(archivingDate),
-						reference_month_year:
-							reference !== null ? formatDate(reference) : null,
-						process_number: processNumber,
-						cpf_cnpj: personRegistry,
-						interested,
-						subject_id: subject.id,
-						dest_unity_id: destinationUnit.id,
-						sender_unity: senderUnit.id,
-						sender_user: senderWorker,
-						abbreviation_id: abbreviation.id,
-						shelf_id: shelf.id,
-						rack_id: rack.id,
-						is_filed: isStatusFiled(status),
-						is_eliminated: status === "Eliminado",
-						unity_id:
-							status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
-						send_date:
-							unarchiveDate !== null && status === "Desarquivado"
-								? formatDate(unarchiveDate)
-								: null,
-						administrative_process_number:
-							status === "Desarquivado" ? unarchiveProcessNumber : "",
-						notes,
-						filer_user: "filer_user", //
-					})
+					.post(
+						"administrative-process/",
+						{
+							notice_date: formatDate(noticeDate),
+							archiving_date: formatDate(archivingDate),
+							reference_month_year:
+								reference !== null ? formatDate(reference) : null,
+							process_number: processNumber,
+							cpf_cnpj: personRegistry,
+							interested,
+							subject_id: subject.id,
+							dest_unity_id: destinationUnit.id,
+							sender_unity: senderUnit.id,
+							sender_user: senderWorker,
+							abbreviation_id: abbreviation.id,
+							shelf_id: shelf.id,
+							rack_id: rack.id,
+							is_filed: isStatusFiled(status),
+							is_eliminated: status === "Eliminado",
+							unity_id:
+								status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
+							send_date:
+								unarchiveDate !== null && status === "Desarquivado"
+									? formatDate(unarchiveDate)
+									: null,
+							administrative_process_number:
+								status === "Desarquivado" ? unarchiveProcessNumber : "",
+							notes,
+							filer_user: "filer_user",
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+					)
 					.then(() => onSuccess())
 					.catch(() => {
 						connectionError();
 					});
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else connectionError();
+				axiosProfileError(error, connectionError);
 			});
 
 		return "post done";
@@ -319,21 +321,21 @@ const CreateAdministrativeProcess = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.get("document-subject/")
+					.get("document-subject/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setSubjects(response.data))
 					.catch(() => connectionError());
 
 				axiosArchives
-					.get("unity/")
+					.get("unity/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else {
-					connectionError();
-				}
+				axiosProfileError(error, connectionError);
 			});
 	}, []);
 

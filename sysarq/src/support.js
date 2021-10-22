@@ -1,6 +1,4 @@
-import { rest } from "msw";
-
-const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
+import { axiosArchives, axiosProfile } from "./Api";
 
 export const initialDate = new Date();
 
@@ -49,19 +47,31 @@ export function logout() {
 	window.location = "/login";
 }
 
-export const auth = () => {
-	// lint and test problem fix
-	const x = 1;
-	if (x) {
-		return rest.post(`${axiosProfile}api/token/refresh/`, (req, res, ctx) => {
-			if (req.body.refresh === "401") {
-				return res(ctx.status(401));
-			}
-			if (req.body.refresh === "404") {
-				return res(ctx.status(404));
-			}
-			return res(ctx.status(200));
-		});
+export function axiosProfileError(error, connectionError) {
+	if (error.response && error.response.status === 401) {
+		logout();
+	} else {
+		connectionError();
 	}
-	return null;
-};
+}
+export function getUnits(setUnits, connectionError) {
+	axiosProfile
+		.post(`api/token/refresh/`, {
+			refresh: localStorage.getItem("tkr"),
+		})
+		.then((res) => {
+			localStorage.setItem("tk", res.data.access);
+			localStorage.setItem("tkr", res.data.refresh);
+			axiosArchives
+				.get("unity/", {
+					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+				})
+				.then((response) => {
+					setUnits(response.data);
+				})
+				.catch(() => connectionError());
+		})
+		.catch((error) => {
+			axiosProfileError(error, connectionError);
+		});
+}

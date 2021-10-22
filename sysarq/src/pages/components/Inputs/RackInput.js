@@ -26,7 +26,9 @@ const RackInput = ({ set, connectionError, rack }) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.get("rack/")
+					.get("rack/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setRacks(response.data))
 					.catch(() => connectionError());
 			})

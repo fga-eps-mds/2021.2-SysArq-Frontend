@@ -3,7 +3,7 @@ import CreateDocumentType from "../../../pages/Fields/Create/CreateDocumentType"
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { testEvent } from "./inputTest.test";
-import { auth } from "../../../support";
+import { auth } from "../../support";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}document-type/`;
 const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;

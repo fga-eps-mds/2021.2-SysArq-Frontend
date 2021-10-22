@@ -2,7 +2,7 @@ import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import createForm from "../form";
-import { logout } from "../../../support";
+import { axiosProfileError } from "../../../support";
 
 const useStyles = makeStyles({
 	input: {
@@ -67,10 +67,14 @@ export default function CreateDocumentType() {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post(`document-type/`, {
-						document_name: documentName,
-						temporality: temporalityValue,
-					})
+					.post(
+						`document-type/`,
+						{
+							document_name: documentName,
+							temporality: temporalityValue,
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+					)
 					.then(() => {
 						setOpenAlert(true);
 						setSeverityAlert("success");
@@ -81,11 +85,7 @@ export default function CreateDocumentType() {
 					});
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else {
-					connectionError();
-				}
+				axiosProfileError(error, connectionError);
 			});
 		return null;
 	};

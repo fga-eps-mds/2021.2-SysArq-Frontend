@@ -2,7 +2,7 @@ import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import createForm from "../form";
-import { logout } from "../../../support";
+import { axiosProfileError } from "../../../support";
 
 const useStyles = makeStyles((theme) => ({
 	input: {
@@ -82,12 +82,16 @@ export default function CreateBoxAbbreviation() {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post(`box-abbreviation/`, {
-						number: boxNumber,
-						abbreviation: boxAbbreviation,
-						name: boxName,
-						year: boxYear,
-					})
+					.post(
+						`box-abbreviation/`,
+						{
+							number: boxNumber,
+							abbreviation: boxAbbreviation,
+							name: boxName,
+							year: boxYear,
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+					)
 					.then(() => {
 						setOpenAlert(true);
 						setSeverityAlert("success");
@@ -98,11 +102,7 @@ export default function CreateBoxAbbreviation() {
 					});
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else {
-					connectionError();
-				}
+				axiosProfileError(error, connectionError);
 			});
 		setYearError(false);
 		setboxNumberError(false);
