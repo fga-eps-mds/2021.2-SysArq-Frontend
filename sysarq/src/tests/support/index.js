@@ -46,16 +46,13 @@ export const senderUnitSelector = async () => {
 
 export const auth = () => {
 	const axiosProfileTest = process.env.REACT_APP_URL_API_PROFILE;
-		return rest.post(
-			`${axiosProfileTest}api/token/refresh/`,
-			(req, res, ctx) => {
-				if (req.body.refresh === "401") {
-					return res(ctx.status(401));
-				}
-				if (req.body.refresh === "404") {
-					return res(ctx.status(404));
-				}
-				return res(ctx.status(200));
-			}
-		);
+	return rest.post(`${axiosProfileTest}api/token/refresh/`, (req, res, ctx) => {
+		if (req.body.refresh === "401") {
+			return res(ctx.status(401));
+		}
+		if (req.body.refresh === "404") {
+			return res(ctx.status(404));
+		}
+		return res(ctx.status(200));
+	});
 };
