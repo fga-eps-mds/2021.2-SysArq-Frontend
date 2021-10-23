@@ -44,23 +44,11 @@ const REQUIRED_DATE_ERROR_MESSAGE = "Insira uma data";
 
 const RECEIVED_DATE_FIELD_LABEL = "Data de Recebimento*";
 
-const NUMBER_OF_BOXES_FIELD_LABEL = "Nº de Caixas";
 
 describe("Create Archiving Relation Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateArchivingRelation />);
 
-		input(NUMBER_OF_BOXES_FIELD_LABEL, "-1");
-		submitClick();
-		isOnTheScreen("Insira um número válido");
-
-		input(NUMBER_OF_BOXES_FIELD_LABEL, "");
-		isNotOnTheScreen("Insira um número válido");
-		submitClick();
-		isOnTheScreen("Insira o número");
-
-		input("Número*", "2");
-		isNotOnTheScreen("Insira o número");
 		submitClick();
 		isOnTheScreen("Insira o número do processo");
 
@@ -78,12 +66,7 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		input(RECEIVED_DATE_FIELD_LABEL, "04/05/2006");
 		isNotOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
-		submitClick();
-		isOnTheScreen("Selecione um tipo de documento");
-
-		await documentTypeSelector();
-		isNotOnTheScreen("Selecione um tipo de documento");
-
+		
 		submitClick();
 		isOnTheScreen("Selecione uma unidade");
 
@@ -97,7 +80,6 @@ describe("Create Archiving Relation Screen Test", () => {
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
 
-		input(NUMBER_OF_BOXES_FIELD_LABEL, 10);
 
 		await abbreviationSelector();
 

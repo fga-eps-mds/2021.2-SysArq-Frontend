@@ -30,6 +30,13 @@ import TimelapseIcon from "@material-ui/icons/Timelapse";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import DocumentsTypeInput from "../../components/Inputs/DocumentsTypeInput";
+import ReceivedDateInput from "../../components/Inputs/ReceivedDateInput";
+import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
+import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
+import ShelfInput from "../../components/Inputs/ShelfInput";
+import RackInput from "../../components/Inputs/RackInput";
+import NotesInput from "../../components/Inputs/NotesInput";
 
 import {
 	initialDate,
@@ -44,10 +51,7 @@ import { axiosArchives, axiosProfile } from "../../../Api";
 
 import CardContainer from "../../components/Container/CardContainer";
 
-import NumberInput from "../../components/Inputs/NumberInput";
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
-
-import CommonSet from "../../components/CommonSet/CommonSet";
 
 import SpecialLabels from "../../components/SpecialLabels";
 
@@ -60,11 +64,8 @@ import PopUpAlert from "../../components/PopUpAlert";
 const CreateArchivingRelation = () => {
 	const [units, setUnits] = useState([]);
 
-	const [numberOfBoxes, setNumberOfBoxes] = useState(0);
-	const [number, setNumber] = useState("");
 	const [processNumber, setProcessNumber] = useState("");
 	const [receivedDate, setReceivedDate] = useState(initialDate);
-	const [documentType, setDocumentType] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
 	const [abbreviation, setAbbreviation] = useState("");
 	const [shelf, setShelf] = useState("");
@@ -73,11 +74,8 @@ const CreateArchivingRelation = () => {
 	const [originBoxes, setOriginBoxes] = useState([]);
 	// const [file, setFile] = useState("");
 
-	const [numberOfBoxesHelperText, setNumberOfBoxesHelperText] = useState("");
-	const [numberHelperText, setNumberHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
-	const [documentTypeHelperText, setDocumentTypeHelperText] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 
 	const [openNewOriginBoxDialog, setOpenNewOriginBoxDialog] = useState(false);
@@ -113,17 +111,16 @@ const CreateArchivingRelation = () => {
 		newOriginBoxSubjectDateHelperText,
 		setNewOriginBoxSubjectDateHelperText,
 	] = useState("");
+	
+	const [typeList, setTypeList] = useState([]);
+	const [typeListHelperText, setTypeListHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
+	
 
 	const [loading, setLoading] = useState(false);
-
-	const handleNumberOfBoxesChange = (event) => {
-		setNumberOfBoxesHelperText("");
-		setNumberOfBoxes(event.target.value);
-	};
 
 	const handleOpenNewOriginBoxDialog = () => setOpenNewOriginBoxDialog(true);
 
@@ -336,12 +333,8 @@ const CreateArchivingRelation = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText("Documento cadastrado!");
-
-		setNumberOfBoxes("");
-		setNumber("");
 		setProcessNumber("");
 		setReceivedDate(initialDate);
-		setDocumentType("");
 		setSenderUnit("");
 		setAbbreviation("");
 		setShelf("");
@@ -356,18 +349,6 @@ const CreateArchivingRelation = () => {
 
 	const onSubmit = () => {
 		setLoading(true);
-
-		if (numberOfBoxes !== "" && parseInt(numberOfBoxes, 10) < 0) {
-			setNumberOfBoxesHelperText("Insira um número válido");
-			setLoading(false);
-			return "numberOfBoxes error";
-		}
-
-		if (number === "") {
-			setNumberHelperText("Insira o número");
-			setLoading(false);
-			return "number error";
-		}
 
 		if (processNumber === "") {
 			setProcessNumberHelperText("Insira o número do processo");
@@ -385,12 +366,6 @@ const CreateArchivingRelation = () => {
 		) {
 			setLoading(false);
 			return "noticeDate error";
-		}
-
-		if (documentType === "") {
-			setDocumentTypeHelperText("Selecione um tipo de documento");
-			setLoading(false);
-			return "documentType error";
 		}
 
 		if (senderUnit === "") {
@@ -414,9 +389,7 @@ const CreateArchivingRelation = () => {
 							process_number: processNumber,
 							sender_unity: senderUnit.id,
 							notes,
-							number,
 							received_date: formatDate(receivedDate),
-							number_of_boxes: numberOfBoxes === "" ? 0 : numberOfBoxes,
 							document_url: "", //
 							cover_sheet: "", //
 							filer_user: "filer_user", //
@@ -424,7 +397,7 @@ const CreateArchivingRelation = () => {
 								abbreviation.id === undefined ? "" : abbreviation.id,
 							shelf_id: shelf.id === undefined ? "" : shelf.id,
 							rack_id: rack.id === undefined ? "" : rack.id, //
-							document_type_id: documentType.id,
+							document_types: typeList,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -443,31 +416,9 @@ const CreateArchivingRelation = () => {
 	}, []);
 
 	return (
-		<CardContainer title="Relação de Arquivamento" spacing={1}>
-			<Grid item xs={12} sm={6} md={2}>
-				<TextField
-					fullWidth
-					id="numberOfBoxes"
-					label="Nº de Caixas"
-					type="number"
-					value={numberOfBoxes}
-					onChange={handleNumberOfBoxesChange}
-					inputProps={{ maxLength: 20 }}
-					error={numberOfBoxesHelperText !== ""}
-					helperText={numberOfBoxesHelperText}
-				/>
-			</Grid>
+		<CardContainer title="Arquivamento de Caixas" spacing={1}>
 
-			<Grid item xs={12} sm={6} md={3}>
-				<NumberInput
-					setHelperText={setNumberHelperText}
-					set={setNumber}
-					number={number}
-					helperText={numberHelperText}
-				/>
-			</Grid>
-
-			<Grid item xs={12} sm={6} md={3}>
+			<Grid item xs={12} sm={6} md={6}>
 				<NumberProcessInput
 					setHelperText={setProcessNumberHelperText}
 					set={setProcessNumber}
@@ -476,30 +427,47 @@ const CreateArchivingRelation = () => {
 				/>
 			</Grid>
 
-			<CommonSet
-				setReceivedDateHelperText={setReceivedDateHelperText}
-				setReceivedDate={setReceivedDate}
-				receivedDate={receivedDate}
-				receivedDateHelperText={receivedDateHelperText}
-				setDocumentTypeHelperText={setDocumentTypeHelperText}
-				setDocumentType={setDocumentType}
-				connectionError={connectionError}
-				documentType={documentType}
-				documentTypeHelperText={documentTypeHelperText}
-				setSenderUnitHelperText={setSenderUnitHelperText}
-				setSenderUnit={setSenderUnit}
+			<Grid item xs={12} sm={6} md={6}>
+				<ReceivedDateInput
+					setHelperText={setReceivedDateHelperText}
+					set={setReceivedDate}
+					receivedDate={receivedDate}
+					helperText={receivedDateHelperText}
+				/>
+			</Grid>
+
+			<SenderUnitInput
+				setHelperText={setSenderUnitHelperText}
+				set={setSenderUnit}
 				senderUnit={senderUnit}
 				units={units}
 				senderUnitHelperText={senderUnitHelperText}
-				abbreviation={abbreviation}
-				setAbbreviation={setAbbreviation}
-				shelf={shelf}
-				setShelf={setShelf}
-				rack={rack}
-				setRack={setRack}
-				setNotes={setNotes}
-				notes={notes}
 			/>
+
+			<DocumentsTypeInput
+				typeList={typeList}
+				setTypeList={setTypeList}
+				typeListHelperText={typeListHelperText}
+				setTypeListHelperText={setTypeListHelperText}
+				connectionError={connectionError}
+			/>
+
+			<AbbreviationInput
+				abbreviation={abbreviation}
+				set={setAbbreviation}
+				connectionError={connectionError}
+			/>
+
+			<ShelfInput
+				shelf={shelf}
+				set={setShelf}
+				connectionError={connectionError}
+			/>
+
+			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
+
+			<NotesInput set={setNotes} notes={notes} />
+
 
 			<Grid item xs={12} sm={12} md={12}>
 				<SpecialLabels label="Caixas de Origem" />

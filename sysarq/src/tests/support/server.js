@@ -210,15 +210,12 @@ export const server = setupServer(
 			req.body.process_number === "3" &&
 			req.body.sender_unity === 38 &&
 			req.body.notes === "notes_test" &&
-			req.body.number === "2" &&
 			req.body.received_date === "2006-05-04" &&
-			req.body.number_of_boxes === "10" &&
 			req.body.document_url === "" &&
 			req.body.cover_sheet === "" &&
 			req.body.abbreviation_id === 43 &&
 			req.body.shelf_id === 46 &&
-			req.body.rack_id === 48 &&
-			req.body.document_type_id === 34
+			req.body.rack_id === 48
 		) {
 			return res(ctx.status(201));
 		}
