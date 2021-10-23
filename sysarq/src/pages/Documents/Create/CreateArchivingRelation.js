@@ -111,14 +111,13 @@ const CreateArchivingRelation = () => {
 		newOriginBoxSubjectDateHelperText,
 		setNewOriginBoxSubjectDateHelperText,
 	] = useState("");
-	
+
 	const [typeList, setTypeList] = useState([]);
 	const [typeListHelperText, setTypeListHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
-	
 
 	const [loading, setLoading] = useState(false);
 
@@ -417,7 +416,6 @@ const CreateArchivingRelation = () => {
 
 	return (
 		<CardContainer title="Arquivamento de Caixas" spacing={1}>
-
 			<Grid item xs={12} sm={6} md={6}>
 				<NumberProcessInput
 					setHelperText={setProcessNumberHelperText}
@@ -467,7 +465,6 @@ const CreateArchivingRelation = () => {
 			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
 
 			<NotesInput set={setNotes} notes={notes} />
-
 
 			<Grid item xs={12} sm={12} md={12}>
 				<SpecialLabels label="Caixas de Origem" />

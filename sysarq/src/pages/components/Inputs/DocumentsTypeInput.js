@@ -9,7 +9,7 @@ import {
 	DialogContent,
 	DialogActions,
 	Button,
-	TextField
+	TextField,
 } from "@material-ui/core";
 
 import Alert from "@material-ui/lab/Alert";
@@ -21,8 +21,6 @@ import ChipsContainer from "../Container/ChipsContainer";
 import DocumentTypeInput from "./DocumentTypeInput";
 import SpecialLabels from "../SpecialLabels";
 import AddChip from "../AddChip";
-
-
 
 const DocumentsTypeInput = ({
 	typeList,
@@ -48,10 +46,9 @@ const DocumentsTypeInput = ({
 
 	const handleMonthChange = (event) => {
 		setMonthHelperText("");
-		if(event.target.value===""){
+		if (event.target.value === "") {
 			setMonth(null);
-		}
-		else{
+		} else {
 			setMonth(event.target.value);
 		}
 	};
@@ -62,19 +59,25 @@ const DocumentsTypeInput = ({
 
 	const handleAddNewTypeDialog = () => {
 		if (type === "") {
-			setTypeHelperText("Selecione o tipo")
+			setTypeHelperText("Selecione um tipo");
 			return "type error";
 		}
-		if (parseInt(month, 10) < 0 || parseInt(month, 10) > 12) {
-			setTypeHelperText("Insira um mês válido")
+		if (parseInt(month, 10) < 1 || parseInt(month, 10) > 12) {
+			setTypeHelperText("Insira um mês válido");
 			return "month error";
 		}
 		if (parseInt(year, 10) < 1900 || year === "") {
-			setTypeHelperText("Insira um ano válido")
+			setTypeHelperText("Insira um ano válido");
 			return "year error";
 		}
 
-		const newType = { document_type_id: type.id, documentTypeName: type.document_name, month, year, temporality_date: parseInt(type.temporality,10) + parseInt(year,10) }
+		const newType = {
+			document_type_id: type.id,
+			documentTypeName: type.document_name,
+			month,
+			year,
+			temporality_date: parseInt(type.temporality, 10) + parseInt(year, 10),
+		};
 		const newTypeList = typeList;
 
 		newTypeList.push(newType);
@@ -108,7 +111,11 @@ const DocumentsTypeInput = ({
 					{typeList.map((addedType) => (
 						<Chip
 							icon={<Info />}
-							label={addedType.month === null ? `${addedType.documentTypeName} - ${addedType.year}` : `${addedType.documentTypeName} - ${addedType.month}/${addedType.year}`}
+							label={
+								addedType.month === null
+									? `${addedType.documentTypeName} - ${addedType.year}`
+									: `${addedType.documentTypeName} - ${addedType.month}/${addedType.year}`
+							}
 							color="secondary"
 							deleteIcon={<CancelIcon data-testid="delete" />}
 							onDelete={() => handleDeleteType(addedType)}
@@ -144,7 +151,7 @@ const DocumentsTypeInput = ({
 						onChange={handleMonthChange}
 						error={monthHelperText !== ""}
 						helperText={monthHelperText}
-						type='number'
+						type="number"
 						inputProps={{ maxLength: 2 }}
 					/>
 					<TextField
@@ -156,7 +163,7 @@ const DocumentsTypeInput = ({
 						onChange={handleYearChange}
 						error={yearHelperText !== ""}
 						helperText={yearHelperText}
-						type='number'
+						type="number"
 						inputProps={{ maxLength: 4 }}
 					/>
 				</DialogContent>
