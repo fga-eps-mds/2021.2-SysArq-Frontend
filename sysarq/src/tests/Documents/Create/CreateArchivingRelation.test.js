@@ -28,6 +28,12 @@ const isNotOnTheScreen = (text) => {
 	expect(screen.queryByText(text)).not.toBeInTheDocument();
 };
 
+const inputTypes = (field, value, error) => {
+	input(field, value);
+	fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+	isOnTheScreen(error);
+};
+
 const INVALID_YEAR_ERROR_MESSAGE = "Insira um ano válido";
 
 const DELETE_ORIGIN_BOX_BUTTON_LABEL = "Excluir Caixa de Origem";
@@ -44,23 +50,10 @@ const REQUIRED_DATE_ERROR_MESSAGE = "Insira uma data";
 
 const RECEIVED_DATE_FIELD_LABEL = "Data de Recebimento*";
 
-const NUMBER_OF_BOXES_FIELD_LABEL = "Nº de Caixas";
-
 describe("Create Archiving Relation Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateArchivingRelation />);
 
-		input(NUMBER_OF_BOXES_FIELD_LABEL, "-1");
-		submitClick();
-		isOnTheScreen("Insira um número válido");
-
-		input(NUMBER_OF_BOXES_FIELD_LABEL, "");
-		isNotOnTheScreen("Insira um número válido");
-		submitClick();
-		isOnTheScreen("Insira o número");
-
-		input("Número*", "2");
-		isNotOnTheScreen("Insira o número");
 		submitClick();
 		isOnTheScreen("Insira o número do processo");
 
@@ -78,11 +71,6 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		input(RECEIVED_DATE_FIELD_LABEL, "04/05/2006");
 		isNotOnTheScreen(INVALID_DATE_ERROR_MESSAGE);
-		submitClick();
-		isOnTheScreen("Selecione um tipo de documento");
-
-		await documentTypeSelector();
-		isNotOnTheScreen("Selecione um tipo de documento");
 
 		submitClick();
 		isOnTheScreen("Selecione uma unidade");
@@ -96,8 +84,6 @@ describe("Create Archiving Relation Screen Test", () => {
 		expect(errorAlert).toHaveTextContent(
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
-
-		input(NUMBER_OF_BOXES_FIELD_LABEL, 10);
 
 		await abbreviationSelector();
 
@@ -216,5 +202,26 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		const successAlert = await screen.findByRole("alert");
 		expect(successAlert).toHaveTextContent(/Documento cadastrado!/i);
+	});
+	it("type select", async () => {
+		render(<CreateArchivingRelation />);
+
+		fireEvent.click(screen.getByText("Adicionar Tipo"));
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("Selecione um tipo");
+		await documentTypeSelector();
+
+		inputTypes("Mês", "22", "Insira um mês válido");
+
+		inputTypes("Mês", "0", "Insira um mês válido");
+
+		inputTypes("Mês", "3", "Insira um ano válido");
+
+		inputTypes("Ano*", "1023", "Insira um ano válido");
+
+		input("Ano*", "2021");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("documentType_name_test - 3/2021");
+		await screen.findByText("CADASTRAR");
 	});
 });
