@@ -28,6 +28,12 @@ const isNotOnTheScreen = (text) => {
 	expect(screen.queryByText(text)).not.toBeInTheDocument();
 };
 
+const inputTypes = (field, value, error) => {
+	input(field, value);
+	fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+	isOnTheScreen(error);
+};
+
 const INVALID_YEAR_ERROR_MESSAGE = "Insira um ano válido";
 
 const DELETE_ORIGIN_BOX_BUTTON_LABEL = "Excluir Caixa de Origem";
@@ -205,20 +211,14 @@ describe("Create Archiving Relation Screen Test", () => {
 		isOnTheScreen("Selecione um tipo");
 		await documentTypeSelector();
 
-		input("Mês", "22");
-		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("Insira um mês válido");
+		inputTypes("Mês", "22", "Insira um mês válido");
 
-		input("Mês", "0");
-		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("Insira um mês válido");
+		inputTypes("Mês", "0", "Insira um mês válido");
 
-		input("Mês", "3");
-		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("Insira um ano válido");
-		input("Ano*", "1023");
-		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("Insira um ano válido");
+		inputTypes("Mês", "3", "Insira um ano válido");
+
+		inputTypes("Ano*", "1023", "Insira um ano válido");
+
 		input("Ano*", "2021");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("documentType_name_test - 3/2021");
