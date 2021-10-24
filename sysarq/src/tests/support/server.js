@@ -54,13 +54,14 @@ export const failedDocumentTypeServer = setupServer(
 
 export const failedAbbreviationServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}box-abbreviation//`, (req, res, ctx) =>
+	rest.get(`${hostApiArchives}box-abbreviation/`, (req, res, ctx) =>
 		res(res(ctx.status(404)))
 	)
 );
 
 export const server = setupServer(
 	refreshTokenRequest,
+
 	rest.get(`${hostApiArchives}document-subject/`, (req, res, ctx) =>
 		res(
 			ctx.json([
@@ -172,6 +173,13 @@ export const server = setupServer(
 						abbreviation: "abbreviation_test",
 						name: "abbreviation_name_test",
 						year: 2045,
+					},
+					{
+						id: 44,
+						number: 45,
+						abbreviation: "abbreviation_test",
+						name: "abbreviation_name_test",
+						year: 2046,
 					},
 				])
 			)

@@ -12,7 +12,7 @@ import {
 import Alert from "@material-ui/lab/Alert";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
-import { logout } from "../../../support";
+import { axiosProfileError } from "../../../support";
 
 const BoxInput = ({ set, connectionError, box }) => {
 	const [boxAbbreviations, setBoxAbbreviations] = useState([]);
@@ -71,9 +71,7 @@ const BoxInput = ({ set, connectionError, box }) => {
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else connectionError();
+				axiosProfileError(error, connectionError);
 			});
 	}, []);
 
@@ -105,9 +103,7 @@ const BoxInput = ({ set, connectionError, box }) => {
 						.catch(() => connectionError());
 				})
 				.catch((error) => {
-					if (error.response && error.response.status === 401) {
-						logout();
-					} else connectionError();
+					axiosProfileError(error, connectionError);
 				});
 		}
 	}, [boxAbbreviation]);
@@ -132,9 +128,7 @@ const BoxInput = ({ set, connectionError, box }) => {
 						.catch(() => connectionError());
 				})
 				.catch((error) => {
-					if (error.response && error.response.status === 401) {
-						logout();
-					} else connectionError();
+					axiosProfileError(error, connectionError);
 				});
 		}
 	}, [boxYear]);
