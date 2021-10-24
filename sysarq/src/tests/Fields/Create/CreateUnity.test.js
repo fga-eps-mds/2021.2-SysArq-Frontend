@@ -28,8 +28,6 @@ const makeObject = (unity_name_value) => {
 		UNITY_BOND_VALUE,
 		UNITY_BOND_ABR,
 		UNITY_BOND_ABR_VALUE,
-		UNITY_TYPE,
-		UNITY_TYPE_VALUE,
 		UNITY_MUNICIPALITY,
 		UNITY_MUNICIPALITY_VALUE,
 		UNITY_TELEPHONE,
@@ -51,8 +49,6 @@ const UNITY_BOND = "Vínculo administrativo";
 const UNITY_BOND_VALUE = "Jurídico";
 const UNITY_BOND_ABR = "Sigla do vínculo";
 const UNITY_BOND_ABR_VALUE = "SAG";
-const UNITY_TYPE = "Tipo de unidade";
-const UNITY_TYPE_VALUE = "Administrativa";
 const UNITY_MUNICIPALITY = "Município";
 const UNITY_MUNICIPALITY_VALUE = "Abadiania";
 const UNITY_TELEPHONE = "Telefone";

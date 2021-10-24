@@ -67,12 +67,6 @@ const unityHeadCells = [
 	},
 
 	{
-		id: "type_of_unity",
-		numeric: false,
-		label: "Tipo de Unidade",
-	},
-
-	{
 		id: "municipality",
 		numeric: false,
 		label: "Município",
@@ -147,6 +141,44 @@ const rackHeadCells = [
 	},
 ];
 
+const publicWorkerHeadCells = [
+	{
+		id: "name",
+		numeric: false,
+		label: "Nome",
+	},
+
+	{
+		id: "cpf",
+		numeric: false,
+		label: "CPF",
+	},
+
+	{
+		id: "role",
+		numeric: false,
+		label: "Cargo",
+	},
+
+	{
+		id: "category",
+		numeric: false,
+		label: "Classe",
+	},
+
+	{
+		id: "workplace",
+		numeric: false,
+		label: "Unidade",
+	},
+
+	{
+		id: "municipal_area",
+		numeric: false,
+		label: "Municipio",
+	},
+];
+
 const tableHeadCells = (url) => {
 	let headCells = [];
 
@@ -162,6 +194,8 @@ const tableHeadCells = (url) => {
 		headCells = shelfHeadCells;
 	} else if (url === "rack/") {
 		headCells = rackHeadCells;
+	} else if (url === "public-worker/") {
+		headCells = publicWorkerHeadCells;
 	} else if (url && url.includes("search")) {
 		headCells = headCellsSearch();
 	}
