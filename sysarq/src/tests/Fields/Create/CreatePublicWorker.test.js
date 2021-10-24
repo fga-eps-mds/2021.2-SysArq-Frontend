@@ -17,7 +17,7 @@ const MUNICIPALAREA = "Municipio";
 const server = setupServer(
 	auth(),
 	rest.post(axiosArchives, (req, res, ctx) => {
-		if (req.body.document_name === "201") {
+		if (req.body.name === "201") {
 			return res(ctx.status(201));
 		} else {
 			return res(ctx.status(404));
