@@ -1,4 +1,4 @@
-import { screen, render, fireEvent } from "@testing-library/react";
+import { screen, fireEvent, render, within } from "@testing-library/react";
 
 import { server } from "../../support/server";
 
@@ -7,7 +7,6 @@ import {
 	submitClick,
 	documentTypeSelector,
 	senderUnitSelector,
-	abbreviationSelector,
 	shelfSelector,
 	rackSelector,
 } from "../../support";
@@ -61,9 +60,9 @@ describe("Create Archiving Relation Screen Test", () => {
 		await documentTypeSelector();
 
 		inputTypes("Mês", "22", "Insira um mês válido");
-		
+
 		inputTypes("Mês", "0", "Insira um mês válido");
-		
+
 		inputTypes("Mês", "3", "Insira um ano válido");
 
 		inputTypes("Ano*", "1023", "Insira um ano válido");
@@ -71,8 +70,36 @@ describe("Create Archiving Relation Screen Test", () => {
 		input("Ano*", "2021");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("documentType_name_test - 3/2021");
-		
+
 		await screen.findByText("CADASTRAR");
+	});
+
+	it("box select", async () => {
+		render(<CreateArchivingRelation />);
+
+		fireEvent.mouseDown(screen.getByLabelText("Sigla da Caixa"));
+		const boxAbbreviationOptions = within(screen.getByRole("listbox"));
+		await boxAbbreviationOptions.findByText("abbreviation_test");
+		fireEvent.click(boxAbbreviationOptions.getByText(/abbreviation_test/i));
+
+		const warning = await screen.findByRole("alert");
+		expect(warning).toHaveTextContent(
+			/Selecione o Ano da Caixa e o Número da Caixa para cadastrar uma Caixa corretamente./i
+		);
+
+		fireEvent.mouseDown(screen.getByLabelText("Ano da Caixa"));
+		const boxYearOptions = within(screen.getByRole("listbox"));
+		await boxYearOptions.findByText("2045");
+		fireEvent.click(boxYearOptions.getByText(/2045/i));
+
+		fireEvent.mouseDown(screen.getByLabelText("Número da Caixa"));
+		const boxOptions = within(screen.getByRole("listbox"));
+		await boxOptions.findByText("44");
+		fireEvent.click(boxOptions.getByText(/44/i));
+
+		isNotOnTheScreen(
+			"Selecione o Ano da Caixa e o Número da Caixa para cadastrar uma Caixa corretamente."
+		);
 	});
 
 	it("validation and post error", async () => {
@@ -108,8 +135,15 @@ describe("Create Archiving Relation Screen Test", () => {
 		expect(errorAlert).toHaveTextContent(
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
+	});
 
-		await abbreviationSelector();
+	it("complete test", async () => {
+		render(<CreateArchivingRelation />);
+
+		input("Número do Processo*", "3");
+		input(RECEIVED_DATE_FIELD_LABEL, "04/05/2006");
+
+		await senderUnitSelector();
 
 		await shelfSelector();
 

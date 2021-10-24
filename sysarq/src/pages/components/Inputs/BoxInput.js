@@ -216,7 +216,8 @@ const BoxInput = ({ set, connectionError, box }) => {
 			{boxAbbreviation && (!boxYear || !box) ? (
 				<Grid item xs={12} sm={12} md={12}>
 					<Alert severity="warning">
-						Selecione o Ano da Caixa e o Número da Caixa para cadastrar uma Caixa corretamente.
+						Selecione o Ano da Caixa e o Número da Caixa para cadastrar uma
+						Caixa corretamente.
 					</Alert>
 				</Grid>
 			) : (
