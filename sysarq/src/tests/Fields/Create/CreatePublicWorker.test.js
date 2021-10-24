@@ -31,8 +31,6 @@ const CATEGORY = "Classe";
 const WORKPLACE = "Unidade";
 const MUNICIPALAREA = "Municipio";
 
-
-
 describe("Page test", () => {
 	// it("axios sucess", async () => {
 	// 	const objSuccess = [NAME, "201", CPF, "11111111111", ROLE, "test", CATEGORY, "test", WORKPLACE, "test", MUNICIPALAREA, "test"];
@@ -40,7 +38,20 @@ describe("Page test", () => {
 	// });
 
 	it("axios fail", async () => {
-		const objFail = [NAME, "401", CPF, "11111111111", ROLE, "test", CATEGORY, "test", WORKPLACE, "test", MUNICIPALAREA, "test"];
+		const objFail = [
+			NAME,
+			"401",
+			CPF,
+			"11111111111",
+			ROLE,
+			"test",
+			CATEGORY,
+			"test",
+			WORKPLACE,
+			"test",
+			MUNICIPALAREA,
+			"test",
+		];
 		await testEvent(
 			<CreatePublicWorker />,
 			objFail,
@@ -49,31 +60,75 @@ describe("Page test", () => {
 	});
 
 	it("name null", async () => {
-		const objFail = [NAME, "", CPF, "11111111111", ROLE, "test", CATEGORY, "test", WORKPLACE, "test", MUNICIPALAREA, "test"];
-		await testEvent(
-			<CreatePublicWorker />,
-			objFail,
-			"Insira um nome"
-		);
+		const objFail = [
+			NAME,
+			"",
+			CPF,
+			"11111111111",
+			ROLE,
+			"test",
+			CATEGORY,
+			"test",
+			WORKPLACE,
+			"test",
+			MUNICIPALAREA,
+			"test",
+		];
+		await testEvent(<CreatePublicWorker />, objFail, "Insira um nome");
 	});
 
 	it("temporality null", async () => {
-		const objFail = [NAME, "test", CPF, "", ROLE, "test", CATEGORY, "test", WORKPLACE, "test", MUNICIPALAREA, "test"];
+		const objFail = [
+			NAME,
+			"test",
+			CPF,
+			"",
+			ROLE,
+			"test",
+			CATEGORY,
+			"test",
+			WORKPLACE,
+			"test",
+			MUNICIPALAREA,
+			"test",
+		];
 		await testEvent(<CreatePublicWorker />, objFail, "Insira um CPF válido");
 	});
 
 	it("localstorage fail", async () => {
-		const objFail = [NAME, "test", CPF, "11111111111", ROLE, "test", CATEGORY, "test", WORKPLACE, "test", MUNICIPALAREA, "test"];
+		const objFail = [
+			NAME,
+			"test",
+			CPF,
+			"11111111111",
+			ROLE,
+			"test",
+			CATEGORY,
+			"test",
+			WORKPLACE,
+			"test",
+			MUNICIPALAREA,
+			"test",
+		];
 		localStorage.setItem("tkr", 401);
-		await testEvent(
-			<CreatePublicWorker />,
-			objFail,
-			"Cadastrar servidor"
-		);
+		await testEvent(<CreatePublicWorker />, objFail, "Cadastrar servidor");
 	});
 
 	it("localstorage2 fail", async () => {
-		const objFail = [NAME, "test", CPF, "11111111111", ROLE, "test", CATEGORY, "test", WORKPLACE, "test", MUNICIPALAREA, "test"];
+		const objFail = [
+			NAME,
+			"test",
+			CPF,
+			"11111111111",
+			ROLE,
+			"test",
+			CATEGORY,
+			"test",
+			WORKPLACE,
+			"test",
+			MUNICIPALAREA,
+			"test",
+		];
 		localStorage.setItem("tkr", 404);
 		await testEvent(
 			<CreatePublicWorker />,

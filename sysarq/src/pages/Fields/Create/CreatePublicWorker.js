@@ -4,8 +4,7 @@ import { axiosArchives, axiosProfile } from "../../../Api";
 import createForm from "../form";
 import { axiosProfileError } from "../../../support";
 
-const isCpfValid = (cpfLength) =>
-	cpfLength === 11;
+const isCpfValid = (cpfLength) => cpfLength === 11;
 
 const useStyles = makeStyles({
 	input: {
@@ -27,16 +26,16 @@ export default function CreatePublicWorker() {
 	const classes = useStyles();
 
 	const [workerName, setName] = useState("");
-    const [workerCpf, setCpf] = useState("");
-    const [workerRole, setRole] = useState("");
-    const [workerCategory, setCategory] = useState("");
-    const [workerWorkplace, setWorkplace] = useState("");
-    const [municipalArea, setMunicipalArea] = useState("");
+	const [workerCpf, setCpf] = useState("");
+	const [workerRole, setRole] = useState("");
+	const [workerCategory, setCategory] = useState("");
+	const [workerWorkplace, setWorkplace] = useState("");
+	const [municipalArea, setMunicipalArea] = useState("");
 
-    const [nameError, setNameError] = useState(false);
-    const [nameHelperText, setNameHelperText] = useState("");
-    const [cpfError, setCpfError] = useState(false);
-    const [cpfHelperText, setCpfHelperText] = useState("");
+	const [nameError, setNameError] = useState(false);
+	const [nameHelperText, setNameHelperText] = useState("");
+	const [cpfError, setCpfError] = useState(false);
+	const [cpfHelperText, setCpfHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [alertHelperText, setAlertHelperText] = useState("");
@@ -75,8 +74,8 @@ export default function CreatePublicWorker() {
 			error: cpfError,
 			setHelperText: setCpfHelperText,
 			setError: setCpfError,
-        },
-        {
+		},
+		{
 			type: "text",
 			placeholder: "Cargo",
 			setValue: setRole,
@@ -89,8 +88,8 @@ export default function CreatePublicWorker() {
 			setError: () => {
 				"";
 			},
-        },
-        {
+		},
+		{
 			type: "text",
 			placeholder: "Classe",
 			setValue: setCategory,
@@ -103,8 +102,8 @@ export default function CreatePublicWorker() {
 			setError: () => {
 				"";
 			},
-        },
-        {
+		},
+		{
 			type: "text",
 			placeholder: "Unidade",
 			setValue: setWorkplace,
@@ -117,8 +116,8 @@ export default function CreatePublicWorker() {
 			setError: () => {
 				"";
 			},
-        },
-        {
+		},
+		{
 			type: "text",
 			placeholder: "Municipio",
 			setValue: setMunicipalArea,
@@ -131,20 +130,20 @@ export default function CreatePublicWorker() {
 			setError: () => {
 				"";
 			},
-        },
+		},
 	];
 
 	const onClick = () => {
-        if(workerName === "") {
-            setNameError(true);
-            setNameHelperText("Insira um nome");
-            return "Erro";
-        }
-        if (!isCpfValid(workerCpf.length)) {
-            setCpfError(true);
-            setCpfHelperText("Insira um CPF válido");
-            return "Erro";
-        }
+		if (workerName === "") {
+			setNameError(true);
+			setNameHelperText("Insira um nome");
+			return "Erro";
+		}
+		if (!isCpfValid(workerCpf.length)) {
+			setCpfError(true);
+			setCpfHelperText("Insira um CPF válido");
+			return "Erro";
+		}
 
 		axiosProfile
 			.post(`api/token/refresh/`, {
@@ -157,12 +156,12 @@ export default function CreatePublicWorker() {
 					.post(
 						`public-worker/`,
 						{
-                            name: workerName,
-                            cpf: workerCpf,
-                            role: workerRole,
-                            category: workerCategory,
-                            workplace: workerWorkplace,
-                            municipal_area: municipalArea
+							name: workerName,
+							cpf: workerCpf,
+							role: workerRole,
+							category: workerCategory,
+							workplace: workerWorkplace,
+							municipal_area: municipalArea,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
