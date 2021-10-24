@@ -54,7 +54,56 @@ export default function CreatePublicWorker() {
 		);
 	};
 
-	const fields = [
+	const onClick = () => {
+		if (workerName === "") {
+			setNameError(true);
+			setNameHelperText("Insira um nome");
+			return "Erro";
+		}
+		if (!isCpfValid(workerCpf.length)) {
+			setCpfError(true);
+			setCpfHelperText("Insira um CPF válido");
+			return "Erro";
+		}
+
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.post(
+						`public-worker/`,
+						{
+							name: workerName,
+							cpf: workerCpf,
+							role: workerRole,
+							category: workerCategory,
+							workplace: workerWorkplace,
+							municipal_area: municipalArea,
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+					)
+					.then(() => {
+						setOpenAlert(true);
+						setSeverityAlert("success");
+						setAlertHelperText("Servidor cadastrado!");
+					})
+					.catch(() => {
+						connectionError();
+					});
+
+				return res;
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+		return null;
+	};
+
+	const values = [
 		{
 			type: "text",
 			placeholder: "Nome*",
@@ -133,62 +182,13 @@ export default function CreatePublicWorker() {
 		},
 	];
 
-	const onClick = () => {
-		if (workerName === "") {
-			setNameError(true);
-			setNameHelperText("Insira um nome");
-			return "Erro";
-		}
-		if (!isCpfValid(workerCpf.length)) {
-			setCpfError(true);
-			setCpfHelperText("Insira um CPF válido");
-			return "Erro";
-		}
-
-		axiosProfile
-			.post(`api/token/refresh/`, {
-				refresh: localStorage.getItem("tkr"),
-			})
-			.then((res) => {
-				localStorage.setItem("tk", res.data.access);
-				localStorage.setItem("tkr", res.data.refresh);
-				axiosArchives
-					.post(
-						`public-worker/`,
-						{
-							name: workerName,
-							cpf: workerCpf,
-							role: workerRole,
-							category: workerCategory,
-							workplace: workerWorkplace,
-							municipal_area: municipalArea,
-						},
-						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
-					)
-					.then(() => {
-						setOpenAlert(true);
-						setSeverityAlert("success");
-						setAlertHelperText("Servidor cadastrado!");
-					})
-					.catch(() => {
-						connectionError();
-					});
-
-				return res;
-			})
-			.catch((error) => {
-				axiosProfileError(error, connectionError);
-			});
-		return null;
-	};
-
-	const title = "Arquivo Geral da Policia Civil de Goiás";
-	const subtitle = "Cadastrar servidor";
+	const pageTitle = "Arquivo Geral da Policia Civil de Goiás";
+	const pageSubtitle = "Cadastrar servidor";
 
 	return createForm(
-		fields,
-		title,
-		subtitle,
+		values,
+		pageTitle,
+		pageSubtitle,
 		classes,
 		onClick,
 		openAlert,

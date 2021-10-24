@@ -6,7 +6,13 @@ import { testEvent } from "./inputTest.test";
 import { auth } from "../../support";
 
 const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}public-worker/`;
-const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
+
+const NAME = "Nome*";
+const CPF = "CPF*";
+const ROLE = "Cargo";
+const CATEGORY = "Classe";
+const WORKPLACE = "Unidade";
+const MUNICIPALAREA = "Municipio";
 
 const server = setupServer(
 	auth(),
@@ -24,19 +30,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 jest.useFakeTimers();
 
-const NAME = "Nome*";
-const CPF = "CPF*";
-const ROLE = "Cargo";
-const CATEGORY = "Classe";
-const WORKPLACE = "Unidade";
-const MUNICIPALAREA = "Municipio";
-
 describe("Page test", () => {
-	// it("axios sucess", async () => {
-	// 	const objSuccess = [NAME, "201", CPF, "11111111111", ROLE, "test", CATEGORY, "test", WORKPLACE, "test", MUNICIPALAREA, "test"];
-	// 	await testEvent(<CreatePublicWorker />, objSuccess, "Servidor cadastrado!");
-	// });
-
 	it("axios fail", async () => {
 		const objFail = [
 			NAME,
