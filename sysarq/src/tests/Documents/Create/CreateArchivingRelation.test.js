@@ -51,7 +51,31 @@ const REQUIRED_DATE_ERROR_MESSAGE = "Insira uma data";
 const RECEIVED_DATE_FIELD_LABEL = "Data de Recebimento*";
 
 describe("Create Archiving Relation Screen Test", () => {
-	it("complete test", async () => {
+	it("type select", async () => {
+		render(<CreateArchivingRelation />);
+
+		fireEvent.click(screen.getByText("Adicionar Tipo"));
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("Selecione um tipo");
+
+		await documentTypeSelector();
+
+		inputTypes("Mês", "22", "Insira um mês válido");
+		
+		inputTypes("Mês", "0", "Insira um mês válido");
+		
+		inputTypes("Mês", "3", "Insira um ano válido");
+
+		inputTypes("Ano*", "1023", "Insira um ano válido");
+
+		input("Ano*", "2021");
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("documentType_name_test - 3/2021");
+		
+		await screen.findByText("CADASTRAR");
+	});
+
+	it("validation and post error", async () => {
 		render(<CreateArchivingRelation />);
 
 		submitClick();
@@ -202,26 +226,5 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		const successAlert = await screen.findByRole("alert");
 		expect(successAlert).toHaveTextContent(/Documento cadastrado!/i);
-	});
-	it("type select", async () => {
-		render(<CreateArchivingRelation />);
-
-		fireEvent.click(screen.getByText("Adicionar Tipo"));
-		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("Selecione um tipo");
-		await documentTypeSelector();
-
-		inputTypes("Mês", "22", "Insira um mês válido");
-
-		inputTypes("Mês", "0", "Insira um mês válido");
-
-		inputTypes("Mês", "3", "Insira um ano válido");
-
-		inputTypes("Ano*", "1023", "Insira um ano válido");
-
-		input("Ano*", "2021");
-		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("documentType_name_test - 3/2021");
-		await screen.findByText("CADASTRAR");
 	});
 });
