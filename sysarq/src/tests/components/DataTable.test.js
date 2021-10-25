@@ -4,7 +4,7 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { render, fireEvent, screen, within } from "@testing-library/react";
 
-import DataTable from "../pages/components/DataTable";
+import DataTable from "../../pages/components/DataTable";
 
 const axiosArchives = process.env.REACT_APP_URL_API_ARCHIVES;
 const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;

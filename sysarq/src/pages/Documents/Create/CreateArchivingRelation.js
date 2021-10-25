@@ -30,10 +30,10 @@ import TimelapseIcon from "@material-ui/icons/Timelapse";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
+
 import DocumentsTypeInput from "../../components/Inputs/DocumentsTypeInput";
 import ReceivedDateInput from "../../components/Inputs/ReceivedDateInput";
 import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
-import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
 import ShelfInput from "../../components/Inputs/ShelfInput";
 import RackInput from "../../components/Inputs/RackInput";
 import NotesInput from "../../components/Inputs/NotesInput";
@@ -55,6 +55,8 @@ import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 
 import SpecialLabels from "../../components/SpecialLabels";
 
+import BoxInput from "../../components/Inputs/BoxInput";
+
 import ChipsContainer from "../../components/Container/ChipsContainer";
 import AddChip from "../../components/AddChip";
 
@@ -67,7 +69,7 @@ const CreateArchivingRelation = () => {
 	const [processNumber, setProcessNumber] = useState("");
 	const [receivedDate, setReceivedDate] = useState(initialDate);
 	const [senderUnit, setSenderUnit] = useState("");
-	const [abbreviation, setAbbreviation] = useState("");
+	const [box, setBox] = useState("");
 	const [shelf, setShelf] = useState("");
 	const [rack, setRack] = useState("");
 	const [notes, setNotes] = useState("");
@@ -335,7 +337,7 @@ const CreateArchivingRelation = () => {
 		setProcessNumber("");
 		setReceivedDate(initialDate);
 		setSenderUnit("");
-		setAbbreviation("");
+		setBox("");
 		setShelf("");
 		setRack("");
 		setNotes("");
@@ -392,8 +394,7 @@ const CreateArchivingRelation = () => {
 							document_url: "", //
 							cover_sheet: "", //
 							filer_user: "filer_user", //
-							abbreviation_id:
-								abbreviation.id === undefined ? "" : abbreviation.id,
+							abbreviation_id: box.id === undefined ? "" : box.id,
 							shelf_id: shelf.id === undefined ? "" : shelf.id,
 							rack_id: rack.id === undefined ? "" : rack.id, //
 							document_types: typeList,
@@ -450,11 +451,7 @@ const CreateArchivingRelation = () => {
 				connectionError={connectionError}
 			/>
 
-			<AbbreviationInput
-				abbreviation={abbreviation}
-				set={setAbbreviation}
-				connectionError={connectionError}
-			/>
+			<BoxInput box={box} set={setBox} connectionError={connectionError} />
 
 			<ShelfInput
 				shelf={shelf}

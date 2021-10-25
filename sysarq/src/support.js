@@ -54,6 +54,7 @@ export function axiosProfileError(error, connectionError) {
 		connectionError();
 	}
 }
+
 export function getUnits(setUnits, connectionError) {
 	axiosProfile
 		.post(`api/token/refresh/`, {

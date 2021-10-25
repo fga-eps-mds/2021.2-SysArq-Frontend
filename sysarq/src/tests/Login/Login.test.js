@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import Login from "../pages/Login/index";
+import Login from "../../pages/Login";
 
 import { rest } from "msw";
 import { setupServer } from "msw/node";
