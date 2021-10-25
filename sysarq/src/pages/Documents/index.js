@@ -22,9 +22,9 @@ const Documents = () => (
 			lg={3}
 		/>
 		<MenuCard
-			icon="archiving-relation-icon"
-			title="Relação de Arquivamento"
-			url="/documents/archiving-relation/create"
+			icon="box-archiving-icon"
+			title="Arquivamento de Caixas"
+			url="/documents/box-archiving/create"
 			lg={3}
 		/>
 	</CardContainer>

@@ -27,7 +27,7 @@ describe("Auth Connection Error Test", () => {
 		);
 	});
 
-	it("wrong token in CreateArchivingRelation", async () => {
+	it("wrong token in CreateBoxArchiving", async () => {
 		localStorage.setItem("tkr", 401);
 		render(<CreateArchivingRelation />);
 		await screen.findByText("Arquivamento de Caixas");

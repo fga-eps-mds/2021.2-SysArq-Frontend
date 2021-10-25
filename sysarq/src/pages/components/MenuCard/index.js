@@ -15,11 +15,12 @@ import AbbreviationIcon from "@material-ui/icons/LocalOffer";
 import UnitIcon from "@material-ui/icons/HomeWork";
 import DocumentTypeIcon from "@material-ui/icons/Class";
 import ShelfRackIcon from "@material-ui/icons/GridOn";
+import PublicWorkerIcon from "@material-ui/icons/Person";
+
 import AdministrativeProcessIcon from "@material-ui/icons/Assignment";
 import FrequencyRelationIcon from "@material-ui/icons/Description";
 import FrequencySheetIcon from "@material-ui/icons/AccountBox";
-import ArchivingRelationIcon from "@material-ui/icons/AllInbox";
-import PublicWorkerIcon from "@material-ui/icons/Person";
+import BoxArchivingIcon from "@material-ui/icons/AllInbox";
 
 import "./styles.css";
 
@@ -45,16 +46,16 @@ const Icon = ({ iconName }) => {
 		icon = <DocumentTypeIcon className={classes.icon} />;
 	} else if (iconName === "shelf-rack-icon") {
 		icon = <ShelfRackIcon className={classes.icon} />;
-	} else if (iconName === "administrative-process-icon") {
+	} else if (iconName === "public-worker-icon") {
+		icon = <PublicWorkerIcon className={classes.icon} />;
+	}  else if (iconName === "administrative-process-icon") {
 		icon = <AdministrativeProcessIcon className={classes.icon} />;
 	} else if (iconName === "frequency-relation-icon") {
 		icon = <FrequencyRelationIcon className={classes.icon} />;
 	} else if (iconName === "frequency-sheet-icon") {
 		icon = <FrequencySheetIcon className={classes.icon} />;
-	} else if (iconName === "public-worker-icon") {
-		icon = <PublicWorkerIcon className={classes.icon} />;
 	} else {
-		icon = <ArchivingRelationIcon className={classes.icon} />;
+		icon = <BoxArchivingIcon className={classes.icon} />;
 	}
 
 	return icon;

@@ -63,7 +63,7 @@ import AddChip from "../../components/AddChip";
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
-const CreateArchivingRelation = () => {
+const CreateBoxArchiving = () => {
 	const [units, setUnits] = useState([]);
 
 	const [processNumber, setProcessNumber] = useState("");
@@ -384,7 +384,7 @@ const CreateArchivingRelation = () => {
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
 					.post(
-						"archival-relation/",
+						"box-archiving/",
 						{
 							box_list: originBoxes,
 							process_number: processNumber,
@@ -755,4 +755,4 @@ const CreateArchivingRelation = () => {
 	);
 };
 
-export default CreateArchivingRelation;
+export default CreateBoxArchiving;
