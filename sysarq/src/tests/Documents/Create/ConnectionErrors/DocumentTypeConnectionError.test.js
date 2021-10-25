@@ -17,19 +17,4 @@ describe("DocumentType Connection Error Test", () => {
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
 	});
-
-	it("localstorage test", async () => {
-		localStorage.setItem("tkr", 401);
-		render(<CreateFrequencyRelation />);
-		await screen.findByText("Relação de Frequências");
-	});
-
-	it("localstorage2 test", async () => {
-		localStorage.setItem("tkr", 404);
-		render(<CreateFrequencyRelation />);
-		const errorAlert = await screen.findByRole("alert");
-		expect(errorAlert).toHaveTextContent(
-			/Verifique sua conexão com a internet e recarregue a página./i
-		);
-	});
 });
