@@ -2,13 +2,7 @@ import { screen, render, fireEvent, within } from "@testing-library/react";
 
 import { server } from "../../support/server";
 
-import {
-	submitClick,
-	input,
-	abbreviationSelector,
-	shelfSelector,
-	rackSelector,
-} from "../../support";
+import { submitClick, input } from "../../support";
 
 import CreateFrequencyRelation from "../../../pages/Documents/Create/CreateFrequencyRelation";
 
@@ -29,22 +23,29 @@ const isNotOnTheScreen = (text) => {
 };
 
 const RECEIVED_DATE = "Data de Recebimento*";
+const DOCUMENT_DATE = "Data do Documento*";
 
 describe("Create Frequency Relation Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateFrequencyRelation />);
 
 		submitClick();
-		isOnTheScreen("Insira o número");
-
-		input("Número*", "27");
-		isNotOnTheScreen("Insira o número");
-
-		submitClick();
 		isOnTheScreen("Insira o número do processo");
 
 		input("Número do Processo*", "28");
 		isNotOnTheScreen("Insira o número do processo");
+
+		input(DOCUMENT_DATE, "");
+		submitClick();
+		isOnTheScreen("Insira uma data");
+
+		input(DOCUMENT_DATE, "29/03/");
+		isNotOnTheScreen("Insira uma data");
+		submitClick();
+		isOnTheScreen("Insira uma data válida");
+
+		input(DOCUMENT_DATE, "31/05/2033");
+		isNotOnTheScreen("Insira uma data válida");
 
 		input(RECEIVED_DATE, "");
 		submitClick();
@@ -130,12 +131,6 @@ describe("Create Frequency Relation Screen Test", () => {
 		);
 
 		await screen.findByText("CADASTRAR");
-
-		await abbreviationSelector();
-
-		await shelfSelector();
-
-		await rackSelector();
 
 		input("Observação", "note_test");
 
