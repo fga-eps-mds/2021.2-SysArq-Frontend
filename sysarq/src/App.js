@@ -23,6 +23,8 @@ import CreateDocumentType from "./pages/Fields/Create/CreateDocumentType";
 import Shelf from "./pages/Fields/List/Shelf";
 import Rack from "./pages/Fields/List/Rack";
 import CreateShelfOrRack from "./pages/Fields/Create/CreateShelfOrRack";
+import CreatePublicWorker from "./pages/Fields/Create/CreatePublicWorker";
+import PublicWorker from "./pages/Fields/List/PublicWorker";
 
 import Documents from "./pages/Documents";
 import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdministrativeProcess";
@@ -129,6 +131,15 @@ function App() {
 							</PrivateRoute>
 							<PrivateRoute exact={false} path="/fields/rack/create">
 								<CreateShelfOrRack urlType="rack" />
+							</PrivateRoute>
+						</Route>
+
+						<Route path="/fields/public-worker">
+							<PrivateRoute exact path="/fields/public-worker">
+								<PublicWorker />
+							</PrivateRoute>
+							<PrivateRoute exact={false} path="/fields/public-worker/create">
+								<CreatePublicWorker urlType="public-worker" />
 							</PrivateRoute>
 						</Route>
 					</Route>

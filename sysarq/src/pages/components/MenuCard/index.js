@@ -19,6 +19,7 @@ import AdministrativeProcessIcon from "@material-ui/icons/Assignment";
 import FrequencyRelationIcon from "@material-ui/icons/Description";
 import FrequencySheetIcon from "@material-ui/icons/AccountBox";
 import ArchivingRelationIcon from "@material-ui/icons/AllInbox";
+import PublicWorkerIcon from "@material-ui/icons/Person";
 
 import "./styles.css";
 
@@ -50,6 +51,8 @@ const Icon = ({ iconName }) => {
 		icon = <FrequencyRelationIcon className={classes.icon} />;
 	} else if (iconName === "frequency-sheet-icon") {
 		icon = <FrequencySheetIcon className={classes.icon} />;
+	} else if (iconName === "public-worker-icon") {
+		icon = <PublicWorkerIcon className={classes.icon} />;
 	} else {
 		icon = <ArchivingRelationIcon className={classes.icon} />;
 	}
