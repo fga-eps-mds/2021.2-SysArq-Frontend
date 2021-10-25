@@ -26,7 +26,6 @@ export default function CreateUnity() {
 	const [unityAbbreviation, setUnityAbbreviation] = useState("");
 	const [administrativeBond, setAdiministrativeBond] = useState("");
 	const [bondAbbreviation, setBondAbbreviation] = useState("");
-	const [unityType, setUnityType] = useState("");
 	const [county, setCounty] = useState("");
 	const [telephoneNumber, setTelephoneNumber] = useState("");
 	const [note, setNote] = useState("");
@@ -71,7 +70,6 @@ export default function CreateUnity() {
 							unity_abbreviation: unityAbbreviation,
 							administrative_bond: administrativeBond,
 							bond_abbreviation: bondAbbreviation,
-							type_of_unity: unityType,
 							municipality: county,
 							telephone_number: telephoneNumber,
 							notes: note,
@@ -137,20 +135,6 @@ export default function CreateUnity() {
 			placeholder: "Sigla do vínculo",
 			setValue: setBondAbbreviation,
 			value: bondAbbreviation,
-			helperText: "",
-			error: false,
-			setHelperText: () => {
-				"";
-			},
-			setError: () => {
-				"";
-			},
-		},
-		{
-			type: "MiddleText",
-			placeholder: "Tipo de unidade",
-			setValue: setUnityType,
-			value: unityType,
 			helperText: "",
 			error: false,
 			setHelperText: () => {

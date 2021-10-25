@@ -245,7 +245,6 @@ describe("DataTable and tablesHeadCells Test", () => {
 		expect(screen.getByText("Sigla da Unidade")).toBeInTheDocument();
 		expect(screen.getByText("Vínculo Administrativo")).toBeInTheDocument();
 		expect(screen.getByText("Sigla do Vínculo")).toBeInTheDocument();
-		expect(screen.getByText("Tipo de Unidade")).toBeInTheDocument();
 		expect(screen.getByText("Município")).toBeInTheDocument();
 		expect(screen.getByText("Telefone")).toBeInTheDocument();
 		expect(screen.getByText("Observações")).toBeInTheDocument();
@@ -262,6 +261,17 @@ describe("DataTable and tablesHeadCells Test", () => {
 		render(<DataTable title="Estante e Prateleira" url="shelf/" />);
 
 		expect(screen.getByText("Número de Estante")).toBeInTheDocument();
+	});
+
+	it("test public worker table head cells", async () => {
+		render(<DataTable title="Servidor" url="public-worker/" />);
+
+		expect(screen.getByText("Nome")).toBeInTheDocument();
+		expect(screen.getByText("CPF")).toBeInTheDocument();
+		expect(screen.getByText("Cargo")).toBeInTheDocument();
+		expect(screen.getByText("Classe")).toBeInTheDocument();
+		expect(screen.getByText("Unidade")).toBeInTheDocument();
+		expect(screen.getByText("Municipio")).toBeInTheDocument();
 	});
 
 	it("test is_filed", async () => {

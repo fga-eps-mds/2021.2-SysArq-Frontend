@@ -54,7 +54,7 @@ function Header() {
 					icon={<StarsIcon />}
 				/>
 				<BottomNavigationAction
-					label="Campos"
+					label="Campos Obrigatórios"
 					href="/fields"
 					icon={<StarsIcon />}
 				/>
