@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import DataTable from "../../pages/components/DataTable";
+import DataTable from "../../../pages/components/DataTable";
 
-import { failedDocumentTypeServer } from "../support/server";
+import { failedDocumentTypeServer } from "../../support/server";
 
 beforeAll(() => failedDocumentTypeServer.listen());
 afterEach(() => failedDocumentTypeServer.resetHandlers());
