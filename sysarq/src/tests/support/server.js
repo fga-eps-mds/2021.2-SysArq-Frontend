@@ -214,30 +214,10 @@ export const server = setupServer(
 	}),
 
 	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
-		if (
-			req.body.notice_date === "2005-04-03" &&
-			req.body.archiving_date === "2011-10-09" &&
-			req.body.reference_month_year === "2015-04-01" &&
-			req.body.process_number === "16" &&
-			req.body.cpf_cnpj === "28293031323" &&
-			req.body.interested === "interested_test" &&
-			req.body.subject_id === 34 &&
-			req.body.dest_unity_id === 40 &&
-			req.body.sender_unity === 38 &&
-			req.body.sender_user === "sender_worker_test" &&
-			req.body.abbreviation_id === 43 &&
-			req.body.shelf_id === 46 &&
-			req.body.rack_id === 48 &&
-			req.body.is_filed === false &&
-			req.body.is_eliminated === false &&
-			req.body.unity_id === 41 &&
-			req.body.administrative_process_number === "50" &&
-			req.body.send_date === null &&
-			req.body.notes === "notes_test"
-		) {
+		if (req.body.administrative_process_number === "50") {
 			return res(ctx.status(201));
 		}
-		return res(ctx.status(404));
+		console.log(req.body.administrative_process_number);
 	}),
 
 	rest.post(`${hostApiArchives}archival-relation/`, (req, res, ctx) => {

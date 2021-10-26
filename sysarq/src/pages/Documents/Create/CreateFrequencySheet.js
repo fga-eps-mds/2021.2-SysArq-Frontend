@@ -1,8 +1,16 @@
-import React, { useState } from "react";
-
-import { Grid, TextField } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
+
+import {
+	Grid,
+	TextField,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem,
+	FormHelperText,
+} from "@material-ui/core";
 
 import {
 	formatDate,
@@ -16,15 +24,13 @@ import { axiosArchives, axiosProfile } from "../../../Api";
 
 import CardContainer from "../../components/Container/CardContainer";
 
-import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
-import ShelfInput from "../../components/Inputs/ShelfInput";
-import RackInput from "../../components/Inputs/RackInput";
 import NotesInput from "../../components/Inputs/NotesInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
 const CreateFrequencySheet = () => {
+	const [types, setTypes] = useState([]);
 	const [senderProcessNumber, setSenderProcessNumber] = useState("");
 	const [cpfWorker, setCpf] = useState("");
 	const [workerName, setWorkerName] = useState("");
@@ -32,11 +38,9 @@ const CreateFrequencySheet = () => {
 	const [workerClass, setWorkerClass] = useState("");
 	const [workplaceWorker, setWorkplace] = useState("");
 	const [district, setDistrict] = useState("");
-	const [abbreviation, setAbbreviation] = useState("");
-	const [shelf, setShelf] = useState("");
-	const [rack, setRack] = useState("");
 	const [notesLocal, setNotes] = useState("");
 	const [referencePeriod, setReferencePeriod] = useState(initialPeriod);
+	const [type, setType] = useState("");
 
 	const [cpfHelperText, setCpfHelperText] = useState("");
 	const [workerNameHelperText, setWorkerNameHelperText] = useState("");
@@ -45,6 +49,7 @@ const CreateFrequencySheet = () => {
 	const [districtHelperText, setDistrictHelperText] = useState("");
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
 		useState("");
+	const [typeHelperText, setTypeHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -87,6 +92,11 @@ const CreateFrequencySheet = () => {
 		setReferencePeriod(date);
 	};
 
+	const handleTypeChange = (event) => {
+		setTypeHelperText("");
+		setType(event.target.value);
+	};
+
 	const handleAlertClose = () => setOpenAlert(false);
 
 	const connectionError = () => {
@@ -114,15 +124,19 @@ const CreateFrequencySheet = () => {
 		setWorkerClass("");
 		setWorkplace("");
 		setDistrict("");
-		setAbbreviation("");
-		setShelf("");
-		setRack("");
 		setNotes("");
 		setReferencePeriod(initialPeriod);
+		setType("");
 	};
 
 	const onSubmit = () => {
 		setLoading(true);
+
+		if (workerName === "") {
+			setWorkerNameHelperText("Insira o nome");
+			setLoading(false);
+			return "workerName error";
+		}
 
 		if (cpfWorker === "") {
 			setCpfHelperText("Insira um CPF");
@@ -134,12 +148,6 @@ const CreateFrequencySheet = () => {
 			setCpfHelperText("Insira um CPF válido");
 			setLoading(false);
 			return "cpf error";
-		}
-
-		if (workerName === "") {
-			setWorkerNameHelperText("Insira o nome");
-			setLoading(false);
-			return "workerName error";
 		}
 
 		if (roleWorker === "") {
@@ -172,6 +180,12 @@ const CreateFrequencySheet = () => {
 			return "reference error";
 		}
 
+		if (type === "") {
+			setTypeHelperText("Selecione um tipo");
+			setLoading(false);
+			return "type error";
+		}
+
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -192,9 +206,10 @@ const CreateFrequencySheet = () => {
 							reference_period: formatDate(referencePeriod),
 							notes: notesLocal,
 							process_number: senderProcessNumber,
-							abbreviation_id: abbreviation.id,
-							shelf_id: shelf.id,
-							rack_id: rack.id,
+							document_type_id: type.id,
+							temporality_date:
+								parseInt(type.temporality, 10) +
+								parseInt(referencePeriod.getFullYear(), 10),
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -208,32 +223,28 @@ const CreateFrequencySheet = () => {
 		return "post done";
 	};
 
+	useEffect(() => {
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.get("document-type/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => setTypes(response.data))
+					.catch(() => connectionError());
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+	});
+
 	return (
 		<CardContainer title="Folha de Frequências" spacing={1}>
-			<Grid item xs={12} sm={12} md={6}>
-				<TextField
-					fullWidth
-					id="sender-process-number"
-					label="Número do Processo Encaminhador"
-					value={senderProcessNumber}
-					onChange={handleSenderProcessNumberChange}
-					inputProps={{ maxLength: 20 }}
-				/>
-			</Grid>
-
-			<Grid item xs={12} sm={12} md={6}>
-				<TextField
-					fullWidth
-					id="cpf"
-					label="CPF*"
-					value={cpfWorker}
-					onChange={handleCpfChange}
-					error={cpfHelperText !== ""}
-					helperText={cpfHelperText}
-					inputProps={{ maxLength: 11 }}
-				/>
-			</Grid>
-
 			<Grid item xs={12} sm={12} md={12}>
 				<TextField
 					fullWidth
@@ -248,7 +259,20 @@ const CreateFrequencySheet = () => {
 				/>
 			</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
+			<Grid item xs={12} sm={12} md={4}>
+				<TextField
+					fullWidth
+					id="cpf"
+					label="CPF*"
+					value={cpfWorker}
+					onChange={handleCpfChange}
+					error={cpfHelperText !== ""}
+					helperText={cpfHelperText}
+					inputProps={{ maxLength: 11 }}
+				/>
+			</Grid>
+
+			<Grid item xs={12} sm={12} md={8}>
 				<TextField
 					fullWidth
 					id="role"
@@ -302,36 +326,64 @@ const CreateFrequencySheet = () => {
 				/>
 			</Grid>
 
-			<AbbreviationInput
-				abbreviation={abbreviation}
-				set={setAbbreviation}
-				connectionError={connectionError}
-			/>
+			<Grid item xs={12} sm={12} md={6}>
+				<KeyboardDatePicker
+					style={{ width: "100%" }}
+					id="period-date-picker-dialog"
+					label="Período de Referencia*"
+					format="MM/yyyy"
+					value={referencePeriod}
+					onChange={handleReferencePeriodChange}
+					openTo="month"
+					views={["month", "year"]}
+					okLabel="Confirmar"
+					cancelLabel="Cancelar"
+					error={referencePeriodHelperText !== ""}
+					helperText={referencePeriodHelperText}
+				/>
+			</Grid>
 
-			<ShelfInput
-				shelf={shelf}
-				set={setShelf}
-				connectionError={connectionError}
-			/>
+			<Grid item xs={12} sm={12} md={6}>
+				<TextField
+					fullWidth
+					id="sender-process-number"
+					label="Número do Processo Encaminhador"
+					value={senderProcessNumber}
+					onChange={handleSenderProcessNumberChange}
+					inputProps={{ maxLength: 20 }}
+				/>
+			</Grid>
 
-			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
+			<Grid item xs={12} sm={12} md={12}>
+				<FormControl fullWidth error={typeHelperText !== ""}>
+					<InputLabel id="select-type-label">Tipo do Documento*</InputLabel>
+					<Select
+						style={{ textAlign: "left" }}
+						labelId="select-type-label"
+						id="select-type"
+						value={type}
+						onChange={handleTypeChange}
+						renderValue={(value) => `${value.document_name}`}
+					>
+						<MenuItem key={0} value="">
+							<em>Nenhum</em>
+						</MenuItem>
+
+						{types.map((typeOption) => (
+							<MenuItem key={typeOption.id} value={typeOption}>
+								{typeOption.document_name}
+							</MenuItem>
+						))}
+					</Select>
+					{typeHelperText ? (
+						<FormHelperText>{typeHelperText}</FormHelperText>
+					) : (
+						""
+					)}
+				</FormControl>
+			</Grid>
 
 			<NotesInput set={setNotes} notes={notesLocal} />
-
-			<KeyboardDatePicker
-				style={{ width: "100%" }}
-				id="period-date-picker-dialog"
-				label="Período de Referencia*"
-				format="MM/yyyy"
-				value={referencePeriod}
-				onChange={handleReferencePeriodChange}
-				openTo="month"
-				views={["month", "year"]}
-				okLabel="Confirmar"
-				cancelLabel="Cancelar"
-				error={referencePeriodHelperText !== ""}
-				helperText={referencePeriodHelperText}
-			/>
 
 			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
 

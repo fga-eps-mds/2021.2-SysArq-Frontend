@@ -30,10 +30,17 @@ const REFERENCE_FIELD_LABEL = "Referência";
 describe("Create Administrative Process Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateAdministrativeProcess />);
-
-		input(NOTICE_DATE_LABEL, "");
 		submitClick();
-		expect(screen.getByText(REQUIRED_DATE_ERROR_MESSAGE)).toBeInTheDocument();
+
+		expect(screen.getByText("Insira o número do processo")).toBeInTheDocument();
+
+		input("Número do Processo*", "16");
+
+		expect(
+			screen.queryByText("Insira o número do processo")
+		).not.toBeInTheDocument();
+
+		submitClick();
 
 		input(NOTICE_DATE_LABEL, "01/02/");
 
@@ -50,43 +57,11 @@ describe("Create Administrative Process Screen Test", () => {
 			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
 		).not.toBeInTheDocument();
 
-		input(ARCHIVING_DATE_LABEL, "");
+		expect(screen.getByText("Insira um interessado")).toBeInTheDocument();
+
+		input("Interessado*", "interested_test");
+		expect(screen.queryByText("Insira um interessado")).not.toBeInTheDocument();
 		submitClick();
-		expect(screen.getByText(REQUIRED_DATE_ERROR_MESSAGE)).toBeInTheDocument();
-
-		input(ARCHIVING_DATE_LABEL, "36/07/2008");
-
-		expect(
-			screen.queryByText(REQUIRED_DATE_ERROR_MESSAGE)
-		).not.toBeInTheDocument();
-
-		submitClick();
-		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
-
-		input(ARCHIVING_DATE_LABEL, "09/10/2011");
-
-		expect(
-			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
-		).not.toBeInTheDocument();
-
-		input(REFERENCE_FIELD_LABEL, "13/2012");
-		submitClick();
-		expect(screen.getByText("Insira um período válido")).toBeInTheDocument();
-
-		input(REFERENCE_FIELD_LABEL, "");
-
-		expect(
-			screen.queryByText("Insira um período válido")
-		).not.toBeInTheDocument();
-
-		submitClick();
-		expect(screen.getByText("Insira o número do processo")).toBeInTheDocument();
-
-		input("Número do Processo*", "16");
-
-		expect(
-			screen.queryByText("Insira o número do processo")
-		).not.toBeInTheDocument();
 
 		input("CPF/CNPJ", "171.819.20212");
 		submitClick();
@@ -108,11 +83,6 @@ describe("Create Administrative Process Screen Test", () => {
 		).not.toBeInTheDocument();
 
 		submitClick();
-		expect(screen.getByText("Insira um interessado")).toBeInTheDocument();
-
-		input("Interessado*", "interested_test");
-		expect(screen.queryByText("Insira um interessado")).not.toBeInTheDocument();
-		submitClick();
 		expect(screen.getByText("Selecione um assunto")).toBeInTheDocument();
 
 		fireEvent.mouseDown(screen.getByLabelText("Assunto do Documento*"));
@@ -120,6 +90,25 @@ describe("Create Administrative Process Screen Test", () => {
 		await subjectsOptions.findByText("subject_name_test");
 		fireEvent.click(subjectsOptions.getByText(/subject_name_test/i));
 		expect(screen.queryByText("Selecione um assunto")).not.toBeInTheDocument();
+
+		input(ARCHIVING_DATE_LABEL, "");
+		submitClick();
+		expect(screen.getByText(REQUIRED_DATE_ERROR_MESSAGE)).toBeInTheDocument();
+
+		input(ARCHIVING_DATE_LABEL, "36/07/2008");
+
+		expect(
+			screen.queryByText(REQUIRED_DATE_ERROR_MESSAGE)
+		).not.toBeInTheDocument();
+
+		submitClick();
+		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
+
+		input(ARCHIVING_DATE_LABEL, "09/10/2011");
+
+		expect(
+			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
+		).not.toBeInTheDocument();
 
 		submitClick();
 		expect(screen.getByText("Selecione uma unidade")).toBeInTheDocument();
@@ -131,6 +120,19 @@ describe("Create Administrative Process Screen Test", () => {
 		expect(screen.queryByText("Selecione uma unidade")).not.toBeInTheDocument();
 
 		submitClick();
+
+		input(REFERENCE_FIELD_LABEL, "13/2012");
+		submitClick();
+		expect(screen.getByText("Insira um período válido")).toBeInTheDocument();
+
+		input(REFERENCE_FIELD_LABEL, "");
+
+		expect(
+			screen.queryByText("Insira um período válido")
+		).not.toBeInTheDocument();
+
+		submitClick();
+
 		expect(screen.getByText("Selecione um status")).toBeInTheDocument();
 
 		fireEvent.mouseDown(screen.getByLabelText("Status*"));
@@ -216,8 +218,6 @@ describe("Create Administrative Process Screen Test", () => {
 		submitClick();
 
 		const successAlert = await screen.findByRole("alert");
-		expect(successAlert).toHaveTextContent(
-			/ErroVerifique sua conexão com a internet e recarregue a página./i
-		);
+		expect(successAlert).toHaveTextContent(/SucessoDocumento cadastrado!/i);
 	});
 });
