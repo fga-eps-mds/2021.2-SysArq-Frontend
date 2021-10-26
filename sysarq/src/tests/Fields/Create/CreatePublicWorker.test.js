@@ -31,6 +31,24 @@ afterAll(() => server.close());
 jest.useFakeTimers();
 
 describe("Page test", () => {
+	it("axios sucess", async () => {
+		const objSuccess = [
+			NAME,
+			"201",
+			CPF,
+			"11111111111",
+			ROLE,
+			"test",
+			CATEGORY,
+			"test",
+			WORKPLACE,
+			"test",
+			MUNICIPALAREA,
+			"test",
+		];
+		await testEvent(<CreatePublicWorker />, objSuccess, "Servidor cadastrado!");
+	});
+
 	it("axios fail", async () => {
 		const objFail = [
 			NAME,

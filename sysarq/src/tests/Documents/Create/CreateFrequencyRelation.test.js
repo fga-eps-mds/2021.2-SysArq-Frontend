@@ -44,7 +44,7 @@ describe("Create Frequency Relation Screen Test", () => {
 		submitClick();
 		isOnTheScreen("Insira uma data válida");
 
-		input(DOCUMENT_DATE, "31/05/2033");
+		input(DOCUMENT_DATE, "31/05/2032");
 		isNotOnTheScreen("Insira uma data válida");
 
 		input(RECEIVED_DATE, "");
@@ -121,22 +121,22 @@ describe("Create Frequency Relation Screen Test", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
 
+		input("Observação", "note_test");
+
 		await screen.findByText("CADASTRAR");
 
 		fireEvent.click(screen.getByText("CADASTRAR"));
 
-		const errorAlert = await screen.findByRole("alert");
-		expect(errorAlert).toHaveTextContent(
-			/Verifique sua conexão com a internet e recarregue a página./i
-		);
+		const successAlert = await screen.findByRole("alert");
+		expect(successAlert).toHaveTextContent(/SucessoDocumento cadastrado!/i);
 
-		await screen.findByText("CADASTRAR");
+		// input("Observação", "");
 
-		input("Observação", "note_test");
+		// submitClick();
 
-		submitClick();
-
-		// const successAlert = await screen.findByRole("alert");
-		// expect(successAlert).toHaveTextContent(/Documento cadastrado!/i);
+		// const errorAlert = await screen.findByRole("alert");
+		// expect(errorAlert).toHaveTextContent(
+		// 	/Verifique sua conexão com a internet e recarregue a página./i
+		// );
 	});
 });

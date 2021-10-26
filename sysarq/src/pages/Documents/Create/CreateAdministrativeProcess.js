@@ -27,9 +27,6 @@ import CardContainer from "../../components/Container/CardContainer";
 
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
-import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
-import ShelfInput from "../../components/Inputs/ShelfInput";
-import RackInput from "../../components/Inputs/RackInput";
 import NotesInput from "../../components/Inputs/NotesInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
@@ -59,19 +56,16 @@ const CreateAdministrativeProcess = () => {
 	const [reference, setReference] = useState(initialPeriod);
 	const [processNumber, setProcessNumber] = useState("");
 	const [personRegistry, setPersonRegistry] = useState("");
-	const [interested, setInterested] = useState("");
+	const [interestedPerson, setInterested] = useState("");
 	const [subject, setSubject] = useState("");
 	const [destinationUnit, setDestinationUnit] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
 	const [senderWorker, setSenderWorker] = useState("");
-	const [abbreviation, setAbbreviation] = useState("");
-	const [shelf, setShelf] = useState("");
-	const [rack, setRack] = useState("");
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
 	const [unarchiveDate, setUnarchiveDate] = useState(initialDate);
-	const [notes, setNotes] = useState("");
+	const [notesLocal, setNotes] = useState("");
 
 	const [noticeDateHelperText, setNoticeDateHelperText] = useState("");
 	const [archivingDateHelperText, setArchivingDateHelperText] = useState("");
@@ -172,9 +166,6 @@ const CreateAdministrativeProcess = () => {
 		setDestinationUnit("");
 		setSenderUnit("");
 		setSenderWorker("");
-		setAbbreviation("");
-		setShelf("");
-		setRack("");
 		setStatus("");
 		setUnarchiveDestinationUnit("");
 		setUnarchiveProcessNumber("");
@@ -228,7 +219,7 @@ const CreateAdministrativeProcess = () => {
 			}
 		}
 
-		if (interested === "") {
+		if (interestedPerson === "") {
 			setInterestedHelperText("Insira um interessado");
 			setLoading(false);
 			return "interested error";
@@ -277,14 +268,11 @@ const CreateAdministrativeProcess = () => {
 								reference !== null ? formatDate(reference) : null,
 							process_number: processNumber,
 							cpf_cnpj: personRegistry,
-							interested,
+							interested: interestedPerson,
 							subject_id: subject.id,
 							dest_unity_id: destinationUnit.id,
 							sender_unity: senderUnit.id,
 							sender_user: senderWorker,
-							abbreviation_id: abbreviation.id,
-							shelf_id: shelf.id,
-							rack_id: rack.id,
 							is_filed: isStatusFiled(status),
 							is_eliminated: status === "Eliminado",
 							unity_id:
@@ -295,15 +283,16 @@ const CreateAdministrativeProcess = () => {
 									: null,
 							administrative_process_number:
 								status === "Desarquivado" ? unarchiveProcessNumber : "",
-							notes,
+							notes: notesLocal,
 							filer_user: "filer_user",
+							temporality_date:
+								parseInt(subject.temporality, 10) +
+								parseInt(archivingDate.getFullYear(), 10),
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => onSuccess())
-					.catch(() => {
-						connectionError();
-					});
+					.catch(() => connectionError());
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
@@ -341,7 +330,16 @@ const CreateAdministrativeProcess = () => {
 
 	return (
 		<CardContainer title="Processo Administrativo" spacing={1}>
-			<Grid item xs={12} sm={6} md={4}>
+			<Grid item xs={12} sm={6} md={6}>
+				<NumberProcessInput
+					setHelperText={setProcessNumberHelperText}
+					set={setProcessNumber}
+					number={processNumber}
+					helperText={processNumberHelperText}
+				/>
+			</Grid>
+
+			<Grid item xs={12} sm={6} md={6}>
 				<KeyboardDatePicker
 					okLabel="Confirmar"
 					cancelLabel="Cancelar"
@@ -359,51 +357,21 @@ const CreateAdministrativeProcess = () => {
 				/>
 			</Grid>
 
-			<Grid item xs={12} sm={6} md={4}>
-				<KeyboardDatePicker
-					okLabel="Confirmar"
-					cancelLabel="Cancelar"
-					style={{ width: "100%" }}
-					id="archiving-date-picker-dialog"
-					label="Data de Arquivamento*"
-					format="dd/MM/yyyy"
-					value={archivingDate}
-					onChange={handleArchivingDateChange}
-					KeyboardButtonProps={{
-						"aria-label": "change archiving date",
-					}}
-					error={archivingDateHelperText !== ""}
-					helperText={archivingDateHelperText}
+			<Grid item xs={12} sm={12} md={8}>
+				<TextField
+					fullWidth
+					id="interested"
+					label="Interessado*"
+					value={interestedPerson}
+					onChange={handleInterestedChange}
+					error={interestedHelperText !== ""}
+					helperText={interestedHelperText}
+					multiline
+					inputProps={{ maxLength: 150 }}
 				/>
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={4}>
-				<KeyboardDatePicker
-					okLabel="Confirmar"
-					cancelLabel="Cancelar"
-					style={{ width: "100%" }}
-					id="reference-date-picker-dialog"
-					openTo="year"
-					views={["year", "month"]}
-					label="Referência"
-					format="MM/yyyy"
-					value={reference}
-					onChange={handleReferenceChange}
-					error={referenceHelperText !== ""}
-					helperText={referenceHelperText}
-				/>
-			</Grid>
-
-			<Grid item xs={12} sm={6} md={6}>
-				<NumberProcessInput
-					setHelperText={setProcessNumberHelperText}
-					set={setProcessNumber}
-					number={processNumber}
-					helperText={processNumberHelperText}
-				/>
-			</Grid>
-
-			<Grid item xs={12} sm={6} md={6}>
 				<TextField
 					fullWidth
 					id="cpf-cpnj"
@@ -414,20 +382,6 @@ const CreateAdministrativeProcess = () => {
 					error={personRegistryHelperText !== ""}
 					helperText={personRegistryHelperText}
 					inputProps={{ maxLength: 15 }}
-				/>
-			</Grid>
-
-			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="interested"
-					label="Interessado*"
-					value={interested}
-					onChange={handleInterestedChange}
-					error={interestedHelperText !== ""}
-					helperText={interestedHelperText}
-					multiline
-					inputProps={{ maxLength: 150 }}
 				/>
 			</Grid>
 
@@ -462,7 +416,7 @@ const CreateAdministrativeProcess = () => {
 				</FormControl>
 			</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
+			<Grid item xs={12} sm={12} md={8}>
 				<FormControl fullWidth>
 					<InputLabel id="select-destinationUnit-label">
 						Unidade de Destino
@@ -488,6 +442,23 @@ const CreateAdministrativeProcess = () => {
 				</FormControl>
 			</Grid>
 
+			<Grid item xs={12} sm={12} md={4}>
+				<KeyboardDatePicker
+					okLabel="Confirmar"
+					cancelLabel="Cancelar"
+					style={{ width: "100%" }}
+					id="archiving-date-picker-dialog"
+					label="Data de Arquivamento*"
+					format="dd/MM/yyyy"
+					value={archivingDate}
+					onChange={handleArchivingDateChange}
+					KeyboardButtonProps={{
+						"aria-label": "change archiving date",
+					}}
+					error={archivingDateHelperText !== ""}
+					helperText={archivingDateHelperText}
+				/>
+			</Grid>
 			<SenderUnitInput
 				setHelperText={setSenderUnitHelperText}
 				set={setSenderUnit}
@@ -508,21 +479,24 @@ const CreateAdministrativeProcess = () => {
 				/>
 			</Grid>
 
-			<AbbreviationInput
-				abbreviation={abbreviation}
-				set={setAbbreviation}
-				connectionError={connectionError}
-			/>
+			<Grid item xs={12} sm={12} md={4}>
+				<KeyboardDatePicker
+					okLabel="Confirmar"
+					cancelLabel="Cancelar"
+					style={{ width: "100%" }}
+					id="reference-date-picker-dialog"
+					openTo="year"
+					views={["year", "month"]}
+					label="Referência"
+					format="MM/yyyy"
+					value={reference}
+					onChange={handleReferenceChange}
+					error={referenceHelperText !== ""}
+					helperText={referenceHelperText}
+				/>
+			</Grid>
 
-			<ShelfInput
-				shelf={shelf}
-				set={setShelf}
-				connectionError={connectionError}
-			/>
-
-			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
-
-			<Grid item xs={12} sm={12} md={12}>
+			<Grid item xs={12} sm={12} md={8}>
 				<FormControl fullWidth error={statusHelperText !== ""}>
 					<InputLabel id="select-status-label">Status*</InputLabel>
 					<Select
@@ -610,7 +584,7 @@ const CreateAdministrativeProcess = () => {
 				""
 			)}
 
-			<NotesInput set={setNotes} notes={notes} />
+			<NotesInput set={setNotes} notes={notesLocal} />
 
 			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
 

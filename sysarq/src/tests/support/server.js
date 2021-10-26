@@ -203,18 +203,13 @@ export const server = setupServer(
 
 	rest.post(`${hostApiArchives}frequency-relation/`, (req, res, ctx) => {
 		if (
-			req.body.number === "27" &&
 			req.body.process_number === "28" &&
 			req.body.received_date === "2033-05-31" &&
-			req.body.notes === "note_test" &&
-			req.body.document_type_id === 34 &&
-			req.body.sender_unity === 40 &&
-			req.body.abbreviation_id === 43 &&
-			req.body.shelf_id === 46 &&
-			req.body.rack_id === 48
+			req.body.notes === "note_test"
 		) {
 			return res(ctx.status(201));
 		}
+		console.log(req.body);
 		return res(ctx.status(404));
 	}),
 
@@ -258,6 +253,14 @@ export const server = setupServer(
 		) {
 			return res(ctx.status(201));
 		}
+		return res(ctx.status(404));
+	}),
+
+	rest.post(`${hostApiArchives}frequency-sheet/`, (req, res, ctx) => {
+		if (req.body.person_name === "teste" && req.body.role === "teste") {
+			return res(ctx.status(201));
+		}
+		console.log(req.body);
 		return res(ctx.status(404));
 	})
 );

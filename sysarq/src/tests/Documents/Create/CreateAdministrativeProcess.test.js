@@ -1,13 +1,7 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 
 import { server } from "../../support/server";
-import {
-	input,
-	submitClick,
-	abbreviationSelector,
-	shelfSelector,
-	rackSelector,
-} from "../../support";
+import { input, submitClick } from "../../support";
 
 import CreateAdministrativeProcess from "../../../pages/Documents/Create/CreateAdministrativeProcess";
 
@@ -170,12 +164,6 @@ describe("Create Administrative Process Screen Test", () => {
 
 		input("Servidor que Encaminhou", "sender_worker_test");
 
-		await abbreviationSelector();
-
-		await shelfSelector();
-
-		await rackSelector();
-
 		expect(
 			screen.queryByText(UNARCHIVE_DESTINATION_UNIT_LABEL)
 		).not.toBeInTheDocument();
@@ -228,6 +216,8 @@ describe("Create Administrative Process Screen Test", () => {
 		submitClick();
 
 		const successAlert = await screen.findByRole("alert");
-		expect(successAlert).toHaveTextContent(/Documento cadastrado!/i);
+		expect(successAlert).toHaveTextContent(
+			/ErroVerifique sua conexão com a internet e recarregue a página./i
+		);
 	});
 });

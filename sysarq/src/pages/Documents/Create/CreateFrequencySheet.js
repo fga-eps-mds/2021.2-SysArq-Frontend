@@ -26,19 +26,17 @@ import PopUpAlert from "../../components/PopUpAlert";
 
 const CreateFrequencySheet = () => {
 	const [senderProcessNumber, setSenderProcessNumber] = useState("");
-	const [cpf, setCpf] = useState("");
+	const [cpfWorker, setCpf] = useState("");
 	const [workerName, setWorkerName] = useState("");
-	const [role, setRole] = useState("");
+	const [roleWorker, setRole] = useState("");
 	const [workerClass, setWorkerClass] = useState("");
-	const [workplace, setWorkplace] = useState("");
+	const [workplaceWorker, setWorkplace] = useState("");
 	const [district, setDistrict] = useState("");
 	const [abbreviation, setAbbreviation] = useState("");
 	const [shelf, setShelf] = useState("");
 	const [rack, setRack] = useState("");
-	const [notes, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState(
-		formatDate(initialPeriod)
-	);
+	const [notesLocal, setNotes] = useState("");
+	const [referencePeriod, setReferencePeriod] = useState(initialPeriod);
 
 	const [cpfHelperText, setCpfHelperText] = useState("");
 	const [workerNameHelperText, setWorkerNameHelperText] = useState("");
@@ -120,19 +118,19 @@ const CreateFrequencySheet = () => {
 		setShelf("");
 		setRack("");
 		setNotes("");
-		setReferencePeriod(formatDate(initialPeriod));
+		setReferencePeriod(initialPeriod);
 	};
 
 	const onSubmit = () => {
 		setLoading(true);
 
-		if (cpf === "") {
+		if (cpfWorker === "") {
 			setCpfHelperText("Insira um CPF");
 			setLoading(false);
 			return "cpf error";
 		}
 
-		if (!isInt(cpf) || cpf.length !== 11) {
+		if (!isInt(cpfWorker) || cpfWorker.length !== 11) {
 			setCpfHelperText("Insira um CPF válido");
 			setLoading(false);
 			return "cpf error";
@@ -144,13 +142,13 @@ const CreateFrequencySheet = () => {
 			return "workerName error";
 		}
 
-		if (role === "") {
+		if (roleWorker === "") {
 			setRoleHelperText("Insira um cargo");
 			setLoading(false);
 			return "role error";
 		}
 
-		if (workplace === "") {
+		if (workplaceWorker === "") {
 			setWorkplaceHelperText("Insira uma lotação");
 			setLoading(false);
 			return "workplace error";
@@ -186,13 +184,13 @@ const CreateFrequencySheet = () => {
 						"frequency-sheet/",
 						{
 							person_name: workerName,
-							cpf,
-							role,
+							cpf: cpfWorker,
+							role: roleWorker,
 							category: workerClass,
-							workplace,
+							workplace: workplaceWorker,
 							municipal_area: district,
 							reference_period: formatDate(referencePeriod),
-							notes,
+							notes: notesLocal,
 							process_number: senderProcessNumber,
 							abbreviation_id: abbreviation.id,
 							shelf_id: shelf.id,
@@ -228,7 +226,7 @@ const CreateFrequencySheet = () => {
 					fullWidth
 					id="cpf"
 					label="CPF*"
-					value={cpf}
+					value={cpfWorker}
 					onChange={handleCpfChange}
 					error={cpfHelperText !== ""}
 					helperText={cpfHelperText}
@@ -255,7 +253,7 @@ const CreateFrequencySheet = () => {
 					fullWidth
 					id="role"
 					label="Cargo*"
-					value={role}
+					value={roleWorker}
 					onChange={handleRoleChange}
 					error={roleHelperText !== ""}
 					helperText={roleHelperText}
@@ -281,7 +279,7 @@ const CreateFrequencySheet = () => {
 					fullWidth
 					id="workplace"
 					label="Lotação*"
-					value={workplace}
+					value={workplaceWorker}
 					onChange={handleWorkplaceChange}
 					error={workplaceHelperText !== ""}
 					helperText={workplaceHelperText}
@@ -318,7 +316,7 @@ const CreateFrequencySheet = () => {
 
 			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
 
-			<NotesInput set={setNotes} notes={notes} />
+			<NotesInput set={setNotes} notes={notesLocal} />
 
 			<KeyboardDatePicker
 				style={{ width: "100%" }}
