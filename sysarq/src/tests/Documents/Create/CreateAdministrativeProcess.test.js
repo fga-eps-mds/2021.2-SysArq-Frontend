@@ -220,6 +220,8 @@ describe("Create Administrative Process Screen Test", () => {
 		submitClick();
 
 		const successAlert = await screen.findByRole("alert");
-		expect(successAlert).toHaveTextContent(/SucessoDocumento cadastrado!/i);
+		expect(successAlert).toHaveTextContent(
+			/ErroVerifique sua conexão com a internet e recarregue a página./i
+		);
 	});
 });
