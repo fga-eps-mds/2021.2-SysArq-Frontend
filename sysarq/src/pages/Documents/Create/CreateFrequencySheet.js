@@ -36,9 +36,7 @@ const CreateFrequencySheet = () => {
 	const [shelf, setShelf] = useState("");
 	const [rack, setRack] = useState("");
 	const [notesLocal, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState(
-		formatDate(initialPeriod)
-	);
+	const [referencePeriod, setReferencePeriod] = useState(initialPeriod);
 
 	const [cpfHelperText, setCpfHelperText] = useState("");
 	const [workerNameHelperText, setWorkerNameHelperText] = useState("");
@@ -120,7 +118,7 @@ const CreateFrequencySheet = () => {
 		setShelf("");
 		setRack("");
 		setNotes("");
-		setReferencePeriod(formatDate(initialPeriod));
+		setReferencePeriod(initialPeriod);
 	};
 
 	const onSubmit = () => {
