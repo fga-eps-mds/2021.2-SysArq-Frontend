@@ -31,7 +31,7 @@ const CreateFrequencyRelation = () => {
 	const [receivedDate, setReceivedDate] = useState(initialDate);
 	const [documentType, setDocumentType] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
-	const [notes, setNotes] = useState("");
+	const [notesLocal, setNotes] = useState("");
 	const [referencePeriod, setReferencePeriod] = useState([
 		formatDate(initialPeriod),
 	]);
@@ -144,13 +144,16 @@ const CreateFrequencyRelation = () => {
 						"frequency-relation/",
 						{
 							process_number: processNumber,
-							notes,
+							notes: notesLocal,
 							filer_user: "filer_user",
 							document_date: formatDate(documentDate),
 							received_date: formatDate(receivedDate),
 							reference_period: referencePeriod,
 							sender_unity: senderUnit.id,
 							document_type_id: documentType.id,
+							temporality_date:
+								parseInt(documentType.temporality, 10) +
+								parseInt(documentDate.getFullYear(), 10),
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -189,7 +192,7 @@ const CreateFrequencyRelation = () => {
 				setDocumentType={setDocumentType}
 				senderUnit={senderUnit}
 				setSenderUnit={setSenderUnit}
-				notes={notes}
+				notes={notesLocal}
 				setNotes={setNotes}
 				setDocumentDateHelperText={setDocumentDateHelperText}
 				documentDateHelperText={documentDateHelperText}
