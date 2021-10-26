@@ -209,7 +209,6 @@ export const server = setupServer(
 		) {
 			return res(ctx.status(201));
 		}
-		console.log(req.body);
 		return res(ctx.status(404));
 	}),
 
@@ -217,7 +216,7 @@ export const server = setupServer(
 		if (req.body.administrative_process_number === "50") {
 			return res(ctx.status(201));
 		}
-		console.log(req.body.administrative_process_number);
+		return res(ctx.status(404));
 	}),
 
 	rest.post(`${hostApiArchives}archival-relation/`, (req, res, ctx) => {
@@ -240,7 +239,6 @@ export const server = setupServer(
 		if (req.body.person_name === "teste" && req.body.role === "teste") {
 			return res(ctx.status(201));
 		}
-		console.log(req.body);
 		return res(ctx.status(404));
 	})
 );
