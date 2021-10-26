@@ -217,9 +217,9 @@ describe("Create Administrative Process Screen Test", () => {
 
 		await screen.findByText("CADASTRAR");
 
-		fireEvent.click(screen.getByText("CADASTRAR"));
+		submitClick();
 
-		// const successAlert = await screen.findByRole("alert");
-		// expect(successAlert).toHaveTextContent(/SucessoDocumento cadastrado!/i);
+		const successAlert = await screen.findByRole("alert");
+		expect(successAlert).toHaveTextContent(/SucessoDocumento cadastrado!/i);
 	});
 });
