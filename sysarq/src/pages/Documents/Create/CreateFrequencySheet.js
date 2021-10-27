@@ -30,6 +30,7 @@ import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
 const CreateFrequencySheet = () => {
+	const url = "document-type/";
 	const [types, setTypes] = useState([]);
 	const [senderProcessNumber, setSenderProcessNumber] = useState("");
 	const [cpfWorker, setCpf] = useState("");
@@ -228,12 +229,13 @@ const CreateFrequencySheet = () => {
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
 			})
-			.then((res) => {
-				localStorage.setItem("tk", res.data.access);
-				localStorage.setItem("tkr", res.data.refresh);
+			.then((r) => {
+				localStorage.setItem("tkr", r.data.refresh);
+				localStorage.setItem("tk", r.data.access);
+				const token = localStorage.getItem("tk");
 				axiosArchives
-					.get("document-type/", {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					.get(url, {
+						headers: { Authorization: `JWT ${token}` },
 					})
 					.then((response) => setTypes(response.data))
 					.catch(() => connectionError());
