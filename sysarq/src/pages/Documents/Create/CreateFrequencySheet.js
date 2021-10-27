@@ -241,7 +241,7 @@ const CreateFrequencySheet = () => {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-	},[]);
+	}, []);
 
 	return (
 		<CardContainer title="Folha de Frequências" spacing={1}>

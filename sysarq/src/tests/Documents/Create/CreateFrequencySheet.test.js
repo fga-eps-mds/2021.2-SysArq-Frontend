@@ -13,7 +13,6 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 // jest.useFakeTimers();
 
-
 const isOnTheScreen = (text) => {
 	expect(screen.getByText(text)).toBeInTheDocument();
 };
@@ -40,34 +39,33 @@ describe("Create Frequency Sheet Screen Test", () => {
 		input("CPF*", "12345");
 		submitClick();
 		isOnTheScreen("Insira um CPF válido");
-		
+
 		input("CPF*", "12345678911");
 		submitClick();
 		isOnTheScreen("Insira um cargo");
-		
+
 		input("Cargo*", "teste");
 		submitClick();
 		isOnTheScreen("Insira uma lotação");
-		
+
 		input("Lotação*", "lotaçao");
 		submitClick();
 		isOnTheScreen("Insira um município");
 		input("Município*", "teste");
 		submitClick();
-				
+
 		input("Período de Referencia*", "");
 		submitClick();
 		isOnTheScreen("Insira um período");
-		
+
 		input("Período de Referencia*", "03/");
 		submitClick();
 		isOnTheScreen("Insira um período válido");
-		
+
 		input("Período de Referencia*", "03/2020");
 		input("Número do Processo Encaminhador", "2222");
 		submitClick();
 		isOnTheScreen("Selecione um tipo");
-		
 
 		fireEvent.mouseDown(screen.getByLabelText("Tipo do Documento*"));
 		const typeOptions = within(screen.getByRole("listbox"));
@@ -92,7 +90,7 @@ describe("Create Frequency Sheet Screen Test", () => {
 		input("Cargo*", "teste1");
 		input("Lotação*", "lotaçao");
 		input("Município*", "teste");
-		input("Período de Referencia*", "03/2020");		
+		input("Período de Referencia*", "03/2020");
 
 		fireEvent.mouseDown(screen.getByLabelText("Tipo do Documento*"));
 		const typeOptions = within(screen.getByRole("listbox"));
@@ -102,6 +100,8 @@ describe("Create Frequency Sheet Screen Test", () => {
 		submitClick();
 
 		const failAlert = await screen.findByRole("alert");
-		expect(failAlert).toHaveTextContent(/Verifique sua conexão com a internet e recarregue a página./i);
+		expect(failAlert).toHaveTextContent(
+			/Verifique sua conexão com a internet e recarregue a página./i
+		);
 	});
 });

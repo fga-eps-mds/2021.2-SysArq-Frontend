@@ -165,30 +165,27 @@ describe("Create Administrative Process Screen Test", () => {
 		const senderUnitOptions = within(screen.getByRole("listbox"));
 		await senderUnitOptions.findByText("destination_unit_name_test");
 		fireEvent.click(senderUnitOptions.getByText(/destination_unit_name_test/i));
-		
+
 		input(ARCHIVING_DATE_LABEL, "09/10/2011");
 
 		fireEvent.mouseDown(screen.getByLabelText("Unidade que Encaminhou*"));
 		const senderUnit1Options = within(screen.getByRole("listbox"));
 		await senderUnit1Options.findByText("sender_unit_name_test");
 		fireEvent.click(senderUnit1Options.getByText(/sender_unit_name_test/i));
-		
-		
+
 		input(REFERENCE_FIELD_LABEL, "");
 
 		input("Servidor que Encaminhou", "Sandro");
-		
+
 		fireEvent.mouseDown(screen.getByLabelText("Status*"));
 		const statusOptions = within(screen.getByRole("listbox"));
 		fireEvent.click(statusOptions.getByText(/Eliminado/i));
-		
+
 		input("Observação", "obs");
-		
+
 		submitClick();
 
 		const successAlert = await screen.findByRole("alert");
-		expect(successAlert).toHaveTextContent(
-			/SucessoDocumento cadastrado!/i
-		);
+		expect(successAlert).toHaveTextContent(/SucessoDocumento cadastrado!/i);
 	});
 });
