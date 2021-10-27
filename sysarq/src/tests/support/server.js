@@ -213,7 +213,7 @@ export const server = setupServer(
 	}),
 
 	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
-		if (req.body.administrative_process_number === "50") {
+		if (req.body.process_number === "50") {
 			return res(ctx.status(201));
 		}
 		return res(ctx.status(404));

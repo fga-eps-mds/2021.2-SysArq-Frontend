@@ -146,82 +146,49 @@ describe("Create Administrative Process Screen Test", () => {
 		expect(errorAlert).toHaveTextContent(
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
+	});
 
-		input(REFERENCE_FIELD_LABEL, "04/2015");
+	it("success test", async () => {
+		render(<CreateAdministrativeProcess />);
 
-		input("CPF/CNPJ", "28293031323");
+		input("Número do Processo*", "50");
+		input(NOTICE_DATE_LABEL, "03/04/2005");
+		input("Interessado*", "interested_test");
+		input("CPF/CNPJ", "");
 
-		fireEvent.mouseDown(screen.getByLabelText("Status*"));
-		const statusOptions1 = within(screen.getByRole("listbox"));
-		fireEvent.click(statusOptions1.getByText("Arquivado"));
-
-		submitClick();
+		fireEvent.mouseDown(screen.getByLabelText("Assunto do Documento*"));
+		const subjectsOptions = within(screen.getByRole("listbox"));
+		await subjectsOptions.findByText("subject_name_test");
+		fireEvent.click(subjectsOptions.getByText(/subject_name_test/i));
 
 		fireEvent.mouseDown(screen.getByLabelText("Unidade de Destino"));
-		const destinationUnitOptions = within(screen.getByRole("listbox"));
-		await destinationUnitOptions.findByText("destination_unit_name_test");
-		fireEvent.click(
-			destinationUnitOptions.getByText(/destination_unit_name_test/i)
-		);
+		const senderUnitOptions = within(screen.getByRole("listbox"));
+		await senderUnitOptions.findByText("destination_unit_name_test");
+		fireEvent.click(senderUnitOptions.getByText(/destination_unit_name_test/i));
+		
+		input(ARCHIVING_DATE_LABEL, "09/10/2011");
 
-		input("Servidor que Encaminhou", "sender_worker_test");
+		fireEvent.mouseDown(screen.getByLabelText("Unidade que Encaminhou*"));
+		const senderUnit1Options = within(screen.getByRole("listbox"));
+		await senderUnit1Options.findByText("sender_unit_name_test");
+		fireEvent.click(senderUnit1Options.getByText(/sender_unit_name_test/i));
+		
+		
+		input(REFERENCE_FIELD_LABEL, "");
 
-		expect(
-			screen.queryByText(UNARCHIVE_DESTINATION_UNIT_LABEL)
-		).not.toBeInTheDocument();
-		expect(
-			screen.queryByText(UNARCHIVE_PROCESS_NUMBER_LABEL)
-		).not.toBeInTheDocument();
-
-		expect(screen.queryByText(UNARCHIVE_DATE_LABEL)).not.toBeInTheDocument();
-
+		input("Servidor que Encaminhou", "Sandro");
+		
 		fireEvent.mouseDown(screen.getByLabelText("Status*"));
-		const statusOptions2 = within(screen.getByRole("listbox"));
-		fireEvent.click(statusOptions2.getByText(/Desarquivado/i));
-
-		expect(
-			screen.getByText(UNARCHIVE_DESTINATION_UNIT_LABEL)
-		).toBeInTheDocument();
-		expect(
-			screen.getByText(UNARCHIVE_PROCESS_NUMBER_LABEL)
-		).toBeInTheDocument();
-
-		expect(screen.getByText(UNARCHIVE_DATE_LABEL)).toBeInTheDocument();
-
-		fireEvent.mouseDown(
-			screen.getByLabelText(UNARCHIVE_DESTINATION_UNIT_LABEL)
-		);
-
-		const unarchiveDestinationUnitOptions = within(screen.getByRole("listbox"));
-		await unarchiveDestinationUnitOptions.findByText(
-			"unarchive_unit_name_test"
-		);
-
-		fireEvent.click(
-			unarchiveDestinationUnitOptions.getByText(/unarchive_unit_name_test/i)
-		);
-
-		input(UNARCHIVE_PROCESS_NUMBER_LABEL, "50");
-
-		input(UNARCHIVE_DATE_LABEL, "/06/2052");
-		submitClick();
-		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
-
-		input(UNARCHIVE_DATE_LABEL, "");
-
-		expect(
-			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
-		).not.toBeInTheDocument();
-
-		input("Observação", "notes_test");
-
-		await screen.findByText("CADASTRAR");
-
+		const statusOptions = within(screen.getByRole("listbox"));
+		fireEvent.click(statusOptions.getByText(/Eliminado/i));
+		
+		input("Observação", "obs");
+		
 		submitClick();
 
 		const successAlert = await screen.findByRole("alert");
 		expect(successAlert).toHaveTextContent(
-			/ErroVerifique sua conexão com a internet e recarregue a página./i
+			/SucessoDocumento cadastrado!/i
 		);
 	});
 });
