@@ -7,6 +7,7 @@ import {
 	submitClick,
 	documentTypeSelector,
 	senderUnitSelector,
+	abbreviationSelector,
 	shelfSelector,
 	rackSelector,
 } from "../../support";

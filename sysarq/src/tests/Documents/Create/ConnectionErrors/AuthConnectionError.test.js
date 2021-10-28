@@ -56,4 +56,19 @@ describe("Auth Connection Error Test", () => {
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
 	});
+
+	it("wrong token in CreateFrequencySheet", async () => {
+		localStorage.setItem("tkr", 401);
+		render(<CreateFrequencySheet />);
+		await screen.findByText("Folha de Frequências");
+	});
+
+	it("connectionError in CreateFrequencySheet", async () => {
+		localStorage.setItem("tkr", 404);
+		render(<CreateFrequencySheet />);
+		const errorAlert = await screen.findByRole("alert");
+		expect(errorAlert).toHaveTextContent(
+			/Verifique sua conexão com a internet e recarregue a página./i
+		);
+	});
 });
