@@ -12,6 +12,8 @@ import {
 	FormHelperText,
 } from "@material-ui/core";
 
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
 import {
 	formatDate,
 	initialPeriod,
@@ -31,10 +33,13 @@ import PopUpAlert from "../../components/PopUpAlert";
 
 const CreateFrequencySheet = () => {
 	const url = "document-type/";
+	const urlPublicWorker = "public-worker/";
 	const [types, setTypes] = useState([]);
+	const [publicWorkers, setPublicWorkers] = useState([]);
+	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
+	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 	const [senderProcessNumber, setSenderProcessNumber] = useState("");
 	const [cpfWorker, setCpf] = useState("");
-	const [workerName, setWorkerName] = useState("");
 	const [roleWorker, setRole] = useState("");
 	const [workerClass, setWorkerClass] = useState("");
 	const [workplaceWorker, setWorkplace] = useState("");
@@ -44,13 +49,13 @@ const CreateFrequencySheet = () => {
 	const [type, setType] = useState("");
 
 	const [cpfHelperText, setCpfHelperText] = useState("");
-	const [workerNameHelperText, setWorkerNameHelperText] = useState("");
 	const [roleHelperText, setRoleHelperText] = useState("");
 	const [workplaceHelperText, setWorkplaceHelperText] = useState("");
 	const [districtHelperText, setDistrictHelperText] = useState("");
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
 		useState("");
 	const [typeHelperText, setTypeHelperText] = useState("");
+	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -66,9 +71,13 @@ const CreateFrequencySheet = () => {
 		setCpf(event.target.value);
 	};
 
-	const handleWorkerNameChange = (event) => {
-		setWorkerNameHelperText("");
-		setWorkerName(event.target.value);
+	const handlePublicWorkerChange = (value) => {
+		setPublicWorkerHelperText("");
+		if (!value) {
+			setPublicWorker(undefined);
+			return;
+		}
+		setPublicWorker(value.id);
 	};
 
 	const handleRoleChange = (event) => {
@@ -118,9 +127,10 @@ const CreateFrequencySheet = () => {
 		setSeverityAlert("success");
 		setAlertHelperText("Documento cadastrado!");
 
+		setPublicWorkerInput("");
+		setPublicWorker(undefined);
 		setSenderProcessNumber("");
 		setCpf("");
-		setWorkerName("");
 		setRole("");
 		setWorkerClass("");
 		setWorkplace("");
@@ -133,8 +143,8 @@ const CreateFrequencySheet = () => {
 	const onSubmit = () => {
 		setLoading(true);
 
-		if (workerName === "") {
-			setWorkerNameHelperText("Insira o nome");
+		if (!publicWorker) {
+			setPublicWorkerHelperText("Insira o nome");
 			setLoading(false);
 			return "workerName error";
 		}
@@ -198,7 +208,7 @@ const CreateFrequencySheet = () => {
 					.post(
 						"frequency-sheet/",
 						{
-							person_name: workerName,
+							person_id: publicWorker,
 							cpf: cpfWorker,
 							role: roleWorker,
 							category: workerClass,
@@ -238,6 +248,14 @@ const CreateFrequencySheet = () => {
 						headers: { Authorization: `JWT ${token}` },
 					})
 					.then((response) => setTypes(response.data))
+					.then(() => {
+						axiosArchives
+							.get(urlPublicWorker, {
+								headers: { Authorization: `JWT ${token}` },
+							})
+							.then((response) => setPublicWorkers(response.data))
+							.catch(() => connectionError());
+					})
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
@@ -245,19 +263,43 @@ const CreateFrequencySheet = () => {
 			});
 	}, []);
 
+	const publicWorkerOptions = publicWorkers.map((option) => {
+		const firstLetter = option.name[0].toUpperCase();
+		return {
+			firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+			...option,
+		};
+	});
+
 	return (
 		<CardContainer title="Folha de Frequências" spacing={1}>
 			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
+				<Autocomplete
 					id="workerName"
-					label="Nome do Servidor*"
-					value={workerName}
-					onChange={handleWorkerNameChange}
-					error={workerNameHelperText !== ""}
-					helperText={workerNameHelperText}
-					inputProps={{ maxLength: 150 }}
-					multiline
+					value={publicWorkers.name}
+					onChange={(event, newValue) => {
+						handlePublicWorkerChange(newValue);
+					}}
+					inputValue={publicWorkerInput}
+					onInputChange={(event, newInputValue) => {
+						setPublicWorkerInput(newInputValue);
+					}}
+					options={publicWorkerOptions.sort(
+						(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+					)}
+					groupBy={(option) => option.firstLetter}
+					getOptionLabel={(option) => option.name}
+					getOptionSelected={(option, value) => option.name === value.name}
+					autoHighlight
+					renderInput={(params) => (
+						<TextField
+							// eslint-disable-next-line
+							{...params}
+							label="Nome do Servidor*"
+							error={publicWorkerHelperText !== ""}
+							helperText={publicWorkerHelperText}
+						/>
+					)}
 				/>
 			</Grid>
 
