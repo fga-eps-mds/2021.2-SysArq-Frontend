@@ -7,7 +7,6 @@ import {
 	submitClick,
 	documentTypeSelector,
 	senderUnitSelector,
-	abbreviationSelector,
 	shelfSelector,
 	rackSelector,
 } from "../../support";
@@ -34,27 +33,33 @@ const inputTypes = (field, value, error) => {
 	isOnTheScreen(error);
 };
 
+const PROCESS_NUMBER = "Número do Processo*";
+
+const ADD_TYPE = "Adicionar Tipo";
+
 const INVALID_YEAR_ERROR_MESSAGE = "Insira um ano válido";
 
-const DELETE_ORIGIN_BOX_BUTTON_LABEL = "Excluir Caixa de Origem";
-
-const A_SUBJECT_DATE = "12/01/2020";
-
-const ADD_ORIGIN_BOX_SUBJECT_DATE_BUTTON_LABEL = "Adicionar Data";
-
-const ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL = "Adicionar Assunto";
-
-const INVALID_DATE_ERROR_MESSAGE = "Insira uma data válida";
+const RECEIVED_DATE_FIELD_LABEL = "Data de Recebimento*";
 
 const REQUIRED_DATE_ERROR_MESSAGE = "Insira uma data";
 
-const RECEIVED_DATE_FIELD_LABEL = "Data de Recebimento*";
+const INVALID_DATE_ERROR_MESSAGE = "Insira uma data válida";
+
+const ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL = "Adicionar Assunto";
+
+const ADD_ORIGIN_BOX_SUBJECT_DATE_BUTTON_LABEL = "Adicionar Data";
+
+const A_SUBJECT_DATE = "12/01/2020";
+
+const B_SUBJECT_DATE = "13/12/1992";
+
+const DELETE_ORIGIN_BOX_BUTTON_LABEL = "Excluir Caixa de Origem";
 
 describe("Create Archiving Relation Screen Test", () => {
 	it("type select", async () => {
 		render(<CreateBoxArchiving />);
 
-		input("Número do Processo*", "3");
+		input(PROCESS_NUMBER, "3");
 		await senderUnitSelector();
 
 		submitClick();
@@ -63,7 +68,7 @@ describe("Create Archiving Relation Screen Test", () => {
 			"Não é possível criar um Arquivamento de Caixas sem um Tipo do Documento."
 		);
 
-		fireEvent.click(screen.getByText("Adicionar Tipo"));
+		fireEvent.click(screen.getByText(ADD_TYPE));
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("Selecione um tipo");
 
@@ -73,9 +78,9 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		inputTypes("Mês", "0", "Insira um mês válido");
 
-		inputTypes("Mês", "3", "Insira um ano válido");
+		inputTypes("Mês", "3", INVALID_YEAR_ERROR_MESSAGE);
 
-		inputTypes("Ano*", "1023", "Insira um ano válido");
+		inputTypes("Ano*", "1023", INVALID_YEAR_ERROR_MESSAGE);
 
 		input("Ano*", "2021");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
@@ -118,7 +123,7 @@ describe("Create Archiving Relation Screen Test", () => {
 		submitClick();
 		isOnTheScreen("Insira o número do processo");
 
-		input("Número do Processo*", "3");
+		input(PROCESS_NUMBER, "3");
 		isNotOnTheScreen("Insira o número do processo");
 
 		input(RECEIVED_DATE_FIELD_LABEL, "");
@@ -139,7 +144,7 @@ describe("Create Archiving Relation Screen Test", () => {
 		await senderUnitSelector();
 		isNotOnTheScreen("Selecione uma unidade");
 
-		fireEvent.click(screen.getByText("Adicionar Tipo"));
+		fireEvent.click(screen.getByText(ADD_TYPE));
 
 		await documentTypeSelector();
 
@@ -162,7 +167,7 @@ describe("Create Archiving Relation Screen Test", () => {
 	it("post success", async () => {
 		render(<CreateBoxArchiving />);
 
-		input("Número do Processo*", "3");
+		input(PROCESS_NUMBER, "3");
 		input(RECEIVED_DATE_FIELD_LABEL, "04/05/2006");
 
 		await senderUnitSelector();
@@ -248,33 +253,33 @@ describe("Create Archiving Relation Screen Test", () => {
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("Data já adicionada");
 
-		input("Data*", "13/12/1992");
+		input("Data*", B_SUBJECT_DATE);
 		isNotOnTheScreen("Data já adicionada");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("13/12/1992");
+		isOnTheScreen(B_SUBJECT_DATE);
 
 		expect(screen.getAllByTestId("delete").length).toBe(2);
 		fireEvent.click(screen.getAllByTestId("delete")[0]);
 		expect(screen.getAllByTestId("delete").length).toBe(1);
 
 		isNotOnTheScreen(A_SUBJECT_DATE);
-		isOnTheScreen("13/12/1992");
+		isOnTheScreen(B_SUBJECT_DATE);
 
 		expect(screen.getAllByText("Excluir").length).toBe(2);
 		fireEvent.click(screen.getAllByText("Excluir")[1]);
 		expect(screen.getAllByText("Excluir").length).toBe(1);
 
 		isOnTheScreen("originBoxSubject_test");
-		isOnTheScreen("13/12/1992");
+		isOnTheScreen(B_SUBJECT_DATE);
 
 		isNotOnTheScreen("differentSubject_test");
 
 		fireEvent.click(screen.getByText(DELETE_ORIGIN_BOX_BUTTON_LABEL));
 
 		isNotOnTheScreen("originBoxSubject_test");
-		isNotOnTheScreen("13/12/1992");
+		isNotOnTheScreen(B_SUBJECT_DATE);
 
-		fireEvent.click(screen.getByText("Adicionar Tipo"));
+		fireEvent.click(screen.getByText(ADD_TYPE));
 
 		await documentTypeSelector();
 

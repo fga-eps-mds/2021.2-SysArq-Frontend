@@ -48,7 +48,7 @@ const Icon = ({ iconName }) => {
 		icon = <ShelfRackIcon className={classes.icon} />;
 	} else if (iconName === "public-worker-icon") {
 		icon = <PublicWorkerIcon className={classes.icon} />;
-	}  else if (iconName === "administrative-process-icon") {
+	} else if (iconName === "administrative-process-icon") {
 		icon = <AdministrativeProcessIcon className={classes.icon} />;
 	} else if (iconName === "frequency-relation-icon") {
 		icon = <FrequencyRelationIcon className={classes.icon} />;
