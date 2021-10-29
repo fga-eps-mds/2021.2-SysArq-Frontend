@@ -219,7 +219,7 @@ export const server = setupServer(
 		return res(ctx.status(404));
 	}),
 
-	rest.post(`${hostApiArchives}archival-relation/`, (req, res, ctx) => {
+	rest.post(`${hostApiArchives}box-archiving/`, (req, res, ctx) => {
 		if (
 			req.body.process_number === "3" &&
 			req.body.sender_unity === 38 &&

@@ -12,7 +12,7 @@ import {
 	rackSelector,
 } from "../../support";
 
-import CreateArchivingRelation from "../../../pages/Documents/Create/CreateArchivingRelation";
+import CreateBoxArchiving from "../../../pages/Documents/Create/CreateBoxArchiving";
 
 jest.setTimeout(60000);
 
@@ -52,7 +52,16 @@ const RECEIVED_DATE_FIELD_LABEL = "Data de Recebimento*";
 
 describe("Create Archiving Relation Screen Test", () => {
 	it("type select", async () => {
-		render(<CreateArchivingRelation />);
+		render(<CreateBoxArchiving />);
+
+		input("Número do Processo*", "3");
+		await senderUnitSelector();
+
+		submitClick();
+
+		isOnTheScreen(
+			"Não é possível criar um Arquivamento de Caixas sem um Tipo do Documento."
+		);
 
 		fireEvent.click(screen.getByText("Adicionar Tipo"));
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
@@ -76,7 +85,7 @@ describe("Create Archiving Relation Screen Test", () => {
 	});
 
 	it("box select", async () => {
-		render(<CreateArchivingRelation />);
+		render(<CreateBoxArchiving />);
 
 		fireEvent.mouseDown(screen.getByLabelText("Sigla da Caixa"));
 		const boxAbbreviationOptions = within(screen.getByRole("listbox"));
@@ -104,7 +113,7 @@ describe("Create Archiving Relation Screen Test", () => {
 	});
 
 	it("validation and post error", async () => {
-		render(<CreateArchivingRelation />);
+		render(<CreateBoxArchiving />);
 
 		submitClick();
 		isOnTheScreen("Insira o número do processo");
@@ -130,7 +139,19 @@ describe("Create Archiving Relation Screen Test", () => {
 		await senderUnitSelector();
 		isNotOnTheScreen("Selecione uma unidade");
 
-		submitClick();
+		fireEvent.click(screen.getByText("Adicionar Tipo"));
+
+		await documentTypeSelector();
+
+		input("Mês", "1");
+		input("Ano*", "2021");
+
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("documentType_name_test - 1/2021");
+
+		await screen.findByText("CADASTRAR");
+
+		fireEvent.click(screen.getByText("CADASTRAR"));
 
 		const errorAlert = await screen.findByRole("alert");
 		expect(errorAlert).toHaveTextContent(
@@ -138,8 +159,8 @@ describe("Create Archiving Relation Screen Test", () => {
 		);
 	});
 
-	it("complete test", async () => {
-		render(<CreateArchivingRelation />);
+	it("post success", async () => {
+		render(<CreateBoxArchiving />);
 
 		input("Número do Processo*", "3");
 		input(RECEIVED_DATE_FIELD_LABEL, "04/05/2006");
@@ -152,10 +173,10 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		input("Observação", "notes_test");
 
-		fireEvent.click(screen.getByText("Adicionar"));
+		fireEvent.click(screen.getByText("Adicionar Caixa de Origem"));
 		fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
 
-		fireEvent.click(screen.getByText("Adicionar"));
+		fireEvent.click(screen.getByText("Adicionar Caixa de Origem"));
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("Insira um número");
 
@@ -177,23 +198,9 @@ describe("Create Archiving Relation Screen Test", () => {
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("7/2008");
 
-		fireEvent.click(screen.getByText("Adicionar"));
-		input("Número da Caixa*", "9");
-		input("Ano*", "2010");
-		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
-		isOnTheScreen("9/2010");
-
 		fireEvent.click(screen.getByText("7/2008"));
-		fireEvent.click(
-			screen.getAllByText(ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL)[0]
-		);
 
-		fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
-
-		fireEvent.click(
-			screen.getAllByText(ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL)[0]
-		);
-
+		fireEvent.click(screen.getByText(ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL));
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("Insira um assunto");
 
@@ -201,12 +208,13 @@ describe("Create Archiving Relation Screen Test", () => {
 		isNotOnTheScreen("Insira um assunto");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
-		fireEvent.click(
-			screen.getAllByText(ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL)[0]
-		);
-
+		fireEvent.click(screen.getByText(ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL));
 		input("Assunto*", "differentSubject_test");
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+
+		fireEvent.click(screen.getByText(ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL));
+		input("Assunto*", "");
+		fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
 
 		fireEvent.click(
 			screen.getAllByText(ADD_ORIGIN_BOX_SUBJECT_DATE_BUTTON_LABEL)[0]
@@ -249,13 +257,31 @@ describe("Create Archiving Relation Screen Test", () => {
 		fireEvent.click(screen.getAllByTestId("delete")[0]);
 		expect(screen.getAllByTestId("delete").length).toBe(1);
 
+		isNotOnTheScreen(A_SUBJECT_DATE);
+		isOnTheScreen("13/12/1992");
+
 		expect(screen.getAllByText("Excluir").length).toBe(2);
 		fireEvent.click(screen.getAllByText("Excluir")[1]);
 		expect(screen.getAllByText("Excluir").length).toBe(1);
 
-		expect(screen.getAllByText(DELETE_ORIGIN_BOX_BUTTON_LABEL).length).toBe(2);
-		fireEvent.click(screen.getAllByText(DELETE_ORIGIN_BOX_BUTTON_LABEL)[1]);
-		expect(screen.getAllByText(DELETE_ORIGIN_BOX_BUTTON_LABEL).length).toBe(1);
+		isOnTheScreen("originBoxSubject_test");
+		isOnTheScreen("13/12/1992");
+
+		isNotOnTheScreen("differentSubject_test");
+
+		fireEvent.click(screen.getByText(DELETE_ORIGIN_BOX_BUTTON_LABEL));
+
+		isNotOnTheScreen("originBoxSubject_test");
+		isNotOnTheScreen("13/12/1992");
+
+		fireEvent.click(screen.getByText("Adicionar Tipo"));
+
+		await documentTypeSelector();
+
+		input("Mês", "1");
+		input("Ano*", "2021");
+
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 
 		fireEvent.click(screen.getByText("CADASTRAR"));
 

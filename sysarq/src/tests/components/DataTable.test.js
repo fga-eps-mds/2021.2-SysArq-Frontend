@@ -92,7 +92,7 @@ const server = setupServer(
 		if (value === '{"process_number":"111"}') {
 			return res(
 				ctx.json({
-					archival_relation: [],
+					box_archiving: [],
 					frequecy_relation: [],
 					frequency_sheet: [],
 					administrative_process: [
@@ -128,7 +128,7 @@ const server = setupServer(
 		} else {
 			return res(
 				ctx.json({
-					archival_relation: [],
+					box_archiving: [],
 					frequecy_relation: [],
 					frequency_sheet: [],
 					administrative_process: [
