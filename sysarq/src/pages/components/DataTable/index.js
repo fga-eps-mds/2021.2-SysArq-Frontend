@@ -134,7 +134,7 @@ const DataTable = ({ url, title }) => {
 						if (url && url.includes("search")) {
 							const listTable = [];
 
-							listTable.push(...response.data.archival_relation);
+							listTable.push(...response.data.box_archiving);
 							listTable.push(...response.data.frequency_sheet);
 							listTable.push(...response.data.administrative_process);
 							listTable.push(...response.data.frequecy_relation);
