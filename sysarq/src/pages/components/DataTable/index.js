@@ -125,7 +125,7 @@ const DataTable = ({ url, title }) => {
 		setAlertHelperText(
 			"Verifique sua conexão com a internet e recarregue a página."
 		);
-	}
+	};
 
 	useEffect(() => {
 		if (updateTable) {
