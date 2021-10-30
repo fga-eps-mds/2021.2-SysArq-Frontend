@@ -2,13 +2,7 @@ import { screen, render, fireEvent, within } from "@testing-library/react";
 
 import { server } from "../../support/server";
 
-import {
-	submitClick,
-	input,
-	abbreviationSelector,
-	shelfSelector,
-	rackSelector,
-} from "../../support";
+import { submitClick, input } from "../../support";
 
 import CreateFrequencyRelation from "../../../pages/Documents/Create/CreateFrequencyRelation";
 
@@ -29,22 +23,29 @@ const isNotOnTheScreen = (text) => {
 };
 
 const RECEIVED_DATE = "Data de Recebimento*";
+const DOCUMENT_DATE = "Data do Documento*";
 
 describe("Create Frequency Relation Screen Test", () => {
 	it("complete test", async () => {
 		render(<CreateFrequencyRelation />);
 
 		submitClick();
-		isOnTheScreen("Insira o número");
-
-		input("Número*", "27");
-		isNotOnTheScreen("Insira o número");
-
-		submitClick();
 		isOnTheScreen("Insira o número do processo");
 
 		input("Número do Processo*", "28");
 		isNotOnTheScreen("Insira o número do processo");
+
+		input(DOCUMENT_DATE, "");
+		submitClick();
+		isOnTheScreen("Insira uma data");
+
+		input(DOCUMENT_DATE, "29/03/");
+		isNotOnTheScreen("Insira uma data");
+		submitClick();
+		isOnTheScreen("Insira uma data válida");
+
+		input(DOCUMENT_DATE, "31/05/2032");
+		isNotOnTheScreen("Insira uma data válida");
 
 		input(RECEIVED_DATE, "");
 		submitClick();
@@ -120,28 +121,22 @@ describe("Create Frequency Relation Screen Test", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: /Cancelar/ }));
 
+		input("Observação", "note_test");
+
 		await screen.findByText("CADASTRAR");
 
 		fireEvent.click(screen.getByText("CADASTRAR"));
 
-		const errorAlert = await screen.findByRole("alert");
-		expect(errorAlert).toHaveTextContent(
-			/Verifique sua conexão com a internet e recarregue a página./i
-		);
+		const successAlert = await screen.findByRole("alert");
+		expect(successAlert).toHaveTextContent(/SucessoDocumento cadastrado!/i);
 
-		await screen.findByText("CADASTRAR");
+		// input("Observação", "");
 
-		await abbreviationSelector();
+		// submitClick();
 
-		await shelfSelector();
-
-		await rackSelector();
-
-		input("Observação", "note_test");
-
-		submitClick();
-
-		// const successAlert = await screen.findByRole("alert");
-		// expect(successAlert).toHaveTextContent(/Documento cadastrado!/i);
+		// const errorAlert = await screen.findByRole("alert");
+		// expect(errorAlert).toHaveTextContent(
+		// 	/Verifique sua conexão com a internet e recarregue a página./i
+		// );
 	});
 });

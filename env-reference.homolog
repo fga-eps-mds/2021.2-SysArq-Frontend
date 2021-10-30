@@ -1,0 +1,2 @@
+REACT_APP_URL_API_PROFILE="https://pc-go-profile.herokuapp.com/"
+REACT_APP_URL_API_ARCHIVES="https://pc-go-archives-backend.herokuapp.com/"

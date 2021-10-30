@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 
 import CreateAdministrativeProcess from "../../../../pages/Documents/Create/CreateAdministrativeProcess";
 import CreateFrequencyRelation from "../../../../pages/Documents/Create/CreateFrequencyRelation";
-import CreateArchivingRelation from "../../../../pages/Documents/Create/CreateArchivingRelation";
+import CreateBoxArchiving from "../../../../pages/Documents/Create/CreateBoxArchiving";
 
 import { failedUnitServer } from "../../../support/server";
 
@@ -29,8 +29,8 @@ describe("Unit Connection Error Test", () => {
 		);
 	});
 
-	it("CreateArchivingRelation connectionError test", async () => {
-		render(<CreateArchivingRelation />);
+	it("CreateBoxArchiving connectionError test", async () => {
+		render(<CreateBoxArchiving />);
 
 		const errorAlert = await screen.findByRole("alert");
 		expect(errorAlert).toHaveTextContent(
