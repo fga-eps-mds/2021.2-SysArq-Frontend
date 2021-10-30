@@ -160,6 +160,10 @@ function App() {
 							>
 								<CreateAdministrativeProcess />
 							</PrivateRoute>
+
+							<PrivateRoute path="/documents/administrative-process/view/:id">
+								<CreateAdministrativeProcess />
+							</PrivateRoute>
 						</Route>
 
 						<Route path="/documents/frequency-relation">

@@ -16,6 +16,7 @@ const SenderUnitInput = ({
 	senderUnit,
 	units,
 	senderUnitHelperText,
+	isDisabled,
 }) => {
 	const handleChange = (event) => {
 		setHelperText("");
@@ -35,6 +36,7 @@ const SenderUnitInput = ({
 					value={senderUnit}
 					onChange={handleChange}
 					renderValue={(value) => `${value.unity_name}`}
+					disabled={isDisabled}
 				>
 					<MenuItem key={0} value="">
 						<em>Nenhuma</em>
@@ -62,6 +64,7 @@ SenderUnitInput.propTypes = {
 	senderUnit: PropTypes.string.isRequired,
 	units: PropTypes.arrayOf(PropTypes.string).isRequired,
 	senderUnitHelperText: PropTypes.string.isRequired,
+	isDisabled: PropTypes.string.isRequired,
 };
 
 export default SenderUnitInput;

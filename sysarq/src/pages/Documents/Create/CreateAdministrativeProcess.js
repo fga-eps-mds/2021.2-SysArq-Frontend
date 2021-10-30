@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import {
 	Grid,
@@ -101,6 +102,11 @@ const CreateAdministrativeProcess = () => {
 		setPublicWorker(value);
 	};
 
+	const [isDisabled, setIsDisabled] = useState(false);
+
+	const url = window.location.href;
+	const params = useParams();
+	
 	const handleNoticeDateChange = (date) => {
 		setNoticeDateHelperText("");
 		setNoticeDate(date);
@@ -329,9 +335,71 @@ const CreateAdministrativeProcess = () => {
 					.get("document-subject/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
-					.then((response) => setSubjects(response.data))
-					.catch(() => connectionError());
+					.then((response) => { 
+						setSubjects(response.data);
 
+						const token = localStorage.getItem("tk");
+
+						if(url.includes("view")) {
+							setIsDisabled(true);
+						}
+
+						if(url.includes("view")) {
+							axiosArchives
+							.get(`administrative-process/${params.id}/`, { headers: { Authorization: `JWT ${token}`}})
+							.then((responseAdministrative => {
+								console.log("Resp: ", responseAdministrative);
+								setProcessNumber(responseAdministrative.data.process_number);
+								setNoticeDate(responseAdministrative.data.notice_date);
+								setInterested(responseAdministrative.data.interested);
+								setPersonRegistry(responseAdministrative.data.cpf_cnpj);
+								setSubject(responseAdministrative.data.subject_id);
+								setArchivingDate(responseAdministrative.data.archiving_date);
+								setSenderWorker(responseAdministrative.data.sender_user);
+								setReference(responseAdministrative.data.reference_month_year);
+								setNotes(responseAdministrative.data.notes);
+
+								response.data.forEach(subjectOption =>{
+									if(subjectOption.id === responseAdministrative.data.subject_id) {
+										setSubject(subjectOption);
+									}
+								})
+
+								if(responseAdministrative.data.is_filed) {
+									setStatus("Arquivado");
+								} else {
+									setStatus("Desarquivado");
+								}
+
+								if(responseAdministrative.data.is_eliminated) {
+									setStatus("Eliminado");
+								}
+
+								if(responseAdministrative.status === 200) {
+									axiosArchives
+										.get("unity/", {
+											headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+										})
+										.then((responseUnity) => {
+											setUnits(responseUnity.data);
+											responseUnity.data.forEach(unity => {
+												if(unity.id === responseAdministrative.data.dest_unity_id) {
+													setDestinationUnit(unity);
+												}
+												
+												if(unity.id === responseAdministrative.data.sender_unity) {
+													setSenderUnit(unity);
+												}
+											})
+										})
+										.catch(() => connectionError());
+								}
+							}))
+						}
+					})
+					.catch(() => connectionError());
+				
+				
 				axiosArchives
 					.get("unity/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
@@ -362,6 +430,7 @@ const CreateAdministrativeProcess = () => {
 					set={setProcessNumber}
 					number={processNumber}
 					helperText={processNumberHelperText}
+					isDisabled={isDisabled}
 				/>
 			</Grid>
 
@@ -380,6 +449,7 @@ const CreateAdministrativeProcess = () => {
 					}}
 					error={noticeDateHelperText !== ""}
 					helperText={noticeDateHelperText}
+					disabled={isDisabled}
 				/>
 			</Grid>
 
@@ -394,6 +464,7 @@ const CreateAdministrativeProcess = () => {
 					helperText={interestedHelperText}
 					multiline
 					inputProps={{ maxLength: 150 }}
+					disabled={isDisabled}
 				/>
 			</Grid>
 
@@ -408,6 +479,7 @@ const CreateAdministrativeProcess = () => {
 					error={personRegistryHelperText !== ""}
 					helperText={personRegistryHelperText}
 					inputProps={{ maxLength: 15 }}
+					disabled={isDisabled}
 				/>
 			</Grid>
 
@@ -423,6 +495,7 @@ const CreateAdministrativeProcess = () => {
 						value={subject}
 						onChange={handleSubjectChange}
 						renderValue={(value) => `${value.subject_name}`}
+						disabled={isDisabled}
 					>
 						<MenuItem key={0} value="">
 							<em>Nenhum</em>
@@ -454,6 +527,7 @@ const CreateAdministrativeProcess = () => {
 						value={destinationUnit}
 						onChange={handleDestinationUnitChange}
 						renderValue={(value) => `${value.unity_name}`}
+						disabled={isDisabled}
 					>
 						<MenuItem key={0} value="">
 							<em>Nenhuma</em>
@@ -483,6 +557,7 @@ const CreateAdministrativeProcess = () => {
 					}}
 					error={archivingDateHelperText !== ""}
 					helperText={archivingDateHelperText}
+					disabled={isDisabled}
 				/>
 			</Grid>
 			<SenderUnitInput
@@ -491,6 +566,7 @@ const CreateAdministrativeProcess = () => {
 				senderUnit={senderUnit}
 				units={units}
 				senderUnitHelperText={senderUnitHelperText}
+				isDisabled={isDisabled}
 			/>
 
 			<Grid item xs={12} sm={12} md={12}>
@@ -518,6 +594,7 @@ const CreateAdministrativeProcess = () => {
 					onChange={handleReferenceChange}
 					error={referenceHelperText !== ""}
 					helperText={referenceHelperText}
+					disabled={isDisabled}
 				/>
 			</Grid>
 
@@ -531,6 +608,7 @@ const CreateAdministrativeProcess = () => {
 						value={status}
 						onChange={handleStatusChange}
 						renderValue={(value) => `${value}`}
+						disabled={isDisabled}
 					>
 						<MenuItem value="">
 							<em>Nenhum</em>
@@ -609,7 +687,7 @@ const CreateAdministrativeProcess = () => {
 				""
 			)}
 
-			<NotesInput set={setNotes} notes={notesLocal} />
+			<NotesInput set={setNotes} notes={notesLocal} isDisabled={isDisabled} />
 
 			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
 

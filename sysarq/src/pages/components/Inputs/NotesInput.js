@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { Grid, TextField } from "@material-ui/core";
 
-const NotesInput = ({ set, notes }) => {
+const NotesInput = ({ set, notes, isDisabled }) => {
 	const handleChange = (event) => set(event.target.value);
 
 	return (
@@ -16,6 +16,7 @@ const NotesInput = ({ set, notes }) => {
 				onChange={handleChange}
 				inputProps={{ maxLength: 300 }}
 				multiline
+				disabled={isDisabled}
 			/>
 		</Grid>
 	);
@@ -24,6 +25,7 @@ const NotesInput = ({ set, notes }) => {
 NotesInput.propTypes = {
 	set: PropTypes.func.isRequired,
 	notes: PropTypes.string.isRequired,
+	isDisabled: PropTypes.string.isRequired,
 };
 
 export default NotesInput;
