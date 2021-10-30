@@ -213,7 +213,10 @@ const DataTable = ({ url, title }) => {
 						setOpenAlert(true);
 						setSeverityAlert("error");
 
-						if (error.response && error.response.data.indexOf("Cannot") !== -1) {
+						if (
+							error.response &&
+							error.response.data.indexOf("Cannot") !== -1
+						) {
 							setAlertHelperText(
 								"Campo em uso! Atualize os documentos que utilizam esse campo."
 							);

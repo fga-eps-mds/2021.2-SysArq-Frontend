@@ -104,13 +104,13 @@ const server = setupServer(
 	}),
 
 	rest.delete(`${axiosArchives}document-type/:id`, async (req, res, ctx) => {
-		const { id } = req.params
+		const { id } = req.params;
 
-		if (id === "1"){
+		if (id === "1") {
 			return res(ctx.status(204));
-		} else if (id === "2"){
+		} else if (id === "2") {
 			return res(ctx.status(500), ctx.json("Cannot"));
-		} else if (id === "3"){
+		} else if (id === "3") {
 			return res(ctx.status(404));
 		}
 	}),
@@ -249,9 +249,7 @@ describe("DataTable and tablesHeadCells Test", () => {
 		fireEvent.click(screen.getAllByTestId("delete-field")[0]);
 
 		const successAlert = await screen.findByRole("alert");
-		expect(successAlert).toHaveTextContent(
-			/Campo excluído com sucesso!/i
-		);
+		expect(successAlert).toHaveTextContent(/Campo excluído com sucesso!/i);
 	});
 
 	it("test fail deletion - field in use", async () => {

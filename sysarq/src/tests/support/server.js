@@ -19,9 +19,7 @@ const refreshTokenRequest = rest.post(
 
 export const failedUnitServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}unity/`, (req, res, ctx) =>
-		res(ctx.status(404))
-	)
+	rest.get(`${hostApiArchives}unity/`, (req, res, ctx) => res(ctx.status(404)))
 );
 
 export const failedDocumentSubjectServer = setupServer(
@@ -33,16 +31,12 @@ export const failedDocumentSubjectServer = setupServer(
 
 export const failedShelfServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}shelf/`, (req, res, ctx) =>
-		res(ctx.status(404))
-	)
+	rest.get(`${hostApiArchives}shelf/`, (req, res, ctx) => res(ctx.status(404)))
 );
 
 export const failedRackServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}rack/`, (req, res, ctx) =>
-		res(ctx.status(404))
-	)
+	rest.get(`${hostApiArchives}rack/`, (req, res, ctx) => res(ctx.status(404)))
 );
 
 export const failedDocumentTypeServer = setupServer(
