@@ -28,7 +28,7 @@ import tableHeadCells from "./tablesHeadCells";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
 
-import { logout } from "../../../support";
+import { axiosProfileError } from "../../../support";
 
 import PopUpAlert from "../PopUpAlert";
 
