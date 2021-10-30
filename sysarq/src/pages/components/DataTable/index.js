@@ -118,6 +118,15 @@ const DataTable = ({ url, title }) => {
 
 	const [updateTable, setUpdateTable] = useState(true);
 
+	const connectionError = () => {
+		setOpenAlert(true);
+		setSeverityAlert("error");
+
+		setAlertHelperText(
+			"Verifique sua conexão com a internet e recarregue a página."
+		);
+	}
+
 	useEffect(() => {
 		if (updateTable) {
 			setHeadCells(tableHeadCells(url));
@@ -162,16 +171,7 @@ const DataTable = ({ url, title }) => {
 					return "get done";
 				})
 				.catch((error) => {
-					if (error.response && error.response.status === 401) {
-						logout();
-					} else {
-						setOpenAlert(true);
-						setSeverityAlert("error");
-
-						setAlertHelperText(
-							"Verifique sua conexão com a internet e recarregue a página."
-						);
-					}
+					axiosProfileError(error, connectionError);
 				});
 		}
 	}, [updateTable]);
@@ -228,16 +228,7 @@ const DataTable = ({ url, title }) => {
 					});
 			})
 			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else {
-					setOpenAlert(true);
-					setSeverityAlert("error");
-
-					setAlertHelperText(
-						"Verifique sua conexão com a internet e recarregue a página."
-					);
-				}
+				axiosProfileError(error, connectionError);
 			});
 	};
 
