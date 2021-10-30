@@ -82,7 +82,37 @@ const server = setupServer(
 	}),
 
 	rest.get(`${axiosArchives}document-type/`, async (req, res, ctx) => {
-		return res(ctx.json([]));
+		return res(
+			ctx.json([
+				{
+					id: 1,
+					document_name: "a-document-name-test",
+					temporality: "2021-09-18",
+				},
+				{
+					id: 2,
+					document_name: "document-name-test1",
+					temporality: "2021-09-19",
+				},
+				{
+					id: 3,
+					document_name: "document-name-test2",
+					temporality: "2021-09-20",
+				},
+			])
+		);
+	}),
+
+	rest.delete(`${axiosArchives}document-type/:id`, async (req, res, ctx) => {
+		const { id } = req.params
+
+		if (id === "1"){
+			return res(ctx.status(204));
+		} else if (id === "2"){
+			return res(ctx.status(500), ctx.json("Cannot"));
+		} else if (id === "3"){
+			return res(ctx.status(404));
+		}
 	}),
 
 	rest.get(`${axiosArchives}search/`, async (req, res, ctx) => {
@@ -221,6 +251,32 @@ describe("DataTable and tablesHeadCells Test", () => {
 		const successAlert = await screen.findByRole("alert");
 		expect(successAlert).toHaveTextContent(
 			/Campo excluído com sucesso!/i
+		);
+	});
+
+	it("test fail deletion - field in use", async () => {
+		render(<DataTable title="Tipo de Documento" url="document-type/" />);
+
+		await screen.findByText("document-name-test1");
+
+		fireEvent.click(screen.getAllByTestId("delete-field")[1]);
+
+		const errorAlert = await screen.findByRole("alert");
+		expect(errorAlert).toHaveTextContent(
+			/Campo em uso! Atualize os documentos que utilizam esse campo./i
+		);
+	});
+
+	it("test fail deletion - connectionError", async () => {
+		render(<DataTable title="Tipo de Documento" url="document-type/" />);
+
+		await screen.findByText("document-name-test2");
+
+		fireEvent.click(screen.getAllByTestId("delete-field")[2]);
+
+		const successAlert = await screen.findByRole("alert");
+		expect(successAlert).toHaveTextContent(
+			/Verifique sua conexão com a internet e recarregue a página./i
 		);
 	});
 
