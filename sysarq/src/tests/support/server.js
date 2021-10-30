@@ -19,43 +19,37 @@ const refreshTokenRequest = rest.post(
 
 export const failedUnitServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}unity/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
-	)
+	rest.get(`${hostApiArchives}unity/`, (req, res, ctx) => res(ctx.status(404)))
 );
 
 export const failedDocumentSubjectServer = setupServer(
 	refreshTokenRequest,
 	rest.get(`${hostApiArchives}document-subject/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
+		res(ctx.status(404))
 	)
 );
 
 export const failedShelfServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}shelf/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
-	)
+	rest.get(`${hostApiArchives}shelf/`, (req, res, ctx) => res(ctx.status(404)))
 );
 
 export const failedRackServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}rack/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
-	)
+	rest.get(`${hostApiArchives}rack/`, (req, res, ctx) => res(ctx.status(404)))
 );
 
 export const failedDocumentTypeServer = setupServer(
 	refreshTokenRequest,
 	rest.get(`${hostApiArchives}document-type/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
+		res(ctx.status(404))
 	)
 );
 
 export const failedAbbreviationServer = setupServer(
 	refreshTokenRequest,
 	rest.get(`${hostApiArchives}box-abbreviation/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
+		res(ctx.status(404))
 	)
 );
 
