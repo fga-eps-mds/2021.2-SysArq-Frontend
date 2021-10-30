@@ -113,59 +113,68 @@ const DataTable = ({ url, title }) => {
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 
 	const [openAlert, setOpenAlert] = useState(false);
+	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
+	const [updateTable, setUpdateTable] = useState(true);
+
 	useEffect(() => {
-		setHeadCells(tableHeadCells(url));
+		if (updateTable) {
+			setHeadCells(tableHeadCells(url));
 
-		axiosProfile
-			.post(`api/token/refresh/`, {
-				refresh: localStorage.getItem("tkr"),
-			})
-			.then((res) => {
-				localStorage.setItem("tk", res.data.access);
-				localStorage.setItem("tkr", res.data.refresh);
+			axiosProfile
+				.post(`api/token/refresh/`, {
+					refresh: localStorage.getItem("tkr"),
+				})
+				.then((res) => {
+					localStorage.setItem("tk", res.data.access);
+					localStorage.setItem("tkr", res.data.refresh);
 
-				axiosArchives
-					.get(url, {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
-					.then((response) => {
-						if (url && url.includes("search")) {
-							const listTable = [];
+					axiosArchives
+						.get(url, {
+							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						})
+						.then((response) => {
+							if (url && url.includes("search")) {
+								const listTable = [];
 
-							listTable.push(...response.data.box_archiving);
-							listTable.push(...response.data.frequency_sheet);
-							listTable.push(...response.data.administrative_process);
-							listTable.push(...response.data.frequecy_relation);
+								listTable.push(...response.data.box_archiving);
+								listTable.push(...response.data.frequency_sheet);
+								listTable.push(...response.data.administrative_process);
+								listTable.push(...response.data.frequecy_relation);
 
-							setRows(listTable);
-						} else {
-							setRows(response.data);
-						}
-					})
-					.catch(() => {
+								setRows(listTable);
+							} else {
+								setRows(response.data);
+							}
+
+							setUpdateTable(false);
+						})
+						.catch(() => {
+							setOpenAlert(true);
+							setSeverityAlert("error");
+
+							setAlertHelperText(
+								"Verifique sua conexão com a internet e recarregue a página."
+							);
+						});
+
+					return "get done";
+				})
+				.catch((error) => {
+					if (error.response && error.response.status === 401) {
+						logout();
+					} else {
 						setOpenAlert(true);
+						setSeverityAlert("error");
 
 						setAlertHelperText(
 							"Verifique sua conexão com a internet e recarregue a página."
 						);
-					});
-
-				return "get done";
-			})
-			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else {
-					setOpenAlert(true);
-
-					setAlertHelperText(
-						"Verifique sua conexão com a internet e recarregue a página."
-					);
-				}
-			});
-	}, []);
+					}
+				});
+		}
+	}, [updateTable]);
 
 	const handleAlertClose = () => setOpenAlert(false);
 
@@ -180,6 +189,54 @@ const DataTable = ({ url, title }) => {
 
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
+	const deleteRow = (row) => {
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+
+				axiosArchives
+					.delete(`${url}${row.id}/`, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then(() => {
+						setOpenAlert(true);
+						setSeverityAlert("success");
+						setAlertHelperText("Campo excluído com sucesso!");
+						setUpdateTable(true);
+					})
+					.catch((error) => {
+						setOpenAlert(true);
+						setSeverityAlert("error");
+
+						if (error.response && error.response.data.indexOf("Cannot") !== -1) {
+							setAlertHelperText(
+								"Campo em uso! Atualize os documentos que utilizam esse campo."
+							);
+						} else {
+							setAlertHelperText(
+								"Verifique sua conexão com a internet e recarregue a página."
+							);
+						}
+					});
+			})
+			.catch((error) => {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else {
+					setOpenAlert(true);
+					setSeverityAlert("error");
+
+					setAlertHelperText(
+						"Verifique sua conexão com a internet e recarregue a página."
+					);
+				}
+			});
+	};
 
 	const cellContent = (row, id) => {
 		if (id === "is_filed") {
@@ -286,7 +343,10 @@ const DataTable = ({ url, title }) => {
 																color="inherit"
 																size="small"
 															>
-																<DeleteIcon />
+																<DeleteIcon
+																	data-testid="delete-field"
+																	onClick={() => deleteRow(row)}
+																/>
 															</IconButton>
 														</TableCell>
 													) : (
@@ -332,7 +392,7 @@ const DataTable = ({ url, title }) => {
 			<PopUpAlert
 				open={openAlert}
 				handleClose={handleAlertClose}
-				severity="error"
+				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
 		</>

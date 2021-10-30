@@ -10,13 +10,10 @@ const axiosArchives = process.env.REACT_APP_URL_API_ARCHIVES;
 const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
 
 const server = setupServer(
-	rest.post(`${axiosProfile}api/token/refresh/`, (req, res, ctx) => {
-		if (req.body.refresh === localStorage.getItem("tkr")) {
-			return res(ctx.status(200));
-		} else {
-			return res(ctx.status(404));
-		}
+	rest.post(`${axiosProfile}api/token/refresh/`, async (req, res, ctx) => {
+		return res(ctx.status(200));
 	}),
+
 	rest.get(`${axiosArchives}document-subject/`, async (req, res, ctx) => {
 		return res(
 			ctx.json([
@@ -84,9 +81,10 @@ const server = setupServer(
 		);
 	}),
 
-	rest.get(`${axiosArchives}box-abbreviation/`, async (req, res, ctx) => {
+	rest.get(`${axiosArchives}document-type/`, async (req, res, ctx) => {
 		return res(ctx.json([]));
 	}),
+
 	rest.get(`${axiosArchives}search/`, async (req, res, ctx) => {
 		const value = req.url.searchParams.get("filter");
 		if (value === '{"process_number":"111"}') {
@@ -162,22 +160,6 @@ const server = setupServer(
 				})
 			);
 		}
-	}),
-
-	rest.get(`${axiosArchives}unity/`, async (req, res, ctx) => {
-		return res(ctx.json([]));
-	}),
-
-	rest.get(`${axiosArchives}document-type/`, async (req, res, ctx) => {
-		return res(ctx.json([]));
-	}),
-
-	rest.get(`${axiosArchives}shelf/`, async (req, res, ctx) => {
-		return res(ctx.json([]));
-	}),
-
-	rest.get(`${axiosArchives}status/`, async (req, res, ctx) => {
-		return res(ctx.json([]));
 	})
 );
 
@@ -229,49 +211,17 @@ describe("DataTable and tablesHeadCells Test", () => {
 		expect(screen.getByRole("button", { name: /25/ })).toHaveTextContent("25");
 	});
 
-	it("test box abrreviation table head cells", async () => {
-		render(<DataTable title="Sigla da Caixa" url="box-abbreviation/" />);
-
-		expect(screen.getByText("Número")).toBeInTheDocument();
-		expect(screen.getByText("Sigla")).toBeInTheDocument();
-		expect(screen.getByText("Nome")).toBeInTheDocument();
-		expect(screen.getByText("Ano")).toBeInTheDocument();
-	});
-
-	it("test unity table head cells", async () => {
-		render(<DataTable title="Unidade" url="unity/" />);
-
-		expect(screen.getByText("Nome da Unidade")).toBeInTheDocument();
-		expect(screen.getByText("Sigla da Unidade")).toBeInTheDocument();
-		expect(screen.getByText("Vínculo Administrativo")).toBeInTheDocument();
-		expect(screen.getByText("Sigla do Vínculo")).toBeInTheDocument();
-		expect(screen.getByText("Município")).toBeInTheDocument();
-		expect(screen.getByText("Telefone")).toBeInTheDocument();
-		expect(screen.getByText("Observações")).toBeInTheDocument();
-	});
-
-	it("test document type table head cells", async () => {
+	it("test successful deletion", async () => {
 		render(<DataTable title="Tipo de Documento" url="document-type/" />);
 
-		expect(screen.getByText("Nome do Documento")).toBeInTheDocument();
-		expect(screen.getByText("Temporalidade")).toBeInTheDocument();
-	});
+		await screen.findByText("a-document-name-test");
 
-	it("test shelf table head cells", async () => {
-		render(<DataTable title="Estante e Prateleira" url="shelf/" />);
+		fireEvent.click(screen.getAllByTestId("delete-field")[0]);
 
-		expect(screen.getByText("Número de Estante")).toBeInTheDocument();
-	});
-
-	it("test public worker table head cells", async () => {
-		render(<DataTable title="Servidor" url="public-worker/" />);
-
-		expect(screen.getByText("Nome")).toBeInTheDocument();
-		expect(screen.getByText("CPF")).toBeInTheDocument();
-		expect(screen.getByText("Cargo")).toBeInTheDocument();
-		expect(screen.getByText("Classe")).toBeInTheDocument();
-		expect(screen.getByText("Unidade")).toBeInTheDocument();
-		expect(screen.getByText("Municipio")).toBeInTheDocument();
+		const successAlert = await screen.findByRole("alert");
+		expect(successAlert).toHaveTextContent(
+			/Campo excluído com sucesso!/i
+		);
 	});
 
 	it("test is_filed", async () => {
@@ -281,10 +231,13 @@ describe("DataTable and tablesHeadCells Test", () => {
 				url="search/?filter=%7B%22process_number%22:%22111%22%7D"
 			/>
 		);
+
 		await screen.findByText("111");
+
 		expect(screen.getByText("Sim")).toBeInTheDocument();
 		expect(screen.getByText("Não")).toBeInTheDocument();
 	});
+
 	it("test is_eliminated", async () => {
 		render(
 			<DataTable
@@ -292,7 +245,9 @@ describe("DataTable and tablesHeadCells Test", () => {
 				url="search/?filter=%7B%22process_number%22:%22222%22%7D"
 			/>
 		);
+
 		await screen.findByText("222");
+
 		expect(screen.getByText("Sim")).toBeInTheDocument();
 		expect(screen.getByText("Não")).toBeInTheDocument();
 	});
