@@ -139,6 +139,18 @@ export const server = setupServer(
 		)
 	),
 
+	rest.get(`${hostApiArchives}public-worker/`, (req, res, ctx) =>
+		res(
+			ctx.json([
+				{
+					"id": 1,
+					"name": "servidor1",
+					"cpf": "12345678911"
+				},
+			])
+		)
+	),
+
 	rest.get(`${hostApiArchives}rack/`, (req, res, ctx) =>
 		res(
 			ctx.json([
@@ -236,7 +248,7 @@ export const server = setupServer(
 	}),
 
 	rest.post(`${hostApiArchives}frequency-sheet/`, (req, res, ctx) => {
-		if (req.body.person_name === "teste" && req.body.role === "teste") {
+		if (req.body.person_id === 1 && req.body.role === "teste") {
 			return res(ctx.status(201));
 		}
 		return res(ctx.status(404));

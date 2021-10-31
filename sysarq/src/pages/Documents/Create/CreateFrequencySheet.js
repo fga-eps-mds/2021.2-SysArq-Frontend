@@ -17,7 +17,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
 	formatDate,
 	initialPeriod,
-	isInt,
 	isDateNotValid,
 	axiosProfileError,
 } from "../../../support";
@@ -39,7 +38,7 @@ const CreateFrequencySheet = () => {
 	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 	const [senderProcessNumber, setSenderProcessNumber] = useState("");
-	const [cpfWorker, setCpf] = useState("");
+	// const [cpfWorker, setCpf] = useState("");
 	const [roleWorker, setRole] = useState("");
 	const [workerClass, setWorkerClass] = useState("");
 	const [workplaceWorker, setWorkplace] = useState("");
@@ -47,8 +46,7 @@ const CreateFrequencySheet = () => {
 	const [notesLocal, setNotes] = useState("");
 	const [referencePeriod, setReferencePeriod] = useState(initialPeriod);
 	const [type, setType] = useState("");
-
-	const [cpfHelperText, setCpfHelperText] = useState("");
+	// const [cpfHelperText, setCpfHelperText] = useState("");
 	const [roleHelperText, setRoleHelperText] = useState("");
 	const [workplaceHelperText, setWorkplaceHelperText] = useState("");
 	const [districtHelperText, setDistrictHelperText] = useState("");
@@ -66,10 +64,11 @@ const CreateFrequencySheet = () => {
 	const handleSenderProcessNumberChange = (event) =>
 		setSenderProcessNumber(event.target.value);
 
-	const handleCpfChange = (event) => {
-		setCpfHelperText("");
-		setCpf(event.target.value);
-	};
+	// eslint-disable-next-line
+	// const handleCpfChange = (event) => {
+	// 	setCpfHelperText("");
+	// 	setCpf(event.target.value);
+	// };
 
 	const handlePublicWorkerChange = (value) => {
 		setPublicWorkerHelperText("");
@@ -77,7 +76,8 @@ const CreateFrequencySheet = () => {
 			setPublicWorker(undefined);
 			return;
 		}
-		setPublicWorker(value.id);
+		setPublicWorker(value);
+		// setCpf(value.cpf);
 	};
 
 	const handleRoleChange = (event) => {
@@ -130,7 +130,6 @@ const CreateFrequencySheet = () => {
 		setPublicWorkerInput("");
 		setPublicWorker(undefined);
 		setSenderProcessNumber("");
-		setCpf("");
 		setRole("");
 		setWorkerClass("");
 		setWorkplace("");
@@ -142,25 +141,23 @@ const CreateFrequencySheet = () => {
 
 	const onSubmit = () => {
 		setLoading(true);
-
 		if (!publicWorker) {
-			setPublicWorkerHelperText("Insira o nome");
+			setPublicWorkerHelperText("Selecione um nome");
 			setLoading(false);
 			return "workerName error";
 		}
 
-		if (cpfWorker === "") {
-			setCpfHelperText("Insira um CPF");
-			setLoading(false);
-			return "cpf error";
-		}
+		// if (cpfWorker === "") {
+		// 	setCpfHelperText("Insira um CPF");
+		// 	setLoading(false);
+		// 	return "cpf error";
+		// }
 
-		if (!isInt(cpfWorker) || cpfWorker.length !== 11) {
-			setCpfHelperText("Insira um CPF válido");
-			setLoading(false);
-			return "cpf error";
-		}
-
+		// if (!isInt(cpfWorker) || cpfWorker.length !== 11) {
+		// 	setCpfHelperText("Insira um CPF válido");
+		// 	setLoading(false);
+		// 	return "cpf error";
+		// }
 		if (roleWorker === "") {
 			setRoleHelperText("Insira um cargo");
 			setLoading(false);
@@ -208,8 +205,8 @@ const CreateFrequencySheet = () => {
 					.post(
 						"frequency-sheet/",
 						{
-							person_id: publicWorker,
-							cpf: cpfWorker,
+							person_id: publicWorker.id,
+							cpf: publicWorker.cpf,
 							role: roleWorker,
 							category: workerClass,
 							workplace: workplaceWorker,
@@ -242,21 +239,20 @@ const CreateFrequencySheet = () => {
 			.then((r) => {
 				localStorage.setItem("tkr", r.data.refresh);
 				localStorage.setItem("tk", r.data.access);
-				const token = localStorage.getItem("tk");
 				axiosArchives
 					.get(url, {
-						headers: { Authorization: `JWT ${token}` },
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => setTypes(response.data))
-					.then(() => {
-						axiosArchives
-							.get(urlPublicWorker, {
-								headers: { Authorization: `JWT ${token}` },
-							})
-							.then((response) => setPublicWorkers(response.data))
-							.catch(() => connectionError());
-					})
 					.catch(() => connectionError());
+
+				axiosArchives
+					.get(urlPublicWorker, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => setPublicWorkers(response.data))
+					.catch(() => connectionError());
+
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
@@ -276,6 +272,7 @@ const CreateFrequencySheet = () => {
 			<Grid item xs={12} sm={12} md={12}>
 				<Autocomplete
 					id="workerName"
+					data-testid='autocomplete'
 					value={publicWorkers.name}
 					onChange={(event, newValue) => {
 						handlePublicWorkerChange(newValue);
@@ -288,14 +285,14 @@ const CreateFrequencySheet = () => {
 						(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
 					)}
 					groupBy={(option) => option.firstLetter}
-					getOptionLabel={(option) => option.name}
+					getOptionLabel={(option) => `${option.name}, ${option.cpf}`}
 					getOptionSelected={(option, value) => option.name === value.name}
 					autoHighlight
 					renderInput={(params) => (
 						<TextField
 							// eslint-disable-next-line
 							{...params}
-							label="Nome do Servidor*"
+							label="Nome, CPF*"
 							error={publicWorkerHelperText !== ""}
 							helperText={publicWorkerHelperText}
 						/>
@@ -303,7 +300,7 @@ const CreateFrequencySheet = () => {
 				/>
 			</Grid>
 
-			<Grid item xs={12} sm={12} md={4}>
+			{/* <Grid item xs={12} sm={12} md={4}>
 				<TextField
 					fullWidth
 					id="cpf"
@@ -314,9 +311,9 @@ const CreateFrequencySheet = () => {
 					helperText={cpfHelperText}
 					inputProps={{ maxLength: 11 }}
 				/>
-			</Grid>
+			</Grid> */}
 
-			<Grid item xs={12} sm={12} md={8}>
+			<Grid item xs={12} sm={12} md={12}>
 				<TextField
 					fullWidth
 					id="role"
