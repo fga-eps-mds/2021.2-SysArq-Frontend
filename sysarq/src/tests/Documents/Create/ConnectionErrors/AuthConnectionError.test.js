@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 
 import CreateAdministrativeProcess from "../../../../pages/Documents/Create/CreateAdministrativeProcess";
-import CreateArchivingRelation from "../../../../pages/Documents/Create/CreateArchivingRelation";
+import CreateBoxArchiving from "../../../../pages/Documents/Create/CreateBoxArchiving";
 import CreateFrequencyRelation from "../../../../pages/Documents/Create/CreateFrequencyRelation";
 import CreateFrequencySheet from "../../../../pages/Documents/Create/CreateFrequencySheet";
 
@@ -27,15 +27,15 @@ describe("Auth Connection Error Test", () => {
 		);
 	});
 
-	it("wrong token in CreateArchivingRelation", async () => {
+	it("wrong token in CreateBoxArchiving", async () => {
 		localStorage.setItem("tkr", 401);
-		render(<CreateArchivingRelation />);
+		render(<CreateBoxArchiving />);
 		await screen.findByText("Arquivamento de Caixas");
 	});
 
-	it("connectionError in CreateArchivingRelation", async () => {
+	it("connectionError in CreateBoxArchiving", async () => {
 		localStorage.setItem("tkr", 404);
-		render(<CreateArchivingRelation />);
+		render(<CreateBoxArchiving />);
 		const errorAlert = await screen.findByRole("alert");
 		expect(errorAlert).toHaveTextContent(
 			/Verifique sua conexão com a internet e recarregue a página./i
@@ -51,6 +51,21 @@ describe("Auth Connection Error Test", () => {
 	it("connectionError in CreateFrequencyRelation", async () => {
 		localStorage.setItem("tkr", 404);
 		render(<CreateFrequencyRelation />);
+		const errorAlert = await screen.findByRole("alert");
+		expect(errorAlert).toHaveTextContent(
+			/Verifique sua conexão com a internet e recarregue a página./i
+		);
+	});
+
+	it("wrong token in CreateFrequencySheet", async () => {
+		localStorage.setItem("tkr", 401);
+		render(<CreateFrequencySheet />);
+		await screen.findByText("Folha de Frequências");
+	});
+
+	it("connectionError in CreateFrequencySheet", async () => {
+		localStorage.setItem("tkr", 404);
+		render(<CreateFrequencySheet />);
 		const errorAlert = await screen.findByRole("alert");
 		expect(errorAlert).toHaveTextContent(
 			/Verifique sua conexão com a internet e recarregue a página./i

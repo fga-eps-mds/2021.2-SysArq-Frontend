@@ -184,10 +184,10 @@ export default function Search() {
 								<MenuItem value="interested" onClick={handleClick}>
 									Interessado
 								</MenuItem>
-								<MenuItem value="a" onClick={handleClick}>
+								<MenuItem value="person_id" onClick={handleClick}>
 									Servidor
 								</MenuItem>
-								<MenuItem value="b" onClick={handleClick}>
+								<MenuItem value="sender_user" onClick={handleClick}>
 									Servidor que encaminhou
 								</MenuItem>
 								<MenuItem value="subject_id" onClick={handleClick}>

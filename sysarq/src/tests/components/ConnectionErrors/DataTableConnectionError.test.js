@@ -19,4 +19,21 @@ describe("DataTable Connection Error Test", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: /Close/ }));
 	});
+
+	it("wrong token test", async () => {
+		localStorage.setItem("tkr", 401);
+		render(<DataTable title="Tipo de Documento" url="document-type/" />);
+		await screen.findByText("Tipo de Documento");
+	});
+
+	it("refreshToken connectionError test", async () => {
+		localStorage.setItem("tkr", 404);
+
+		render(<DataTable title="Tipo de Documento" url="document-type/" />);
+
+		const errorAlert = await screen.findByRole("alert");
+		expect(errorAlert).toHaveTextContent(
+			/Verifique sua conexão com a internet e recarregue a página./i
+		);
+	});
 });

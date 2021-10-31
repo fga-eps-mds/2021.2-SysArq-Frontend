@@ -9,13 +9,6 @@ export const submitClick = () => {
 	fireEvent.click(screen.getByRole("button", { name: /CADASTRAR/ }));
 };
 
-export const abbreviationSelector = async () => {
-	fireEvent.mouseDown(screen.getByLabelText("Sigla da Caixa"));
-	const abbreviationOptions = within(screen.getByRole("listbox"));
-	await abbreviationOptions.findByText("abbreviation_test");
-	fireEvent.click(abbreviationOptions.getByText(/abbreviation_test/i));
-};
-
 export const shelfSelector = async () => {
 	fireEvent.mouseDown(screen.getByLabelText("Estante"));
 	const shelfOptions = within(screen.getByRole("listbox"));

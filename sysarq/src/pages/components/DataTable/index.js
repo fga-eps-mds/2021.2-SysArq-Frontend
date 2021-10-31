@@ -28,7 +28,7 @@ import tableHeadCells from "./tablesHeadCells";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
 
-import { logout } from "../../../support";
+import { axiosProfileError } from "../../../support";
 
 import PopUpAlert from "../PopUpAlert";
 
@@ -113,59 +113,68 @@ const DataTable = ({ url, title }) => {
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 
 	const [openAlert, setOpenAlert] = useState(false);
+	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
+	const [updateTable, setUpdateTable] = useState(true);
+
+	const connectionError = () => {
+		setOpenAlert(true);
+		setSeverityAlert("error");
+
+		setAlertHelperText(
+			"Verifique sua conexão com a internet e recarregue a página."
+		);
+	};
+
 	useEffect(() => {
-		setHeadCells(tableHeadCells(url));
+		if (updateTable) {
+			setHeadCells(tableHeadCells(url));
 
-		axiosProfile
-			.post(`api/token/refresh/`, {
-				refresh: localStorage.getItem("tkr"),
-			})
-			.then((res) => {
-				localStorage.setItem("tk", res.data.access);
-				localStorage.setItem("tkr", res.data.refresh);
+			axiosProfile
+				.post(`api/token/refresh/`, {
+					refresh: localStorage.getItem("tkr"),
+				})
+				.then((res) => {
+					localStorage.setItem("tk", res.data.access);
+					localStorage.setItem("tkr", res.data.refresh);
 
-				axiosArchives
-					.get(url, {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
-					.then((response) => {
-						if (url && url.includes("search")) {
-							const listTable = [];
+					axiosArchives
+						.get(url, {
+							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						})
+						.then((response) => {
+							if (url && url.includes("search")) {
+								const listTable = [];
 
-							listTable.push(...response.data.box_archiving);
-							listTable.push(...response.data.frequency_sheet);
-							listTable.push(...response.data.administrative_process);
-							listTable.push(...response.data.frequecy_relation);
+								listTable.push(...response.data.box_archiving);
+								listTable.push(...response.data.frequency_sheet);
+								listTable.push(...response.data.administrative_process);
+								listTable.push(...response.data.frequecy_relation);
 
-							setRows(listTable);
-						} else {
-							setRows(response.data);
-						}
-					})
-					.catch(() => {
-						setOpenAlert(true);
+								setRows(listTable);
+							} else {
+								setRows(response.data);
+							}
 
-						setAlertHelperText(
-							"Verifique sua conexão com a internet e recarregue a página."
-						);
-					});
+							setUpdateTable(false);
+						})
+						.catch(() => {
+							setOpenAlert(true);
+							setSeverityAlert("error");
 
-				return "get done";
-			})
-			.catch((error) => {
-				if (error.response && error.response.status === 401) {
-					logout();
-				} else {
-					setOpenAlert(true);
+							setAlertHelperText(
+								"Verifique sua conexão com a internet e recarregue a página."
+							);
+						});
 
-					setAlertHelperText(
-						"Verifique sua conexão com a internet e recarregue a página."
-					);
-				}
-			});
-	}, []);
+					return "get done";
+				})
+				.catch((error) => {
+					axiosProfileError(error, connectionError);
+				});
+		}
+	}, [updateTable]);
 
 	const handleAlertClose = () => setOpenAlert(false);
 
@@ -181,6 +190,48 @@ const DataTable = ({ url, title }) => {
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
+	const deleteRow = (row) => {
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+
+				axiosArchives
+					.delete(`${url}${row.id}/`, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then(() => {
+						setOpenAlert(true);
+						setSeverityAlert("success");
+						setAlertHelperText("Campo excluído com sucesso!");
+						setUpdateTable(true);
+					})
+					.catch((error) => {
+						setOpenAlert(true);
+						setSeverityAlert("error");
+
+						if (
+							error.response &&
+							error.response.data.indexOf("Cannot") !== -1
+						) {
+							setAlertHelperText(
+								"Campo em uso! Atualize os documentos que utilizam esse campo."
+							);
+						} else {
+							setAlertHelperText(
+								"Verifique sua conexão com a internet e recarregue a página."
+							);
+						}
+					});
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+	};
+
 	const cellContent = (row, id) => {
 		if (id === "is_filed") {
 			if (row[id] === true) {
@@ -194,6 +245,21 @@ const DataTable = ({ url, title }) => {
 			}
 			return "Não";
 		}
+
+		if (id === "temporality_date" || id === "document_type_name") {
+			if (typeof row[id] === "undefined") return "-";
+			const obj = row[id];
+			for (let i = 0; i < obj.length; i += 1) {
+				if (i < obj.length - 1) {
+					obj[i] = `${obj[i]} `;
+				}
+			}
+			return obj;
+		}
+
+		if (typeof row[id] === "undefined" || row[id] === null || row[id] === "")
+			return "-";
+
 		return row[id];
 	};
 
@@ -281,13 +347,20 @@ const DataTable = ({ url, title }) => {
 															<IconButton color="secondary" size="small">
 																<EditIcon />
 															</IconButton>
-															<IconButton
-																style={{ color: "#fe0000" }}
-																color="inherit"
-																size="small"
-															>
-																<DeleteIcon />
-															</IconButton>
+															{window.location.href.includes(
+																"search"
+															) ? null : (
+																<IconButton
+																	style={{ color: "#fe0000" }}
+																	color="inherit"
+																	size="small"
+																>
+																	<DeleteIcon
+																		data-testid="delete-field"
+																		onClick={() => deleteRow(row)}
+																	/>
+																</IconButton>
+															)}
 														</TableCell>
 													) : (
 														""
@@ -332,7 +405,7 @@ const DataTable = ({ url, title }) => {
 			<PopUpAlert
 				open={openAlert}
 				handleClose={handleAlertClose}
-				severity="error"
+				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
 		</>

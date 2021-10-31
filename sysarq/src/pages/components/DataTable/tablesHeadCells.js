@@ -4,6 +4,12 @@ const headCellsSearch = () => {
 		"Número do processo",
 		"interested",
 		"Interessado",
+		"sender_user_name",
+		"Servidor que encaminhou",
+		"person_name",
+		"Servidor",
+		"cpf",
+		"CPF",
 		"document_subject_name",
 		"Assunto do documento",
 		"document_type_name",
@@ -21,7 +27,7 @@ const headCellsSearch = () => {
 		"is_eliminated",
 		"Eliminado",
 		"temporality_date",
-		"Temporalidade"
+		"Temporalidade",
 	];
 
 	const headCellsSearchList = [];

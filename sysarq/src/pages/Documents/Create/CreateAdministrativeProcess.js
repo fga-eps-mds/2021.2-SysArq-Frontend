@@ -176,11 +176,42 @@ const CreateAdministrativeProcess = () => {
 	const onSubmit = () => {
 		setLoading(true);
 
+		if (processNumber === "") {
+			setProcessNumberHelperText("Insira o número do processo");
+			setLoading(false);
+			return "processNumber error";
+		}
+
 		if (
 			isDateNotValid(noticeDate, setNoticeDateHelperText, "date", "required")
 		) {
 			setLoading(false);
 			return "noticeDate error";
+		}
+
+		if (interestedPerson === "") {
+			setInterestedHelperText("Insira um interessado");
+			setLoading(false);
+			return "interested error";
+		}
+
+		if (personRegistry !== "") {
+			if (!isInt(personRegistry)) {
+				setPersonRegistryHelperText("Insira somente números");
+				setLoading(false);
+				return "personRegistry content error";
+			}
+			if (!isPersonRegistryLengthValid(personRegistry.length)) {
+				setPersonRegistryHelperText("Insira um CPF/CNPJ válido");
+				setLoading(false);
+				return "personRegistry length error";
+			}
+		}
+
+		if (subject === "") {
+			setSubjectHelperText("Selecione um assunto");
+			setLoading(false);
+			return "subject error";
 		}
 
 		if (
@@ -198,37 +229,6 @@ const CreateAdministrativeProcess = () => {
 		if (isDateNotValid(reference, setReferenceHelperText)) {
 			setLoading(false);
 			return "reference error";
-		}
-
-		if (processNumber === "") {
-			setProcessNumberHelperText("Insira o número do processo");
-			setLoading(false);
-			return "processNumber error";
-		}
-
-		if (personRegistry !== "") {
-			if (!isInt(personRegistry)) {
-				setPersonRegistryHelperText("Insira somente números");
-				setLoading(false);
-				return "personRegistry content error";
-			}
-			if (!isPersonRegistryLengthValid(personRegistry.length)) {
-				setPersonRegistryHelperText("Insira um CPF/CNPJ válido");
-				setLoading(false);
-				return "personRegistry length error";
-			}
-		}
-
-		if (interestedPerson === "") {
-			setInterestedHelperText("Insira um interessado");
-			setLoading(false);
-			return "interested error";
-		}
-
-		if (subject === "") {
-			setSubjectHelperText("Selecione um assunto");
-			setLoading(false);
-			return "subject error";
 		}
 
 		if (senderUnit === "") {
