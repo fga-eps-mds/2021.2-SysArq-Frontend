@@ -1,4 +1,5 @@
 import { screen, fireEvent, within } from "@testing-library/react";
+import { rest } from "msw";
 
 export const input = (field, value) => {
 	fireEvent.change(screen.getByLabelText(field), { target: { value } });
@@ -6,13 +7,6 @@ export const input = (field, value) => {
 
 export const submitClick = () => {
 	fireEvent.click(screen.getByRole("button", { name: /CADASTRAR/ }));
-};
-
-export const abbreviationSelector = async () => {
-	fireEvent.mouseDown(screen.getByLabelText("Sigla da Caixa"));
-	const abbreviationOptions = within(screen.getByRole("listbox"));
-	await abbreviationOptions.findByText("abbreviation_test");
-	fireEvent.click(abbreviationOptions.getByText(/abbreviation_test/i));
 };
 
 export const shelfSelector = async () => {
@@ -41,4 +35,17 @@ export const senderUnitSelector = async () => {
 	const senderUnitOptions = within(screen.getByRole("listbox"));
 	await senderUnitOptions.findByText("sender_unit_name_test");
 	fireEvent.click(senderUnitOptions.getByText(/sender_unit_name_test/i));
+};
+
+export const auth = () => {
+	const axiosProfileTest = process.env.REACT_APP_URL_API_PROFILE;
+	return rest.post(`${axiosProfileTest}api/token/refresh/`, (req, res, ctx) => {
+		if (req.body.refresh === "401") {
+			return res(ctx.status(401));
+		}
+		if (req.body.refresh === "404") {
+			return res(ctx.status(404));
+		}
+		return res(ctx.status(200));
+	});
 };

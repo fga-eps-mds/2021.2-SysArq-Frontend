@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
+import { logout } from "../../../support";
 
 const ShelfInput = ({ set, connectionError, shelf }) => {
 	const [shelves, setShelves] = useState([]);
@@ -25,11 +26,17 @@ const ShelfInput = ({ set, connectionError, shelf }) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.get("shelf/")
+					.get("shelf/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setShelves(response.data))
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else connectionError();
+			});
 	}, []);
 
 	return (

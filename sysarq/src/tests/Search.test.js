@@ -33,21 +33,30 @@ describe("Ensure that is receiving inputs form select and textfield", () => {
 	});
 });
 
-const selectValue = (title) => {
-	fireEvent.mouseDown(screen.getByLabelText("dropdown"));
-	const subjectsOptions = within(screen.getByRole("listbox"));
-	fireEvent.click(subjectsOptions.getByText(title));
-};
+describe("Test onClick of status type searches", () => {
+	it("onClickStatus test", () => {
+		render(<Search />);
 
-const testEvent = async (object, findTextMsg) => {
-	render(<Search />);
-	selectValue(object[0]);
-	inputChange(object[1], object[2]);
-	fireEvent.click(screen.getByTestId("click"));
-	await screen.findByText(findTextMsg);
-	act(() => {
-		jest.advanceTimersByTime(3000);
+		const FilterSelect = screen.getByTestId("FilterSelect");
+		fireEvent.change(FilterSelect, {
+			target: { value: "is_filed/true" },
+		});
+		expect(screen.getByText("Arquivado")).toBeInTheDocument();
 	});
+});
+
+const testSelect = (value) => {
+	render(<Search />);
+	const InputBox = screen.getByTestId("InputBox");
+	fireEvent.change(InputBox, {
+		target: { value: "asd" },
+	});
+
+	fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
+	const subjectsOptions = within(screen.getByRole("listbox"));
+	fireEvent.click(subjectsOptions.getByText(value));
+
+	fireEvent.click(screen.getByText("Ir"));
 };
 
 describe("Axios requests", () => {
@@ -66,16 +75,15 @@ describe("Axios requests", () => {
 		await screen.findByText("Selecione algum filtro");
 	});
 	it("axios success", async () => {
-		render(<Search />);
-		const InputBox = screen.getByTestId("InputBox");
-		fireEvent.change(InputBox, {
-			target: { value: "asd" },
-		});
-		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
-		const subjectsOptions = within(screen.getByRole("listbox"));
-		fireEvent.click(subjectsOptions.getByText("Número de processo"));
-
-		fireEvent.click(screen.getByText("Ir"));
-		// await screen.findByText("Selecione algum filtro");
+		testSelect("Número de processo");
+	});
+	it("filed test", async () => {
+		testSelect("Arquivado");
+	});
+	it("unfiled test", async () => {
+		testSelect("Desarquivado");
+	});
+	it("eliminated test", async () => {
+		testSelect("Eliminado");
 	});
 });

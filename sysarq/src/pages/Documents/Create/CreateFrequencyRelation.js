@@ -7,13 +7,14 @@ import {
 	formatDate,
 	initialPeriod,
 	isDateNotValid,
+	axiosProfileError,
+	getUnits,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
 
-import DocumentsContainer from "../../components/Container/DocumentsContainer";
+import CardContainer from "../../components/Container/CardContainer";
 
-import NumberInput from "../../components/Inputs/NumberInput";
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 import ReferencePeriodInput from "../../components/Inputs/ReferencePeriodInput";
 
@@ -25,29 +26,26 @@ import PopUpAlert from "../../components/PopUpAlert";
 const CreateFrequencyRelation = () => {
 	const [units, setUnits] = useState([]);
 
-	const [number, setNumber] = useState("");
 	const [processNumber, setProcessNumber] = useState("");
+	const [documentDate, setDocumentDate] = useState(initialDate);
 	const [receivedDate, setReceivedDate] = useState(initialDate);
 	const [documentType, setDocumentType] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
-	const [abbreviation, setAbbreviation] = useState("");
-	const [shelf, setShelf] = useState("");
-	const [rack, setRack] = useState("");
-	const [notes, setNotes] = useState("");
+	const [notesLocal, setNotes] = useState("");
 	const [referencePeriod, setReferencePeriod] = useState([
 		formatDate(initialPeriod),
 	]);
 
-	const [numberHelperText, setNumberHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
+	const [documentDateHelperText, setDocumentDateHelperText] = useState("");
 	const [documentTypeHelperText, setDocumentTypeHelperText] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
 		useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
-	const [severityAlert, setSeverityAlert] = useState("");
+	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
@@ -72,14 +70,11 @@ const CreateFrequencyRelation = () => {
 		setSeverityAlert("success");
 		setAlertHelperText("Documento cadastrado!");
 
-		setNumber("");
 		setProcessNumber("");
 		setReceivedDate(initialDate);
+		setDocumentDate(initialDate);
 		setDocumentType("");
 		setSenderUnit("");
-		setAbbreviation("");
-		setShelf("");
-		setRack("");
 		setNotes("");
 		setReferencePeriod([formatDate(initialPeriod)]);
 	};
@@ -87,16 +82,22 @@ const CreateFrequencyRelation = () => {
 	const onSubmit = () => {
 		setLoading(true);
 
-		if (number === "") {
-			setNumberHelperText("Insira o número");
-			setLoading(false);
-			return "number error";
-		}
-
 		if (processNumber === "") {
 			setProcessNumberHelperText("Insira o número do processo");
 			setLoading(false);
 			return "processNumber error";
+		}
+
+		if (
+			isDateNotValid(
+				documentDate,
+				setDocumentDateHelperText,
+				"date",
+				"required"
+			)
+		) {
+			setLoading(false);
+			return "documentDate error";
 		}
 
 		if (
@@ -139,54 +140,39 @@ const CreateFrequencyRelation = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post("frequency-relation/", {
-						process_number: processNumber,
-						notes,
-						filer_user: "filer_user",
-						number,
-						received_date: formatDate(receivedDate),
-						reference_period: referencePeriod,
-						sender_unity: senderUnit.id,
-						abbreviation_id: abbreviation.id,
-						shelf_id: shelf.id,
-						rack_id: rack.id,
-						document_type_id: documentType.id,
-					})
+					.post(
+						"frequency-relation/",
+						{
+							process_number: processNumber,
+							notes: notesLocal,
+							filer_user: "filer_user",
+							document_date: formatDate(documentDate),
+							received_date: formatDate(receivedDate),
+							reference_period: referencePeriod,
+							sender_unity: senderUnit.id,
+							document_type_id: documentType.id,
+							temporality_date:
+								parseInt(documentType.temporality, 10) +
+								parseInt(documentDate.getFullYear(), 10),
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+					)
 					.then(() => onSuccess())
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
 
 		return "post done";
 	};
 
 	useEffect(() => {
-		axiosProfile
-			.post(`api/token/refresh/`, {
-				refresh: localStorage.getItem("tkr"),
-			})
-			.then((res) => {
-				localStorage.setItem("tk", res.data.access);
-				localStorage.setItem("tkr", res.data.refresh);
-				axiosArchives
-					.get("unity/")
-					.then((response) => setUnits(response.data))
-					.catch(() => connectionError());
-			})
-			.catch(() => {});
+		getUnits(setUnits, connectionError);
 	}, []);
 
 	return (
-		<DocumentsContainer title="Relação de Frequências" spacing={1}>
-			<Grid item xs={12} sm={12} md={4}>
-				<NumberInput
-					setHelperText={setNumberHelperText}
-					set={setNumber}
-					number={number}
-					helperText={numberHelperText}
-				/>
-			</Grid>
-
+		<CardContainer title="Relação de Frequências" spacing={1}>
 			<Grid item xs={12} sm={6} md={4}>
 				<NumberProcessInput
 					setHelperText={setProcessNumberHelperText}
@@ -198,20 +184,18 @@ const CreateFrequencyRelation = () => {
 
 			<CommonSet
 				units={units}
+				documentDate={documentDate}
+				setDocumentDate={setDocumentDate}
 				receivedDate={receivedDate}
 				setReceivedDate={setReceivedDate}
 				documentType={documentType}
 				setDocumentType={setDocumentType}
 				senderUnit={senderUnit}
 				setSenderUnit={setSenderUnit}
-				abbreviation={abbreviation}
-				setAbbreviation={setAbbreviation}
-				shelf={shelf}
-				setShelf={setShelf}
-				rack={rack}
-				setRack={setRack}
-				notes={notes}
+				notes={notesLocal}
 				setNotes={setNotes}
+				setDocumentDateHelperText={setDocumentDateHelperText}
+				documentDateHelperText={documentDateHelperText}
 				setReceivedDateHelperText={setReceivedDateHelperText}
 				receivedDateHelperText={receivedDateHelperText}
 				documentTypeHelperText={documentTypeHelperText}
@@ -236,7 +220,7 @@ const CreateFrequencyRelation = () => {
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-		</DocumentsContainer>
+		</CardContainer>
 	);
 };
 

@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
+import { logout } from "../../../support";
 
 const DocumentTypeInput = ({
 	setHelperText,
@@ -35,11 +36,17 @@ const DocumentTypeInput = ({
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.get("document-type/")
+					.get("document-type/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setDocumentTypes(response.data))
 					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				if (error.response && error.response.status === 401) {
+					logout();
+				} else connectionError();
+			});
 	}, []);
 
 	return (

@@ -7,57 +7,55 @@ const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
 const refreshTokenRequest = rest.post(
 	`${axiosProfile}api/token/refresh/`,
 	(req, res, ctx) => {
-		if (req.body.refresh === localStorage.getItem("tkr")) {
-			return res(ctx.status(200));
+		if (req.body.refresh === "401") {
+			return res(ctx.status(401));
 		}
-		return res(ctx.status(404));
+		if (req.body.refresh === "404") {
+			return res(ctx.status(404));
+		}
+		return res(ctx.status(200));
 	}
 );
 
 export const failedUnitServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}unity/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
-	)
+	rest.get(`${hostApiArchives}unity/`, (req, res, ctx) => res(ctx.status(404)))
 );
 
 export const failedDocumentSubjectServer = setupServer(
 	refreshTokenRequest,
 	rest.get(`${hostApiArchives}document-subject/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
+		res(ctx.status(404))
 	)
 );
 
 export const failedShelfServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}shelf/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
-	)
+	rest.get(`${hostApiArchives}shelf/`, (req, res, ctx) => res(ctx.status(404)))
 );
 
 export const failedRackServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}rack/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
-	)
+	rest.get(`${hostApiArchives}rack/`, (req, res, ctx) => res(ctx.status(404)))
 );
 
 export const failedDocumentTypeServer = setupServer(
 	refreshTokenRequest,
 	rest.get(`${hostApiArchives}document-type/`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
+		res(ctx.status(404))
 	)
 );
 
 export const failedAbbreviationServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}box-abbreviation//`, (req, res, ctx) =>
-		res(res(ctx.status(404)))
+	rest.get(`${hostApiArchives}box-abbreviation/`, (req, res, ctx) =>
+		res(ctx.status(404))
 	)
 );
 
 export const server = setupServer(
 	refreshTokenRequest,
+
 	rest.get(`${hostApiArchives}document-subject/`, (req, res, ctx) =>
 		res(
 			ctx.json([
@@ -158,15 +156,71 @@ export const server = setupServer(
 		)
 	),
 
+	rest.get(
+		`${hostApiArchives}year-by-abbreviation/:boxAbbreviation`,
+		(req, res, ctx) =>
+			res(
+				ctx.json([
+					{
+						id: 43,
+						number: 44,
+						abbreviation: "abbreviation_test",
+						name: "abbreviation_name_test",
+						year: 2045,
+					},
+					{
+						id: 44,
+						number: 45,
+						abbreviation: "abbreviation_test",
+						name: "abbreviation_name_test",
+						year: 2046,
+					},
+				])
+			)
+	),
+
+	rest.get(
+		`${hostApiArchives}number-by-year-abbrevation/:boxAbbreviation/:boxYear`,
+		(req, res, ctx) =>
+			res(
+				ctx.json([
+					{
+						id: 43,
+						number: 44,
+						abbreviation: "abbreviation_test",
+						name: "abbreviation_name_test",
+						year: 2045,
+					},
+				])
+			)
+	),
+
 	rest.post(`${hostApiArchives}frequency-relation/`, (req, res, ctx) => {
 		if (
-			req.body.number === "27" &&
 			req.body.process_number === "28" &&
 			req.body.received_date === "2033-05-31" &&
-			req.body.notes === "note_test" &&
-			req.body.document_type_id === 34 &&
-			req.body.sender_unity === 40 &&
-			req.body.abbreviation_id === 43 &&
+			req.body.notes === "note_test"
+		) {
+			return res(ctx.status(201));
+		}
+		return res(ctx.status(404));
+	}),
+
+	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
+		if (req.body.process_number === "50") {
+			return res(ctx.status(201));
+		}
+		return res(ctx.status(404));
+	}),
+
+	rest.post(`${hostApiArchives}box-archiving/`, (req, res, ctx) => {
+		if (
+			req.body.process_number === "3" &&
+			req.body.sender_unity === 38 &&
+			req.body.notes === "notes_test" &&
+			req.body.received_date === "2006-05-04" &&
+			req.body.document_url === "" &&
+			req.body.cover_sheet === "" &&
 			req.body.shelf_id === 46 &&
 			req.body.rack_id === 48
 		) {
@@ -175,48 +229,8 @@ export const server = setupServer(
 		return res(ctx.status(404));
 	}),
 
-	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
-		if (
-			req.body.notice_date === "2005-04-03" &&
-			req.body.archiving_date === "2011-10-09" &&
-			req.body.reference_month_year === "2015-04-01" &&
-			req.body.process_number === "16" &&
-			req.body.cpf_cnpj === "28293031323" &&
-			req.body.interested === "interested_test" &&
-			req.body.subject_id === 34 &&
-			req.body.dest_unity_id === 40 &&
-			req.body.sender_unity === 38 &&
-			req.body.sender_user === "sender_worker_test" &&
-			req.body.abbreviation_id === 43 &&
-			req.body.shelf_id === 46 &&
-			req.body.rack_id === 48 &&
-			req.body.is_filed === false &&
-			req.body.is_eliminated === false &&
-			req.body.unity_id === 41 &&
-			req.body.administrative_process_number === "50" &&
-			req.body.send_date === null &&
-			req.body.notes === "notes_test"
-		) {
-			return res(ctx.status(201));
-		}
-		return res(ctx.status(404));
-	}),
-
-	rest.post(`${hostApiArchives}archival-relation/`, (req, res, ctx) => {
-		if (
-			req.body.process_number === "3" &&
-			req.body.sender_unity === 38 &&
-			req.body.notes === "notes_test" &&
-			req.body.number === "2" &&
-			req.body.received_date === "2006-05-04" &&
-			req.body.number_of_boxes === "10" &&
-			req.body.document_url === "" &&
-			req.body.cover_sheet === "" &&
-			req.body.abbreviation_id === 43 &&
-			req.body.shelf_id === 46 &&
-			req.body.rack_id === 48 &&
-			req.body.document_type_id === 34
-		) {
+	rest.post(`${hostApiArchives}frequency-sheet/`, (req, res, ctx) => {
+		if (req.body.person_name === "teste" && req.body.role === "teste") {
 			return res(ctx.status(201));
 		}
 		return res(ctx.status(404));

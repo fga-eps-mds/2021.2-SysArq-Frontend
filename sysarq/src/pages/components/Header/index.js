@@ -1,17 +1,10 @@
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import StarsIcon from "@material-ui/icons/Stars";
-
+import { logout } from "../../../support";
 import "./styles.css";
 
 import imgFolders from "../../../assets/logo.png";
-
-function logout() {
-	localStorage.removeItem("tk");
-	localStorage.removeItem("tkr");
-	localStorage.removeItem("isLogged");
-	window.location = "/login";
-}
 
 function Header() {
 	if (
@@ -35,7 +28,7 @@ function Header() {
 						<a href="/search">Pesquisar</a>
 					</li>
 					<li>
-						<a href="/fields-register">Campos</a>
+						<a href="/fields">Campos</a>
 					</li>
 					<li>
 						<a href="/documents">Cadastro</a>
@@ -47,7 +40,9 @@ function Header() {
 						<a href="/">Relatório</a>
 					</li>
 					<li>
-						<a href="/">Sair</a>
+						<a onClick={logout} href="/login">
+							Sair
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -59,8 +54,8 @@ function Header() {
 					icon={<StarsIcon />}
 				/>
 				<BottomNavigationAction
-					label="Campos"
-					href="/fields-register"
+					label="Campos Obrigatórios"
+					href="/fields"
 					icon={<StarsIcon />}
 				/>
 				<BottomNavigationAction
