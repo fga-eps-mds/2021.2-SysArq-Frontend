@@ -1,3 +1,5 @@
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { TextField } from "@material-ui/core";
 import { axiosArchives, axiosProfile } from "./Api";
 
 export const initialDate = new Date();
@@ -84,4 +86,45 @@ export function getPublicWorkers(setPublicWorkers, connectionError) {
 		})
 		.then((response) => setPublicWorkers(response.data))
 		.catch(() => connectionError());
+}
+
+export function autocompl(
+	publicWorkers,
+	publicWorkerInput,
+	handlePublicWorkerChange,
+	setPublicWorkerInput,
+	publicWorkerOptions,
+	publicWorkerHelperText
+) {
+	return (
+		<Autocomplete
+			id="workerName"
+			data-testid="autocomplete"
+			value={publicWorkers.name}
+			onChange={(event, newValue) => {
+				handlePublicWorkerChange(newValue);
+			}}
+			inputValue={publicWorkerInput}
+			onInputChange={(event, newInputValue) => {
+				setPublicWorkerInput(newInputValue);
+			}}
+			options={publicWorkerOptions.sort(
+				(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+			)}
+			groupBy={(option) => option.firstLetter}
+			getOptionLabel={(option) => `${option.name}, ${option.cpf}`}
+			getOptionSelected={(option, value) => option.name === value.name}
+			autoHighlight
+			renderInput={(params) => (
+				<TextField
+					// eslint-disable-next-line
+					{...params}
+					value={params.value}
+					label="Nome, CPF*"
+					error={publicWorkerHelperText !== ""}
+					helperText={publicWorkerHelperText}
+				/>
+			)}
+		/>
+	);
 }

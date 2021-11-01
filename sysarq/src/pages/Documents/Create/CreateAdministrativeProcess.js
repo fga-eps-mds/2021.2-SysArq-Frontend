@@ -10,8 +10,6 @@ import {
 	FormHelperText,
 } from "@material-ui/core";
 
-import Autocomplete from "@material-ui/lab/Autocomplete";
-
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
 import {
@@ -22,6 +20,7 @@ import {
 	formatDate,
 	axiosProfileError,
 	getPublicWorkers,
+	autocompl,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -495,36 +494,14 @@ const CreateAdministrativeProcess = () => {
 			/>
 
 			<Grid item xs={12} sm={12} md={12}>
-				<Autocomplete
-					id="workerName"
-					data-testid="autocomplete"
-					value={publicWorkers.name}
-					onChange={(event, newValue) => {
-						handlePublicWorkerChange(newValue);
-					}}
-					inputValue={publicWorkerInput}
-					onInputChange={(event, newInputValue) => {
-						setPublicWorkerInput(newInputValue);
-					}}
-					options={publicWorkerOptions.sort(
-						(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
-					)}
-					groupBy={(option) => option.firstLetter}
-					getOptionLabel={(option) => `${option.name}, ${option.cpf}`}
-					getOptionSelected={(option, value) => option.name === value.name}
-					autoHighlight
-					ListboxProps={{ "data-testid": "list-box" }}
-					renderInput={(params) => (
-						<TextField
-							// eslint-disable-next-line
-							{...params}
-							value={params.value}
-							label="Servidor que encaminhou"
-							error={publicWorkerHelperText !== ""}
-							helperText={publicWorkerHelperText}
-						/>
-					)}
-				/>
+				{autocompl(
+					publicWorkers,
+					publicWorkerInput,
+					handlePublicWorkerChange,
+					setPublicWorkerInput,
+					publicWorkerOptions,
+					publicWorkerHelperText
+				)}
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={4}>

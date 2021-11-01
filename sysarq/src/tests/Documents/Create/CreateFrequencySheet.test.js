@@ -37,7 +37,7 @@ describe("Create Frequency Sheet Screen Test", () => {
 		const input2 = within(autocomplete).getByRole("textbox");
 		await fireEvent.mouseDown(input2);
 		// await screen.debug(undefined, 300000)
-		const ListBox = screen.getByTestId("list-box");
+		const ListBox = screen.getByRole("listbox");
 		expect(ListBox).toBeDefined();
 		const menuItem1 = screen.getByText("inexiste, 55555555555");
 		fireEvent.click(menuItem1);

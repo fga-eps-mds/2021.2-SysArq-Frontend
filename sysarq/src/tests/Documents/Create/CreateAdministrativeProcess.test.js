@@ -176,7 +176,7 @@ describe("Create Administrative Process Screen Test", () => {
 		const autocomplete = screen.getByTestId("autocomplete");
 		const input2 = within(autocomplete).getByRole("textbox");
 		await fireEvent.mouseDown(input2);
-		const ListBox = screen.getByTestId("list-box");
+		const ListBox = screen.getByRole("listbox");
 		expect(ListBox).toBeDefined();
 		const menuItem1 = screen.getByText("inexiste, 55555555555");
 		fireEvent.click(menuItem1);

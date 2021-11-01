@@ -12,14 +12,13 @@ import {
 	FormHelperText,
 } from "@material-ui/core";
 
-import Autocomplete from "@material-ui/lab/Autocomplete";
-
 import {
 	formatDate,
 	initialPeriod,
 	isDateNotValid,
 	axiosProfileError,
 	getPublicWorkers,
+	autocompl,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -246,7 +245,15 @@ const CreateFrequencySheet = () => {
 	return (
 		<CardContainer title="Folha de Frequências" spacing={1}>
 			<Grid item xs={12} sm={12} md={12}>
-				<Autocomplete
+				{autocompl(
+					publicWorkers,
+					publicWorkerInput,
+					handlePublicWorkerChange,
+					setPublicWorkerInput,
+					publicWorkerOptions,
+					publicWorkerHelperText
+				)}
+				{/* <Autocomplete
 					id="workerName"
 					data-testid="autocomplete"
 					value={publicWorkers.name}
@@ -264,7 +271,6 @@ const CreateFrequencySheet = () => {
 					getOptionLabel={(option) => `${option.name}, ${option.cpf}`}
 					getOptionSelected={(option, value) => option.name === value.name}
 					autoHighlight
-					ListboxProps={{ "data-testid": "list-box" }}
 					renderInput={(params) => (
 						<TextField
 							// eslint-disable-next-line
@@ -275,21 +281,8 @@ const CreateFrequencySheet = () => {
 							helperText={publicWorkerHelperText}
 						/>
 					)}
-				/>
+				/> */}
 			</Grid>
-
-			{/* <Grid item xs={12} sm={12} md={4}>
-				<TextField
-					fullWidth
-					id="cpf"
-					label="CPF*"
-					value={cpfWorker}
-					onChange={handleCpfChange}
-					error={cpfHelperText !== ""}
-					helperText={cpfHelperText}
-					inputProps={{ maxLength: 11 }}
-				/>
-			</Grid> */}
 
 			<Grid item xs={12} sm={12} md={12}>
 				<TextField
