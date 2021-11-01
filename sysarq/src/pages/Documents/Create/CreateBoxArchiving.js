@@ -31,13 +31,6 @@ import CancelIcon from "@material-ui/icons/Cancel";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-import DocumentsTypeInput from "../../components/Inputs/DocumentsTypeInput";
-import ReceivedDateInput from "../../components/Inputs/ReceivedDateInput";
-import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
-import ShelfInput from "../../components/Inputs/ShelfInput";
-import RackInput from "../../components/Inputs/RackInput";
-import NotesInput from "../../components/Inputs/NotesInput";
-
 import {
 	initialDate,
 	isInt,
@@ -47,23 +40,29 @@ import {
 	getUnits,
 } from "../../../support";
 
-import { axiosArchives, axiosProfile } from "../../../Api";
+import { axiosProfile, axiosArchives } from "../../../Api";
 
 import CardContainer from "../../components/Container/CardContainer";
 
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
+import ReceivedDateInput from "../../components/Inputs/ReceivedDateInput";
+import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
 
 import SpecialLabels from "../../components/SpecialLabels";
-
-import BoxInput from "../../components/Inputs/BoxInput";
 
 import ChipsContainer from "../../components/Container/ChipsContainer";
 import AddChip from "../../components/AddChip";
 
+import DocumentsTypeInput from "../../components/Inputs/DocumentsTypeInput";
+import BoxInput from "../../components/Inputs/BoxInput";
+import ShelfInput from "../../components/Inputs/ShelfInput";
+import RackInput from "../../components/Inputs/RackInput";
+import NotesInput from "../../components/Inputs/NotesInput";
+
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
-const CreateArchivingRelation = () => {
+const CreateBoxArchiving = () => {
 	const [units, setUnits] = useState([]);
 
 	const [processNumber, setProcessNumber] = useState("");
@@ -73,7 +72,7 @@ const CreateArchivingRelation = () => {
 	const [shelf, setShelf] = useState("");
 	const [rack, setRack] = useState("");
 	const [notes, setNotes] = useState("");
-	const [originBoxes, setOriginBoxes] = useState([]);
+	const [originBox, setOriginBox] = useState({});
 	// const [file, setFile] = useState("");
 
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
@@ -92,8 +91,6 @@ const CreateArchivingRelation = () => {
 
 	const [openNewOriginBoxSubjectDialog, setOpenNewOriginBoxSubjectDialog] =
 		useState(false);
-
-	const [selectedOriginBoxIndex, setSelectedOriginBoxIndex] = useState(-1);
 
 	const [newOriginBoxSubject, setNewOriginBoxSubject] = useState("");
 	const [newOriginBoxSubjectHelperText, setNewOriginBoxSubjectHelperText] =
@@ -116,6 +113,8 @@ const CreateArchivingRelation = () => {
 
 	const [typeList, setTypeList] = useState([]);
 	const [typeListHelperText, setTypeListHelperText] = useState("");
+
+	const [clearBoxFields, setClearBoxFields] = useState(false);
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -153,42 +152,25 @@ const CreateArchivingRelation = () => {
 			return "newOriginBoxYear content error";
 		}
 
-		const originBoxesList = originBoxes;
-
 		const newOriginBox = {
 			number: newOriginBoxNumber,
 			year: newOriginBoxYear,
 			subjects_list: [],
 		};
 
-		originBoxesList.push(newOriginBox);
-		setOriginBoxes(originBoxesList);
-
+		setOriginBox(newOriginBox);
 		setOpenNewOriginBoxDialog(false);
+
 		return "added originBox";
 	};
 
-	const handleDeleteOriginBox = (originBoxIndex) => {
-		const newOriginBoxesList = [];
+	const handleDeleteOriginBox = () => setOriginBox({});
 
-		for (let i = 0; i < originBoxes.length; i += 1) {
-			if (i !== originBoxIndex) {
-				newOriginBoxesList.push(originBoxes[i]);
-			}
-		}
-
-		setOriginBoxes(newOriginBoxesList);
-	};
-
-	const handleOpenNewOriginBoxSubjectDialog = (originBoxIndex) => {
-		setSelectedOriginBoxIndex(originBoxIndex);
+	const handleOpenNewOriginBoxSubjectDialog = () =>
 		setOpenNewOriginBoxSubjectDialog(true);
-	};
 
-	const handleCloseNewOriginBoxSubjectDialog = () => {
-		setSelectedOriginBoxIndex(-1);
+	const handleCloseNewOriginBoxSubjectDialog = () =>
 		setOpenNewOriginBoxSubjectDialog(false);
-	};
 
 	const handleNewOriginBoxSubjectChange = (event) => {
 		setNewOriginBoxSubjectHelperText("");
@@ -201,48 +183,37 @@ const CreateArchivingRelation = () => {
 			return "newOriginBoxSubject error";
 		}
 
-		const originBoxesList = originBoxes;
+		const newOriginBox = originBox;
 
-		originBoxesList[selectedOriginBoxIndex].subjects_list.push({
+		newOriginBox.subjects_list.push({
 			name: newOriginBoxSubject,
 			dates: [],
 		});
 
-		setOriginBoxes(originBoxesList);
+		setOriginBox(newOriginBox);
 		setOpenNewOriginBoxSubjectDialog(false);
 
 		return "added originBoxSubject";
 	};
 
-	const handleDeleteOriginBoxSubject = (
-		originBoxIndex,
-		originBoxSubjectIndex
-	) => {
-		const newOriginBoxesList = [];
+	const handleDeleteOriginBoxSubject = (originBoxSubjectIndex) => {
+		originBox.subjects_list.splice(originBoxSubjectIndex, 1);
 
-		for (let i = 0; i < originBoxes.length; i += 1) {
-			if (i === originBoxIndex) {
-				originBoxes[i].subjects_list.splice(originBoxSubjectIndex, 1);
-				newOriginBoxesList.push(originBoxes[i]);
-			} else {
-				newOriginBoxesList.push(originBoxes[i]);
-			}
-		}
+		const newOriginBox = {
+			number: originBox.number,
+			year: originBox.year,
+			subjects_list: originBox.subjects_list,
+		};
 
-		setOriginBoxes(newOriginBoxesList);
+		setOriginBox(newOriginBox);
 	};
 
-	const handleOpenNewOriginBoxSubjectDateDialog = (
-		originBoxIndex,
-		originBoxSubjectIndex
-	) => {
-		setSelectedOriginBoxIndex(originBoxIndex);
+	const handleOpenNewOriginBoxSubjectDateDialog = (originBoxSubjectIndex) => {
 		setSelectedOriginBoxSubjectIndex(originBoxSubjectIndex);
 		setOpenNewOriginBoxSubjectDateDialog(true);
 	};
 
 	const handleCloseNewOriginBoxSubjectDateDialog = () => {
-		setSelectedOriginBoxIndex(-1);
 		setSelectedOriginBoxSubjectIndex(-1);
 		setOpenNewOriginBoxSubjectDateDialog(false);
 	};
@@ -264,55 +235,48 @@ const CreateArchivingRelation = () => {
 			return "newOriginBoxSubjectDate error";
 		}
 
-		const originBoxesList = originBoxes;
+		const newOriginBox = originBox;
 		const formattedDate = formatDate(newOriginBoxSubjectDate);
 
 		if (
-			originBoxesList[selectedOriginBoxIndex].subjects_list[
-				selectedOriginBoxSubjectIndex
-			].dates.indexOf(formattedDate) !== -1
+			newOriginBox.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(
+				formattedDate
+			) !== -1
 		) {
 			setNewOriginBoxSubjectDateHelperText("Data já adicionada");
 			return "newOriginBoxSubjectDate already added error";
 		}
 
-		originBoxesList[selectedOriginBoxIndex].subjects_list[
-			selectedOriginBoxSubjectIndex
-		].dates.push(formattedDate);
+		newOriginBox.subjects_list[selectedOriginBoxSubjectIndex].dates.push(
+			formattedDate
+		);
 
-		setOriginBoxes(originBoxesList);
-
+		setOriginBox(newOriginBox);
 		setOpenNewOriginBoxSubjectDateDialog(false);
+
 		return "added newOriginBoxSubjectDate";
 	};
 
 	const handleDeleteOriginBoxSubjectDate = (
-		originBoxIndex,
 		originBoxSubjectIndex,
 		deletedOriginBoxSubjectDate
 	) => {
-		const originBoxesList = originBoxes;
+		const originBoxSubjectDates =
+			originBox.subjects_list[originBoxSubjectIndex].dates;
+
+		originBox.subjects_list[originBoxSubjectIndex].dates =
+			originBoxSubjectDates.filter(
+				(item) => item !== deletedOriginBoxSubjectDate
+			);
 
 		// Changes the reference for the screen to be updated
-		const newOriginBoxesList = [];
+		const newOriginBox = {
+			number: originBox.number,
+			year: originBox.year,
+			subjects_list: originBox.subjects_list,
+		};
 
-		for (let i = 0; i < originBoxesList.length; i += 1) {
-			if (i === originBoxIndex) {
-				const originBoxSubjectDates =
-					originBoxesList[i].subjects_list[originBoxSubjectIndex].dates;
-
-				originBoxesList[i].subjects_list[originBoxSubjectIndex].dates =
-					originBoxSubjectDates.filter(
-						(item) => item !== deletedOriginBoxSubjectDate
-					);
-
-				newOriginBoxesList.push(originBoxesList[i]);
-			} else {
-				newOriginBoxesList.push(originBoxesList[i]);
-			}
-		}
-
-		setOriginBoxes(newOriginBoxesList);
+		setOriginBox(newOriginBox);
 	};
 
 	const handleAlertClose = () => setOpenAlert(false);
@@ -334,18 +298,24 @@ const CreateArchivingRelation = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText("Documento cadastrado!");
+
 		setProcessNumber("");
 		setReceivedDate(initialDate);
 		setSenderUnit("");
-		setBox("");
-		setShelf("");
-		setRack("");
-		setNotes("");
-		setOriginBoxes([]);
+		setTypeList([]);
+
+		setOriginBox({});
 		setNewOriginBoxNumber("");
 		setNewOriginBoxYear("");
 		setNewOriginBoxSubject("");
 		setNewOriginBoxSubjectDate(initialDate);
+
+		setClearBoxFields(true);
+
+		setBox("");
+		setShelf("");
+		setRack("");
+		setNotes("");
 	};
 
 	const onSubmit = () => {
@@ -375,6 +345,14 @@ const CreateArchivingRelation = () => {
 			return "senderUnit error";
 		}
 
+		if (!typeList.length) {
+			setTypeListHelperText(
+				"Não é possível criar um Arquivamento de Caixas sem um Tipo do Documento."
+			);
+			setLoading(false);
+			return "typeList error";
+		}
+
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -382,11 +360,12 @@ const CreateArchivingRelation = () => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
+
 				axiosArchives
 					.post(
-						"archival-relation/",
+						"box-archiving/",
 						{
-							box_list: originBoxes,
+							origin_box_id: originBox,
 							process_number: processNumber,
 							sender_unity: senderUnit.id,
 							notes,
@@ -443,34 +422,14 @@ const CreateArchivingRelation = () => {
 				senderUnitHelperText={senderUnitHelperText}
 			/>
 
-			<DocumentsTypeInput
-				typeList={typeList}
-				setTypeList={setTypeList}
-				typeListHelperText={typeListHelperText}
-				setTypeListHelperText={setTypeListHelperText}
-				connectionError={connectionError}
-			/>
-
-			<BoxInput box={box} set={setBox} connectionError={connectionError} />
-
-			<ShelfInput
-				shelf={shelf}
-				set={setShelf}
-				connectionError={connectionError}
-			/>
-
-			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
-
-			<NotesInput set={setNotes} notes={notes} />
-
 			<Grid item xs={12} sm={12} md={12}>
-				<SpecialLabels label="Caixas de Origem" />
+				<SpecialLabels label="Caixa de Origem" />
 
-				{originBoxes.map((originBoxAdded, originBoxIndex) => (
+				{originBox.number !== undefined ? (
 					<Accordion>
 						<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 							<Typography>
-								{originBoxAdded.number}/{originBoxAdded.year}
+								{originBox.number}/{originBox.year}
 							</Typography>
 						</AccordionSummary>
 						<AccordionDetails>
@@ -485,73 +444,66 @@ const CreateArchivingRelation = () => {
 											</TableRow>
 										</TableHead>
 										<TableBody>
-											{originBoxAdded.subjects_list.map(
-												(subject, subjectIndex) => (
-													<TableRow key={subject.name}>
-														<TableCell>{subject.name}</TableCell>
-														<TableCell>
-															<ChipsContainer
-																justifyContent="left"
-																marginTop="0%"
-															>
-																{subject.dates.map((addedDate) => (
-																	<Chip
-																		icon={<TimelapseIcon />}
-																		label={`${addedDate.substring(
-																			8,
-																			10
-																		)}/${addedDate.substring(
-																			5,
-																			7
-																		)}/${addedDate.substring(0, 4)}`}
-																		color="secondary"
-																		deleteIcon={
-																			<CancelIcon data-testid="delete" />
-																		}
-																		onDelete={() =>
-																			handleDeleteOriginBoxSubjectDate(
-																				originBoxIndex,
-																				subjectIndex,
-																				addedDate
-																			)
-																		}
-																	/>
-																))}
-
-																<AddChip
-																	label="Adicionar Data"
-																	onClick={() =>
-																		handleOpenNewOriginBoxSubjectDateDialog(
-																			originBoxIndex,
-																			subjectIndex
-																		)
-																	}
-																/>
-															</ChipsContainer>
-														</TableCell>
-														<TableCell>
-															<ChipsContainer
-																justifyContent="right"
-																marginTop="0%"
-															>
+											{originBox.subjects_list.map((subject, subjectIndex) => (
+												<TableRow key={subject.name}>
+													<TableCell>{subject.name}</TableCell>
+													<TableCell>
+														<ChipsContainer
+															justifyContent="left"
+															marginTop="0%"
+														>
+															{subject.dates.map((addedDate) => (
 																<Chip
-																	variant="outlined"
-																	label="Excluir"
-																	icon={<CloseIcon />}
+																	icon={<TimelapseIcon />}
+																	label={`${addedDate.substring(
+																		8,
+																		10
+																	)}/${addedDate.substring(
+																		5,
+																		7
+																	)}/${addedDate.substring(0, 4)}`}
 																	color="secondary"
-																	clickable
-																	onClick={() =>
-																		handleDeleteOriginBoxSubject(
-																			originBoxIndex,
-																			subjectIndex
+																	deleteIcon={
+																		<CancelIcon data-testid="delete" />
+																	}
+																	onDelete={() =>
+																		handleDeleteOriginBoxSubjectDate(
+																			subjectIndex,
+																			addedDate
 																		)
 																	}
 																/>
-															</ChipsContainer>
-														</TableCell>
-													</TableRow>
-												)
-											)}
+															))}
+
+															<AddChip
+																label="Adicionar Data"
+																onClick={() =>
+																	handleOpenNewOriginBoxSubjectDateDialog(
+																		subjectIndex
+																	)
+																}
+															/>
+														</ChipsContainer>
+													</TableCell>
+													<TableCell>
+														<ChipsContainer
+															justifyContent="right"
+															marginTop="0%"
+														>
+															<Chip
+																variant="outlined"
+																label="Excluir"
+																icon={<CloseIcon />}
+																color="secondary"
+																clickable
+																onClick={() =>
+																	handleDeleteOriginBoxSubject(subjectIndex)
+																}
+															/>
+														</ChipsContainer>
+													</TableCell>
+												</TableRow>
+											))}
 										</TableBody>
 									</Table>
 								</TableContainer>
@@ -565,7 +517,7 @@ const CreateArchivingRelation = () => {
 											color="secondary"
 											label="Excluir Caixa de Origem"
 											icon={<DeleteForeverRoundedIcon />}
-											onClick={() => handleDeleteOriginBox(originBoxIndex)}
+											onClick={() => handleDeleteOriginBox()}
 											clickable
 										/>
 									</ChipsContainer>
@@ -574,9 +526,7 @@ const CreateArchivingRelation = () => {
 											label="Adicionar Assunto"
 											icon={<AddCircleIcon />}
 											color="primary"
-											onClick={() =>
-												handleOpenNewOriginBoxSubjectDialog(originBoxIndex)
-											}
+											onClick={() => handleOpenNewOriginBoxSubjectDialog()}
 											clickable
 										/>
 									</ChipsContainer>
@@ -584,18 +534,41 @@ const CreateArchivingRelation = () => {
 							</div>
 						</AccordionDetails>
 					</Accordion>
-				))}
-
-				{originBoxes.length ? (
-					<ChipsContainer justifyContent="right" marginTop="0.5%">
-						<AddChip label="Adicionar" onClick={handleOpenNewOriginBoxDialog} />
-					</ChipsContainer>
 				) : (
 					<ChipsContainer justifyContent="left" marginTop="0%">
-						<AddChip label="Adicionar" onClick={handleOpenNewOriginBoxDialog} />
+						<AddChip
+							label="Adicionar Caixa de Origem"
+							onClick={handleOpenNewOriginBoxDialog}
+						/>
 					</ChipsContainer>
 				)}
 			</Grid>
+
+			<DocumentsTypeInput
+				typeList={typeList}
+				setTypeList={setTypeList}
+				typeListHelperText={typeListHelperText}
+				setTypeListHelperText={setTypeListHelperText}
+				connectionError={connectionError}
+			/>
+
+			<BoxInput
+				box={box}
+				set={setBox}
+				connectionError={connectionError}
+				setClearFields={setClearBoxFields}
+				clearFields={clearBoxFields}
+			/>
+
+			<ShelfInput
+				shelf={shelf}
+				set={setShelf}
+				connectionError={connectionError}
+			/>
+
+			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
+
+			<NotesInput set={setNotes} notes={notes} />
 
 			<Dialog
 				fullWidth
@@ -755,4 +728,4 @@ const CreateArchivingRelation = () => {
 	);
 };
 
-export default CreateArchivingRelation;
+export default CreateBoxArchiving;

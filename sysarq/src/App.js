@@ -30,7 +30,7 @@ import Documents from "./pages/Documents";
 import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdministrativeProcess";
 import CreateFrequencyRelation from "./pages/Documents/Create/CreateFrequencyRelation";
 import CreateFrequencySheet from "./pages/Documents/Create/CreateFrequencySheet";
-import CreateArchivingRelation from "./pages/Documents/Create/CreateArchivingRelation";
+import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
 
 import "./App.css";
 
@@ -175,16 +175,16 @@ function App() {
 							</PrivateRoute>
 						</Route>
 
-						<Route path="/documents/archiving-relation">
-							<PrivateRoute exact path="/documents/archiving-relation">
-								<CreateArchivingRelation />
+						<Route path="/documents/box-archiving">
+							<PrivateRoute exact path="/documents/box-archiving">
+								<CreateBoxArchiving />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
-								path="/documents/archiving-relation/create"
+								path="/documents/box-archiving/create"
 							>
-								<CreateArchivingRelation />
+								<CreateBoxArchiving />
 							</PrivateRoute>
 						</Route>
 

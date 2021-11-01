@@ -10,6 +10,6 @@ describe("Documents Menu", () => {
 		expect(screen.getByText("Processo Administrativo")).toBeInTheDocument();
 		expect(screen.getByText("Relação de Frequências")).toBeInTheDocument();
 		expect(screen.getByText("Folha de Frequências")).toBeInTheDocument();
-		expect(screen.getByText("Relação de Arquivamento")).toBeInTheDocument();
+		expect(screen.getByText("Arquivamento de Caixas")).toBeInTheDocument();
 	});
 });

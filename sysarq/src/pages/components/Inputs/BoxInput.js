@@ -14,7 +14,13 @@ import Alert from "@material-ui/lab/Alert";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import { axiosProfileError } from "../../../support";
 
-const BoxInput = ({ set, connectionError, box }) => {
+const BoxInput = ({
+	set,
+	connectionError,
+	setClearFields,
+	clearFields,
+	box,
+}) => {
 	const [boxAbbreviations, setBoxAbbreviations] = useState([]);
 	const [boxYears, setBoxYears] = useState([]);
 
@@ -133,6 +139,14 @@ const BoxInput = ({ set, connectionError, box }) => {
 		}
 	}, [boxYear]);
 
+	useEffect(() => {
+		if (clearFields) {
+			setBoxAbbreviation("");
+			setBoxYear("");
+			setClearFields(false);
+		}
+	}, [clearFields]);
+
 	return (
 		<>
 			<Grid item xs={12} sm={12} md={4}>
@@ -224,6 +238,8 @@ const BoxInput = ({ set, connectionError, box }) => {
 BoxInput.propTypes = {
 	set: PropTypes.func.isRequired,
 	connectionError: PropTypes.func.isRequired,
+	clearFields: PropTypes.bool.isRequired,
+	setClearFields: PropTypes.func.isRequired,
 	box: PropTypes.string.isRequired,
 };
 

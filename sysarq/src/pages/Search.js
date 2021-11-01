@@ -181,14 +181,32 @@ export default function Search() {
 								<MenuItem value="process_number" onClick={handleClick}>
 									Número de processo
 								</MenuItem>
-								<MenuItem value="shelf_id" onClick={handleClick}>
-									Estante
+								<MenuItem value="interested" onClick={handleClick}>
+									Interessado
 								</MenuItem>
-								<MenuItem value="rack_id" onClick={handleClick}>
-									Prateleira
+								<MenuItem value="person_id" onClick={handleClick}>
+									Servidor
+								</MenuItem>
+								<MenuItem value="sender_user" onClick={handleClick}>
+									Servidor que encaminhou
+								</MenuItem>
+								<MenuItem value="subject_id" onClick={handleClick}>
+									Assunto do documento
+								</MenuItem>
+								<MenuItem value="document_type_id" onClick={handleClick}>
+									Tipo do documento
+								</MenuItem>
+								<MenuItem value="sender_unity" onClick={handleClick}>
+									Unidade que encaminhou
+								</MenuItem>
+								<MenuItem value="temporality_date" onClick={handleClick}>
+									Temporalidade
 								</MenuItem>
 								<MenuItem value="abbreviation_id" onClick={handleClick}>
 									Caixa
+								</MenuItem>
+								<MenuItem value="shelf_id" onClick={handleClick}>
+									Estante
 								</MenuItem>
 								<MenuItem value="is_filed/true" onClick={handleClickFiled}>
 									Arquivado

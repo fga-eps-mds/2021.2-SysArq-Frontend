@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import CreateAdministrativeProcess from "../../../../pages/Documents/Create/CreateAdministrativeProcess";
+import CreateBoxArchiving from "../../../../pages/Documents/Create/CreateBoxArchiving";
 
 import { failedAbbreviationServer } from "../../../support/server";
 
@@ -10,7 +10,7 @@ afterAll(() => failedAbbreviationServer.close());
 
 describe("Abbreviation Connection Error Test", () => {
 	it("connectionError test", async () => {
-		render(<CreateAdministrativeProcess />);
+		render(<CreateBoxArchiving />);
 
 		const errorAlert = await screen.findByRole("alert");
 		expect(errorAlert).toHaveTextContent(

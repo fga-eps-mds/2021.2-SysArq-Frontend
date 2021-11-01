@@ -40,7 +40,10 @@ const DocumentsTypeInput = ({
 	const [year, setYear] = useState("");
 	const [yearHelperText, setYearHelperText] = useState("");
 
-	const handleOpenNewTypeDialog = () => setOpenNewTypeDialog(true);
+	const handleOpenNewTypeDialog = () => {
+		setOpenNewTypeDialog(true);
+		setTypeListHelperText("");
+	};
 
 	const handleCloseNewTypeDialog = () => setOpenNewTypeDialog(false);
 

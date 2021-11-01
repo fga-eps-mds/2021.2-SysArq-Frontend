@@ -84,6 +84,30 @@ describe("Axios requests", () => {
 		testSelect("Desarquivado");
 	});
 	it("eliminated test", async () => {
-		testSelect("Eliminado");
+		testSelect("Assunto do documento");
+	});
+	it("filed test", async () => {
+		testSelect("Tipo do documento");
+	});
+	it("unfiled test", async () => {
+		testSelect("Interessado");
+	});
+	it("eliminated test", async () => {
+		testSelect("Servidor");
+	});
+	it("filed test", async () => {
+		testSelect("Servidor que encaminhou");
+	});
+	it("unfiled test", async () => {
+		testSelect("Unidade que encaminhou");
+	});
+	it("eliminated test", async () => {
+		testSelect("Temporalidade");
+	});
+	it("eliminated test", async () => {
+		testSelect("Caixa");
+	});
+	it("eliminated test", async () => {
+		testSelect("Estante");
 	});
 });

@@ -2,6 +2,20 @@ const headCellsSearch = () => {
 	const idList = [
 		"process_number",
 		"Número do processo",
+		"interested",
+		"Interessado",
+		"sender_user_name",
+		"Servidor que encaminhou",
+		"person_name",
+		"Servidor",
+		"cpf",
+		"CPF",
+		"document_subject_name",
+		"Assunto do documento",
+		"document_type_name",
+		"Tipo do documento",
+		"sender_unity_name",
+		"Unidade que encaminhou",
 		"shelf_number",
 		"Estante",
 		"rack_number",
@@ -12,6 +26,8 @@ const headCellsSearch = () => {
 		"Arquivado",
 		"is_eliminated",
 		"Eliminado",
+		"temporality_date",
+		"Temporalidade",
 	];
 
 	const headCellsSearchList = [];
