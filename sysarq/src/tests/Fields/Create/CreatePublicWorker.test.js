@@ -32,38 +32,12 @@ jest.useFakeTimers();
 
 describe("Page test", () => {
 	it("axios sucess", async () => {
-		const objSuccess = [
-			NAME,
-			"201",
-			CPF,
-			"11111111111",
-			ROLE,
-			"test",
-			CATEGORY,
-			"test",
-			WORKPLACE,
-			"test",
-			MUNICIPALAREA,
-			"test",
-		];
+		const objSuccess = [NAME, "201", CPF, "11111111111"];
 		await testEvent(<CreatePublicWorker />, objSuccess, "Servidor cadastrado!");
 	});
 
 	it("axios fail", async () => {
-		const objFail = [
-			NAME,
-			"401",
-			CPF,
-			"11111111111",
-			ROLE,
-			"test",
-			CATEGORY,
-			"test",
-			WORKPLACE,
-			"test",
-			MUNICIPALAREA,
-			"test",
-		];
+		const objFail = [NAME, "401", CPF, "11111111111"];
 		await testEvent(
 			<CreatePublicWorker />,
 			objFail,
@@ -72,75 +46,23 @@ describe("Page test", () => {
 	});
 
 	it("name null", async () => {
-		const objFail = [
-			NAME,
-			"",
-			CPF,
-			"11111111111",
-			ROLE,
-			"test",
-			CATEGORY,
-			"test",
-			WORKPLACE,
-			"test",
-			MUNICIPALAREA,
-			"test",
-		];
+		const objFail = [NAME, "", CPF, "11111111111"];
 		await testEvent(<CreatePublicWorker />, objFail, "Insira um nome");
 	});
 
-	it("temporality null", async () => {
-		const objFail = [
-			NAME,
-			"test",
-			CPF,
-			"",
-			ROLE,
-			"test",
-			CATEGORY,
-			"test",
-			WORKPLACE,
-			"test",
-			MUNICIPALAREA,
-			"test",
-		];
+	it("cpf null", async () => {
+		const objFail = [NAME, "test", CPF, ""];
 		await testEvent(<CreatePublicWorker />, objFail, "Insira um CPF válido");
 	});
 
 	it("localstorage fail", async () => {
-		const objFail = [
-			NAME,
-			"test",
-			CPF,
-			"11111111111",
-			ROLE,
-			"test",
-			CATEGORY,
-			"test",
-			WORKPLACE,
-			"test",
-			MUNICIPALAREA,
-			"test",
-		];
+		const objFail = [NAME, "test", CPF, "11111111111"];
 		localStorage.setItem("tkr", 401);
 		await testEvent(<CreatePublicWorker />, objFail, "Cadastrar servidor");
 	});
 
 	it("localstorage2 fail", async () => {
-		const objFail = [
-			NAME,
-			"test",
-			CPF,
-			"11111111111",
-			ROLE,
-			"test",
-			CATEGORY,
-			"test",
-			WORKPLACE,
-			"test",
-			MUNICIPALAREA,
-			"test",
-		];
+		const objFail = [NAME, "test", CPF, "11111111111"];
 		localStorage.setItem("tkr", 404);
 		await testEvent(
 			<CreatePublicWorker />,

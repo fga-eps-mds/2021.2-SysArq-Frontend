@@ -27,11 +27,6 @@ export default function CreatePublicWorker() {
 
 	const [workerName, setName] = useState("");
 	const [workerCpf, setCpf] = useState("");
-	const [workerRole, setRole] = useState("");
-	const [workerCategory, setCategory] = useState("");
-	const [workerWorkplace, setWorkplace] = useState("");
-	const [municipalArea, setMunicipalArea] = useState("");
-
 	const [nameError, setNameError] = useState(false);
 	const [nameHelperText, setNameHelperText] = useState("");
 	const [cpfError, setCpfError] = useState(false);
@@ -79,10 +74,6 @@ export default function CreatePublicWorker() {
 						{
 							name: workerName,
 							cpf: workerCpf,
-							role: workerRole,
-							category: workerCategory,
-							workplace: workerWorkplace,
-							municipal_area: municipalArea,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -123,62 +114,6 @@ export default function CreatePublicWorker() {
 			error: cpfError,
 			setHelperText: setCpfHelperText,
 			setError: setCpfError,
-		},
-		{
-			type: "text",
-			placeholder: "Cargo",
-			setValue: setRole,
-			value: workerRole,
-			helperText: "",
-			error: false,
-			setHelperText: () => {
-				"";
-			},
-			setError: () => {
-				"";
-			},
-		},
-		{
-			type: "text",
-			placeholder: "Classe",
-			setValue: setCategory,
-			value: workerCategory,
-			helperText: "",
-			error: false,
-			setHelperText: () => {
-				"";
-			},
-			setError: () => {
-				"";
-			},
-		},
-		{
-			type: "text",
-			placeholder: "Unidade",
-			setValue: setWorkplace,
-			value: workerWorkplace,
-			helperText: "",
-			error: false,
-			setHelperText: () => {
-				"";
-			},
-			setError: () => {
-				"";
-			},
-		},
-		{
-			type: "text",
-			placeholder: "Municipio",
-			setValue: setMunicipalArea,
-			value: municipalArea,
-			helperText: "",
-			error: false,
-			setHelperText: () => {
-				"";
-			},
-			setError: () => {
-				"";
-			},
 		},
 	];
 

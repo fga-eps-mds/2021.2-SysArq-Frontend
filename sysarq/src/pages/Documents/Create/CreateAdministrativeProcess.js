@@ -10,6 +10,8 @@ import {
 	FormHelperText,
 } from "@material-ui/core";
 
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
 import {
@@ -51,6 +53,12 @@ const CreateAdministrativeProcess = () => {
 	const [subjects, setSubjects] = useState([]);
 	const [units, setUnits] = useState([]);
 
+	const [publicWorkers, setPublicWorkers] = useState([
+		{ id: 1, name: "inexiste", cpf: "55555555555" },
+	]);
+	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
+	const [publicWorkerInput, setPublicWorkerInput] = useState("");
+
 	const [noticeDate, setNoticeDate] = useState(initialDate);
 	const [archivingDate, setArchivingDate] = useState(initialDate);
 	const [reference, setReference] = useState(initialPeriod);
@@ -60,7 +68,6 @@ const CreateAdministrativeProcess = () => {
 	const [subject, setSubject] = useState("");
 	const [destinationUnit, setDestinationUnit] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
-	const [senderWorker, setSenderWorker] = useState("");
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
@@ -77,12 +84,22 @@ const CreateAdministrativeProcess = () => {
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
+	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
+
+	const handlePublicWorkerChange = (value) => {
+		setPublicWorkerHelperText("");
+		if (!value) {
+			setPublicWorker(undefined);
+			return;
+		}
+		setPublicWorker(value);
+	};
 
 	const handleNoticeDateChange = (date) => {
 		setNoticeDateHelperText("");
@@ -116,9 +133,6 @@ const CreateAdministrativeProcess = () => {
 
 	const handleDestinationUnitChange = (event) =>
 		setDestinationUnit(event.target.value);
-
-	const handleSenderWorkerChange = (event) =>
-		setSenderWorker(event.target.value);
 
 	const handleStatusChange = (event) => {
 		setStatusHelperText("");
@@ -165,7 +179,9 @@ const CreateAdministrativeProcess = () => {
 		setSubject("");
 		setDestinationUnit("");
 		setSenderUnit("");
-		setSenderWorker("");
+		setPublicWorkerInput("");
+		setPublicWorker(undefined);
+
 		setStatus("");
 		setUnarchiveDestinationUnit("");
 		setUnarchiveProcessNumber("");
@@ -272,7 +288,7 @@ const CreateAdministrativeProcess = () => {
 							subject_id: subject.id,
 							dest_unity_id: destinationUnit.id,
 							sender_unity: senderUnit.id,
-							sender_user: senderWorker,
+							sender_user: publicWorker !== undefined ? publicWorker.id : null,
 							is_filed: isStatusFiled(status),
 							is_eliminated: status === "Eliminado",
 							unity_id:
@@ -322,11 +338,26 @@ const CreateAdministrativeProcess = () => {
 					})
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
+
+				axiosArchives
+					.get("public-worker/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => setPublicWorkers(response.data))
+					.catch(() => connectionError());
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
 	}, []);
+
+	const publicWorkerOptions = publicWorkers.map((option) => {
+		const firstLetter = option.name[0].toUpperCase();
+		return {
+			firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+			...option,
+		};
+	});
 
 	return (
 		<CardContainer title="Processo Administrativo" spacing={1}>
@@ -468,14 +499,35 @@ const CreateAdministrativeProcess = () => {
 			/>
 
 			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="sender-worker"
-					label="Servidor que Encaminhou"
-					value={senderWorker}
-					onChange={handleSenderWorkerChange}
-					multiline
-					inputProps={{ maxLength: 150 }}
+				<Autocomplete
+					id="workerName"
+					data-testid="autocomplete"
+					value={publicWorkers.name}
+					onChange={(event, newValue) => {
+						handlePublicWorkerChange(newValue);
+					}}
+					inputValue={publicWorkerInput}
+					onInputChange={(event, newInputValue) => {
+						setPublicWorkerInput(newInputValue);
+					}}
+					options={publicWorkerOptions.sort(
+						(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+					)}
+					groupBy={(option) => option.firstLetter}
+					getOptionLabel={(option) => `${option.name}, ${option.cpf}`}
+					getOptionSelected={(option, value) => option.name === value.name}
+					autoHighlight
+					ListboxProps={{ "data-testid": "list-box" }}
+					renderInput={(params) => (
+						<TextField
+							// eslint-disable-next-line
+							{...params}
+							value={params.value}
+							label="Servidor que encaminhou"
+							error={publicWorkerHelperText !== ""}
+							helperText={publicWorkerHelperText}
+						/>
+					)}
 				/>
 			</Grid>
 
