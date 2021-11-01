@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
-
+import userEvent from "@testing-library/user-event";
 import { server } from "../../support/server";
 
 import { submitClick, input } from "../../support";
@@ -33,19 +33,19 @@ describe("Create Frequency Sheet Screen Test", () => {
 		submitClick();
 		isOnTheScreen("Selecione um nome");
 
-
-		fireEvent.click(screen.getByRole("button", { name: /Open/ }));
-		const pWOptions = within(screen.getByRole("listbox"));
-		screen.debug(undefined, 300000)
-		await pWOptions.findByText("servidor1, 12345678911");
-		fireEvent.click(pWOptions.getByText(/servidor1, 12345678911/i));
-
-		// await publicWorkerOptions.findByText("servidor1, 12345678911");
-		// fireEvent.click(typeOptions.getByText(/servidor1, 12345678911/i));
-		// input("Nome, CPF*", "servidor1");
+		const autocomplete = screen.getByTestId("autocomplete");
+		const input2 = within(autocomplete).getByRole("textbox");
+		await fireEvent.mouseDown(input2);
+		// await screen.debug(undefined, 300000)
+		const ListBox = screen.getByTestId("list-box");
+		expect(ListBox).toBeDefined();
+		const menuItem1 = screen.getByText("inexiste, 55555555555");
+		fireEvent.click(menuItem1);
+		expect(screen.queryByRole("listbox")).toBeNull();
+		isNotOnTheScreen("Selecione um nome");
 
 		submitClick();
-		// isOnTheScreen("Insira um cargo");
+		isOnTheScreen("Insira um cargo");
 
 		inputTest("Cargo*", "teste", "Insira uma lotação");
 		inputTest("Lotação*", "lotaçao", "Insira um município");
@@ -75,7 +75,14 @@ describe("Create Frequency Sheet Screen Test", () => {
 	it("test fail", async () => {
 		render(<CreateFrequencySheet />);
 
-		input("Nome, CPF*", "teste");
+		const autocomplete = screen.getByTestId("autocomplete");
+		const input2 = within(autocomplete).getByRole("textbox");
+		fireEvent.mouseDown(input2);
+		const ListBox = screen.getByRole("listbox");
+		expect(ListBox).toBeDefined();
+		const menuItem1 = screen.getByText("inexiste, 55555555555");
+		fireEvent.click(menuItem1);
+
 		input("Cargo*", "teste1");
 		input("Lotação*", "lotaçao");
 		input("Município*", "teste");

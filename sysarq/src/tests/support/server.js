@@ -74,6 +74,18 @@ export const server = setupServer(
 		)
 	),
 
+	rest.get(`${hostApiArchives}public-worker/`, (req, res, ctx) =>
+		res(
+			ctx.json([
+				{
+					id: 1,
+					name: "inexiste",
+					cpf: "55555555555",
+				},
+			])
+		)
+	),
+
 	rest.get(`${hostApiArchives}unity/`, (req, res, ctx) =>
 		res(
 			ctx.json([
@@ -134,18 +146,6 @@ export const server = setupServer(
 				{
 					id: 46,
 					number: 47,
-				},
-			])
-		)
-	),
-
-	rest.get(`${hostApiArchives}public-worker/`, (req, res, ctx) =>
-		res(
-			ctx.json([
-				{
-					"id": 1,
-					"name": "servidor1",
-					"cpf": "12345678911"
 				},
 			])
 		)

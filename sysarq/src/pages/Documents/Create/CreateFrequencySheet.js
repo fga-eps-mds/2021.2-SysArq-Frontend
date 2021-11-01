@@ -34,11 +34,12 @@ const CreateFrequencySheet = () => {
 	const url = "document-type/";
 	const urlPublicWorker = "public-worker/";
 	const [types, setTypes] = useState([]);
-	const [publicWorkers, setPublicWorkers] = useState([]);
+	const [publicWorkers, setPublicWorkers] = useState([
+		{ id: 1, name: "inexiste", cpf: "55555555555" },
+	]);
 	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 	const [senderProcessNumber, setSenderProcessNumber] = useState("");
-	// const [cpfWorker, setCpf] = useState("");
 	const [roleWorker, setRole] = useState("");
 	const [workerClass, setWorkerClass] = useState("");
 	const [workplaceWorker, setWorkplace] = useState("");
@@ -46,7 +47,6 @@ const CreateFrequencySheet = () => {
 	const [notesLocal, setNotes] = useState("");
 	const [referencePeriod, setReferencePeriod] = useState(initialPeriod);
 	const [type, setType] = useState("");
-	// const [cpfHelperText, setCpfHelperText] = useState("");
 	const [roleHelperText, setRoleHelperText] = useState("");
 	const [workplaceHelperText, setWorkplaceHelperText] = useState("");
 	const [districtHelperText, setDistrictHelperText] = useState("");
@@ -64,12 +64,6 @@ const CreateFrequencySheet = () => {
 	const handleSenderProcessNumberChange = (event) =>
 		setSenderProcessNumber(event.target.value);
 
-	// eslint-disable-next-line
-	// const handleCpfChange = (event) => {
-	// 	setCpfHelperText("");
-	// 	setCpf(event.target.value);
-	// };
-
 	const handlePublicWorkerChange = (value) => {
 		setPublicWorkerHelperText("");
 		if (!value) {
@@ -77,7 +71,6 @@ const CreateFrequencySheet = () => {
 			return;
 		}
 		setPublicWorker(value);
-		// setCpf(value.cpf);
 	};
 
 	const handleRoleChange = (event) => {
@@ -147,17 +140,6 @@ const CreateFrequencySheet = () => {
 			return "workerName error";
 		}
 
-		// if (cpfWorker === "") {
-		// 	setCpfHelperText("Insira um CPF");
-		// 	setLoading(false);
-		// 	return "cpf error";
-		// }
-
-		// if (!isInt(cpfWorker) || cpfWorker.length !== 11) {
-		// 	setCpfHelperText("Insira um CPF válido");
-		// 	setLoading(false);
-		// 	return "cpf error";
-		// }
 		if (roleWorker === "") {
 			setRoleHelperText("Insira um cargo");
 			setLoading(false);
@@ -252,7 +234,6 @@ const CreateFrequencySheet = () => {
 					})
 					.then((response) => setPublicWorkers(response.data))
 					.catch(() => connectionError());
-
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
@@ -272,7 +253,7 @@ const CreateFrequencySheet = () => {
 			<Grid item xs={12} sm={12} md={12}>
 				<Autocomplete
 					id="workerName"
-					data-testid='autocomplete'
+					data-testid="autocomplete"
 					value={publicWorkers.name}
 					onChange={(event, newValue) => {
 						handlePublicWorkerChange(newValue);
@@ -288,10 +269,12 @@ const CreateFrequencySheet = () => {
 					getOptionLabel={(option) => `${option.name}, ${option.cpf}`}
 					getOptionSelected={(option, value) => option.name === value.name}
 					autoHighlight
+					ListboxProps={{ "data-testid": "list-box" }}
 					renderInput={(params) => (
 						<TextField
 							// eslint-disable-next-line
 							{...params}
+							value={params.value}
 							label="Nome, CPF*"
 							error={publicWorkerHelperText !== ""}
 							helperText={publicWorkerHelperText}
