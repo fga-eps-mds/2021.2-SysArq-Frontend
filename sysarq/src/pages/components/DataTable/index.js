@@ -245,6 +245,21 @@ const DataTable = ({ url, title }) => {
 			}
 			return "Não";
 		}
+
+		if (id === "temporality_date" || id === "document_type_name") {
+			if (typeof row[id] === "undefined") return "-";
+			const obj = row[id];
+			for (let i = 0; i < obj.length; i += 1) {
+				if (i < obj.length - 1) {
+					obj[i] = `${obj[i]} `;
+				}
+			}
+			return obj;
+		}
+
+		if (typeof row[id] === "undefined" || row[id] === null || row[id] === "")
+			return "-";
+
 		return row[id];
 	};
 
@@ -332,16 +347,20 @@ const DataTable = ({ url, title }) => {
 															<IconButton color="secondary" size="small">
 																<EditIcon />
 															</IconButton>
-															<IconButton
-																style={{ color: "#fe0000" }}
-																color="inherit"
-																size="small"
-															>
-																<DeleteIcon
-																	data-testid="delete-field"
-																	onClick={() => deleteRow(row)}
-																/>
-															</IconButton>
+															{window.location.href.includes(
+																"search"
+															) ? null : (
+																<IconButton
+																	style={{ color: "#fe0000" }}
+																	color="inherit"
+																	size="small"
+																>
+																	<DeleteIcon
+																		data-testid="delete-field"
+																		onClick={() => deleteRow(row)}
+																	/>
+																</IconButton>
+															)}
 														</TableCell>
 													) : (
 														""
