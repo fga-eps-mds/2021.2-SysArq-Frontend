@@ -19,6 +19,7 @@ import {
 	initialPeriod,
 	isDateNotValid,
 	axiosProfileError,
+	getPublicWorkers,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -32,7 +33,6 @@ import PopUpAlert from "../../components/PopUpAlert";
 
 const CreateFrequencySheet = () => {
 	const url = "document-type/";
-	const urlPublicWorker = "public-worker/";
 	const [types, setTypes] = useState([]);
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
@@ -228,12 +228,7 @@ const CreateFrequencySheet = () => {
 					.then((response) => setTypes(response.data))
 					.catch(() => connectionError());
 
-				axiosArchives
-					.get(urlPublicWorker, {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
-					.then((response) => setPublicWorkers(response.data))
-					.catch(() => connectionError());
+				getPublicWorkers(setPublicWorkers, connectionError);
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);

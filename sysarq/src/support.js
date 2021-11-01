@@ -76,3 +76,12 @@ export function getUnits(setUnits, connectionError) {
 			axiosProfileError(error, connectionError);
 		});
 }
+
+export function getPublicWorkers(setPublicWorkers, connectionError) {
+	axiosArchives
+		.get("public-worker/", {
+			headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+		})
+		.then((response) => setPublicWorkers(response.data))
+		.catch(() => connectionError());
+}

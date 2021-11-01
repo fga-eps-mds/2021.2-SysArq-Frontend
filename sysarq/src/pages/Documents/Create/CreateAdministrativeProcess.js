@@ -21,6 +21,7 @@ import {
 	isInt,
 	formatDate,
 	axiosProfileError,
+	getPublicWorkers,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -339,12 +340,7 @@ const CreateAdministrativeProcess = () => {
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
 
-				axiosArchives
-					.get("public-worker/", {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
-					.then((response) => setPublicWorkers(response.data))
-					.catch(() => connectionError());
+				getPublicWorkers(setPublicWorkers, connectionError);
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
