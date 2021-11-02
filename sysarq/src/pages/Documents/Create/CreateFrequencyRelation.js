@@ -196,6 +196,22 @@ const CreateFrequencyRelation = () => {
 					setNotes(response.data.notes);
 					setReferencePeriod(response.data.reference_period);
 					
+					if(response.status === 200) {
+						axiosArchives
+						.get("unity/", {
+							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						})
+						.then((responseUnity) => {
+							setUnits(responseUnity.data);
+							
+							responseUnity.data.forEach(unity => {
+								if(unity.id === response.data.sender_unity) {
+									setSenderUnit(unity);
+								}
+							})
+						})
+						.catch(() => connectionError());
+					}
 
 				})
 				.catch(() => connectionError());
