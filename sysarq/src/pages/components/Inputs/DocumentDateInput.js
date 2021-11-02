@@ -8,6 +8,7 @@ const DocumentDateInput = ({
 	set,
 	documentDate,
 	helperText,
+	isDisabled,
 }) => {
 	const handleChange = (date) => {
 		setHelperText("");
@@ -33,6 +34,7 @@ const DocumentDateInput = ({
 			}}
 			error={helperText !== ""}
 			helperText={helperText}
+			disabled={isDisabled}
 		/>
 	);
 };
@@ -42,6 +44,7 @@ DocumentDateInput.propTypes = {
 	set: PropTypes.func.isRequired,
 	documentDate: PropTypes.instanceOf(Date).isRequired,
 	helperText: PropTypes.string.isRequired,
+	isDisabled: PropTypes.string.isRequired,
 };
 
 export default DocumentDateInput;

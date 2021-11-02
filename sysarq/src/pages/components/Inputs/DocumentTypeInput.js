@@ -19,8 +19,10 @@ const DocumentTypeInput = ({
 	connectionError,
 	documentType,
 	documentTypeHelperText,
+	isDisabled,
 }) => {
 	const [documentTypes, setDocumentTypes] = useState([]);
+	const [documentTypeValue, setDocumentTypeValue] = useState("");
 
 	const handleChange = (event) => {
 		setHelperText("");
@@ -39,7 +41,16 @@ const DocumentTypeInput = ({
 					.get("document-type/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
-					.then((response) => setDocumentTypes(response.data))
+					.then((response) => {
+						setDocumentTypes(response.data)
+						setDocumentTypeValue(documentType);
+						
+						response.data.forEach(document => {
+							if(document.id === documentType) {
+								setDocumentTypeValue(document);
+							}
+						})
+					})
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
@@ -47,7 +58,7 @@ const DocumentTypeInput = ({
 					logout();
 				} else connectionError();
 			});
-	}, []);
+	}, [documentType]);
 
 	return (
 		<Grid item xs={12} sm={12} md={12}>
@@ -59,9 +70,10 @@ const DocumentTypeInput = ({
 					style={{ textAlign: "left" }}
 					labelId="select-documentType-label"
 					id="select-documentType"
-					value={documentType}
+					value={documentTypeValue}
 					onChange={handleChange}
 					renderValue={(value) => `${value.document_name}`}
+					disabled={isDisabled}
 				>
 					<MenuItem key={0} value="">
 						<em>Nenhum</em>
@@ -89,6 +101,7 @@ DocumentTypeInput.propTypes = {
 	connectionError: PropTypes.func.isRequired,
 	documentType: PropTypes.string.isRequired,
 	documentTypeHelperText: PropTypes.string.isRequired,
+	isDisabled: PropTypes.string.isRequired,
 };
 
 export default DocumentTypeInput;

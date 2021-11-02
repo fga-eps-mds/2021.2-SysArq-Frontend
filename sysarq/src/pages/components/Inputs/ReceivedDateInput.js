@@ -8,6 +8,7 @@ const ReceivedDateInput = ({
 	set,
 	receivedDate,
 	helperText,
+	isDisabled,
 }) => {
 	const handleChange = (date) => {
 		setHelperText("");
@@ -33,6 +34,7 @@ const ReceivedDateInput = ({
 			}}
 			error={helperText !== ""}
 			helperText={helperText}
+			disabled={isDisabled}
 		/>
 	);
 };
@@ -42,6 +44,7 @@ ReceivedDateInput.propTypes = {
 	set: PropTypes.func.isRequired,
 	receivedDate: PropTypes.instanceOf(Date).isRequired,
 	helperText: PropTypes.string.isRequired,
+	isDisabled: PropTypes.string.isRequired,
 };
 
 export default ReceivedDateInput;

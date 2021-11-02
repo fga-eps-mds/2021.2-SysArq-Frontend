@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
@@ -59,6 +60,11 @@ const CreateFrequencySheet = () => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
+
+	const [isDisabled, setIsDisabled] = useState(false);
+
+	const urlView = window.location.href;
+	const params = useParams();
 
 	const handleSenderProcessNumberChange = (event) =>
 		setSenderProcessNumber(event.target.value);
@@ -220,6 +226,7 @@ const CreateFrequencySheet = () => {
 			.then((r) => {
 				localStorage.setItem("tkr", r.data.refresh);
 				localStorage.setItem("tk", r.data.access);
+				
 				axiosArchives
 					.get(url, {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
@@ -241,6 +248,40 @@ const CreateFrequencySheet = () => {
 			...option,
 		};
 	});
+	useEffect(() => {
+		if(urlView.includes("view")) {
+			setIsDisabled(true);
+
+			axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tkr", res.data.refresh);
+				localStorage.setItem("tk", res.data.access);
+
+				axiosArchives
+				.get(`frequency-sheet/${params.id}/`, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
+				.then((response) => {
+					console.log("Res ", response);
+					setWorkerName(response.data.person_name);
+					setCpf(response.data.cpf);
+					setRole(response.data.role);
+					setWorkerClass(response.data.category);
+					setWorkplace(response.data.workplace);
+					setDistrict(response.data.municipal_area);
+					setReferencePeriod(response.data.reference_period);
+					setSenderProcessNumber(response.data.process_number);
+					setType(response.data.document_type_id);
+					setNotes(response.data.notes);
+				})
+				.catch(() => connectionError());
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			})
+		}
+	}, []);
 
 	return (
 		<CardContainer title="Folha de Frequências" spacing={1}>
@@ -295,6 +336,7 @@ const CreateFrequencySheet = () => {
 					helperText={roleHelperText}
 					inputProps={{ maxLength: 100 }}
 					multiline
+					disabled={isDisabled}
 				/>
 			</Grid>
 
@@ -307,6 +349,7 @@ const CreateFrequencySheet = () => {
 					onChange={handleWorkerClassChange}
 					inputProps={{ maxLength: 100 }}
 					multiline
+					disabled={isDisabled}
 				/>
 			</Grid>
 
@@ -321,6 +364,7 @@ const CreateFrequencySheet = () => {
 					helperText={workplaceHelperText}
 					inputProps={{ maxLength: 100 }}
 					multiline
+					disabled={isDisabled}
 				/>
 			</Grid>
 
@@ -335,6 +379,7 @@ const CreateFrequencySheet = () => {
 					helperText={districtHelperText}
 					inputProps={{ maxLength: 100 }}
 					multiline
+					disabled={isDisabled}
 				/>
 			</Grid>
 
@@ -352,6 +397,7 @@ const CreateFrequencySheet = () => {
 					cancelLabel="Cancelar"
 					error={referencePeriodHelperText !== ""}
 					helperText={referencePeriodHelperText}
+					disabled={isDisabled}
 				/>
 			</Grid>
 
@@ -363,6 +409,7 @@ const CreateFrequencySheet = () => {
 					value={senderProcessNumber}
 					onChange={handleSenderProcessNumberChange}
 					inputProps={{ maxLength: 20 }}
+					disabled={isDisabled}
 				/>
 			</Grid>
 
@@ -376,6 +423,7 @@ const CreateFrequencySheet = () => {
 						value={type}
 						onChange={handleTypeChange}
 						renderValue={(value) => `${value.document_name}`}
+						disabled={isDisabled}
 					>
 						<MenuItem key={0} value="">
 							<em>Nenhum</em>
@@ -395,7 +443,7 @@ const CreateFrequencySheet = () => {
 				</FormControl>
 			</Grid>
 
-			<NotesInput set={setNotes} notes={notesLocal} />
+			<NotesInput set={setNotes} notes={notesLocal} isDisabled={isDisabled} />
 
 			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
 

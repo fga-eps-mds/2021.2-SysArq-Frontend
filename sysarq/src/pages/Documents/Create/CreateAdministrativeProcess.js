@@ -338,15 +338,13 @@ const CreateAdministrativeProcess = () => {
 					.then((response) => { 
 						setSubjects(response.data);
 
-						const token = localStorage.getItem("tk");
-
 						if(url.includes("view")) {
 							setIsDisabled(true);
 						}
 
 						if(url.includes("view")) {
 							axiosArchives
-							.get(`administrative-process/${params.id}/`, { headers: { Authorization: `JWT ${token}`}})
+							.get(`administrative-process/${params.id}/`, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
 							.then((responseAdministrative => {
 								console.log("Resp: ", responseAdministrative);
 								setProcessNumber(responseAdministrative.data.process_number);
@@ -369,6 +367,9 @@ const CreateAdministrativeProcess = () => {
 									setStatus("Arquivado");
 								} else {
 									setStatus("Desarquivado");
+									// setUnarchiveDestinationUnit(responseAdministrative.data.unity_id);
+									setUnarchiveProcessNumber(responseAdministrative.data.administrative_process_number);
+									setUnarchiveDate(responseAdministrative.data.send_date);
 								}
 
 								if(responseAdministrative.data.is_eliminated) {
@@ -390,6 +391,10 @@ const CreateAdministrativeProcess = () => {
 												if(unity.id === responseAdministrative.data.sender_unity) {
 													setSenderUnit(unity);
 												}
+												
+												// if(unity.id === responseAdministrative.data.send_date) {
+												// 	setUnarchiveDate(unity);
+												// }
 											})
 										})
 										.catch(() => connectionError());
@@ -398,7 +403,6 @@ const CreateAdministrativeProcess = () => {
 						}
 					})
 					.catch(() => connectionError());
-				
 				
 				axiosArchives
 					.get("unity/", {
@@ -639,6 +643,7 @@ const CreateAdministrativeProcess = () => {
 								value={unarchiveDestinationUnit}
 								onChange={handleUnarchiveDestinationUnit}
 								renderValue={(value) => `${value.unity_name}`}
+								disabled={isDisabled}
 							>
 								<MenuItem key={0} value="">
 									<em>Nenhuma</em>
@@ -663,6 +668,7 @@ const CreateAdministrativeProcess = () => {
 							value={unarchiveProcessNumber}
 							onChange={handleUnarchiveProcessNumberChange}
 							inputProps={{ maxLength: 15 }}
+							disabled={isDisabled}
 						/>
 					</Grid>
 					<Grid item xs={12} sm={12} md={6}>
@@ -680,6 +686,7 @@ const CreateAdministrativeProcess = () => {
 							}}
 							error={unarchiveDateHelperText !== ""}
 							helperText={unarchiveDateHelperText}
+							disabled={isDisabled}
 						/>
 					</Grid>
 				</>

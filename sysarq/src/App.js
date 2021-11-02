@@ -177,6 +177,10 @@ function App() {
 							>
 								<CreateFrequencyRelation />
 							</PrivateRoute>
+
+							<PrivateRoute path="/documents/frequency-relation/view/:id">
+								<CreateFrequencyRelation />
+							</PrivateRoute>
 						</Route>
 
 						<Route path="/documents/box-archiving">
@@ -201,6 +205,10 @@ function App() {
 								exact={false}
 								path="/documents/frequency-sheet/create"
 							>
+								<CreateFrequencySheet />
+							</PrivateRoute>
+
+							<PrivateRoute path="/documents/frequency-sheet/view/:id">
 								<CreateFrequencySheet />
 							</PrivateRoute>
 						</Route>

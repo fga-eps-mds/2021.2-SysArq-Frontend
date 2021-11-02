@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import Grid from "@material-ui/core/Grid";
 
@@ -49,6 +50,11 @@ const CreateFrequencyRelation = () => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
+
+	const [isDisabled, setIsDisabled] = useState(false);
+
+	const url = window.location.href;
+	const params = useParams();
 
 	const handleAlertClose = () => setOpenAlert(false);
 
@@ -168,6 +174,40 @@ const CreateFrequencyRelation = () => {
 	};
 
 	useEffect(() => {
+		if(url.includes("view")) {
+			setIsDisabled(true);
+		
+			axiosProfile
+			.post(`api/token/refresh/`,{
+				refresh: localStorage.getItem("tkr")
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+
+				axiosArchives
+				.get(`frequency-relation/${params.id}/`, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
+				.then((response) => {
+					console.log("Resp: ", response);
+					setProcessNumber(response.data.process_number);
+					setDocumentDate(response.data.document_date);
+					setReceivedDate(response.data.received_date);
+					setDocumentType(response.data.document_type_id);
+					setNotes(response.data.notes);
+					setReferencePeriod(response.data.reference_period);
+					
+
+				})
+				.catch(() => connectionError());
+			})
+			
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+		}
+	}, [])
+
+	useEffect(() => {
 		getUnits(setUnits, connectionError);
 	}, []);
 
@@ -179,10 +219,12 @@ const CreateFrequencyRelation = () => {
 					set={setProcessNumber}
 					number={processNumber}
 					helperText={processNumberHelperText}
+					isDisabled={isDisabled}
 				/>
 			</Grid>
 
 			<CommonSet
+				isDisabled={isDisabled}
 				units={units}
 				documentDate={documentDate}
 				setDocumentDate={setDocumentDate}
@@ -210,6 +252,7 @@ const CreateFrequencyRelation = () => {
 				setReferencePeriod={setReferencePeriod}
 				setReferencePeriodHelperText={setReferencePeriodHelperText}
 				referencePeriodHelperText={referencePeriodHelperText}
+				isDisabled={isDisabled}
 			/>
 
 			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
