@@ -169,30 +169,6 @@ const publicWorkerHeadCells = [
 		numeric: false,
 		label: "CPF",
 	},
-
-	{
-		id: "role",
-		numeric: false,
-		label: "Cargo",
-	},
-
-	{
-		id: "category",
-		numeric: false,
-		label: "Classe",
-	},
-
-	{
-		id: "workplace",
-		numeric: false,
-		label: "Unidade",
-	},
-
-	{
-		id: "municipal_area",
-		numeric: false,
-		label: "Municipio",
-	},
 ];
 
 const tableHeadCells = (url) => {

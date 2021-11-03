@@ -173,9 +173,16 @@ describe("Create Administrative Process Screen Test", () => {
 		await senderUnit1Options.findByText("sender_unit_name_test");
 		fireEvent.click(senderUnit1Options.getByText(/sender_unit_name_test/i));
 
-		input(REFERENCE_FIELD_LABEL, "");
+		const autocomplete = screen.getByTestId("autocomplete");
+		const input2 = within(autocomplete).getByRole("textbox");
+		await fireEvent.mouseDown(input2);
+		const ListBox = screen.getByRole("listbox");
+		expect(ListBox).toBeDefined();
+		const menuItem1 = screen.getByText("inexiste, 55555555555");
+		fireEvent.click(menuItem1);
+		expect(screen.queryByRole("listbox")).toBeNull();
 
-		input("Servidor que Encaminhou", "Sandro");
+		input(REFERENCE_FIELD_LABEL, "");
 
 		fireEvent.mouseDown(screen.getByLabelText("Status*"));
 		const statusOptions = within(screen.getByRole("listbox"));

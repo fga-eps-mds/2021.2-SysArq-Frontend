@@ -15,9 +15,10 @@ import {
 import {
 	formatDate,
 	initialPeriod,
-	isInt,
 	isDateNotValid,
 	axiosProfileError,
+	getPublicWorkers,
+	autocompl,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
@@ -32,9 +33,12 @@ import PopUpAlert from "../../components/PopUpAlert";
 const CreateFrequencySheet = () => {
 	const url = "document-type/";
 	const [types, setTypes] = useState([]);
+	const [publicWorkers, setPublicWorkers] = useState([
+		{ id: 1, name: "inexiste", cpf: "55555555555" },
+	]);
+	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
+	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 	const [senderProcessNumber, setSenderProcessNumber] = useState("");
-	const [cpfWorker, setCpf] = useState("");
-	const [workerName, setWorkerName] = useState("");
 	const [roleWorker, setRole] = useState("");
 	const [workerClass, setWorkerClass] = useState("");
 	const [workplaceWorker, setWorkplace] = useState("");
@@ -42,15 +46,13 @@ const CreateFrequencySheet = () => {
 	const [notesLocal, setNotes] = useState("");
 	const [referencePeriod, setReferencePeriod] = useState(initialPeriod);
 	const [type, setType] = useState("");
-
-	const [cpfHelperText, setCpfHelperText] = useState("");
-	const [workerNameHelperText, setWorkerNameHelperText] = useState("");
 	const [roleHelperText, setRoleHelperText] = useState("");
 	const [workplaceHelperText, setWorkplaceHelperText] = useState("");
 	const [districtHelperText, setDistrictHelperText] = useState("");
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
 		useState("");
 	const [typeHelperText, setTypeHelperText] = useState("");
+	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -61,14 +63,13 @@ const CreateFrequencySheet = () => {
 	const handleSenderProcessNumberChange = (event) =>
 		setSenderProcessNumber(event.target.value);
 
-	const handleCpfChange = (event) => {
-		setCpfHelperText("");
-		setCpf(event.target.value);
-	};
-
-	const handleWorkerNameChange = (event) => {
-		setWorkerNameHelperText("");
-		setWorkerName(event.target.value);
+	const handlePublicWorkerChange = (value) => {
+		setPublicWorkerHelperText("");
+		if (!value) {
+			setPublicWorker(undefined);
+			return;
+		}
+		setPublicWorker(value);
 	};
 
 	const handleRoleChange = (event) => {
@@ -118,9 +119,9 @@ const CreateFrequencySheet = () => {
 		setSeverityAlert("success");
 		setAlertHelperText("Documento cadastrado!");
 
+		setPublicWorkerInput("");
+		setPublicWorker(undefined);
 		setSenderProcessNumber("");
-		setCpf("");
-		setWorkerName("");
 		setRole("");
 		setWorkerClass("");
 		setWorkplace("");
@@ -132,23 +133,10 @@ const CreateFrequencySheet = () => {
 
 	const onSubmit = () => {
 		setLoading(true);
-
-		if (workerName === "") {
-			setWorkerNameHelperText("Insira o nome");
+		if (!publicWorker) {
+			setPublicWorkerHelperText("Selecione um nome");
 			setLoading(false);
 			return "workerName error";
-		}
-
-		if (cpfWorker === "") {
-			setCpfHelperText("Insira um CPF");
-			setLoading(false);
-			return "cpf error";
-		}
-
-		if (!isInt(cpfWorker) || cpfWorker.length !== 11) {
-			setCpfHelperText("Insira um CPF válido");
-			setLoading(false);
-			return "cpf error";
 		}
 
 		if (roleWorker === "") {
@@ -198,8 +186,8 @@ const CreateFrequencySheet = () => {
 					.post(
 						"frequency-sheet/",
 						{
-							person_name: workerName,
-							cpf: cpfWorker,
+							person_id: publicWorker.id,
+							cpf: publicWorker.cpf,
 							role: roleWorker,
 							category: workerClass,
 							workplace: workplaceWorker,
@@ -232,49 +220,71 @@ const CreateFrequencySheet = () => {
 			.then((r) => {
 				localStorage.setItem("tkr", r.data.refresh);
 				localStorage.setItem("tk", r.data.access);
-				const token = localStorage.getItem("tk");
 				axiosArchives
 					.get(url, {
-						headers: { Authorization: `JWT ${token}` },
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => setTypes(response.data))
 					.catch(() => connectionError());
+
+				getPublicWorkers(setPublicWorkers, connectionError);
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
 	}, []);
 
+	const publicWorkerOptions = publicWorkers.map((option) => {
+		const firstLetter = option.name[0].toUpperCase();
+		return {
+			firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+			...option,
+		};
+	});
+
 	return (
 		<CardContainer title="Folha de Frequências" spacing={1}>
 			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
+				{autocompl(
+					publicWorkers,
+					publicWorkerInput,
+					handlePublicWorkerChange,
+					setPublicWorkerInput,
+					publicWorkerOptions,
+					publicWorkerHelperText
+				)}
+				{/* <Autocomplete
 					id="workerName"
-					label="Nome do Servidor*"
-					value={workerName}
-					onChange={handleWorkerNameChange}
-					error={workerNameHelperText !== ""}
-					helperText={workerNameHelperText}
-					inputProps={{ maxLength: 150 }}
-					multiline
-				/>
+					data-testid="autocomplete"
+					value={publicWorkers.name}
+					onChange={(event, newValue) => {
+						handlePublicWorkerChange(newValue);
+					}}
+					inputValue={publicWorkerInput}
+					onInputChange={(event, newInputValue) => {
+						setPublicWorkerInput(newInputValue);
+					}}
+					options={publicWorkerOptions.sort(
+						(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+					)}
+					groupBy={(option) => option.firstLetter}
+					getOptionLabel={(option) => `${option.name}, ${option.cpf}`}
+					getOptionSelected={(option, value) => option.name === value.name}
+					autoHighlight
+					renderInput={(params) => (
+						<TextField
+							// eslint-disable-next-line
+							{...params}
+							value={params.value}
+							label="Nome, CPF*"
+							error={publicWorkerHelperText !== ""}
+							helperText={publicWorkerHelperText}
+						/>
+					)}
+				/> */}
 			</Grid>
 
-			<Grid item xs={12} sm={12} md={4}>
-				<TextField
-					fullWidth
-					id="cpf"
-					label="CPF*"
-					value={cpfWorker}
-					onChange={handleCpfChange}
-					error={cpfHelperText !== ""}
-					helperText={cpfHelperText}
-					inputProps={{ maxLength: 11 }}
-				/>
-			</Grid>
-
-			<Grid item xs={12} sm={12} md={8}>
+			<Grid item xs={12} sm={12} md={12}>
 				<TextField
 					fullWidth
 					id="role"
