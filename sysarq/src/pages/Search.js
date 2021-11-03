@@ -57,6 +57,7 @@ export default function Search() {
 	};
 	const [inputValue, setInputValue] = useState("");
 	const [urllist, setUrllist] = useState("");
+	const [isDisabled, setIsDisabled] = useState(false);
 
 	const theme = createTheme({
 		palette: {
@@ -89,7 +90,34 @@ export default function Search() {
 			handleShow();
 			return;
 		}
+
 		window.location = urllist;
+	};
+
+	const handleClick = () => {
+		setIsDisabled(false);
+		if (
+			inputValue === "Eliminado" ||
+			inputValue === "Arquivado" ||
+			inputValue === "Desarquivado"
+		) {
+			setInputValue("");
+		}
+	};
+
+	const handleClickEliminated = () => {
+		setIsDisabled(true);
+		setInputValue("Eliminado");
+	};
+
+	const handleClickFiled = () => {
+		setIsDisabled(true);
+		setInputValue("Arquivado");
+	};
+
+	const handleClickUnfiled = () => {
+		setIsDisabled(true);
+		setInputValue("Desarquivado");
 	};
 
 	return (
@@ -118,6 +146,7 @@ export default function Search() {
 						variant="outlined"
 						color="primary"
 						inputProps={{ "data-testid": "InputBox" }}
+						disabled={isDisabled}
 					/>
 				</ThemeProvider>
 
@@ -149,7 +178,48 @@ export default function Search() {
 								labelId="selectLabel"
 								inputProps={{ "data-testid": "FilterSelect" }}
 							>
-								<MenuItem value="process_number">Número de processo</MenuItem>
+								<MenuItem value="process_number" onClick={handleClick}>
+									Número de processo
+								</MenuItem>
+								<MenuItem value="interested" onClick={handleClick}>
+									Interessado
+								</MenuItem>
+								<MenuItem value="person_id" onClick={handleClick}>
+									Servidor
+								</MenuItem>
+								<MenuItem value="sender_user" onClick={handleClick}>
+									Servidor que encaminhou
+								</MenuItem>
+								<MenuItem value="subject_id" onClick={handleClick}>
+									Assunto do documento
+								</MenuItem>
+								<MenuItem value="document_type_id" onClick={handleClick}>
+									Tipo do documento
+								</MenuItem>
+								<MenuItem value="sender_unity" onClick={handleClick}>
+									Unidade que encaminhou
+								</MenuItem>
+								<MenuItem value="temporality_date" onClick={handleClick}>
+									Temporalidade
+								</MenuItem>
+								<MenuItem value="abbreviation_id" onClick={handleClick}>
+									Caixa
+								</MenuItem>
+								<MenuItem value="shelf_id" onClick={handleClick}>
+									Estante
+								</MenuItem>
+								<MenuItem value="is_filed/true" onClick={handleClickFiled}>
+									Arquivado
+								</MenuItem>
+								<MenuItem value="is_filed/false" onClick={handleClickUnfiled}>
+									Desarquivado
+								</MenuItem>
+								<MenuItem
+									value="is_eliminated/true"
+									onClick={handleClickEliminated}
+								>
+									Eliminado
+								</MenuItem>
 							</Select>
 						</FormControl>
 					</ThemeProvider>

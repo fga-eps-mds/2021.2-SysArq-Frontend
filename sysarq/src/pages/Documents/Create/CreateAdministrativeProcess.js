@@ -18,17 +18,17 @@ import {
 	isDateNotValid,
 	isInt,
 	formatDate,
+	axiosProfileError,
+	getPublicWorkers,
+	autocompl,
 } from "../../../support";
 
 import { axiosArchives, axiosProfile } from "../../../Api";
 
-import DocumentsContainer from "../../components/Container/DocumentsContainer";
+import CardContainer from "../../components/Container/CardContainer";
 
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
-import AbbreviationInput from "../../components/Inputs/AbbreviationInput";
-import ShelfInput from "../../components/Inputs/ShelfInput";
-import RackInput from "../../components/Inputs/RackInput";
 import NotesInput from "../../components/Inputs/NotesInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
@@ -53,24 +53,26 @@ const CreateAdministrativeProcess = () => {
 	const [subjects, setSubjects] = useState([]);
 	const [units, setUnits] = useState([]);
 
+	const [publicWorkers, setPublicWorkers] = useState([
+		{ id: 1, name: "inexiste", cpf: "55555555555" },
+	]);
+	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
+	const [publicWorkerInput, setPublicWorkerInput] = useState("");
+
 	const [noticeDate, setNoticeDate] = useState(initialDate);
 	const [archivingDate, setArchivingDate] = useState(initialDate);
 	const [reference, setReference] = useState(initialPeriod);
 	const [processNumber, setProcessNumber] = useState("");
 	const [personRegistry, setPersonRegistry] = useState("");
-	const [interested, setInterested] = useState("");
+	const [interestedPerson, setInterested] = useState("");
 	const [subject, setSubject] = useState("");
 	const [destinationUnit, setDestinationUnit] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
-	const [senderWorker, setSenderWorker] = useState("");
-	const [abbreviation, setAbbreviation] = useState("");
-	const [shelf, setShelf] = useState("");
-	const [rack, setRack] = useState("");
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
 	const [unarchiveDate, setUnarchiveDate] = useState(initialDate);
-	const [notes, setNotes] = useState("");
+	const [notesLocal, setNotes] = useState("");
 
 	const [noticeDateHelperText, setNoticeDateHelperText] = useState("");
 	const [archivingDateHelperText, setArchivingDateHelperText] = useState("");
@@ -82,12 +84,22 @@ const CreateAdministrativeProcess = () => {
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
+	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
-	const [severityAlert, setSeverityAlert] = useState("");
+	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
+
+	const handlePublicWorkerChange = (value) => {
+		setPublicWorkerHelperText("");
+		if (!value) {
+			setPublicWorker(undefined);
+			return;
+		}
+		setPublicWorker(value);
+	};
 
 	const handleNoticeDateChange = (date) => {
 		setNoticeDateHelperText("");
@@ -121,9 +133,6 @@ const CreateAdministrativeProcess = () => {
 
 	const handleDestinationUnitChange = (event) =>
 		setDestinationUnit(event.target.value);
-
-	const handleSenderWorkerChange = (event) =>
-		setSenderWorker(event.target.value);
 
 	const handleStatusChange = (event) => {
 		setStatusHelperText("");
@@ -170,10 +179,9 @@ const CreateAdministrativeProcess = () => {
 		setSubject("");
 		setDestinationUnit("");
 		setSenderUnit("");
-		setSenderWorker("");
-		setAbbreviation("");
-		setShelf("");
-		setRack("");
+		setPublicWorkerInput("");
+		setPublicWorker(undefined);
+
 		setStatus("");
 		setUnarchiveDestinationUnit("");
 		setUnarchiveProcessNumber("");
@@ -184,11 +192,42 @@ const CreateAdministrativeProcess = () => {
 	const onSubmit = () => {
 		setLoading(true);
 
+		if (processNumber === "") {
+			setProcessNumberHelperText("Insira o número do processo");
+			setLoading(false);
+			return "processNumber error";
+		}
+
 		if (
 			isDateNotValid(noticeDate, setNoticeDateHelperText, "date", "required")
 		) {
 			setLoading(false);
 			return "noticeDate error";
+		}
+
+		if (interestedPerson === "") {
+			setInterestedHelperText("Insira um interessado");
+			setLoading(false);
+			return "interested error";
+		}
+
+		if (personRegistry !== "") {
+			if (!isInt(personRegistry)) {
+				setPersonRegistryHelperText("Insira somente números");
+				setLoading(false);
+				return "personRegistry content error";
+			}
+			if (!isPersonRegistryLengthValid(personRegistry.length)) {
+				setPersonRegistryHelperText("Insira um CPF/CNPJ válido");
+				setLoading(false);
+				return "personRegistry length error";
+			}
+		}
+
+		if (subject === "") {
+			setSubjectHelperText("Selecione um assunto");
+			setLoading(false);
+			return "subject error";
 		}
 
 		if (
@@ -206,37 +245,6 @@ const CreateAdministrativeProcess = () => {
 		if (isDateNotValid(reference, setReferenceHelperText)) {
 			setLoading(false);
 			return "reference error";
-		}
-
-		if (processNumber === "") {
-			setProcessNumberHelperText("Insira o número do processo");
-			setLoading(false);
-			return "processNumber error";
-		}
-
-		if (personRegistry !== "") {
-			if (!isInt(personRegistry)) {
-				setPersonRegistryHelperText("Insira somente números");
-				setLoading(false);
-				return "personRegistry content error";
-			}
-			if (!isPersonRegistryLengthValid(personRegistry.length)) {
-				setPersonRegistryHelperText("Insira um CPF/CNPJ válido");
-				setLoading(false);
-				return "personRegistry length error";
-			}
-		}
-
-		if (interested === "") {
-			setInterestedHelperText("Insira um interessado");
-			setLoading(false);
-			return "interested error";
-		}
-
-		if (subject === "") {
-			setSubjectHelperText("Selecione um assunto");
-			setLoading(false);
-			return "subject error";
 		}
 
 		if (senderUnit === "") {
@@ -267,40 +275,44 @@ const CreateAdministrativeProcess = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.post("administrative-process/", {
-						notice_date: formatDate(noticeDate),
-						archiving_date: formatDate(archivingDate),
-						reference_month_year:
-							reference !== null ? formatDate(reference) : null,
-						process_number: processNumber,
-						cpf_cnpj: personRegistry,
-						interested,
-						subject_id: subject.id,
-						dest_unity_id: destinationUnit.id,
-						sender_unity: senderUnit.id,
-						sender_user: senderWorker,
-						abbreviation_id: abbreviation.id,
-						shelf_id: shelf.id,
-						rack_id: rack.id,
-						is_filed: isStatusFiled(status),
-						is_eliminated: status === "Eliminado",
-						unity_id:
-							status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
-						send_date:
-							unarchiveDate !== null && status === "Desarquivado"
-								? formatDate(unarchiveDate)
-								: null,
-						administrative_process_number:
-							status === "Desarquivado" ? unarchiveProcessNumber : "",
-						notes,
-						filer_user: "filer_user", //
-					})
+					.post(
+						"administrative-process/",
+						{
+							notice_date: formatDate(noticeDate),
+							archiving_date: formatDate(archivingDate),
+							reference_month_year:
+								reference !== null ? formatDate(reference) : null,
+							process_number: processNumber,
+							cpf_cnpj: personRegistry,
+							interested: interestedPerson,
+							subject_id: subject.id,
+							dest_unity_id: destinationUnit.id,
+							sender_unity: senderUnit.id,
+							sender_user: publicWorker !== undefined ? publicWorker.id : null,
+							is_filed: isStatusFiled(status),
+							is_eliminated: status === "Eliminado",
+							unity_id:
+								status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
+							send_date:
+								unarchiveDate !== null && status === "Desarquivado"
+									? formatDate(unarchiveDate)
+									: null,
+							administrative_process_number:
+								status === "Desarquivado" ? unarchiveProcessNumber : "",
+							notes: notesLocal,
+							filer_user: "filer_user",
+							temporality_date:
+								parseInt(subject.temporality, 10) +
+								parseInt(archivingDate.getFullYear(), 10),
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+					)
 					.then(() => onSuccess())
-					.catch(() => {
-						connectionError();
-					});
+					.catch(() => connectionError());
 			})
-			.catch(() => {});
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
 
 		return "post done";
 	};
@@ -314,21 +326,46 @@ const CreateAdministrativeProcess = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.get("document-subject/")
+					.get("document-subject/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setSubjects(response.data))
 					.catch(() => connectionError());
 
 				axiosArchives
-					.get("unity/")
+					.get("unity/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
+
+				getPublicWorkers(setPublicWorkers, connectionError);
 			})
-			.catch(() => {});
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
 	}, []);
 
+	const publicWorkerOptions = publicWorkers.map((option) => {
+		const firstLetter = option.name[0].toUpperCase();
+		return {
+			firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+			...option,
+		};
+	});
+
 	return (
-		<DocumentsContainer title="Processo Administrativo" spacing={1}>
-			<Grid item xs={12} sm={6} md={4}>
+		<CardContainer title="Processo Administrativo" spacing={1}>
+			<Grid item xs={12} sm={6} md={6}>
+				<NumberProcessInput
+					setHelperText={setProcessNumberHelperText}
+					set={setProcessNumber}
+					number={processNumber}
+					helperText={processNumberHelperText}
+				/>
+			</Grid>
+
+			<Grid item xs={12} sm={6} md={6}>
 				<KeyboardDatePicker
 					okLabel="Confirmar"
 					cancelLabel="Cancelar"
@@ -346,51 +383,21 @@ const CreateAdministrativeProcess = () => {
 				/>
 			</Grid>
 
-			<Grid item xs={12} sm={6} md={4}>
-				<KeyboardDatePicker
-					okLabel="Confirmar"
-					cancelLabel="Cancelar"
-					style={{ width: "100%" }}
-					id="archiving-date-picker-dialog"
-					label="Data de Arquivamento*"
-					format="dd/MM/yyyy"
-					value={archivingDate}
-					onChange={handleArchivingDateChange}
-					KeyboardButtonProps={{
-						"aria-label": "change archiving date",
-					}}
-					error={archivingDateHelperText !== ""}
-					helperText={archivingDateHelperText}
+			<Grid item xs={12} sm={12} md={8}>
+				<TextField
+					fullWidth
+					id="interested"
+					label="Interessado*"
+					value={interestedPerson}
+					onChange={handleInterestedChange}
+					error={interestedHelperText !== ""}
+					helperText={interestedHelperText}
+					multiline
+					inputProps={{ maxLength: 150 }}
 				/>
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={4}>
-				<KeyboardDatePicker
-					okLabel="Confirmar"
-					cancelLabel="Cancelar"
-					style={{ width: "100%" }}
-					id="reference-date-picker-dialog"
-					openTo="year"
-					views={["year", "month"]}
-					label="Referência"
-					format="MM/yyyy"
-					value={reference}
-					onChange={handleReferenceChange}
-					error={referenceHelperText !== ""}
-					helperText={referenceHelperText}
-				/>
-			</Grid>
-
-			<Grid item xs={12} sm={6} md={6}>
-				<NumberProcessInput
-					setHelperText={setProcessNumberHelperText}
-					set={setProcessNumber}
-					number={processNumber}
-					helperText={processNumberHelperText}
-				/>
-			</Grid>
-
-			<Grid item xs={12} sm={6} md={6}>
 				<TextField
 					fullWidth
 					id="cpf-cpnj"
@@ -401,20 +408,6 @@ const CreateAdministrativeProcess = () => {
 					error={personRegistryHelperText !== ""}
 					helperText={personRegistryHelperText}
 					inputProps={{ maxLength: 15 }}
-				/>
-			</Grid>
-
-			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="interested"
-					label="Interessado*"
-					value={interested}
-					onChange={handleInterestedChange}
-					error={interestedHelperText !== ""}
-					helperText={interestedHelperText}
-					multiline
-					inputProps={{ maxLength: 150 }}
 				/>
 			</Grid>
 
@@ -449,7 +442,7 @@ const CreateAdministrativeProcess = () => {
 				</FormControl>
 			</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
+			<Grid item xs={12} sm={12} md={8}>
 				<FormControl fullWidth>
 					<InputLabel id="select-destinationUnit-label">
 						Unidade de Destino
@@ -475,6 +468,23 @@ const CreateAdministrativeProcess = () => {
 				</FormControl>
 			</Grid>
 
+			<Grid item xs={12} sm={12} md={4}>
+				<KeyboardDatePicker
+					okLabel="Confirmar"
+					cancelLabel="Cancelar"
+					style={{ width: "100%" }}
+					id="archiving-date-picker-dialog"
+					label="Data de Arquivamento*"
+					format="dd/MM/yyyy"
+					value={archivingDate}
+					onChange={handleArchivingDateChange}
+					KeyboardButtonProps={{
+						"aria-label": "change archiving date",
+					}}
+					error={archivingDateHelperText !== ""}
+					helperText={archivingDateHelperText}
+				/>
+			</Grid>
 			<SenderUnitInput
 				setHelperText={setSenderUnitHelperText}
 				set={setSenderUnit}
@@ -484,32 +494,34 @@ const CreateAdministrativeProcess = () => {
 			/>
 
 			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="sender-worker"
-					label="Servidor que Encaminhou"
-					value={senderWorker}
-					onChange={handleSenderWorkerChange}
-					multiline
-					inputProps={{ maxLength: 150 }}
+				{autocompl(
+					publicWorkers,
+					publicWorkerInput,
+					handlePublicWorkerChange,
+					setPublicWorkerInput,
+					publicWorkerOptions,
+					publicWorkerHelperText
+				)}
+			</Grid>
+
+			<Grid item xs={12} sm={12} md={4}>
+				<KeyboardDatePicker
+					okLabel="Confirmar"
+					cancelLabel="Cancelar"
+					style={{ width: "100%" }}
+					id="reference-date-picker-dialog"
+					openTo="year"
+					views={["year", "month"]}
+					label="Referência"
+					format="MM/yyyy"
+					value={reference}
+					onChange={handleReferenceChange}
+					error={referenceHelperText !== ""}
+					helperText={referenceHelperText}
 				/>
 			</Grid>
 
-			<AbbreviationInput
-				abbreviation={abbreviation}
-				set={setAbbreviation}
-				connectionError={connectionError}
-			/>
-
-			<ShelfInput
-				shelf={shelf}
-				set={setShelf}
-				connectionError={connectionError}
-			/>
-
-			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
-
-			<Grid item xs={12} sm={12} md={12}>
+			<Grid item xs={12} sm={12} md={8}>
 				<FormControl fullWidth error={statusHelperText !== ""}>
 					<InputLabel id="select-status-label">Status*</InputLabel>
 					<Select
@@ -597,7 +609,7 @@ const CreateAdministrativeProcess = () => {
 				""
 			)}
 
-			<NotesInput set={setNotes} notes={notes} />
+			<NotesInput set={setNotes} notes={notesLocal} />
 
 			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
 
@@ -607,7 +619,7 @@ const CreateAdministrativeProcess = () => {
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-		</DocumentsContainer>
+		</CardContainer>
 	);
 };
 
