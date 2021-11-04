@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { useParams } from "react-router-dom";
 
-import Grid from "@material-ui/core/Grid";
+import { Grid, CircularProgress } from "@material-ui/core";
 
 import {
 	initialDate,
@@ -179,6 +179,8 @@ const CreateFrequencyRelation = ({ detail }) => {
 
 	useEffect(() => {
 		if (detail) {
+			setLoading(true);
+
 			axiosProfile
 				.post(`api/token/refresh/`, {
 					refresh: localStorage.getItem("tkr"),
@@ -237,10 +239,11 @@ const CreateFrequencyRelation = ({ detail }) => {
 							setReferencePeriod(
 								responseFrequencyRelation.data.reference_period
 							);
+
+							setLoading(false);
 						})
 						.catch(() => connectionError());
 				})
-
 				.catch((error) => {
 					axiosProfileError(error, connectionError);
 				});
@@ -253,49 +256,55 @@ const CreateFrequencyRelation = ({ detail }) => {
 		<CardContainer title="Relação de Frequências" spacing={1}>
 			{detail ? <DocumentsDetail /> : ""}
 
-			<Grid item xs={12} sm={6} md={4}>
-				<NumberProcessInput
-					setHelperText={setProcessNumberHelperText}
-					set={setProcessNumber}
-					number={processNumber}
-					helperText={processNumberHelperText}
-					isDetailPage={detail}
-				/>
-			</Grid>
+			{detail && loading ? (
+				<CircularProgress style={{ margin: "auto" }} />
+			) : (
+				<>
+					<Grid item xs={12} sm={6} md={4}>
+						<NumberProcessInput
+							setHelperText={setProcessNumberHelperText}
+							set={setProcessNumber}
+							number={processNumber}
+							helperText={processNumberHelperText}
+							isDetailPage={detail}
+						/>
+					</Grid>
 
-			<CommonSet
-				isDetailPage={detail}
-				setDocumentDateHelperText={setDocumentDateHelperText}
-				setDocumentDate={setDocumentDate}
-				documentDate={documentDate}
-				documentDateHelperText={documentDateHelperText}
-				setReceivedDateHelperText={setReceivedDateHelperText}
-				setReceivedDate={setReceivedDate}
-				receivedDate={receivedDate}
-				receivedDateHelperText={receivedDateHelperText}
-				documentTypeDetail={documentTypeDetail}
-				setDocumentTypeHelperText={setDocumentTypeHelperText}
-				setDocumentType={setDocumentType}
-				connectionError={connectionError}
-				documentType={documentType}
-				documentTypeHelperText={documentTypeHelperText}
-				senderUnitDetail={senderUnitDetail}
-				setSenderUnitHelperText={setSenderUnitHelperText}
-				setSenderUnit={setSenderUnit}
-				senderUnit={senderUnit}
-				units={units}
-				senderUnitHelperText={senderUnitHelperText}
-				setNotes={setNotes}
-				notes={notesLocal}
-			/>
+					<CommonSet
+						isDetailPage={detail}
+						setDocumentDateHelperText={setDocumentDateHelperText}
+						setDocumentDate={setDocumentDate}
+						documentDate={documentDate}
+						documentDateHelperText={documentDateHelperText}
+						setReceivedDateHelperText={setReceivedDateHelperText}
+						setReceivedDate={setReceivedDate}
+						receivedDate={receivedDate}
+						receivedDateHelperText={receivedDateHelperText}
+						documentTypeDetail={documentTypeDetail}
+						setDocumentTypeHelperText={setDocumentTypeHelperText}
+						setDocumentType={setDocumentType}
+						connectionError={connectionError}
+						documentType={documentType}
+						documentTypeHelperText={documentTypeHelperText}
+						senderUnitDetail={senderUnitDetail}
+						setSenderUnitHelperText={setSenderUnitHelperText}
+						setSenderUnit={setSenderUnit}
+						senderUnit={senderUnit}
+						units={units}
+						senderUnitHelperText={senderUnitHelperText}
+						setNotes={setNotes}
+						notes={notesLocal}
+					/>
 
-			<ReferencePeriodInput
-				referencePeriod={referencePeriod}
-				setReferencePeriod={setReferencePeriod}
-				setReferencePeriodHelperText={setReferencePeriodHelperText}
-				referencePeriodHelperText={referencePeriodHelperText}
-				isDetailPage={detail}
-			/>
+					<ReferencePeriodInput
+						referencePeriod={referencePeriod}
+						setReferencePeriod={setReferencePeriod}
+						setReferencePeriodHelperText={setReferencePeriodHelperText}
+						referencePeriodHelperText={referencePeriodHelperText}
+						isDetailPage={detail}
+					/>
+				</>
+			)}
 
 			<DocumentsCreate
 				isDetailPage={detail}
