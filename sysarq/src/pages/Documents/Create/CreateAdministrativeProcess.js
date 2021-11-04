@@ -331,54 +331,70 @@ const CreateAdministrativeProcess = () => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
-				axiosArchives
-					.get("document-subject/", {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
-					.then((response) => { 
-						setSubjects(response.data);
 
-						if(url.includes("view")) {
-							setIsDisabled(true);
-						}
+				if (url.includes("view")) {
+					setIsDetailPage(true);
 
-						if(url.includes("view")) {
+					axiosArchives
+						.get(`administrative-process/${params.id}/`, {
+							headers: {
+								Authorization: `JWT ${localStorage.getItem("tk")}`,
+							},
+						})
+						.then((responseAdministrative) => {
 							axiosArchives
-							.get(`administrative-process/${params.id}/`, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
-							.then((responseAdministrative => {
-								console.log("Resp: ", responseAdministrative);
-								setProcessNumber(responseAdministrative.data.process_number);
-								setNoticeDate(responseAdministrative.data.notice_date);
-								setInterested(responseAdministrative.data.interested);
-								setPersonRegistry(responseAdministrative.data.cpf_cnpj);
-								setSubject(responseAdministrative.data.subject_id);
-								setArchivingDate(responseAdministrative.data.archiving_date);
-								setSenderWorker(responseAdministrative.data.sender_user);
-								setReference(responseAdministrative.data.reference_month_year);
-								setNotes(responseAdministrative.data.notes);
-
-								response.data.forEach(subjectOption =>{
-									if(subjectOption.id === responseAdministrative.data.subject_id) {
-										setSubject(subjectOption);
+								.get(
+									`document-subject/${responseAdministrative.data.subject_id}/`,
+									{
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
 									}
+								)
+								.then((response) => {
+									setSubject(response.data);
+									setSubjectDetail(response.data.subject_name);
 								})
+								.catch(() => connectionError());
 
-								if(responseAdministrative.data.is_filed) {
-									setStatus("Arquivado");
-								} else {
-									setStatus("Desarquivado");
-									// setUnarchiveDestinationUnit(responseAdministrative.data.unity_id);
-									setUnarchiveProcessNumber(responseAdministrative.data.administrative_process_number);
-									setUnarchiveDate(responseAdministrative.data.send_date);
-								}
+							axiosArchives
+								.get(`unity/${responseAdministrative.data.dest_unity_id}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setDestinationUnit(response.data);
+									setDestinationUnitDetail(response.data.unity_name);
+								})
+								.catch(() => connectionError());
 
-								if(responseAdministrative.data.is_eliminated) {
-									setStatus("Eliminado");
-								}
+							axiosArchives
+								.get(`unity/${responseAdministrative.data.sender_unity}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setSenderUnit(response.data);
+									setSenderUnitDetail(response.data.unity_name);
+								})
+								.catch(() => connectionError());
 
-								if(responseAdministrative.status === 200) {
-									axiosArchives
-										.get("unity/", {
+							axiosArchives
+								.get(`unity/${responseAdministrative.data.unity}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setUnarchiveDestinationUnit(response.data);
+									setUnarchiveDestinationUnitDetail(response.data.unity_name);
+								})
+								.catch(() => connectionError());
+
+							axiosArchives
+								.get("unity/", {
 											headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 										})
 										.then((responseUnity) => {
@@ -520,53 +536,72 @@ const CreateAdministrativeProcess = () => {
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={8}>
-				<FormControl fullWidth>
-					<InputLabel id="select-destinationUnit-label">
-						Unidade de Destino
-					</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-destinationUnit-label"
-						id="select-destinationUnit"
-						value={destinationUnit}
-						onChange={handleDestinationUnitChange}
-						renderValue={(value) => `${value.unity_name}`}
-						disabled={isDisabled}
-					>
-						<MenuItem key={0} value="">
-							<em>Nenhuma</em>
-						</MenuItem>
-
-						{units.map((destUnitOption) => (
-							<MenuItem id={destUnitOption.id} value={destUnitOption}>
-								{destUnitOption.unity_name}
+				{isDetailPage ? (
+					<TextField
+						fullWidth
+						id="destinationUnit"
+						label="Unidade de Destino"
+						value={destinationUnitDetail}
+						inputProps={{ readOnly: true }}
+					/>
+				) : (
+					<FormControl fullWidth>
+						<InputLabel id="select-destinationUnit-label">
+							Unidade de Destino
+						</InputLabel>
+						<Select
+							style={{ textAlign: "left" }}
+							labelId="select-destinationUnit-label"
+							id="select-destinationUnit"
+							value={destinationUnit}
+							onChange={handleDestinationUnitChange}
+							renderValue={(value) => `${value.unity_name}`}
+						>
+							<MenuItem key={0} value="">
+								<em>Nenhuma</em>
 							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
+
+							{units.map((destUnitOption) => (
+								<MenuItem id={destUnitOption.id} value={destUnitOption}>
+									{destUnitOption.unity_name}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+				)}
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={4}>
-				<KeyboardDatePicker
-					okLabel="Confirmar"
-					cancelLabel="Cancelar"
-					style={{ width: "100%" }}
-					id="archiving-date-picker-dialog"
-					label="Data de Arquivamento*"
-					format="dd/MM/yyyy"
-					value={archivingDate}
-					onChange={handleArchivingDateChange}
-					KeyboardButtonProps={{
-						"aria-label": "change archiving date",
-					}}
-					error={archivingDateHelperText !== ""}
-					helperText={archivingDateHelperText}
-					disabled={isDisabled}
-				/>
+				{isDetailPage ? (
+					<TextField
+						fullWidth
+						id="archivingDate"
+						label="Data de Arquivamento"
+						value={archivingDate}
+						inputProps={{ readOnly: true }}
+					/>
+				) : (
+					<KeyboardDatePicker
+						okLabel="Confirmar"
+						cancelLabel="Cancelar"
+						style={{ width: "100%" }}
+						id="archiving-date-picker-dialog"
+						label="Data de Arquivamento*"
+						format="dd/MM/yyyy"
+						value={archivingDate}
+						onChange={handleArchivingDateChange}
+						KeyboardButtonProps={{
+							"aria-label": "change archiving date",
+						}}
+						error={archivingDateHelperText !== ""}
+						helperText={archivingDateHelperText}
+					/>
+				)}
 			</Grid>
 
 			<SenderUnitInput
 				isDetailPage={isDetailPage}
+				senderUnitDetail={senderUnitDetail}
 				setHelperText={setSenderUnitHelperText}
 				set={setSenderUnit}
 				senderUnit={senderUnit}
@@ -666,7 +701,7 @@ const CreateAdministrativeProcess = () => {
 								fullWidth
 								id="unarchiveDestinationUnit"
 								label="Unid. Destino do Desarquivamento"
-								value={unarchiveDestinationUnit}
+								value={unarchiveDestinationUnitDetail}
 								inputProps={{ readOnly: true }}
 							/>
 						) : (

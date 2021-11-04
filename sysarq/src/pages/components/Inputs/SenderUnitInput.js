@@ -12,12 +12,13 @@ import {
 } from "@material-ui/core";
 
 const SenderUnitInput = ({
+	isDetailPage,
+	senderUnitDetail,
 	setHelperText,
 	set,
 	senderUnit,
 	units,
 	senderUnitHelperText,
-	isDetailPage,
 }) => {
 	const handleChange = (event) => {
 		setHelperText("");
@@ -31,7 +32,7 @@ const SenderUnitInput = ({
 					fullWidth
 					id="senderUnit"
 					label="Unidade que Encaminhou"
-					value={senderUnit.unity_name}
+					value={senderUnitDetail}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
@@ -70,6 +71,7 @@ const SenderUnitInput = ({
 
 SenderUnitInput.propTypes = {
 	isDetailPage: PropTypes.bool.isRequired,
+	senderUnitDetail: PropTypes.string.isRequired,
 	setHelperText: PropTypes.func.isRequired,
 	set: PropTypes.func.isRequired,
 	senderUnit: PropTypes.string.isRequired,
