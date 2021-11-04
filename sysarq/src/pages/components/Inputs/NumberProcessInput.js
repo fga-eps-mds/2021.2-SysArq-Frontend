@@ -19,7 +19,7 @@ const NumberProcessInput = ({
 		<TextField
 			fullWidth
 			id="processNumber"
-			label="Número do Processo*"
+			label={isDetailPage ? "Número do Processo" : "Número do Processo*"}
 			value={number}
 			onChange={handleChange}
 			error={helperText !== ""}

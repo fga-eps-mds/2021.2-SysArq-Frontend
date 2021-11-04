@@ -357,17 +357,21 @@ const CreateAdministrativeProcess = () => {
 								})
 								.catch(() => connectionError());
 
-							axiosArchives
-								.get(`unity/${responseAdministrative.data.dest_unity_id}/`, {
-									headers: {
-										Authorization: `JWT ${localStorage.getItem("tk")}`,
-									},
-								})
-								.then((response) => {
-									setDestinationUnit(response.data);
-									setDestinationUnitDetail(response.data.unity_name);
-								})
-								.catch(() => connectionError());
+							if (responseAdministrative.data.dest_unity_id) {
+								axiosArchives
+									.get(`unity/${responseAdministrative.data.dest_unity_id}/`, {
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
+									})
+									.then((response) => {
+										setDestinationUnit(response.data);
+										setDestinationUnitDetail(response.data.unity_name);
+									})
+									.catch(() => connectionError());
+							} else {
+								setDestinationUnitDetail("-");
+							}
 
 							axiosArchives
 								.get(`unity/${responseAdministrative.data.sender_unity}/`, {
@@ -381,45 +385,81 @@ const CreateAdministrativeProcess = () => {
 								})
 								.catch(() => connectionError());
 
-							axiosArchives
-								.get(`unity/${responseAdministrative.data.unity_id}/`, {
-									headers: {
-										Authorization: `JWT ${localStorage.getItem("tk")}`,
-									},
-								})
-								.then((response) => {
-									setUnarchiveDestinationUnit(response.data);
-									setUnarchiveDestinationUnitDetail(response.data.unity_name);
-								})
-								.catch(() => connectionError());
+							if (
+								!responseAdministrative.data.is_eliminated &&
+								!responseAdministrative.data.is_filed &&
+								responseAdministrative.data.unity_id
+							) {
+								axiosArchives
+									.get(`unity/${responseAdministrative.data.unity_id}/`, {
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
+									})
+									.then((response) => {
+										setUnarchiveDestinationUnit(response.data);
+										setUnarchiveDestinationUnitDetail(response.data.unity_name);
+									})
+									.catch(() => connectionError());
+							} else {
+								setUnarchiveDestinationUnitDetail("-");
+							}
 
-							axiosArchives
-								.get("unity/", {
-											headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-										})
-										.then((responseUnity) => {
-											setUnits(responseUnity.data);
-											responseUnity.data.forEach(unity => {
-												if(unity.id === responseAdministrative.data.dest_unity_id) {
-													setDestinationUnit(unity);
-												}
-												
-												if(unity.id === responseAdministrative.data.sender_unity) {
-													setSenderUnit(unity);
-												}
-												
-												// if(unity.id === responseAdministrative.data.send_date) {
-												// 	setUnarchiveDate(unity);
-												// }
-											})
-										})
-										.catch(() => connectionError());
-								}
-							}))
-						}
+							if (responseAdministrative.data.is_eliminated) {
+								setStatus("Eliminado");
+							} else if (responseAdministrative.data.is_filed) {
+								setStatus("Arquivado");
+							} else {
+								setStatus("Desarquivado");
+
+								setUnarchiveProcessNumber(
+									responseAdministrative.data.administrative_process_number
+										? responseAdministrative.data.administrative_process_number
+										: "-"
+								);
+
+								setUnarchiveDate(
+									responseAdministrative.data.send_date
+										? responseAdministrative.data.send_date
+										: "-"
+								);
+							}
+
+							setPersonRegistry(
+								responseAdministrative.data.cpf_cnpj
+									? responseAdministrative.data.cpf_cnpj
+									: "-"
+							);
+
+							setReference(
+								responseAdministrative.data.reference_month_year
+									? responseAdministrative.data.reference_month_year
+									: "-"
+							);
+
+							setProcessNumber(responseAdministrative.data.process_number);
+							setNoticeDate(responseAdministrative.data.notice_date);
+							setInterested(responseAdministrative.data.interested);
+							setArchivingDate(responseAdministrative.data.archiving_date);
+							setPublicWorker(responseAdministrative.data.sender_user_name); //
+
+							setNotes(
+								responseAdministrative.data.notes
+									? responseAdministrative.data.notes
+									: "-"
+							);
+						});
+				}
+
+				axiosArchives
+					.get("document-subject/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => {
+						setSubjects(response.data);
 					})
 					.catch(() => connectionError());
-				
+
 				axiosArchives
 					.get("unity/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
@@ -436,6 +476,7 @@ const CreateAdministrativeProcess = () => {
 
 	const publicWorkerOptions = publicWorkers.map((option) => {
 		const firstLetter = option.name[0].toUpperCase();
+
 		return {
 			firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
 			...option,
@@ -450,7 +491,7 @@ const CreateAdministrativeProcess = () => {
 					set={setProcessNumber}
 					number={processNumber}
 					helperText={processNumberHelperText}
-					isDisabled={isDisabled}
+					isDetailPage={isDetailPage}
 				/>
 			</Grid>
 
@@ -486,7 +527,7 @@ const CreateAdministrativeProcess = () => {
 				<TextField
 					fullWidth
 					id="interested"
-					label="Interessado*"
+					label={isDetailPage ? "Interessado" : "Interessado*"}
 					value={interestedPerson}
 					onChange={handleInterestedChange}
 					error={interestedHelperText !== ""}
