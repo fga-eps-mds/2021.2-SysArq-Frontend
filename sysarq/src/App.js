@@ -198,18 +198,18 @@ function App() {
 
 						<Route path="/documents/frequency-sheet">
 							<PrivateRoute exact path="/documents/frequency-sheet">
-								<CreateFrequencySheet />
+								<CreateFrequencySheet detail={false} />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
 								path="/documents/frequency-sheet/create"
 							>
-								<CreateFrequencySheet />
+								<CreateFrequencySheet detail={false} />
 							</PrivateRoute>
 
 							<PrivateRoute path="/documents/frequency-sheet/view/:id">
-								<CreateFrequencySheet />
+								<CreateFrequencySheet detail />
 							</PrivateRoute>
 						</Route>
 					</Route>
