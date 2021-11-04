@@ -68,6 +68,16 @@ export const server = setupServer(
 		)
 	),
 
+	rest.get(`${hostApiArchives}document-subject/:id`, (req, res, ctx) =>
+		res(
+			ctx.json({
+				id: 2,
+				subject_name: "subject_name_test",
+				temporality: "2035-09-10",
+			})
+		)
+	),
+
 	rest.get(`${hostApiArchives}public-worker/`, (req, res, ctx) =>
 		res(
 			ctx.json([
@@ -223,6 +233,30 @@ export const server = setupServer(
 			return res(ctx.status(201));
 		}
 		return res(ctx.status(404));
+	}),
+
+	rest.get(`${hostApiArchives}administrative-process/:id`, (req, res, ctx) => {
+		return res(
+			ctx.json({
+				id: 1,
+				subject_id: 2,
+				dest_unity_id: 3,
+				sender_unity: 4,
+				unity_id: 5,
+				is_eliminated: false,
+				is_filed: false,
+				administrative_process_number: "6",
+				send_date: "2007-08-09",
+				cpf_cnpj: "10111213141",
+				reference_month_year: "2016-05-01",
+				process_number: "18",
+				notice_date: "2019-08-21",
+				interested: "interested_name",
+				archiving_date: "2022-11-24",
+				sender_user_name: "sender_user_name_test",
+				notes: "notes_test",
+			})
+		);
 	}),
 
 	rest.post(`${hostApiArchives}box-archiving/`, (req, res, ctx) => {

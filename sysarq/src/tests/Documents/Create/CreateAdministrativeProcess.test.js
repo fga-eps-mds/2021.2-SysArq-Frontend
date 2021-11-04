@@ -156,10 +156,17 @@ describe("Create Administrative Process Screen Test", () => {
 		const statusOptions1 = within(screen.getByRole("listbox"));
 		fireEvent.click(statusOptions1.getByText(/^Desarquivado/i));
 
-		fireEvent.mouseDown(screen.getByLabelText(UNARCHIVE_DESTINATION_UNIT_LABEL));
+		fireEvent.mouseDown(
+			screen.getByLabelText(UNARCHIVE_DESTINATION_UNIT_LABEL)
+		);
+
 		const unarchiveDestinationUnitOptions = within(screen.getByRole("listbox"));
-		await unarchiveDestinationUnitOptions.findByText("unarchive_unit_name_test");
-		fireEvent.click(unarchiveDestinationUnitOptions.getByText(/unarchive_unit_name_test/i));
+		await unarchiveDestinationUnitOptions.findByText(
+			"unarchive_unit_name_test"
+		);
+		fireEvent.click(
+			unarchiveDestinationUnitOptions.getByText(/unarchive_unit_name_test/i)
+		);
 
 		input(UNARCHIVE_PROCESS_NUMBER_LABEL, "44");
 
@@ -168,7 +175,9 @@ describe("Create Administrative Process Screen Test", () => {
 		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
 
 		input(UNARCHIVE_DATE_LABEL, "09/10/2047");
-		expect(screen.queryByText(INVALID_DATE_ERROR_MESSAGE)).not.toBeInTheDocument();
+		expect(
+			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
+		).not.toBeInTheDocument();
 
 		submitClick();
 	});
@@ -219,5 +228,23 @@ describe("Create Administrative Process Screen Test", () => {
 
 		const successAlert = await screen.findByRole("alert");
 		expect(successAlert).toHaveTextContent(/SucessoDocumento cadastrado!/i);
+	});
+
+	it("detailPage test", async () => {
+		const history = createMemoryHistory();
+		history.push("/documents/administrative-process/view/1");
+
+		render(
+			<Router history={history}>
+				<CreateAdministrativeProcess detail />
+			</Router>
+		);
+
+		expect(screen.getByText("Editar")).toBeInTheDocument();
+		expect(screen.getByText("Excluir")).toBeInTheDocument();
+
+		await screen.findByDisplayValue("18");
+
+		screen.debug();
 	});
 });

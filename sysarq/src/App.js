@@ -158,7 +158,7 @@ function App() {
 								exact={false}
 								path="/documents/administrative-process/create"
 							>
-								<CreateAdministrativeProcess detail={false}/>
+								<CreateAdministrativeProcess detail={false} />
 							</PrivateRoute>
 
 							<PrivateRoute path="/documents/administrative-process/view/:id">
@@ -168,18 +168,18 @@ function App() {
 
 						<Route path="/documents/frequency-relation">
 							<PrivateRoute exact path="/documents/frequency-relation">
-								<CreateFrequencyRelation />
+								<CreateFrequencyRelation detail={false} />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
 								path="/documents/frequency-relation/create"
 							>
-								<CreateFrequencyRelation />
+								<CreateFrequencyRelation detail={false} />
 							</PrivateRoute>
 
 							<PrivateRoute path="/documents/frequency-relation/view/:id">
-								<CreateFrequencyRelation />
+								<CreateFrequencyRelation detail />
 							</PrivateRoute>
 						</Route>
 
