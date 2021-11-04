@@ -566,12 +566,12 @@ const CreateAdministrativeProcess = () => {
 			</Grid>
 
 			<SenderUnitInput
+				isDetailPage={isDetailPage}
 				setHelperText={setSenderUnitHelperText}
 				set={setSenderUnit}
 				senderUnit={senderUnit}
 				units={units}
 				senderUnitHelperText={senderUnitHelperText}
-				isDisabled={isDisabled}
 			/>
 
 			<Grid item xs={12} sm={12} md={12}>
