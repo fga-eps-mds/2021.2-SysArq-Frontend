@@ -566,9 +566,17 @@ const CreateBoxArchiving = () => {
 				connectionError={connectionError}
 			/>
 
-			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
+					<RackInput
+						set={setRack}
+						connectionError={connectionError}
+						isDetailPage={detail}
+						rackDetail={rackDetail}
+						rack={rack}
+					/>
 
-			<NotesInput set={setNotes} notes={notes} />
+					<NotesInput set={setNotes} notes={notes} isDetailPage={detail} />
+				</>
+			)}
 
 			<Dialog
 				fullWidth
@@ -716,7 +724,11 @@ const CreateBoxArchiving = () => {
 				getDropRejectMessage
 			/> */}
 
-			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
+			<DocumentsCreate
+				isDetailPage={detail}
+				loading={loading}
+				onSubmit={onSubmit}
+			/>
 
 			<PopUpAlert
 				open={openAlert}
@@ -726,6 +738,10 @@ const CreateBoxArchiving = () => {
 			/>
 		</CardContainer>
 	);
+};
+
+CreateBoxArchiving.propTypes = {
+	detail: PropTypes.bool.isRequired,
 };
 
 export default CreateBoxArchiving;
