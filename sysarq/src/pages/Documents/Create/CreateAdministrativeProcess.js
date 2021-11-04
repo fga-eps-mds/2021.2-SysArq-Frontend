@@ -564,6 +564,7 @@ const CreateAdministrativeProcess = () => {
 					disabled={isDisabled}
 				/>
 			</Grid>
+
 			<SenderUnitInput
 				setHelperText={setSenderUnitHelperText}
 				set={setSenderUnit}
@@ -574,92 +575,130 @@ const CreateAdministrativeProcess = () => {
 			/>
 
 			<Grid item xs={12} sm={12} md={12}>
-				{autocompl(
-					publicWorkers,
-					publicWorkerInput,
-					handlePublicWorkerChange,
-					setPublicWorkerInput,
-					publicWorkerOptions,
-					publicWorkerHelperText
+				{isDetailPage ? (
+					<TextField
+						fullWidth
+						id="publicWorker"
+						label="Servidor"
+						value={publicWorker}
+						inputProps={{ readOnly: true }}
+					/>
+				) : (
+					autocompl(
+						publicWorkers,
+						publicWorkerInput,
+						handlePublicWorkerChange,
+						setPublicWorkerInput,
+						publicWorkerOptions,
+						publicWorkerHelperText
+					)
 				)}
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={4}>
-				<KeyboardDatePicker
-					okLabel="Confirmar"
-					cancelLabel="Cancelar"
-					style={{ width: "100%" }}
-					id="reference-date-picker-dialog"
-					openTo="year"
-					views={["year", "month"]}
-					label="Referência"
-					format="MM/yyyy"
-					value={reference}
-					onChange={handleReferenceChange}
-					error={referenceHelperText !== ""}
-					helperText={referenceHelperText}
-					disabled={isDisabled}
-				/>
+				{isDetailPage ? (
+					<TextField
+						fullWidth
+						id="referenceDate"
+						label="Referência"
+						value={reference}
+						inputProps={{ readOnly: true }}
+					/>
+				) : (
+					<KeyboardDatePicker
+						okLabel="Confirmar"
+						cancelLabel="Cancelar"
+						style={{ width: "100%" }}
+						id="reference-date-picker-dialog"
+						openTo="year"
+						views={["year", "month"]}
+						label="Referência"
+						format="MM/yyyy"
+						value={reference}
+						onChange={handleReferenceChange}
+						error={referenceHelperText !== ""}
+						helperText={referenceHelperText}
+					/>
+				)}
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={8}>
-				<FormControl fullWidth error={statusHelperText !== ""}>
-					<InputLabel id="select-status-label">Status*</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-status-label"
-						id="select-status"
+				{isDetailPage ? (
+					<TextField
+						fullWidth
+						id="status"
+						label="Status"
 						value={status}
-						onChange={handleStatusChange}
-						renderValue={(value) => `${value}`}
-						disabled={isDisabled}
-					>
-						<MenuItem value="">
-							<em>Nenhum</em>
-						</MenuItem>
-						<MenuItem value="Arquivado">Arquivado</MenuItem>
-						<MenuItem value="Eliminado">Eliminado</MenuItem>
-						<MenuItem value="Desarquivado">Desarquivado</MenuItem>
-					</Select>
-					{statusHelperText ? (
-						<FormHelperText>{statusHelperText}</FormHelperText>
-					) : (
-						""
-					)}
-				</FormControl>
+						inputProps={{ readOnly: true }}
+					/>
+				) : (
+					<FormControl fullWidth error={statusHelperText !== ""}>
+						<InputLabel id="select-status-label">Status*</InputLabel>
+						<Select
+							style={{ textAlign: "left" }}
+							labelId="select-status-label"
+							id="select-status"
+							value={status}
+							onChange={handleStatusChange}
+							renderValue={(value) => `${value}`}
+						>
+							<MenuItem value="">
+								<em>Nenhum</em>
+							</MenuItem>
+							<MenuItem value="Arquivado">Arquivado</MenuItem>
+							<MenuItem value="Eliminado">Eliminado</MenuItem>
+							<MenuItem value="Desarquivado">Desarquivado</MenuItem>
+						</Select>
+						{statusHelperText ? (
+							<FormHelperText>{statusHelperText}</FormHelperText>
+						) : (
+							""
+						)}
+					</FormControl>
+				)}
 			</Grid>
 
 			{status === "Desarquivado" ? (
 				<>
 					<Grid item xs={12} sm={12} md={12}>
-						<FormControl fullWidth>
-							<InputLabel id="select-unarchiveDestinationUnit-label">
-								Unid. Destino do Desarquivamento
-							</InputLabel>
-							<Select
-								style={{ textAlign: "left" }}
-								labelId="select-unarchiveDestinationUnit-label"
-								id="select-unarchiveDestinationUnit"
+						{isDetailPage ? (
+							<TextField
+								fullWidth
+								id="unarchiveDestinationUnit"
+								label="Unid. Destino do Desarquivamento"
 								value={unarchiveDestinationUnit}
-								onChange={handleUnarchiveDestinationUnit}
-								renderValue={(value) => `${value.unity_name}`}
-								disabled={isDisabled}
-							>
-								<MenuItem key={0} value="">
-									<em>Nenhuma</em>
-								</MenuItem>
-
-								{units.map((unarchiveDestinationUnitOption) => (
-									<MenuItem
-										id={unarchiveDestinationUnitOption.id}
-										value={unarchiveDestinationUnitOption}
-									>
-										{unarchiveDestinationUnitOption.unity_name}
+								inputProps={{ readOnly: true }}
+							/>
+						) : (
+							<FormControl fullWidth>
+								<InputLabel id="select-unarchiveDestinationUnit-label">
+									Unid. Destino do Desarquivamento
+								</InputLabel>
+								<Select
+									style={{ textAlign: "left" }}
+									labelId="select-unarchiveDestinationUnit-label"
+									id="select-unarchiveDestinationUnit"
+									value={unarchiveDestinationUnit}
+									onChange={handleUnarchiveDestinationUnit}
+									renderValue={(value) => `${value.unity_name}`}
+								>
+									<MenuItem key={0} value="">
+										<em>Nenhuma</em>
 									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
+
+									{units.map((unarchiveDestinationUnitOption) => (
+										<MenuItem
+											id={unarchiveDestinationUnitOption.id}
+											value={unarchiveDestinationUnitOption}
+										>
+											{unarchiveDestinationUnitOption.unity_name}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						)}
 					</Grid>
+
 					<Grid item xs={12} sm={12} md={6}>
 						<TextField
 							fullWidth
@@ -667,36 +706,53 @@ const CreateAdministrativeProcess = () => {
 							label="Nº do Processo do Desarquivamento"
 							value={unarchiveProcessNumber}
 							onChange={handleUnarchiveProcessNumberChange}
-							inputProps={{ maxLength: 15 }}
-							disabled={isDisabled}
+							inputProps={{ maxLength: 15, readOnly: isDetailPage }}
 						/>
 					</Grid>
+
 					<Grid item xs={12} sm={12} md={6}>
-						<KeyboardDatePicker
-							okLabel="Confirmar"
-							cancelLabel="Cancelar"
-							style={{ width: "100%" }}
-							id="unarchive-date-picker-dialog"
-							label="Data de Desarquivamento"
-							format="dd/MM/yyyy"
-							value={unarchiveDate}
-							onChange={handleUnarchiveDateChange}
-							KeyboardButtonProps={{
-								"aria-label": "change unarchive date",
-							}}
-							error={unarchiveDateHelperText !== ""}
-							helperText={unarchiveDateHelperText}
-							disabled={isDisabled}
-						/>
+						{isDetailPage ? (
+							<TextField
+								fullWidth
+								id="unarchiveDate"
+								label="Data de Desarquivamento"
+								value={unarchiveDate}
+								inputProps={{ readOnly: true }}
+							/>
+						) : (
+							<KeyboardDatePicker
+								okLabel="Confirmar"
+								cancelLabel="Cancelar"
+								style={{ width: "100%" }}
+								id="unarchive-date-picker-dialog"
+								label="Data de Desarquivamento"
+								format="dd/MM/yyyy"
+								value={unarchiveDate}
+								onChange={handleUnarchiveDateChange}
+								KeyboardButtonProps={{
+									"aria-label": "change unarchive date",
+								}}
+								error={unarchiveDateHelperText !== ""}
+								helperText={unarchiveDateHelperText}
+							/>
+						)}
 					</Grid>
 				</>
 			) : (
 				""
 			)}
 
-			<NotesInput set={setNotes} notes={notesLocal} isDisabled={isDisabled} />
+			<NotesInput
+				set={setNotes}
+				notes={notesLocal}
+				isDetailPage={isDetailPage}
+			/>
 
-			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
+			<DocumentsCreate
+				isDetailPage={isDetailPage}
+				loading={loading}
+				onSubmit={onSubmit}
+			/>
 
 			<PopUpAlert
 				open={openAlert}

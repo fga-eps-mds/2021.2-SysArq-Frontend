@@ -120,7 +120,7 @@ export function autocompl(
 					// eslint-disable-next-line
 					{...params}
 					value={params.value}
-					label="Nome, CPF*"
+					label="Servidor, CPF*"
 					error={publicWorkerHelperText !== ""}
 					helperText={publicWorkerHelperText}
 				/>
