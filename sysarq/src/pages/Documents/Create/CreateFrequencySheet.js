@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+
 import { useParams } from "react-router-dom";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-import {
-	Grid,
-	TextField,
-	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
-	FormHelperText,
-} from "@material-ui/core";
+import { Grid, CircularProgress, TextField } from "@material-ui/core";
 
 import {
 	formatDate,
@@ -22,49 +16,57 @@ import {
 	autocompl,
 } from "../../../support";
 
-import { axiosArchives, axiosProfile } from "../../../Api";
+import { axiosProfile, axiosArchives } from "../../../Api";
 
 import CardContainer from "../../components/Container/CardContainer";
+import DocumentsDetail from "../../components/Actions/DocumentsDetail";
 
+import DocumentTypeInput from "../../components/Inputs/DocumentTypeInput";
 import NotesInput from "../../components/Inputs/NotesInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
-const CreateFrequencySheet = () => {
-	const url = "document-type/";
-	const [types, setTypes] = useState([]);
+const CreateFrequencySheet = ({ detail }) => {
+	const params = useParams();
+
+	const [typeDetail, setTypeDetail] = useState("");
+
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
 	]);
-	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
+
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
-	const [senderProcessNumber, setSenderProcessNumber] = useState("");
+
+	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
 	const [roleWorker, setRole] = useState("");
 	const [workerClass, setWorkerClass] = useState("");
 	const [workplaceWorker, setWorkplace] = useState("");
 	const [district, setDistrict] = useState("");
-	const [notesLocal, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState(initialPeriod);
+
+	const [referencePeriod, setReferencePeriod] = useState(
+		detail ? "" : initialPeriod
+	);
+
+	const [senderProcessNumber, setSenderProcessNumber] = useState("");
 	const [type, setType] = useState("");
+	const [notesLocal, setNotes] = useState("");
+
+	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 	const [roleHelperText, setRoleHelperText] = useState("");
 	const [workplaceHelperText, setWorkplaceHelperText] = useState("");
 	const [districtHelperText, setDistrictHelperText] = useState("");
+
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
 		useState("");
+
 	const [typeHelperText, setTypeHelperText] = useState("");
-	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
-
-	const [isDisabled, setIsDisabled] = useState(false);
-
-	const urlView = window.location.href;
-	const params = useParams();
 
 	const handleSenderProcessNumberChange = (event) =>
 		setSenderProcessNumber(event.target.value);
@@ -98,11 +100,6 @@ const CreateFrequencySheet = () => {
 	const handleReferencePeriodChange = (date) => {
 		setReferencePeriodHelperText("");
 		setReferencePeriod(date);
-	};
-
-	const handleTypeChange = (event) => {
-		setTypeHelperText("");
-		setType(event.target.value);
 	};
 
 	const handleAlertClose = () => setOpenAlert(false);
@@ -218,29 +215,6 @@ const CreateFrequencySheet = () => {
 		return "post done";
 	};
 
-	useEffect(() => {
-		axiosProfile
-			.post(`api/token/refresh/`, {
-				refresh: localStorage.getItem("tkr"),
-			})
-			.then((r) => {
-				localStorage.setItem("tkr", r.data.refresh);
-				localStorage.setItem("tk", r.data.access);
-				
-				axiosArchives
-					.get(url, {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
-					.then((response) => setTypes(response.data))
-					.catch(() => connectionError());
-
-				getPublicWorkers(setPublicWorkers, connectionError);
-			})
-			.catch((error) => {
-				axiosProfileError(error, connectionError);
-			});
-	}, []);
-
 	const publicWorkerOptions = publicWorkers.map((option) => {
 		const firstLetter = option.name[0].toUpperCase();
 		return {
@@ -248,11 +222,9 @@ const CreateFrequencySheet = () => {
 			...option,
 		};
 	});
-	useEffect(() => {
-		if(urlView.includes("view")) {
-			setIsDisabled(true);
 
-			axiosProfile
+	useEffect(() => {
+		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
 			})
@@ -263,22 +235,57 @@ const CreateFrequencySheet = () => {
 				getPublicWorkers(setPublicWorkers, connectionError);
 
 				if (detail) {
-				axiosArchives
-				.get(`frequency-sheet/${params.id}/`, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
-				.then((response) => {
-					console.log("Res ", response);
-					setWorkerName(response.data.person_name);
-					setCpf(response.data.cpf);
-					setRole(response.data.role);
-					setWorkerClass(response.data.category);
-					setWorkplace(response.data.workplace);
-					setDistrict(response.data.municipal_area);
-					setReferencePeriod(response.data.reference_period);
-					setSenderProcessNumber(response.data.process_number);
-					setType(response.data.document_type_id);
-					setNotes(response.data.notes);
-				})
-				.catch(() => connectionError());
+					setLoading(true);
+
+					axiosArchives
+						.get(`frequency-sheet/${params.id}/`, {
+							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						})
+						.then((responseFrequencySheet) => {
+							axiosArchives
+								.get(
+									`document-type/${responseFrequencySheet.data.document_type_id}/`,
+									{
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
+									}
+								)
+								.then((response) => {
+									setType(response.data);
+								})
+								.catch(() => connectionError());
+
+							setTypeDetail(responseFrequencySheet.data.document_type_name);
+
+							setPublicWorker(responseFrequencySheet.data.person_name);
+							setRole(responseFrequencySheet.data.role);
+							setWorkplace(responseFrequencySheet.data.workplace);
+							setDistrict(responseFrequencySheet.data.municipal_area);
+							setReferencePeriod(responseFrequencySheet.data.reference_period);
+
+							setWorkerClass(
+								responseFrequencySheet.data.category
+									? responseFrequencySheet.data.category
+									: "-"
+							);
+
+							setSenderProcessNumber(
+								responseFrequencySheet.data.process_number
+									? responseFrequencySheet.data.process_number
+									: "-"
+							);
+
+							setNotes(
+								responseFrequencySheet.data.notes
+									? responseFrequencySheet.data.notes
+									: "-"
+							);
+
+							setLoading(false);
+						})
+						.catch(() => connectionError());
+				}
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
@@ -287,6 +294,12 @@ const CreateFrequencySheet = () => {
 
 	return (
 		<CardContainer title="Folha de Frequências" spacing={1}>
+			{detail ? <DocumentsDetail /> : ""}
+
+			{detail && loading ? (
+				<CircularProgress style={{ margin: "auto" }} />
+			) : (
+				<>
 					<Grid item xs={12} sm={12} md={12}>
 						{detail ? (
 							<TextField
