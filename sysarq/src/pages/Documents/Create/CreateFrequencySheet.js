@@ -260,6 +260,9 @@ const CreateFrequencySheet = () => {
 				localStorage.setItem("tkr", res.data.refresh);
 				localStorage.setItem("tk", res.data.access);
 
+				getPublicWorkers(setPublicWorkers, connectionError);
+
+				if (detail) {
 				axiosArchives
 				.get(`frequency-sheet/${params.id}/`, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
 				.then((response) => {
@@ -279,173 +282,150 @@ const CreateFrequencySheet = () => {
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
-			})
-		}
+			});
 	}, []);
 
 	return (
 		<CardContainer title="Folha de Frequências" spacing={1}>
-			<Grid item xs={12} sm={12} md={12}>
-				{autocompl(
-					publicWorkers,
-					publicWorkerInput,
-					handlePublicWorkerChange,
-					setPublicWorkerInput,
-					publicWorkerOptions,
-					publicWorkerHelperText
-				)}
-				{/* <Autocomplete
-					id="workerName"
-					data-testid="autocomplete"
-					value={publicWorkers.name}
-					onChange={(event, newValue) => {
-						handlePublicWorkerChange(newValue);
-					}}
-					inputValue={publicWorkerInput}
-					onInputChange={(event, newInputValue) => {
-						setPublicWorkerInput(newInputValue);
-					}}
-					options={publicWorkerOptions.sort(
-						(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
-					)}
-					groupBy={(option) => option.firstLetter}
-					getOptionLabel={(option) => `${option.name}, ${option.cpf}`}
-					getOptionSelected={(option, value) => option.name === value.name}
-					autoHighlight
-					renderInput={(params) => (
+					<Grid item xs={12} sm={12} md={12}>
+						{detail ? (
+							<TextField
+								fullWidth
+								id="publicWorker"
+								label="Servidor"
+								value={publicWorker}
+								inputProps={{ readOnly: true }}
+							/>
+						) : (
+							autocompl(
+								publicWorkers,
+								publicWorkerInput,
+								handlePublicWorkerChange,
+								setPublicWorkerInput,
+								publicWorkerOptions,
+								publicWorkerHelperText
+							)
+						)}
+					</Grid>
+
+					<Grid item xs={12} sm={12} md={12}>
 						<TextField
-							// eslint-disable-next-line
-							{...params}
-							value={params.value}
-							label="Nome, CPF*"
-							error={publicWorkerHelperText !== ""}
-							helperText={publicWorkerHelperText}
+							fullWidth
+							id="role"
+							label={detail ? "Cargo" : "Cargo*"}
+							value={roleWorker}
+							onChange={handleRoleChange}
+							error={roleHelperText !== ""}
+							helperText={roleHelperText}
+							inputProps={{ maxLength: 100, readOnly: detail }}
+							multiline
 						/>
-					)}
-				/> */}
-			</Grid>
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="role"
-					label="Cargo*"
-					value={roleWorker}
-					onChange={handleRoleChange}
-					error={roleHelperText !== ""}
-					helperText={roleHelperText}
-					inputProps={{ maxLength: 100 }}
-					multiline
-					disabled={isDisabled}
-				/>
-			</Grid>
+					<Grid item xs={12} sm={12} md={12}>
+						<TextField
+							fullWidth
+							id="workerClass"
+							label="Classe"
+							value={workerClass}
+							onChange={handleWorkerClassChange}
+							inputProps={{ maxLength: 100, readOnly: detail }}
+							multiline
+						/>
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="workerClass"
-					label="Classe"
-					value={workerClass}
-					onChange={handleWorkerClassChange}
-					inputProps={{ maxLength: 100 }}
-					multiline
-					disabled={isDisabled}
-				/>
-			</Grid>
+					<Grid item xs={12} sm={12} md={12}>
+						<TextField
+							fullWidth
+							id="workplace"
+							label={detail ? "Lotação" : "Lotação*"}
+							value={workplaceWorker}
+							onChange={handleWorkplaceChange}
+							error={workplaceHelperText !== ""}
+							helperText={workplaceHelperText}
+							inputProps={{ maxLength: 100, readOnly: detail }}
+							multiline
+						/>
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="workplace"
-					label="Lotação*"
-					value={workplaceWorker}
-					onChange={handleWorkplaceChange}
-					error={workplaceHelperText !== ""}
-					helperText={workplaceHelperText}
-					inputProps={{ maxLength: 100 }}
-					multiline
-					disabled={isDisabled}
-				/>
-			</Grid>
+					<Grid item xs={12} sm={12} md={12}>
+						<TextField
+							fullWidth
+							id="district"
+							label={detail ? "Município" : "Município*"}
+							value={district}
+							onChange={handleDistrictChange}
+							error={districtHelperText !== ""}
+							helperText={districtHelperText}
+							inputProps={{ maxLength: 100, readOnly: detail }}
+							multiline
+						/>
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="district"
-					label="Município*"
-					value={district}
-					onChange={handleDistrictChange}
-					error={districtHelperText !== ""}
-					helperText={districtHelperText}
-					inputProps={{ maxLength: 100 }}
-					multiline
-					disabled={isDisabled}
-				/>
-			</Grid>
+					<Grid item xs={12} sm={12} md={6}>
+						{detail ? (
+							<TextField
+								fullWidth
+								id="referencePeriodDate"
+								label="Período de Referência"
+								value={
+									referencePeriod
+										? `${referencePeriod.substring(
+												5,
+												7
+										  )}/${referencePeriod.substring(0, 4)}`
+										: ""
+								}
+								inputProps={{ readOnly: true }}
+							/>
+						) : (
+							<KeyboardDatePicker
+								style={{ width: "100%" }}
+								id="period-date-picker-dialog"
+								label="Período de Referencia*"
+								format="MM/yyyy"
+								value={referencePeriod}
+								onChange={handleReferencePeriodChange}
+								openTo="month"
+								views={["month", "year"]}
+								okLabel="Confirmar"
+								cancelLabel="Cancelar"
+								error={referencePeriodHelperText !== ""}
+								helperText={referencePeriodHelperText}
+							/>
+						)}
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={6}>
-				<KeyboardDatePicker
-					style={{ width: "100%" }}
-					id="period-date-picker-dialog"
-					label="Período de Referencia*"
-					format="MM/yyyy"
-					value={referencePeriod}
-					onChange={handleReferencePeriodChange}
-					openTo="month"
-					views={["month", "year"]}
-					okLabel="Confirmar"
-					cancelLabel="Cancelar"
-					error={referencePeriodHelperText !== ""}
-					helperText={referencePeriodHelperText}
-					disabled={isDisabled}
-				/>
-			</Grid>
+					<Grid item xs={12} sm={12} md={6}>
+						<TextField
+							fullWidth
+							id="sender-process-number"
+							label="Número do Processo Encaminhador"
+							value={senderProcessNumber}
+							onChange={handleSenderProcessNumberChange}
+							inputProps={{ maxLength: 20, readOnly: detail }}
+						/>
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={6}>
-				<TextField
-					fullWidth
-					id="sender-process-number"
-					label="Número do Processo Encaminhador"
-					value={senderProcessNumber}
-					onChange={handleSenderProcessNumberChange}
-					inputProps={{ maxLength: 20 }}
-					disabled={isDisabled}
-				/>
-			</Grid>
+					<DocumentTypeInput
+						isDetailPage={detail}
+						documentTypeDetail={typeDetail}
+						setHelperText={setTypeHelperText}
+						set={setType}
+						connectionError={connectionError}
+						documentType={type}
+						documentTypeHelperText={typeHelperText}
+					/>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<FormControl fullWidth error={typeHelperText !== ""}>
-					<InputLabel id="select-type-label">Tipo do Documento*</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-type-label"
-						id="select-type"
-						value={type}
-						onChange={handleTypeChange}
-						renderValue={(value) => `${value.document_name}`}
-						disabled={isDisabled}
-					>
-						<MenuItem key={0} value="">
-							<em>Nenhum</em>
-						</MenuItem>
+					<NotesInput isDetailPage={detail} set={setNotes} notes={notesLocal} />
+				</>
+			)}
 
-						{types.map((typeOption) => (
-							<MenuItem key={typeOption.id} value={typeOption}>
-								{typeOption.document_name}
-							</MenuItem>
-						))}
-					</Select>
-					{typeHelperText ? (
-						<FormHelperText>{typeHelperText}</FormHelperText>
-					) : (
-						""
-					)}
-				</FormControl>
-			</Grid>
-
-			<NotesInput set={setNotes} notes={notesLocal} isDisabled={isDisabled} />
-
-			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
+			<DocumentsCreate
+				isDetailPage={detail}
+				loading={loading}
+				onSubmit={onSubmit}
+			/>
 
 			<PopUpAlert
 				open={openAlert}
@@ -455,6 +435,10 @@ const CreateFrequencySheet = () => {
 			/>
 		</CardContainer>
 	);
+};
+
+CreateFrequencySheet.propTypes = {
+	detail: PropTypes.bool.isRequired,
 };
 
 export default CreateFrequencySheet;
