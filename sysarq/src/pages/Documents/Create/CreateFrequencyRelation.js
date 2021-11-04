@@ -31,17 +31,20 @@ import PopUpAlert from "../../components/PopUpAlert";
 const CreateFrequencyRelation = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
+	const [documentTypeDetail, setDocumentTypeDetail] = useState("");
+	const [senderUnitDetail, setSenderUnitDetail] = useState("");
+
 	const [units, setUnits] = useState([]);
 
 	const [processNumber, setProcessNumber] = useState("");
-	const [documentDate, setDocumentDate] = useState(initialDate);
-	const [receivedDate, setReceivedDate] = useState(initialDate);
+	const [documentDate, setDocumentDate] = useState(detail ? "" : initialDate);
+	const [receivedDate, setReceivedDate] = useState(detail ? "" : initialDate);
 	const [documentType, setDocumentType] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
 	const [notesLocal, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState([
-		formatDate(initialPeriod),
-	]);
+	const [referencePeriod, setReferencePeriod] = useState(
+		detail ? [] : [formatDate(initialPeriod)]
+	);
 
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
@@ -56,11 +59,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(false);
-
-	const [isDisabled, setIsDisabled] = useState(false);
-
-	const url = window.location.href;
-	const params = useParams();
 
 	const handleAlertClose = () => setOpenAlert(false);
 
@@ -180,93 +178,115 @@ const CreateFrequencyRelation = ({ detail }) => {
 	};
 
 	useEffect(() => {
-		if(url.includes("view")) {
-			setIsDisabled(true);
-		
+		if (detail) {
 			axiosProfile
-			.post(`api/token/refresh/`,{
-				refresh: localStorage.getItem("tkr")
-			})
-			.then((res) => {
-				localStorage.setItem("tk", res.data.access);
-				localStorage.setItem("tkr", res.data.refresh);
+				.post(`api/token/refresh/`, {
+					refresh: localStorage.getItem("tkr"),
+				})
+				.then((res) => {
+					localStorage.setItem("tk", res.data.access);
+					localStorage.setItem("tkr", res.data.refresh);
 
-				axiosArchives
-				.get(`frequency-relation/${params.id}/`, { headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
-				.then((response) => {
-					console.log("Resp: ", response);
-					setProcessNumber(response.data.process_number);
-					setDocumentDate(response.data.document_date);
-					setReceivedDate(response.data.received_date);
-					setDocumentType(response.data.document_type_id);
-					setNotes(response.data.notes);
-					setReferencePeriod(response.data.reference_period);
-					
-					if(response.status === 200) {
-						axiosArchives
-						.get("unity/", {
+					axiosArchives
+						.get(`frequency-relation/${params.id}/`, {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
-						.then((responseUnity) => {
-							setUnits(responseUnity.data);
-							
-							responseUnity.data.forEach(unity => {
-								if(unity.id === response.data.sender_unity) {
-									setSenderUnit(unity);
-								}
-							})
+						.then((responseFrequencyRelation) => {
+							axiosArchives
+								.get(
+									`document-type/${responseFrequencyRelation.data.document_type_id}/`,
+									{
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
+									}
+								)
+								.then((response) => {
+									setDocumentType(response.data);
+								})
+								.catch(() => connectionError());
+
+							axiosArchives
+								.get(`unity/${responseFrequencyRelation.data.sender_unity}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setSenderUnit(response.data);
+								})
+								.catch(() => connectionError());
+
+							setDocumentTypeDetail(
+								responseFrequencyRelation.data.document_type_name
+							);
+							setSenderUnitDetail(
+								responseFrequencyRelation.data.sender_unity_name
+							);
+
+							setProcessNumber(responseFrequencyRelation.data.process_number);
+							setDocumentDate(responseFrequencyRelation.data.document_date);
+							setReceivedDate(responseFrequencyRelation.data.received_date);
+
+							setNotes(
+								responseFrequencyRelation.data.notes
+									? responseFrequencyRelation.data.notes
+									: "-"
+							);
+
+							setReferencePeriod(
+								responseFrequencyRelation.data.reference_period
+							);
 						})
 						.catch(() => connectionError());
-					}
-
 				})
-				.catch(() => connectionError());
-			})
-			
-			.catch((error) => {
-				axiosProfileError(error, connectionError);
-			});
-		}
-	}, [])
 
-	useEffect(() => {
+				.catch((error) => {
+					axiosProfileError(error, connectionError);
+				});
+		}
+
 		getUnits(setUnits, connectionError);
 	}, []);
 
 	return (
 		<CardContainer title="Relação de Frequências" spacing={1}>
+			{detail ? <DocumentsDetail /> : ""}
+
 			<Grid item xs={12} sm={6} md={4}>
 				<NumberProcessInput
 					setHelperText={setProcessNumberHelperText}
 					set={setProcessNumber}
 					number={processNumber}
 					helperText={processNumberHelperText}
-					isDisabled={isDisabled}
+					isDetailPage={detail}
 				/>
 			</Grid>
 
 			<CommonSet
-				isDisabled={isDisabled}
-				units={units}
-				documentDate={documentDate}
-				setDocumentDate={setDocumentDate}
-				receivedDate={receivedDate}
-				setReceivedDate={setReceivedDate}
-				documentType={documentType}
-				setDocumentType={setDocumentType}
-				senderUnit={senderUnit}
-				setSenderUnit={setSenderUnit}
-				notes={notesLocal}
-				setNotes={setNotes}
+				isDetailPage={detail}
 				setDocumentDateHelperText={setDocumentDateHelperText}
+				setDocumentDate={setDocumentDate}
+				documentDate={documentDate}
 				documentDateHelperText={documentDateHelperText}
 				setReceivedDateHelperText={setReceivedDateHelperText}
+				setReceivedDate={setReceivedDate}
+				receivedDate={receivedDate}
 				receivedDateHelperText={receivedDateHelperText}
-				documentTypeHelperText={documentTypeHelperText}
+				documentTypeDetail={documentTypeDetail}
 				setDocumentTypeHelperText={setDocumentTypeHelperText}
-				senderUnitHelperText={senderUnitHelperText}
-				setSenderUnitHelperText={setSenderUnitHelperText}
+				setDocumentType={setDocumentType}
 				connectionError={connectionError}
+				documentType={documentType}
+				documentTypeHelperText={documentTypeHelperText}
+				senderUnitDetail={senderUnitDetail}
+				setSenderUnitHelperText={setSenderUnitHelperText}
+				setSenderUnit={setSenderUnit}
+				senderUnit={senderUnit}
+				units={units}
+				senderUnitHelperText={senderUnitHelperText}
+				setNotes={setNotes}
+				notes={notesLocal}
 			/>
 
 			<ReferencePeriodInput

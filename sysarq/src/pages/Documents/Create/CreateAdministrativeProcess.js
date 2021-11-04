@@ -510,10 +510,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						fullWidth
 						id="noticeDate"
 						label="Data de Autuação"
-						value={`${noticeDate.substring(8, 10)}/${noticeDate.substring(
-							5,
-							7
-						)}/${noticeDate.substring(0, 4)}`}
+						value={
+							noticeDate
+								? `${noticeDate.substring(8, 10)}/${noticeDate.substring(
+										5,
+										7
+								  )}/${noticeDate.substring(0, 4)}`
+								: ""
+						}
 						inputProps={{ readOnly: true }}
 					/>
 				) : (
@@ -646,10 +650,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						fullWidth
 						id="archivingDate"
 						label="Data de Arquivamento"
-						value={`${archivingDate.substring(8, 10)}/${archivingDate.substring(
-							5,
-							7
-						)}/${archivingDate.substring(0, 4)}`}
+						value={
+							archivingDate
+								? `${archivingDate.substring(8, 10)}/${archivingDate.substring(
+										5,
+										7
+								  )}/${archivingDate.substring(0, 4)}`
+								: ""
+						}
 						inputProps={{ readOnly: true }}
 					/>
 				) : (
