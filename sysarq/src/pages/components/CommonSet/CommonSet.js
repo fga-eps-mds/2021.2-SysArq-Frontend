@@ -30,16 +30,16 @@ const CommonSet = ({
 	senderUnitHelperText,
 	setNotes,
 	notes,
-	isDisabled,
+	isDetailPage,
 }) => (
 	<>
 		<Grid item xs={12} sm={6} md={4}>
 			<DocumentDateInput
+				isDetailPage={isDetailPage}
 				setHelperText={setDocumentDateHelperText}
 				set={setDocumentDate}
 				documentDate={documentDate}
 				helperText={documentDateHelperText}
-				isDisabled={isDisabled}
 			/>
 		</Grid>
 
@@ -49,7 +49,7 @@ const CommonSet = ({
 				set={setReceivedDate}
 				receivedDate={receivedDate}
 				helperText={receivedDateHelperText}
-				isDisabled={isDisabled}
+				isDetailPage={isDetailPage}
 			/>
 		</Grid>
 
@@ -59,7 +59,7 @@ const CommonSet = ({
 			connectionError={connectionError}
 			documentType={documentType}
 			documentTypeHelperText={documentTypeHelperText}
-			isDisabled={isDisabled}
+			isDetailPage={isDetailPage}
 		/>
 
 		<SenderUnitInput
@@ -68,10 +68,10 @@ const CommonSet = ({
 			senderUnit={senderUnit}
 			units={units}
 			senderUnitHelperText={senderUnitHelperText}
-			isDisabled={isDisabled}
+			isDetailPage={isDetailPage}
 		/>
 
-		<NotesInput set={setNotes} notes={notes} isDisabled={isDisabled} />
+		<NotesInput set={setNotes} notes={notes} isDetailPage={isDetailPage} />
 	</>
 );
 
@@ -96,7 +96,7 @@ CommonSet.propTypes = {
 	senderUnitHelperText: PropTypes.string.isRequired,
 	setNotes: PropTypes.func.isRequired,
 	notes: PropTypes.string.isRequired,
-	isDisabled: PropTypes.string.isRequired,
+	isDetailPage: PropTypes.string.isRequired,
 };
 
 export default CommonSet;
