@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+
 import { useParams } from "react-router-dom";
 
 import {
@@ -50,19 +52,28 @@ const isStatusFiled = (status) => {
 	return null;
 };
 
-const CreateAdministrativeProcess = () => {
+const CreateAdministrativeProcess = ({ detail }) => {
+	const params = detail ? useParams() : "";
+
+	const [subjectDetail, setSubjectDetail] = useState("");
+	const [destinationUnitDetail, setDestinationUnitDetail] = useState("");
+	const [senderUnitDetail, setSenderUnitDetail] = useState("");
+	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] =
+		useState("");
+
 	const [subjects, setSubjects] = useState([]);
 	const [units, setUnits] = useState([]);
 
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
 	]);
-	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
+
+	const [publicWorker, setPublicWorker] = useState("");
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 
-	const [noticeDate, setNoticeDate] = useState(initialDate);
-	const [archivingDate, setArchivingDate] = useState(initialDate);
-	const [reference, setReference] = useState(initialPeriod);
+	const [noticeDate, setNoticeDate] = useState(detail ? "" : initialDate);
+	const [archivingDate, setArchivingDate] = useState(detail ? "" : initialDate);
+	const [reference, setReference] = useState(detail ? "" : initialPeriod);
 	const [processNumber, setProcessNumber] = useState("");
 	const [personRegistry, setPersonRegistry] = useState("");
 	const [interestedPerson, setInterested] = useState("");
@@ -72,7 +83,7 @@ const CreateAdministrativeProcess = () => {
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
-	const [unarchiveDate, setUnarchiveDate] = useState(initialDate);
+	const [unarchiveDate, setUnarchiveDate] = useState(detail ? "" : initialDate);
 	const [notesLocal, setNotes] = useState("");
 
 	const [noticeDateHelperText, setNoticeDateHelperText] = useState("");
@@ -102,11 +113,6 @@ const CreateAdministrativeProcess = () => {
 		setPublicWorker(value);
 	};
 
-	const [isDisabled, setIsDisabled] = useState(false);
-
-	const url = window.location.href;
-	const params = useParams();
-	
 	const handleNoticeDateChange = (date) => {
 		setNoticeDateHelperText("");
 		setNoticeDate(date);
@@ -280,6 +286,7 @@ const CreateAdministrativeProcess = () => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
+
 				axiosArchives
 					.post(
 						"administrative-process/",
@@ -332,9 +339,7 @@ const CreateAdministrativeProcess = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 
-				if (url.includes("view")) {
-					setIsDetailPage(true);
-
+				if (detail) {
 					axiosArchives
 						.get(`administrative-process/${params.id}/`, {
 							headers: {
@@ -485,23 +490,28 @@ const CreateAdministrativeProcess = () => {
 
 	return (
 		<CardContainer title="Processo Administrativo" spacing={1}>
+			{detail ? <DocumentsDetail /> : ""}
+
 			<Grid item xs={12} sm={6} md={6}>
 				<NumberProcessInput
 					setHelperText={setProcessNumberHelperText}
 					set={setProcessNumber}
 					number={processNumber}
 					helperText={processNumberHelperText}
-					isDetailPage={isDetailPage}
+					isDetailPage={detail}
 				/>
 			</Grid>
 
 			<Grid item xs={12} sm={6} md={6}>
-				{isDetailPage ? (
+				{detail ? (
 					<TextField
 						fullWidth
 						id="noticeDate"
 						label="Data de Autuação"
-						value={noticeDate}
+						value={`${noticeDate.substring(8, 10)}/${noticeDate.substring(
+							5,
+							7
+						)}/${noticeDate.substring(0, 4)}`}
 						inputProps={{ readOnly: true }}
 					/>
 				) : (
@@ -527,13 +537,13 @@ const CreateAdministrativeProcess = () => {
 				<TextField
 					fullWidth
 					id="interested"
-					label={isDetailPage ? "Interessado" : "Interessado*"}
+					label={detail ? "Interessado" : "Interessado*"}
 					value={interestedPerson}
 					onChange={handleInterestedChange}
 					error={interestedHelperText !== ""}
 					helperText={interestedHelperText}
 					multiline
-					inputProps={{ maxLength: 150, readOnly: isDetailPage }}
+					inputProps={{ maxLength: 150, readOnly: detail }}
 				/>
 			</Grid>
 
@@ -547,12 +557,12 @@ const CreateAdministrativeProcess = () => {
 					onChange={handlePersonRegistryChange}
 					error={personRegistryHelperText !== ""}
 					helperText={personRegistryHelperText}
-					inputProps={{ maxLength: 15, readOnly: isDetailPage }}
+					inputProps={{ maxLength: 15, readOnly: detail }}
 				/>
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={12}>
-				{isDetailPage ? (
+				{detail ? (
 					<TextField
 						fullWidth
 						id="destinationUnit"
@@ -593,7 +603,7 @@ const CreateAdministrativeProcess = () => {
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={8}>
-				{isDetailPage ? (
+				{detail ? (
 					<TextField
 						fullWidth
 						id="destinationUnit"
@@ -629,12 +639,15 @@ const CreateAdministrativeProcess = () => {
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={4}>
-				{isDetailPage ? (
+				{detail ? (
 					<TextField
 						fullWidth
 						id="archivingDate"
 						label="Data de Arquivamento"
-						value={archivingDate}
+						value={`${archivingDate.substring(8, 10)}/${archivingDate.substring(
+							5,
+							7
+						)}/${archivingDate.substring(0, 4)}`}
 						inputProps={{ readOnly: true }}
 					/>
 				) : (
@@ -657,7 +670,7 @@ const CreateAdministrativeProcess = () => {
 			</Grid>
 
 			<SenderUnitInput
-				isDetailPage={isDetailPage}
+				isDetailPage={detail}
 				senderUnitDetail={senderUnitDetail}
 				setHelperText={setSenderUnitHelperText}
 				set={setSenderUnit}
@@ -667,7 +680,7 @@ const CreateAdministrativeProcess = () => {
 			/>
 
 			<Grid item xs={12} sm={12} md={12}>
-				{isDetailPage ? (
+				{detail ? (
 					<TextField
 						fullWidth
 						id="publicWorker"
@@ -688,12 +701,16 @@ const CreateAdministrativeProcess = () => {
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={4}>
-				{isDetailPage ? (
+				{detail ? (
 					<TextField
 						fullWidth
 						id="referenceDate"
 						label="Referência"
-						value={reference}
+						value={
+							reference !== "-"
+								? `${reference.substring(5, 7)}/${reference.substring(0, 4)}`
+								: reference
+						}
 						inputProps={{ readOnly: true }}
 					/>
 				) : (
@@ -715,7 +732,7 @@ const CreateAdministrativeProcess = () => {
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={8}>
-				{isDetailPage ? (
+				{detail ? (
 					<TextField
 						fullWidth
 						id="status"
@@ -753,7 +770,7 @@ const CreateAdministrativeProcess = () => {
 			{status === "Desarquivado" ? (
 				<>
 					<Grid item xs={12} sm={12} md={12}>
-						{isDetailPage ? (
+						{detail ? (
 							<TextField
 								fullWidth
 								id="unarchiveDestinationUnit"
@@ -798,17 +815,27 @@ const CreateAdministrativeProcess = () => {
 							label="Nº do Processo do Desarquivamento"
 							value={unarchiveProcessNumber}
 							onChange={handleUnarchiveProcessNumberChange}
-							inputProps={{ maxLength: 15, readOnly: isDetailPage }}
+							inputProps={{ maxLength: 15, readOnly: detail }}
 						/>
 					</Grid>
 
 					<Grid item xs={12} sm={12} md={6}>
-						{isDetailPage ? (
+						{detail ? (
 							<TextField
 								fullWidth
 								id="unarchiveDate"
 								label="Data de Desarquivamento"
-								value={unarchiveDate}
+								value={
+									unarchiveDate !== "-"
+										? `${unarchiveDate.substring(
+												8,
+												10
+										  )}/${unarchiveDate.substring(
+												5,
+												7
+										  )}/${unarchiveDate.substring(0, 4)}`
+										: unarchiveDate
+								}
 								inputProps={{ readOnly: true }}
 							/>
 						) : (
@@ -834,14 +861,10 @@ const CreateAdministrativeProcess = () => {
 				""
 			)}
 
-			<NotesInput
-				set={setNotes}
-				notes={notesLocal}
-				isDetailPage={isDetailPage}
-			/>
+			<NotesInput set={setNotes} notes={notesLocal} isDetailPage={detail} />
 
 			<DocumentsCreate
-				isDetailPage={isDetailPage}
+				isDetailPage={detail}
 				loading={loading}
 				onSubmit={onSubmit}
 			/>
@@ -854,6 +877,10 @@ const CreateAdministrativeProcess = () => {
 			/>
 		</CardContainer>
 	);
+};
+
+CreateAdministrativeProcess.propTypes = {
+	detail: PropTypes.bool.isRequired,
 };
 
 export default CreateAdministrativeProcess;

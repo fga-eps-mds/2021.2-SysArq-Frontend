@@ -151,18 +151,18 @@ function App() {
 
 						<Route path="/documents/administrative-process">
 							<PrivateRoute exact path="/documents/administrative-process">
-								<CreateAdministrativeProcess />
+								<CreateAdministrativeProcess detail={false} />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
 								path="/documents/administrative-process/create"
 							>
-								<CreateAdministrativeProcess />
+								<CreateAdministrativeProcess detail={false}/>
 							</PrivateRoute>
 
 							<PrivateRoute path="/documents/administrative-process/view/:id">
-								<CreateAdministrativeProcess />
+								<CreateAdministrativeProcess detail />
 							</PrivateRoute>
 						</Route>
 
