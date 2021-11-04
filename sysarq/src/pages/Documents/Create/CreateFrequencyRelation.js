@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+
 import { useParams } from "react-router-dom";
 
 import Grid from "@material-ui/core/Grid";
@@ -12,9 +14,11 @@ import {
 	getUnits,
 } from "../../../support";
 
-import { axiosArchives, axiosProfile } from "../../../Api";
+import { axiosProfile, axiosArchives } from "../../../Api";
 
 import CardContainer from "../../components/Container/CardContainer";
+
+import DocumentsDetail from "../../components/Actions/DocumentsDetail";
 
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 import ReferencePeriodInput from "../../components/Inputs/ReferencePeriodInput";
@@ -24,7 +28,9 @@ import CommonSet from "../../components/CommonSet/CommonSet";
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
-const CreateFrequencyRelation = () => {
+const CreateFrequencyRelation = ({ detail }) => {
+	const params = detail ? useParams() : "";
+
 	const [units, setUnits] = useState([]);
 
 	const [processNumber, setProcessNumber] = useState("");
@@ -268,10 +274,14 @@ const CreateFrequencyRelation = () => {
 				setReferencePeriod={setReferencePeriod}
 				setReferencePeriodHelperText={setReferencePeriodHelperText}
 				referencePeriodHelperText={referencePeriodHelperText}
-				isDisabled={isDisabled}
+				isDetailPage={detail}
 			/>
 
-			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
+			<DocumentsCreate
+				isDetailPage={detail}
+				loading={loading}
+				onSubmit={onSubmit}
+			/>
 
 			<PopUpAlert
 				open={openAlert}
@@ -281,6 +291,10 @@ const CreateFrequencyRelation = () => {
 			/>
 		</CardContainer>
 	);
+};
+
+CreateFrequencyRelation.propTypes = {
+	detail: PropTypes.bool.isRequired,
 };
 
 export default CreateFrequencyRelation;

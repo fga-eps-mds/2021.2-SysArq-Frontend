@@ -26,9 +26,11 @@ import {
 	autocompl,
 } from "../../../support";
 
-import { axiosArchives, axiosProfile } from "../../../Api";
+import { axiosProfile, axiosArchives } from "../../../Api";
 
 import CardContainer from "../../components/Container/CardContainer";
+
+import DocumentsDetail from "../../components/Actions/DocumentsDetail";
 
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 import SenderUnitInput from "../../components/Inputs/SenderUnitInput";

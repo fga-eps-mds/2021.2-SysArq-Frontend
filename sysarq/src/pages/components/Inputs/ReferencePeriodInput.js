@@ -30,7 +30,7 @@ const ReferencePeriodInput = ({
 	setReferencePeriod,
 	setReferencePeriodHelperText,
 	referencePeriodHelperText,
-	isDisabled,
+	isDetailPage,
 }) => {
 	const [openNewPeriodDialog, setOpenNewPeriodDialog] = useState(false);
 
@@ -97,12 +97,21 @@ const ReferencePeriodInput = ({
 							)}`}
 							color="secondary"
 							deleteIcon={<CancelIcon data-testid="delete" />}
-							onDelete={() => handleDeletePeriod(addedPeriod)}
-							disabled={isDisabled}
+							onDelete={
+								isDetailPage ? false : () => handleDeletePeriod(addedPeriod)
+							}
 						/>
 					))}
 
-					<AddChip label="Adicionar" onClick={handleOpenNewPeriodDialog} isDisabled={isDisabled} />
+					{isDetailPage ? (
+						""
+					) : (
+						<AddChip
+							label="Adicionar"
+							onClick={handleOpenNewPeriodDialog}
+							isDetailPage={isDetailPage}
+						/>
+					)}
 				</ChipsContainer>
 			</Grid>
 
@@ -148,7 +157,7 @@ ReferencePeriodInput.propTypes = {
 	setReferencePeriod: PropTypes.func.isRequired,
 	setReferencePeriodHelperText: PropTypes.func.isRequired,
 	referencePeriodHelperText: PropTypes.string.isRequired,
-	isDisabled: PropTypes.string.isRequired,
+	isDetailPage: PropTypes.bool.isRequired,
 };
 
 export default ReferencePeriodInput;
