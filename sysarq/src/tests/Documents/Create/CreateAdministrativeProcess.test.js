@@ -1,5 +1,8 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
+
 import { server } from "../../support/server";
 import { input, submitClick } from "../../support";
 
@@ -28,21 +31,23 @@ const UNARCHIVE_DATE_LABEL = "Data de Desarquivamento";
 const REFERENCE_FIELD_LABEL = "Referência";
 
 describe("Create Administrative Process Screen Test", () => {
-	it("complete test", async () => {
-		render(<CreateAdministrativeProcess />);
-		submitClick();
+	it("validation and post error", async () => {
+		render(<CreateAdministrativeProcess detail={false} />);
 
+		submitClick();
 		expect(screen.getByText("Insira o número do processo")).toBeInTheDocument();
 
-		input("Número do Processo*", "16");
+		input("Número do Processo*", "1");
 
 		expect(
 			screen.queryByText("Insira o número do processo")
 		).not.toBeInTheDocument();
 
+		input(NOTICE_DATE_LABEL, "");
 		submitClick();
+		expect(screen.queryByText(REQUIRED_DATE_ERROR_MESSAGE)).toBeInTheDocument();
 
-		input(NOTICE_DATE_LABEL, "01/02/");
+		input(NOTICE_DATE_LABEL, "02/");
 
 		expect(
 			screen.queryByText(REQUIRED_DATE_ERROR_MESSAGE)
@@ -57,11 +62,11 @@ describe("Create Administrative Process Screen Test", () => {
 			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
 		).not.toBeInTheDocument();
 
+		submitClick();
 		expect(screen.getByText("Insira um interessado")).toBeInTheDocument();
 
 		input("Interessado*", "interested_test");
 		expect(screen.queryByText("Insira um interessado")).not.toBeInTheDocument();
-		submitClick();
 
 		input("CPF/CNPJ", "171.819.20212");
 		submitClick();
@@ -72,11 +77,11 @@ describe("Create Administrative Process Screen Test", () => {
 		expect(
 			screen.queryByText("Insira somente números")
 		).not.toBeInTheDocument();
-		submitClick();
 
+		submitClick();
 		expect(screen.getByText("Insira um CPF/CNPJ válido")).toBeInTheDocument();
 
-		input("CPF/CNPJ", "");
+		input("CPF/CNPJ", "12345678910");
 
 		expect(
 			screen.queryByText("Insira um CPF/CNPJ válido")
@@ -125,7 +130,7 @@ describe("Create Administrative Process Screen Test", () => {
 		submitClick();
 		expect(screen.getByText("Insira um período válido")).toBeInTheDocument();
 
-		input(REFERENCE_FIELD_LABEL, "");
+		input(REFERENCE_FIELD_LABEL, "12/2012");
 
 		expect(
 			screen.queryByText("Insira um período válido")
@@ -137,7 +142,7 @@ describe("Create Administrative Process Screen Test", () => {
 
 		fireEvent.mouseDown(screen.getByLabelText("Status*"));
 		const statusOptions = within(screen.getByRole("listbox"));
-		fireEvent.click(statusOptions.getByText(/Eliminado/i));
+		fireEvent.click(statusOptions.getByText(/^Arquivado/i));
 		expect(screen.queryByText("Selecione um status")).not.toBeInTheDocument();
 
 		submitClick();
@@ -146,10 +151,30 @@ describe("Create Administrative Process Screen Test", () => {
 		expect(errorAlert).toHaveTextContent(
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
+
+		fireEvent.mouseDown(screen.getByLabelText("Status*"));
+		const statusOptions1 = within(screen.getByRole("listbox"));
+		fireEvent.click(statusOptions1.getByText(/^Desarquivado/i));
+
+		fireEvent.mouseDown(screen.getByLabelText(UNARCHIVE_DESTINATION_UNIT_LABEL));
+		const unarchiveDestinationUnitOptions = within(screen.getByRole("listbox"));
+		await unarchiveDestinationUnitOptions.findByText("unarchive_unit_name_test");
+		fireEvent.click(unarchiveDestinationUnitOptions.getByText(/unarchive_unit_name_test/i));
+
+		input(UNARCHIVE_PROCESS_NUMBER_LABEL, "44");
+
+		input(UNARCHIVE_DATE_LABEL, "09/10/204");
+		submitClick();
+		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
+
+		input(UNARCHIVE_DATE_LABEL, "09/10/2047");
+		expect(screen.queryByText(INVALID_DATE_ERROR_MESSAGE)).not.toBeInTheDocument();
+
+		submitClick();
 	});
 
 	it("success test", async () => {
-		render(<CreateAdministrativeProcess />);
+		render(<CreateAdministrativeProcess detail={false} />);
 
 		input("Número do Processo*", "50");
 		input(NOTICE_DATE_LABEL, "03/04/2005");
