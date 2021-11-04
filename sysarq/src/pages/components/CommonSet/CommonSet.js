@@ -45,11 +45,11 @@ const CommonSet = ({
 
 		<Grid item xs={12} sm={6} md={4}>
 			<ReceivedDateInput
+				isDetailPage={isDetailPage}
 				setHelperText={setReceivedDateHelperText}
 				set={setReceivedDate}
 				receivedDate={receivedDate}
 				helperText={receivedDateHelperText}
-				isDetailPage={isDetailPage}
 			/>
 		</Grid>
 
