@@ -560,11 +560,13 @@ const CreateBoxArchiving = () => {
 				clearFields={clearBoxFields}
 			/>
 
-			<ShelfInput
-				shelf={shelf}
-				set={setShelf}
-				connectionError={connectionError}
-			/>
+					<ShelfInput
+						set={setShelf}
+						connectionError={connectionError}
+						isDetailPage={detail}
+						shelfDetail={shelfDetail}
+						shelf={shelf}
+					/>
 
 					<RackInput
 						set={setRack}
