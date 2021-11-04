@@ -1,5 +1,8 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
+
 import { server } from "../../support/server";
 
 import { submitClick, input } from "../../support";
@@ -51,7 +54,7 @@ describe("Create Frequency Sheet Screen Test", () => {
 		inputTest("Lotação*", "lotaçao", "Insira um município");
 		inputTest("Município*", "teste", "Selecione um tipo");
 
-		fireEvent.mouseDown(screen.getByLabelText("Tipo do Documento*"));
+		fireEvent.mouseDown(screen.getByLabelText("Tipo de Documento*"));
 		const typeOptions = within(screen.getByRole("listbox"));
 		await typeOptions.findByText("documentType_name_test");
 		fireEvent.click(typeOptions.getByText(/documentType_name_test/i));
@@ -88,7 +91,7 @@ describe("Create Frequency Sheet Screen Test", () => {
 		input("Município*", "teste");
 		input("Período de Referencia*", "03/2020");
 
-		fireEvent.mouseDown(screen.getByLabelText("Tipo do Documento*"));
+		fireEvent.mouseDown(screen.getByLabelText("Tipo de Documento*"));
 		const typeOptions = within(screen.getByRole("listbox"));
 		await typeOptions.findByText("documentType_name_test");
 		fireEvent.click(typeOptions.getByText(/documentType_name_test/i));
@@ -99,5 +102,23 @@ describe("Create Frequency Sheet Screen Test", () => {
 		expect(failAlert).toHaveTextContent(
 			/Verifique sua conexão com a internet e recarregue a página./i
 		);
+	});
+
+	it("detailPage test", async () => {
+		const history = createMemoryHistory();
+		history.push("/documents/frequency-sheet/view/1");
+
+		render(
+			<Router history={history}>
+				<CreateFrequencySheet detail />
+			</Router>
+		);
+
+		expect(screen.getByText("Editar")).toBeInTheDocument();
+		expect(screen.getByText("Excluir")).toBeInTheDocument();
+
+		// await screen.findByDisplayValue("18");
+
+		// screen.debug();
 	});
 });

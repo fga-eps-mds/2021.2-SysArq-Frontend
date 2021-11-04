@@ -245,6 +245,6 @@ describe("Create Administrative Process Screen Test", () => {
 
 		await screen.findByDisplayValue("18");
 
-		screen.debug();
+		// screen.debug();
 	});
 });

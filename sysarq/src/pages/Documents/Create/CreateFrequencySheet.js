@@ -28,7 +28,7 @@ import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
 const CreateFrequencySheet = ({ detail }) => {
-	const params = useParams();
+	const params = detail ? useParams() : "";
 
 	const [typeDetail, setTypeDetail] = useState("");
 
@@ -242,19 +242,19 @@ const CreateFrequencySheet = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencySheet) => {
-							axiosArchives
-								.get(
-									`document-type/${responseFrequencySheet.data.document_type_id}/`,
-									{
-										headers: {
-											Authorization: `JWT ${localStorage.getItem("tk")}`,
-										},
-									}
-								)
-								.then((response) => {
-									setType(response.data);
-								})
-								.catch(() => connectionError());
+							// axiosArchives
+							// 	.get(
+							// 		`document-type/${responseFrequencySheet.data.document_type_id}/`,
+							// 		{
+							// 			headers: {
+							// 				Authorization: `JWT ${localStorage.getItem("tk")}`,
+							// 			},
+							// 		}
+							// 	)
+							// 	.then((response) => {
+							// 		setType(response.data);
+							// 	})
+							// 	.catch(() => connectionError());
 
 							setTypeDetail(responseFrequencySheet.data.document_type_name);
 

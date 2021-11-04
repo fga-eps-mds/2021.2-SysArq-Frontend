@@ -228,6 +228,21 @@ export const server = setupServer(
 		return res(ctx.status(404));
 	}),
 
+	rest.get(`${hostApiArchives}frequency-relation/:id`, (req, res, ctx) => {
+		return res(
+			ctx.json({
+				id: 1,
+				document_type_name: "document_type_name_test",
+				sender_unity_name: "sender_unity_name_test",
+				process_number: "2",
+				document_date: "2003-04-05",
+				received_date: "2006-07-08",
+				notes: "notes_test",
+				reference_period: ["2009-10-01"]
+			})
+		);
+	}),
+
 	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
 		if (req.body.process_number === "50") {
 			return res(ctx.status(201));

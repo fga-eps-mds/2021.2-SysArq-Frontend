@@ -194,30 +194,30 @@ const CreateFrequencyRelation = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencyRelation) => {
-							axiosArchives
-								.get(
-									`document-type/${responseFrequencyRelation.data.document_type_id}/`,
-									{
-										headers: {
-											Authorization: `JWT ${localStorage.getItem("tk")}`,
-										},
-									}
-								)
-								.then((response) => {
-									setDocumentType(response.data);
-								})
-								.catch(() => connectionError());
+							// axiosArchives
+							// 	.get(
+							// 		`document-type/${responseFrequencyRelation.data.document_type_id}/`,
+							// 		{
+							// 			headers: {
+							// 				Authorization: `JWT ${localStorage.getItem("tk")}`,
+							// 			},
+							// 		}
+							// 	)
+							// 	.then((response) => {
+							// 		setDocumentType(response.data);
+							// 	})
+							// 	.catch(() => connectionError());
 
-							axiosArchives
-								.get(`unity/${responseFrequencyRelation.data.sender_unity}/`, {
-									headers: {
-										Authorization: `JWT ${localStorage.getItem("tk")}`,
-									},
-								})
-								.then((response) => {
-									setSenderUnit(response.data);
-								})
-								.catch(() => connectionError());
+							// axiosArchives
+							// 	.get(`unity/${responseFrequencyRelation.data.sender_unity}/`, {
+							// 		headers: {
+							// 			Authorization: `JWT ${localStorage.getItem("tk")}`,
+							// 		},
+							// 	})
+							// 	.then((response) => {
+							// 		setSenderUnit(response.data);
+							// 	})
+							// 	.catch(() => connectionError());
 
 							setDocumentTypeDetail(
 								responseFrequencyRelation.data.document_type_name
