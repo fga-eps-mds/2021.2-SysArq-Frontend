@@ -382,7 +382,7 @@ const CreateAdministrativeProcess = () => {
 								.catch(() => connectionError());
 
 							axiosArchives
-								.get(`unity/${responseAdministrative.data.unity}/`, {
+								.get(`unity/${responseAdministrative.data.unity_id}/`, {
 									headers: {
 										Authorization: `JWT ${localStorage.getItem("tk")}`,
 									},
@@ -455,22 +455,31 @@ const CreateAdministrativeProcess = () => {
 			</Grid>
 
 			<Grid item xs={12} sm={6} md={6}>
-				<KeyboardDatePicker
-					okLabel="Confirmar"
-					cancelLabel="Cancelar"
-					style={{ width: "100%" }}
-					id="notice-date-picker-dialog"
-					label="Data de Autuação*"
-					format="dd/MM/yyyy"
-					value={noticeDate}
-					onChange={handleNoticeDateChange}
-					KeyboardButtonProps={{
-						"aria-label": "change notice date",
-					}}
-					error={noticeDateHelperText !== ""}
-					helperText={noticeDateHelperText}
-					disabled={isDisabled}
-				/>
+				{isDetailPage ? (
+					<TextField
+						fullWidth
+						id="noticeDate"
+						label="Data de Autuação"
+						value={noticeDate}
+						inputProps={{ readOnly: true }}
+					/>
+				) : (
+					<KeyboardDatePicker
+						okLabel="Confirmar"
+						cancelLabel="Cancelar"
+						style={{ width: "100%" }}
+						id="notice-date-picker-dialog"
+						label="Data de Autuação*"
+						format="dd/MM/yyyy"
+						value={noticeDate}
+						onChange={handleNoticeDateChange}
+						KeyboardButtonProps={{
+							"aria-label": "change notice date",
+						}}
+						error={noticeDateHelperText !== ""}
+						helperText={noticeDateHelperText}
+					/>
+				)}
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={8}>
@@ -483,8 +492,7 @@ const CreateAdministrativeProcess = () => {
 					error={interestedHelperText !== ""}
 					helperText={interestedHelperText}
 					multiline
-					inputProps={{ maxLength: 150 }}
-					disabled={isDisabled}
+					inputProps={{ maxLength: 150, readOnly: isDetailPage }}
 				/>
 			</Grid>
 
@@ -498,41 +506,49 @@ const CreateAdministrativeProcess = () => {
 					onChange={handlePersonRegistryChange}
 					error={personRegistryHelperText !== ""}
 					helperText={personRegistryHelperText}
-					inputProps={{ maxLength: 15 }}
-					disabled={isDisabled}
+					inputProps={{ maxLength: 15, readOnly: isDetailPage }}
 				/>
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={12}>
-				<FormControl fullWidth error={subjectHelperText !== ""}>
-					<InputLabel id="select-subject-label">
-						Assunto do Documento*
-					</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-subject-label"
-						id="select-subject"
-						value={subject}
-						onChange={handleSubjectChange}
-						renderValue={(value) => `${value.subject_name}`}
-						disabled={isDisabled}
-					>
-						<MenuItem key={0} value="">
-							<em>Nenhum</em>
-						</MenuItem>
-
-						{subjects.map((subjectOption) => (
-							<MenuItem key={subjectOption.id} value={subjectOption}>
-								{subjectOption.subject_name}
+				{isDetailPage ? (
+					<TextField
+						fullWidth
+						id="destinationUnit"
+						label="Assunto do Documento"
+						value={subjectDetail}
+						inputProps={{ readOnly: true }}
+					/>
+				) : (
+					<FormControl fullWidth error={subjectHelperText !== ""}>
+						<InputLabel id="select-subject-label">
+							Assunto do Documento*
+						</InputLabel>
+						<Select
+							style={{ textAlign: "left" }}
+							labelId="select-subject-label"
+							id="select-subject"
+							value={subject}
+							onChange={handleSubjectChange}
+							renderValue={(value) => `${value.subject_name}`}
+						>
+							<MenuItem key={0} value="">
+								<em>Nenhum</em>
 							</MenuItem>
-						))}
-					</Select>
-					{subjectHelperText ? (
-						<FormHelperText>{subjectHelperText}</FormHelperText>
-					) : (
-						""
-					)}
-				</FormControl>
+
+							{subjects.map((subjectOption) => (
+								<MenuItem key={subjectOption.id} value={subjectOption}>
+									{subjectOption.subject_name}
+								</MenuItem>
+							))}
+						</Select>
+						{subjectHelperText ? (
+							<FormHelperText>{subjectHelperText}</FormHelperText>
+						) : (
+							""
+						)}
+					</FormControl>
+				)}
 			</Grid>
 
 			<Grid item xs={12} sm={12} md={8}>

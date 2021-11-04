@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 
 import TextField from "@material-ui/core/TextField";
 
-const NumberProcessInput = ({ setHelperText, set, number, helperText, isDisabled }) => {
+const NumberProcessInput = ({
+	setHelperText,
+	set,
+	number,
+	helperText,
+	isDetailPage,
+}) => {
 	const handleChange = (event) => {
 		setHelperText("");
 		set(event.target.value);
@@ -18,8 +24,7 @@ const NumberProcessInput = ({ setHelperText, set, number, helperText, isDisabled
 			onChange={handleChange}
 			error={helperText !== ""}
 			helperText={helperText}
-			inputProps={{ maxLength: 20 }}
-			disabled={isDisabled}
+			inputProps={{ maxLength: 20, readOnly: isDetailPage }}
 		/>
 	);
 };
@@ -29,7 +34,7 @@ NumberProcessInput.propTypes = {
 	set: PropTypes.func.isRequired,
 	number: PropTypes.string.isRequired,
 	helperText: PropTypes.string.isRequired,
-	isDisabled: PropTypes.string.isRequired,
+	isDetailPage: PropTypes.bool.isRequired,
 };
 
 export default NumberProcessInput;
