@@ -552,13 +552,17 @@ const CreateBoxArchiving = () => {
 				connectionError={connectionError}
 			/>
 
-			<BoxInput
-				box={box}
-				set={setBox}
-				connectionError={connectionError}
-				setClearFields={setClearBoxFields}
-				clearFields={clearBoxFields}
-			/>
+					<BoxInput
+						set={setBox}
+						connectionError={connectionError}
+						setClearFields={setClearBoxFields}
+						clearFields={clearBoxFields}
+						isDetailPage={detail}
+						boxAbbreviationDetail={boxAbbreviationDetail}
+						boxYearDetail={boxYearDetail}
+						boxNumberDetail={boxNumberDetail}
+						box={box}
+					/>
 
 					<ShelfInput
 						set={setShelf}
