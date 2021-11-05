@@ -30,6 +30,7 @@ import PopUpAlert from "../../components/PopUpAlert";
 const CreateFrequencySheet = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
+	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
 	const [typeDetail, setTypeDetail] = useState("");
 
 	const [publicWorkers, setPublicWorkers] = useState([
@@ -256,9 +257,23 @@ const CreateFrequencySheet = ({ detail }) => {
 							// 	})
 							// 	.catch(() => connectionError());
 
+							// axiosArchives
+							// 	.get(`public-worker/${responseAdministrative.data.sender_user}/`, {
+							// 		headers: {
+							// 			Authorization: `JWT ${localStorage.getItem("tk")}`,
+							// 		},
+							// 	})
+							// 	.then((response) => {
+							// 		setPublicWorker(response.data);
+							// 	})
+							// 	.catch(() => connectionError());
+
 							setTypeDetail(responseFrequencySheet.data.document_type_name);
 
-							setPublicWorker(responseFrequencySheet.data.person_name);
+							setPublicWorkerDetail(
+								`${responseFrequencySheet.data.person_name}, ${responseFrequencySheet.data.cpf}`
+							);
+
 							setRole(responseFrequencySheet.data.role);
 							setWorkplace(responseFrequencySheet.data.workplace);
 							setDistrict(responseFrequencySheet.data.municipal_area);
@@ -306,7 +321,7 @@ const CreateFrequencySheet = ({ detail }) => {
 								fullWidth
 								id="publicWorker"
 								label="Servidor"
-								value={publicWorker}
+								value={publicWorkerDetail}
 								inputProps={{ readOnly: true }}
 							/>
 						) : (
