@@ -66,7 +66,7 @@ const CreateFrequencySheet = ({ detail }) => {
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(detail);
 
 	const handleSenderProcessNumberChange = (event) =>
 		setSenderProcessNumber(event.target.value);
