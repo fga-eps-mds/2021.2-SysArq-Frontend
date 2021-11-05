@@ -97,12 +97,12 @@ describe("Create Archiving Relation Screen Test", () => {
 		isNotOnTheScreen("documentType_name_test - 3/2021");
 
 		fireEvent.click(screen.getByText(ADD_TYPE));
-		
+
 		await documentTypeSelector();
-		
+
 		input("Mês", "");
 		input("Ano*", "2022");
-		
+
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("documentType_name_test - 2022");
 	});
