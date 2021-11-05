@@ -111,15 +111,15 @@ describe("Axios requests", () => {
 		testSelect("Estante");
 	});
 
-	it("eliminated test", async () => {
+	it("test handleCLick", async () => {
 		render(<Search />);
 
 		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
-		const subjectsOptions = within(screen.getByRole("listbox"));
-		fireEvent.click(subjectsOptions.getByText("Eliminado"));
+		const searchOptions = within(screen.getByRole("listbox"));
+		fireEvent.click(searchOptions.getByText("Eliminado"));
 
 		fireEvent.mouseDown(screen.getAllByLabelText("Filtrar por:")[0]);
-		const subjectsOptions1 = within(screen.getByRole("listbox"));
-		fireEvent.click(subjectsOptions1.getByText("Estante"));
+		const searchOptions1 = within(screen.getByRole("listbox"));
+		fireEvent.click(searchOptions1.getByText("Estante"));
 	});
 });
