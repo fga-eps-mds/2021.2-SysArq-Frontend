@@ -370,10 +370,14 @@ const DataTable = ({ url, title }) => {
 										tabIndex={-1}
 										key={row.id}
 										onClick={
-											url.indexOf("search") === -1
+											fieldUrls.indexOf(url) !== -1
 												? null
 												: () => {
-														window.location = `/documents/${row.docName}/view/${row.id}`;
+														window.location = `/documents/${
+															row.docName === undefined
+																? url
+																: `${row.docName}/`
+														}view/${row.id}`;
 												  }
 										}
 									>
