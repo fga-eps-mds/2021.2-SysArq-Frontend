@@ -23,13 +23,17 @@ import CreateDocumentType from "./pages/Fields/Create/CreateDocumentType";
 import Shelf from "./pages/Fields/List/Shelf";
 import Rack from "./pages/Fields/List/Rack";
 import CreateShelfOrRack from "./pages/Fields/Create/CreateShelfOrRack";
-import CreatePublicWorker from "./pages/Fields/Create/CreatePublicWorker";
 import PublicWorker from "./pages/Fields/List/PublicWorker";
+import CreatePublicWorker from "./pages/Fields/Create/CreatePublicWorker";
 
 import Documents from "./pages/Documents";
+import AdministrativeProcess from "./pages/Documents/List/AdministrativeProcess";
 import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdministrativeProcess";
+import FrequencyRelation from "./pages/Documents/List/FrequencyRelation";
 import CreateFrequencyRelation from "./pages/Documents/Create/CreateFrequencyRelation";
+import FrequencySheet from "./pages/Documents/List/FrequencySheet";
 import CreateFrequencySheet from "./pages/Documents/Create/CreateFrequencySheet";
+import BoxArchiving from "./pages/Documents/List/BoxArchiving";
 import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
 
 import "./App.css";
@@ -151,7 +155,7 @@ function App() {
 
 						<Route path="/documents/administrative-process">
 							<PrivateRoute exact path="/documents/administrative-process">
-								<CreateAdministrativeProcess detail={false} />
+								<AdministrativeProcess />
 							</PrivateRoute>
 
 							<PrivateRoute
@@ -168,7 +172,7 @@ function App() {
 
 						<Route path="/documents/frequency-relation">
 							<PrivateRoute exact path="/documents/frequency-relation">
-								<CreateFrequencyRelation detail={false} />
+								<FrequencyRelation />
 							</PrivateRoute>
 
 							<PrivateRoute
@@ -185,7 +189,7 @@ function App() {
 
 						<Route path="/documents/box-archiving">
 							<PrivateRoute exact path="/documents/box-archiving">
-								<CreateBoxArchiving detail={false} />
+								<BoxArchiving />
 							</PrivateRoute>
 
 							<PrivateRoute
@@ -202,7 +206,7 @@ function App() {
 
 						<Route path="/documents/frequency-sheet">
 							<PrivateRoute exact path="/documents/frequency-sheet">
-								<CreateFrequencySheet detail={false} />
+								<FrequencySheet />
 							</PrivateRoute>
 
 							<PrivateRoute
