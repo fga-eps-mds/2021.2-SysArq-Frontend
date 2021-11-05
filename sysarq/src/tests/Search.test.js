@@ -84,17 +84,6 @@ describe("Axios requests", () => {
 		testSelect("Desarquivado");
 	});
 	it("eliminated test", async () => {
-		render(<Search />);
-
-		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
-		const subjectsOptions = within(screen.getByRole("listbox"));
-		fireEvent.click(subjectsOptions.getByText("Eliminado"));
-
-		fireEvent.mouseDown(screen.getAllByLabelText("Filtrar por:")[0]);
-		const subjectsOptions1 = within(screen.getByRole("listbox"));
-		fireEvent.click(subjectsOptions1.getByText("Estante"));
-	});
-	it("eliminated test", async () => {
 		testSelect("Assunto do documento");
 	});
 	it("filed test", async () => {
@@ -120,5 +109,17 @@ describe("Axios requests", () => {
 	});
 	it("eliminated test", async () => {
 		testSelect("Estante");
+	});
+
+	it("eliminated test", async () => {
+		render(<Search />);
+
+		fireEvent.mouseDown(screen.getByLabelText("Filtrar por:"));
+		const subjectsOptions = within(screen.getByRole("listbox"));
+		fireEvent.click(subjectsOptions.getByText("Eliminado"));
+
+		fireEvent.mouseDown(screen.getAllByLabelText("Filtrar por:")[0]);
+		const subjectsOptions1 = within(screen.getByRole("listbox"));
+		fireEvent.click(subjectsOptions1.getByText("Estante"));
 	});
 });

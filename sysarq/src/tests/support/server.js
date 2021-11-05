@@ -351,7 +351,7 @@ export const server = setupServer(
 				process_number: "2",
 				document_type_id: 1,
 				temporality_date: 2033,
-				document_type_name: "document_type_name_test"
+				document_type_name: "document_type_name_test",
 			})
 		)
 	)
