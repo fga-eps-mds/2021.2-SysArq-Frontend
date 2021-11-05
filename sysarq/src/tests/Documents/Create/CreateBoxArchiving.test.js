@@ -81,6 +81,8 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		inputTypes("Mês", "0", "Insira um mês válido");
 
+		inputTypes("Mês", "", INVALID_YEAR_ERROR_MESSAGE);
+
 		inputTypes("Mês", "3", INVALID_YEAR_ERROR_MESSAGE);
 
 		inputTypes("Ano*", "1023", INVALID_YEAR_ERROR_MESSAGE);
@@ -90,6 +92,19 @@ describe("Create Archiving Relation Screen Test", () => {
 		isOnTheScreen("documentType_name_test - 3/2021");
 
 		await screen.findByText("CADASTRAR");
+
+		fireEvent.click(screen.getByTestId("delete"));
+		isNotOnTheScreen("documentType_name_test - 3/2021");
+
+		fireEvent.click(screen.getByText(ADD_TYPE));
+		
+		await documentTypeSelector();
+		
+		input("Mês", "");
+		input("Ano*", "2022");
+		
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("documentType_name_test - 2022");
 	});
 
 	it("box select", async () => {
