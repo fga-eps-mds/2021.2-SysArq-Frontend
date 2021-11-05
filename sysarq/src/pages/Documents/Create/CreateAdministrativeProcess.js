@@ -61,6 +61,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [subjectDetail, setSubjectDetail] = useState("");
 	const [destinationUnitDetail, setDestinationUnitDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
+	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
 	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] =
 		useState("");
 
@@ -395,6 +396,18 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								})
 								.catch(() => connectionError());
 
+							axiosArchives
+								.get(`public-worker/${responseAdministrative.data.sender_user}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setPublicWorker(response.data);
+									setPublicWorkerDetail(`${response.data.name}, ${response.data.cpf}`)
+								})
+								.catch(() => connectionError());
+
 							if (
 								!responseAdministrative.data.is_eliminated &&
 								!responseAdministrative.data.is_filed &&
@@ -451,7 +464,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							setNoticeDate(responseAdministrative.data.notice_date);
 							setInterested(responseAdministrative.data.interested);
 							setArchivingDate(responseAdministrative.data.archiving_date);
-							setPublicWorker(responseAdministrative.data.sender_user_name); //
 
 							setNotes(
 								responseAdministrative.data.notes
@@ -708,7 +720,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								fullWidth
 								id="publicWorker"
 								label="Servidor"
-								value={publicWorker}
+								value={publicWorkerDetail}
 								inputProps={{ readOnly: true }}
 							/>
 						) : (
