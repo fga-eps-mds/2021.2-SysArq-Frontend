@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import {
 	Grid,
+	TextField,
 	FormControl,
 	InputLabel,
 	Select,
@@ -12,7 +13,13 @@ import {
 import { axiosArchives, axiosProfile } from "../../../Api";
 import { logout } from "../../../support";
 
-const ShelfInput = ({ set, connectionError, shelf }) => {
+const ShelfInput = ({
+	set,
+	connectionError,
+	isDetailPage,
+	shelfDetail,
+	shelf,
+}) => {
 	const [shelves, setShelves] = useState([]);
 
 	const handleChange = (event) => set(event.target.value);
@@ -41,27 +48,37 @@ const ShelfInput = ({ set, connectionError, shelf }) => {
 
 	return (
 		<Grid item xs={12} sm={6} md={4}>
-			<FormControl fullWidth>
-				<InputLabel id="select-shelf-label">Estante</InputLabel>
-				<Select
-					style={{ textAlign: "left" }}
-					labelId="select-shelf-label"
-					id="select-shelf"
-					value={shelf}
-					onChange={handleChange}
-					renderValue={(value) => `${value.number}`}
-				>
-					<MenuItem value="">
-						<em>Nenhuma</em>
-					</MenuItem>
-
-					{shelves.map((shelfOption) => (
-						<MenuItem key={shelfOption.id} value={shelfOption}>
-							{shelfOption.number}
+			{isDetailPage ? (
+				<TextField
+					fullWidth
+					id="shelf"
+					label="Estante"
+					value={shelfDetail}
+					inputProps={{ readOnly: true }}
+				/>
+			) : (
+				<FormControl fullWidth>
+					<InputLabel id="select-shelf-label">Estante</InputLabel>
+					<Select
+						style={{ textAlign: "left" }}
+						labelId="select-shelf-label"
+						id="select-shelf"
+						value={shelf}
+						onChange={handleChange}
+						renderValue={(value) => `${value.number}`}
+					>
+						<MenuItem value="">
+							<em>Nenhuma</em>
 						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
+
+						{shelves.map((shelfOption) => (
+							<MenuItem key={shelfOption.id} value={shelfOption}>
+								{shelfOption.number}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
+			)}
 		</Grid>
 	);
 };
@@ -69,6 +86,8 @@ const ShelfInput = ({ set, connectionError, shelf }) => {
 ShelfInput.propTypes = {
 	set: PropTypes.func.isRequired,
 	connectionError: PropTypes.func.isRequired,
+	isDetailPage: PropTypes.bool.isRequired,
+	shelfDetail: PropTypes.string.isRequired,
 	shelf: PropTypes.string.isRequired,
 };
 

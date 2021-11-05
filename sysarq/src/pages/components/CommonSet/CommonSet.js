@@ -10,6 +10,7 @@ import SenderUnitInput from "../Inputs/SenderUnitInput";
 import NotesInput from "../Inputs/NotesInput";
 
 const CommonSet = ({
+	isDetailPage,
 	setDocumentDateHelperText,
 	setDocumentDate,
 	documentDate,
@@ -18,11 +19,13 @@ const CommonSet = ({
 	setReceivedDate,
 	receivedDate,
 	receivedDateHelperText,
+	documentTypeDetail,
 	setDocumentTypeHelperText,
 	setDocumentType,
 	connectionError,
 	documentType,
 	documentTypeHelperText,
+	senderUnitDetail,
 	setSenderUnitHelperText,
 	setSenderUnit,
 	senderUnit,
@@ -34,6 +37,7 @@ const CommonSet = ({
 	<>
 		<Grid item xs={12} sm={6} md={4}>
 			<DocumentDateInput
+				isDetailPage={isDetailPage}
 				setHelperText={setDocumentDateHelperText}
 				set={setDocumentDate}
 				documentDate={documentDate}
@@ -43,6 +47,7 @@ const CommonSet = ({
 
 		<Grid item xs={12} sm={6} md={4}>
 			<ReceivedDateInput
+				isDetailPage={isDetailPage}
 				setHelperText={setReceivedDateHelperText}
 				set={setReceivedDate}
 				receivedDate={receivedDate}
@@ -51,6 +56,8 @@ const CommonSet = ({
 		</Grid>
 
 		<DocumentTypeInput
+			isDetailPage={isDetailPage}
+			documentTypeDetail={documentTypeDetail}
 			setHelperText={setDocumentTypeHelperText}
 			set={setDocumentType}
 			connectionError={connectionError}
@@ -59,6 +66,8 @@ const CommonSet = ({
 		/>
 
 		<SenderUnitInput
+			isDetailPage={isDetailPage}
+			senderUnitDetail={senderUnitDetail}
 			setHelperText={setSenderUnitHelperText}
 			set={setSenderUnit}
 			senderUnit={senderUnit}
@@ -66,11 +75,12 @@ const CommonSet = ({
 			senderUnitHelperText={senderUnitHelperText}
 		/>
 
-		<NotesInput set={setNotes} notes={notes} />
+		<NotesInput set={setNotes} notes={notes} isDetailPage={isDetailPage} />
 	</>
 );
 
 CommonSet.propTypes = {
+	isDetailPage: PropTypes.bool.isRequired,
 	setDocumentDateHelperText: PropTypes.func.isRequired,
 	setDocumentDate: PropTypes.func.isRequired,
 	documentDate: PropTypes.instanceOf(Date).isRequired,
@@ -79,11 +89,13 @@ CommonSet.propTypes = {
 	setReceivedDate: PropTypes.func.isRequired,
 	receivedDate: PropTypes.instanceOf(Date).isRequired,
 	receivedDateHelperText: PropTypes.string.isRequired,
+	documentTypeDetail: PropTypes.string.isRequired,
 	setDocumentTypeHelperText: PropTypes.func.isRequired,
 	setDocumentType: PropTypes.func.isRequired,
 	connectionError: PropTypes.func.isRequired,
 	documentType: PropTypes.string.isRequired,
 	documentTypeHelperText: PropTypes.string.isRequired,
+	senderUnitDetail: PropTypes.string.isRequired,
 	setSenderUnitHelperText: PropTypes.func.isRequired,
 	setSenderUnit: PropTypes.func.isRequired,
 	senderUnit: PropTypes.string.isRequired,

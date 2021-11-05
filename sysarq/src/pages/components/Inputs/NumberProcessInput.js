@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 
 import TextField from "@material-ui/core/TextField";
 
-const NumberProcessInput = ({ setHelperText, set, number, helperText }) => {
+const NumberProcessInput = ({
+	setHelperText,
+	set,
+	number,
+	helperText,
+	isDetailPage,
+}) => {
 	const handleChange = (event) => {
 		setHelperText("");
 		set(event.target.value);
@@ -13,12 +19,12 @@ const NumberProcessInput = ({ setHelperText, set, number, helperText }) => {
 		<TextField
 			fullWidth
 			id="processNumber"
-			label="Número do Processo*"
+			label={isDetailPage ? "Número do Processo" : "Número do Processo*"}
 			value={number}
 			onChange={handleChange}
 			error={helperText !== ""}
 			helperText={helperText}
-			inputProps={{ maxLength: 20 }}
+			inputProps={{ maxLength: 20, readOnly: isDetailPage }}
 		/>
 	);
 };
@@ -28,6 +34,7 @@ NumberProcessInput.propTypes = {
 	set: PropTypes.func.isRequired,
 	number: PropTypes.string.isRequired,
 	helperText: PropTypes.string.isRequired,
+	isDetailPage: PropTypes.bool.isRequired,
 };
 
 export default NumberProcessInput;

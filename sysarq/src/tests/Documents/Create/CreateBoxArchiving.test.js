@@ -1,5 +1,8 @@
 import { screen, fireEvent, render, within } from "@testing-library/react";
 
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
+
 import { server } from "../../support/server";
 
 import {
@@ -78,6 +81,8 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		inputTypes("Mês", "0", "Insira um mês válido");
 
+		inputTypes("Mês", "", INVALID_YEAR_ERROR_MESSAGE);
+
 		inputTypes("Mês", "3", INVALID_YEAR_ERROR_MESSAGE);
 
 		inputTypes("Ano*", "1023", INVALID_YEAR_ERROR_MESSAGE);
@@ -87,6 +92,19 @@ describe("Create Archiving Relation Screen Test", () => {
 		isOnTheScreen("documentType_name_test - 3/2021");
 
 		await screen.findByText("CADASTRAR");
+
+		fireEvent.click(screen.getByTestId("delete"));
+		isNotOnTheScreen("documentType_name_test - 3/2021");
+
+		fireEvent.click(screen.getByText(ADD_TYPE));
+
+		await documentTypeSelector();
+
+		input("Mês", "");
+		input("Ano*", "2022");
+
+		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
+		isOnTheScreen("documentType_name_test - 2022");
 	});
 
 	it("box select", async () => {
@@ -292,5 +310,23 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		const successAlert = await screen.findByRole("alert");
 		expect(successAlert).toHaveTextContent(/Documento cadastrado!/i);
+	});
+
+	it("detailPage test", async () => {
+		const history = createMemoryHistory();
+		history.push("/documents/box-archiving/view/1");
+
+		render(
+			<Router history={history}>
+				<CreateBoxArchiving detail />
+			</Router>
+		);
+
+		expect(screen.getByText("Editar")).toBeInTheDocument();
+		expect(screen.getByText("Excluir")).toBeInTheDocument();
+
+		await screen.findByDisplayValue("7");
+
+		// screen.debug();
 	});
 });

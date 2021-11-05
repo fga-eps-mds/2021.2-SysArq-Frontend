@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+
+import { useParams } from "react-router-dom";
 
 import {
 	Grid,
+	CircularProgress,
 	TextField,
 	Typography,
 	Chip,
@@ -43,6 +47,7 @@ import {
 import { axiosProfile, axiosArchives } from "../../../Api";
 
 import CardContainer from "../../components/Container/CardContainer";
+import DocumentsDetail from "../../components/Actions/DocumentsDetail";
 
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 import ReceivedDateInput from "../../components/Inputs/ReceivedDateInput";
@@ -62,11 +67,22 @@ import NotesInput from "../../components/Inputs/NotesInput";
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
-const CreateBoxArchiving = () => {
+const CreateBoxArchiving = ({ detail }) => {
+	const params = detail ? useParams() : "";
+
+	const [senderUnitDetail, setSenderUnitDetail] = useState("");
+
+	const [boxAbbreviationDetail, setBoxAbbreviationDetail] = useState("");
+	const [boxYearDetail, setBoxYearDetail] = useState("");
+	const [boxNumberDetail, setBoxNumberDetail] = useState("");
+
+	const [shelfDetail, setShelfDetail] = useState("");
+	const [rackDetail, setRackDetail] = useState("");
+
 	const [units, setUnits] = useState([]);
 
 	const [processNumber, setProcessNumber] = useState("");
-	const [receivedDate, setReceivedDate] = useState(initialDate);
+	const [receivedDate, setReceivedDate] = useState(detail ? "" : initialDate);
 	const [senderUnit, setSenderUnit] = useState("");
 	const [box, setBox] = useState("");
 	const [shelf, setShelf] = useState("");
@@ -120,7 +136,7 @@ const CreateBoxArchiving = () => {
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(detail);
 
 	const handleOpenNewOriginBoxDialog = () => setOpenNewOriginBoxDialog(true);
 
@@ -391,184 +407,342 @@ const CreateBoxArchiving = () => {
 	};
 
 	useEffect(() => {
+		if (detail) {
+			setLoading(true);
+
+			axiosProfile
+				.post(`api/token/refresh/`, {
+					refresh: localStorage.getItem("tkr"),
+				})
+				.then((res) => {
+					localStorage.setItem("tk", res.data.access);
+					localStorage.setItem("tkr", res.data.refresh);
+
+					axiosArchives
+						.get(`box-archiving/${params.id}`, {
+							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						})
+						.then((responseBoxArchiving) => {
+							// axiosArchives
+							// 	.get(`unity/${responseBoxArchiving.data.sender_unity}/`, {
+							// 		headers: {
+							// 			Authorization: `JWT ${localStorage.getItem("tk")}`,
+							// 		},
+							// 	})
+							// 	.then((response) => {
+							// 		setSenderUnit(response.data);
+							// 	})
+							// 	.catch(() => connectionError());
+
+							if (responseBoxArchiving.data.abbreviation_id) {
+								axiosArchives
+									.get(
+										`box-abbreviation/${responseBoxArchiving.data.abbreviation_id}/`,
+										{
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										}
+									)
+									.then((response) => {
+										setBox(response.data);
+
+										setBoxAbbreviationDetail(response.data.abbreviation);
+										setBoxNumberDetail(response.data.number);
+										setBoxYearDetail(response.data.year);
+									})
+									.catch(() => connectionError());
+							} else {
+								setBoxAbbreviationDetail("-");
+								setBoxNumberDetail("-");
+								setBoxYearDetail("-");
+							}
+
+							setSenderUnitDetail(responseBoxArchiving.data.sender_unity_name);
+
+							setShelfDetail(
+								responseBoxArchiving.data.shelf_number
+									? responseBoxArchiving.data.shelf_number
+									: "-"
+							);
+							setRackDetail(
+								responseBoxArchiving.data.rack_number
+									? responseBoxArchiving.data.rack_number
+									: "-"
+							);
+
+							setProcessNumber(responseBoxArchiving.data.process_number);
+							setReceivedDate(responseBoxArchiving.data.received_date);
+							setTypeList(responseBoxArchiving.data.document_types);
+
+							setNotes(
+								responseBoxArchiving.data.notes
+									? responseBoxArchiving.data.notes
+									: "-"
+							);
+
+							// TO-DO: Coesão nos nomes de variáveis da caixa de origem
+
+							if (responseBoxArchiving.data.origin_box_id) {
+								const subjectsListDetail = [];
+
+								responseBoxArchiving.data.origin_box.subject_list.map(
+									(subject) =>
+										subjectsListDetail.push({
+											name: subject.name,
+											dates: subject.date,
+										})
+								);
+
+								const originBoxDetail = {
+									number: responseBoxArchiving.data.origin_box.number,
+									year: responseBoxArchiving.data.origin_box.year,
+									subjects_list: subjectsListDetail,
+								};
+
+								setOriginBox(originBoxDetail);
+							}
+
+							setLoading(false);
+						})
+						.catch(() => connectionError());
+				})
+				.catch((error) => {
+					axiosProfileError(error, connectionError);
+				});
+		}
+
 		getUnits(setUnits, connectionError);
 	}, []);
 
 	return (
 		<CardContainer title="Arquivamento de Caixas" spacing={1}>
-			<Grid item xs={12} sm={6} md={6}>
-				<NumberProcessInput
-					setHelperText={setProcessNumberHelperText}
-					set={setProcessNumber}
-					number={processNumber}
-					helperText={processNumberHelperText}
-				/>
-			</Grid>
+			{detail ? <DocumentsDetail /> : ""}
 
-			<Grid item xs={12} sm={6} md={6}>
-				<ReceivedDateInput
-					setHelperText={setReceivedDateHelperText}
-					set={setReceivedDate}
-					receivedDate={receivedDate}
-					helperText={receivedDateHelperText}
-				/>
-			</Grid>
-
-			<SenderUnitInput
-				setHelperText={setSenderUnitHelperText}
-				set={setSenderUnit}
-				senderUnit={senderUnit}
-				units={units}
-				senderUnitHelperText={senderUnitHelperText}
-			/>
-
-			<Grid item xs={12} sm={12} md={12}>
-				<SpecialLabels label="Caixa de Origem" />
-
-				{originBox.number !== undefined ? (
-					<Accordion>
-						<AccordionSummary expandIcon={<ExpandMoreIcon />}>
-							<Typography>
-								{originBox.number}/{originBox.year}
-							</Typography>
-						</AccordionSummary>
-						<AccordionDetails>
-							<div style={{ width: "100%" }}>
-								<TableContainer style={{ width: "100%" }} component={Paper}>
-									<Table size="small">
-										<TableHead>
-											<TableRow>
-												<TableCell>Assunto</TableCell>
-												<TableCell>Datas</TableCell>
-												<TableCell>{}</TableCell>
-											</TableRow>
-										</TableHead>
-										<TableBody>
-											{originBox.subjects_list.map((subject, subjectIndex) => (
-												<TableRow key={subject.name}>
-													<TableCell>{subject.name}</TableCell>
-													<TableCell>
-														<ChipsContainer
-															justifyContent="left"
-															marginTop="0%"
-														>
-															{subject.dates.map((addedDate) => (
-																<Chip
-																	icon={<TimelapseIcon />}
-																	label={`${addedDate.substring(
-																		8,
-																		10
-																	)}/${addedDate.substring(
-																		5,
-																		7
-																	)}/${addedDate.substring(0, 4)}`}
-																	color="secondary"
-																	deleteIcon={
-																		<CancelIcon data-testid="delete" />
-																	}
-																	onDelete={() =>
-																		handleDeleteOriginBoxSubjectDate(
-																			subjectIndex,
-																			addedDate
-																		)
-																	}
-																/>
-															))}
-
-															<AddChip
-																label="Adicionar Data"
-																onClick={() =>
-																	handleOpenNewOriginBoxSubjectDateDialog(
-																		subjectIndex
-																	)
-																}
-															/>
-														</ChipsContainer>
-													</TableCell>
-													<TableCell>
-														<ChipsContainer
-															justifyContent="right"
-															marginTop="0%"
-														>
-															<Chip
-																variant="outlined"
-																label="Excluir"
-																icon={<CloseIcon />}
-																color="secondary"
-																clickable
-																onClick={() =>
-																	handleDeleteOriginBoxSubject(subjectIndex)
-																}
-															/>
-														</ChipsContainer>
-													</TableCell>
-												</TableRow>
-											))}
-										</TableBody>
-									</Table>
-								</TableContainer>
-
-								<div
-									style={{ display: "flex", justifyContent: "space-between" }}
-								>
-									<ChipsContainer justifyContent="left" marginTop="0.5%">
-										<Chip
-											variant="outlined"
-											color="secondary"
-											label="Excluir Caixa de Origem"
-											icon={<DeleteForeverRoundedIcon />}
-											onClick={() => handleDeleteOriginBox()}
-											clickable
-										/>
-									</ChipsContainer>
-									<ChipsContainer justifyContent="right" marginTop="0.5%">
-										<Chip
-											label="Adicionar Assunto"
-											icon={<AddCircleIcon />}
-											color="primary"
-											onClick={() => handleOpenNewOriginBoxSubjectDialog()}
-											clickable
-										/>
-									</ChipsContainer>
-								</div>
-							</div>
-						</AccordionDetails>
-					</Accordion>
-				) : (
-					<ChipsContainer justifyContent="left" marginTop="0%">
-						<AddChip
-							label="Adicionar Caixa de Origem"
-							onClick={handleOpenNewOriginBoxDialog}
+			{detail && loading ? (
+				<CircularProgress style={{ margin: "auto" }} />
+			) : (
+				<>
+					<Grid item xs={12} sm={6} md={6}>
+						<NumberProcessInput
+							setHelperText={setProcessNumberHelperText}
+							set={setProcessNumber}
+							number={processNumber}
+							helperText={processNumberHelperText}
+							isDetailPage={detail}
 						/>
-					</ChipsContainer>
-				)}
-			</Grid>
+					</Grid>
 
-			<DocumentsTypeInput
-				typeList={typeList}
-				setTypeList={setTypeList}
-				typeListHelperText={typeListHelperText}
-				setTypeListHelperText={setTypeListHelperText}
-				connectionError={connectionError}
-			/>
+					<Grid item xs={12} sm={6} md={6}>
+						<ReceivedDateInput
+							isDetailPage={detail}
+							setHelperText={setReceivedDateHelperText}
+							set={setReceivedDate}
+							receivedDate={receivedDate}
+							helperText={receivedDateHelperText}
+						/>
+					</Grid>
 
-			<BoxInput
-				box={box}
-				set={setBox}
-				connectionError={connectionError}
-				setClearFields={setClearBoxFields}
-				clearFields={clearBoxFields}
-			/>
+					<SenderUnitInput
+						isDetailPage={detail}
+						senderUnitDetail={senderUnitDetail}
+						setHelperText={setSenderUnitHelperText}
+						set={setSenderUnit}
+						senderUnit={senderUnit}
+						units={units}
+						senderUnitHelperText={senderUnitHelperText}
+					/>
 
-			<ShelfInput
-				shelf={shelf}
-				set={setShelf}
-				connectionError={connectionError}
-			/>
+					<Grid item xs={12} sm={12} md={12}>
+						<SpecialLabels label="Caixa de Origem" />
 
-			<RackInput rack={rack} set={setRack} connectionError={connectionError} />
+						{originBox.number !== undefined ? (
+							<Accordion>
+								<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+									<Typography>
+										{originBox.number}/{originBox.year}
+									</Typography>
+								</AccordionSummary>
+								<AccordionDetails>
+									<div style={{ width: "100%" }}>
+										<TableContainer style={{ width: "100%" }} component={Paper}>
+											<Table size="small">
+												<TableHead>
+													<TableRow>
+														<TableCell>Assunto</TableCell>
+														<TableCell>Datas</TableCell>
+														{detail ? "" : <TableCell>{}</TableCell>}
+													</TableRow>
+												</TableHead>
+												<TableBody>
+													{originBox.subjects_list.map(
+														(subject, subjectIndex) => (
+															<TableRow key={subject.name}>
+																<TableCell>{subject.name}</TableCell>
+																<TableCell>
+																	<ChipsContainer
+																		justifyContent="left"
+																		marginTop="0%"
+																	>
+																		{subject.dates.map((addedDate) => (
+																			<Chip
+																				icon={<TimelapseIcon />}
+																				label={`${addedDate.substring(
+																					8,
+																					10
+																				)}/${addedDate.substring(
+																					5,
+																					7
+																				)}/${addedDate.substring(0, 4)}`}
+																				color="secondary"
+																				deleteIcon={
+																					<CancelIcon data-testid="delete" />
+																				}
+																				onDelete={
+																					detail
+																						? false
+																						: () =>
+																								handleDeleteOriginBoxSubjectDate(
+																									subjectIndex,
+																									addedDate
+																								)
+																				}
+																			/>
+																		))}
 
-			<NotesInput set={setNotes} notes={notes} />
+																		{detail ? (
+																			""
+																		) : (
+																			<AddChip
+																				label="Adicionar Data"
+																				onClick={() =>
+																					handleOpenNewOriginBoxSubjectDateDialog(
+																						subjectIndex
+																					)
+																				}
+																			/>
+																		)}
+																	</ChipsContainer>
+																</TableCell>
+																{detail ? (
+																	""
+																) : (
+																	<TableCell>
+																		<ChipsContainer
+																			justifyContent="right"
+																			marginTop="0%"
+																		>
+																			<Chip
+																				variant="outlined"
+																				label="Excluir"
+																				icon={<CloseIcon />}
+																				color="secondary"
+																				clickable
+																				onClick={() =>
+																					handleDeleteOriginBoxSubject(
+																						subjectIndex
+																					)
+																				}
+																			/>
+																		</ChipsContainer>
+																	</TableCell>
+																)}
+															</TableRow>
+														)
+													)}
+												</TableBody>
+											</Table>
+										</TableContainer>
+
+										{detail ? (
+											""
+										) : (
+											<div
+												style={{
+													display: "flex",
+													justifyContent: "space-between",
+												}}
+											>
+												<ChipsContainer justifyContent="left" marginTop="0.5%">
+													<Chip
+														variant="outlined"
+														color="secondary"
+														label="Excluir Caixa de Origem"
+														icon={<DeleteForeverRoundedIcon />}
+														onClick={() => handleDeleteOriginBox()}
+														clickable
+													/>
+												</ChipsContainer>
+												<ChipsContainer justifyContent="right" marginTop="0.5%">
+													<Chip
+														label="Adicionar Assunto"
+														icon={<AddCircleIcon />}
+														color="primary"
+														onClick={() =>
+															handleOpenNewOriginBoxSubjectDialog()
+														}
+														clickable
+													/>
+												</ChipsContainer>
+											</div>
+										)}
+									</div>
+								</AccordionDetails>
+							</Accordion>
+						) : (
+							<ChipsContainer justifyContent="left" marginTop="0%">
+								{detail ? (
+									<Chip label="Não cadastrada" />
+								) : (
+									<AddChip
+										label="Adicionar Caixa de Origem"
+										onClick={handleOpenNewOriginBoxDialog}
+									/>
+								)}
+							</ChipsContainer>
+						)}
+					</Grid>
+
+					<DocumentsTypeInput
+						typeList={typeList}
+						setTypeList={setTypeList}
+						typeListHelperText={typeListHelperText}
+						setTypeListHelperText={setTypeListHelperText}
+						isDetailPage={detail}
+						connectionError={connectionError}
+					/>
+
+					<BoxInput
+						set={setBox}
+						connectionError={connectionError}
+						setClearFields={setClearBoxFields}
+						clearFields={clearBoxFields}
+						isDetailPage={detail}
+						boxAbbreviationDetail={boxAbbreviationDetail}
+						boxYearDetail={boxYearDetail}
+						boxNumberDetail={boxNumberDetail}
+						box={box}
+					/>
+
+					<ShelfInput
+						set={setShelf}
+						connectionError={connectionError}
+						isDetailPage={detail}
+						shelfDetail={shelfDetail}
+						shelf={shelf}
+					/>
+
+					<RackInput
+						set={setRack}
+						connectionError={connectionError}
+						isDetailPage={detail}
+						rackDetail={rackDetail}
+						rack={rack}
+					/>
+
+					<NotesInput set={setNotes} notes={notes} isDetailPage={detail} />
+				</>
+			)}
 
 			<Dialog
 				fullWidth
@@ -716,7 +890,11 @@ const CreateBoxArchiving = () => {
 				getDropRejectMessage
 			/> */}
 
-			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
+			<DocumentsCreate
+				isDetailPage={detail}
+				loading={loading}
+				onSubmit={onSubmit}
+			/>
 
 			<PopUpAlert
 				open={openAlert}
@@ -726,6 +904,10 @@ const CreateBoxArchiving = () => {
 			/>
 		</CardContainer>
 	);
+};
+
+CreateBoxArchiving.propTypes = {
+	detail: PropTypes.bool.isRequired,
 };
 
 export default CreateBoxArchiving;

@@ -22,7 +22,6 @@ import {
 import MuiLink from "@material-ui/core/Link";
 
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 
 import tableHeadCells from "./tablesHeadCells";
 
@@ -103,6 +102,16 @@ function getComparator(order, orderBy) {
 const DataTable = ({ url, title }) => {
 	const classes = useStyles();
 
+	const fieldUrls = [
+		"document-subject/",
+		"unity/",
+		"box-abbreviation/",
+		"document-type/",
+		"shelf/",
+		"rack/",
+		"public-worker/",
+	];
+
 	const [headCells, setHeadCells] = useState([]);
 	const [rows, setRows] = useState([]);
 
@@ -147,10 +156,31 @@ const DataTable = ({ url, title }) => {
 							if (url && url.includes("search")) {
 								const listTable = [];
 
-								listTable.push(...response.data.box_archiving);
-								listTable.push(...response.data.frequency_sheet);
-								listTable.push(...response.data.administrative_process);
-								listTable.push(...response.data.frequecy_relation);
+								response.data.administrative_process.map(
+									(administrativeProcess) =>
+										listTable.push({
+											docName: "administrative-process",
+											...administrativeProcess,
+										})
+								);
+
+								response.data.frequecy_relation.map((frequencyRelation) =>
+									listTable.push({
+										docName: "frequency-relation",
+										...frequencyRelation,
+									})
+								);
+
+								response.data.frequency_sheet.map((frequencySheet) =>
+									listTable.push({
+										docName: "frequency-sheet",
+										...frequencySheet,
+									})
+								);
+
+								response.data.box_archiving.map((boxArchiving) =>
+									listTable.push({ docName: "box-archiving", ...boxArchiving })
+								);
 
 								setRows(listTable);
 							} else {
@@ -320,7 +350,9 @@ const DataTable = ({ url, title }) => {
 												) : null}
 											</TableSortLabel>
 										</TableCell>
-										{headCells.indexOf(headCell) === headCells.length - 1 ? (
+
+										{headCells.indexOf(headCell) === headCells.length - 1 &&
+										fieldUrls.indexOf(url) !== -1 ? (
 											<TableCell aling="right">{}</TableCell>
 										) : (
 											""
@@ -333,7 +365,22 @@ const DataTable = ({ url, title }) => {
 							{stableSort(rows, getComparator(order, orderBy))
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row) => (
-									<TableRow hover tabIndex={-1} key={row.id}>
+									<TableRow
+										hover
+										tabIndex={-1}
+										key={row.id}
+										onClick={
+											fieldUrls.indexOf(url) !== -1
+												? null
+												: () => {
+														window.location = `/documents/${
+															row.docName === undefined
+																? url
+																: `${row.docName}/`
+														}view/${row.id}`;
+												  }
+										}
+									>
 										{Array.from(Array(headCells.length).keys()).map(
 											(headCellIndex) => (
 												<>
@@ -343,25 +390,20 @@ const DataTable = ({ url, title }) => {
 													>
 														{cellContent(row, headCells[headCellIndex].id)}
 													</TableCell>
-													{headCellIndex === headCells.length - 1 ? (
+
+													{headCellIndex === headCells.length - 1 &&
+													fieldUrls.indexOf(url) !== -1 ? (
 														<TableCell align="right">
-															<IconButton color="secondary" size="small">
-																<EditIcon />
+															<IconButton
+																style={{ color: "#fe0000" }}
+																color="inherit"
+																size="small"
+															>
+																<DeleteIcon
+																	data-testid="delete-field"
+																	onClick={() => deleteRow(row)}
+																/>
 															</IconButton>
-															{window.location.href.includes(
-																"search"
-															) ? null : (
-																<IconButton
-																	style={{ color: "#fe0000" }}
-																	color="inherit"
-																	size="small"
-																>
-																	<DeleteIcon
-																		data-testid="delete-field"
-																		onClick={() => deleteRow(row)}
-																	/>
-																</IconButton>
-															)}
 														</TableCell>
 													) : (
 														""

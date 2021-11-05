@@ -124,7 +124,7 @@ export default function Search() {
 		<div>
 			<body id="body">
 				<img id="logo" src={imgBox} alt="Logo" />
-				<h1 id="search_title">Arquivo Geral da Polícia Civil do Goiás</h1>
+				<h1 id="search_title">Arquivo Geral da Polícia Civil de Goiás</h1>
 				{show === true ? (
 					<Alert severity="error">Selecione algum filtro</Alert>
 				) : (

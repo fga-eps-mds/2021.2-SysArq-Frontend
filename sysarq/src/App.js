@@ -23,13 +23,17 @@ import CreateDocumentType from "./pages/Fields/Create/CreateDocumentType";
 import Shelf from "./pages/Fields/List/Shelf";
 import Rack from "./pages/Fields/List/Rack";
 import CreateShelfOrRack from "./pages/Fields/Create/CreateShelfOrRack";
-import CreatePublicWorker from "./pages/Fields/Create/CreatePublicWorker";
 import PublicWorker from "./pages/Fields/List/PublicWorker";
+import CreatePublicWorker from "./pages/Fields/Create/CreatePublicWorker";
 
 import Documents from "./pages/Documents";
+import AdministrativeProcess from "./pages/Documents/List/AdministrativeProcess";
 import CreateAdministrativeProcess from "./pages/Documents/Create/CreateAdministrativeProcess";
+import FrequencyRelation from "./pages/Documents/List/FrequencyRelation";
 import CreateFrequencyRelation from "./pages/Documents/Create/CreateFrequencyRelation";
+import FrequencySheet from "./pages/Documents/List/FrequencySheet";
 import CreateFrequencySheet from "./pages/Documents/Create/CreateFrequencySheet";
+import BoxArchiving from "./pages/Documents/List/BoxArchiving";
 import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
 
 import "./App.css";
@@ -151,53 +155,69 @@ function App() {
 
 						<Route path="/documents/administrative-process">
 							<PrivateRoute exact path="/documents/administrative-process">
-								<CreateAdministrativeProcess />
+								<AdministrativeProcess />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
 								path="/documents/administrative-process/create"
 							>
-								<CreateAdministrativeProcess />
+								<CreateAdministrativeProcess detail={false} />
+							</PrivateRoute>
+
+							<PrivateRoute path="/documents/administrative-process/view/:id">
+								<CreateAdministrativeProcess detail />
 							</PrivateRoute>
 						</Route>
 
 						<Route path="/documents/frequency-relation">
 							<PrivateRoute exact path="/documents/frequency-relation">
-								<CreateFrequencyRelation />
+								<FrequencyRelation />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
 								path="/documents/frequency-relation/create"
 							>
-								<CreateFrequencyRelation />
+								<CreateFrequencyRelation detail={false} />
+							</PrivateRoute>
+
+							<PrivateRoute path="/documents/frequency-relation/view/:id">
+								<CreateFrequencyRelation detail />
 							</PrivateRoute>
 						</Route>
 
 						<Route path="/documents/box-archiving">
 							<PrivateRoute exact path="/documents/box-archiving">
-								<CreateBoxArchiving />
+								<BoxArchiving />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
 								path="/documents/box-archiving/create"
 							>
-								<CreateBoxArchiving />
+								<CreateBoxArchiving detail={false} />
+							</PrivateRoute>
+
+							<PrivateRoute path="/documents/box-archiving/view/:id">
+								<CreateBoxArchiving detail />
 							</PrivateRoute>
 						</Route>
 
 						<Route path="/documents/frequency-sheet">
 							<PrivateRoute exact path="/documents/frequency-sheet">
-								<CreateFrequencySheet />
+								<FrequencySheet />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
 								path="/documents/frequency-sheet/create"
 							>
-								<CreateFrequencySheet />
+								<CreateFrequencySheet detail={false} />
+							</PrivateRoute>
+
+							<PrivateRoute path="/documents/frequency-sheet/view/:id">
+								<CreateFrequencySheet detail />
 							</PrivateRoute>
 						</Route>
 					</Route>
