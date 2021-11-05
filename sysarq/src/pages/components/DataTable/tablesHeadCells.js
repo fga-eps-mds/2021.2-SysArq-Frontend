@@ -249,7 +249,7 @@ const boxArchivingHeadCells = [
 	{
 		id: "received_date",
 		numeric: false,
-		label: "Date de Recebimento",
+		label: "Data de Recebimento",
 	},
 	{
 		id: "sender_unity_name",
