@@ -171,6 +171,98 @@ const publicWorkerHeadCells = [
 	},
 ];
 
+const administrativeProcessHeadCells = [
+	{
+		id: "process_number",
+		numeric: false,
+		label: "Número do Processo",
+	},
+	{
+		id: "notice_date",
+		numeric: false,
+		label: "Data de Autuação",
+	},
+	{
+		id: "interested",
+		numeric: false,
+		label: "Interessado",
+	},
+	{
+		id: "document_subject_name",
+		numeric: false,
+		label: "Assunto",
+	},
+];
+
+const frequencyRelationHeadCells = [
+	{
+		id: "process_number",
+		numeric: false,
+		label: "Número do Processo",
+	},
+	{
+		id: "document_date",
+		numeric: false,
+		label: "Data do Documento",
+	},
+	{
+		id: "received_date",
+		numeric: false,
+		label: "Data de Recebimento",
+	},
+	{
+		id: "document_type_name",
+		numeric: false,
+		label: "Tipo de Documento",
+	},
+];
+
+const frequencySheetHeadCells = [
+	{
+		id: "person_name",
+		numeric: false,
+		label: "Servidor",
+	},
+	{
+		id: "cpf",
+		numeric: false,
+		label: "CPF",
+	},
+	{
+		id: "role",
+		numeric: false,
+		label: "Cargo",
+	},
+	{
+		id: "reference_period",
+		numeric: false,
+		label: "Período de Referência",
+	},
+];
+
+const boxArchivingHeadCells = [
+	{
+		id: "process_number",
+		numeric: false,
+		label: "Número do Processo",
+	},
+	{
+		id: "received_date",
+		numeric: false,
+		label: "Date de Recebimento",
+	},
+	{
+		id: "sender_unity_name",
+		numeric: false,
+		label: "Unidade que Encaminhou",
+	},
+	{
+		id: "document_type_name",
+		numeric: false,
+		label: "Tipos do Documento",
+	},
+];
+
 const tableHeadCells = (url) => {
 	let headCells = [];
 
@@ -188,9 +280,18 @@ const tableHeadCells = (url) => {
 		headCells = rackHeadCells;
 	} else if (url === "public-worker/") {
 		headCells = publicWorkerHeadCells;
+	} else if (url === "administrative-process/") {
+		headCells = administrativeProcessHeadCells;
+	} else if (url === "frequency-relation/") {
+		headCells = frequencyRelationHeadCells;
+	} else if (url === "frequency-sheet/") {
+		headCells = frequencySheetHeadCells;
+	} else if (url === "box-archiving/") {
+		headCells = boxArchivingHeadCells;
 	} else if (url && url.includes("search")) {
 		headCells = headCellsSearch();
 	}
+
 	return headCells;
 };
 
