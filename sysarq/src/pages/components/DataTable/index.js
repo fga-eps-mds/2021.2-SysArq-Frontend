@@ -103,6 +103,13 @@ function getComparator(order, orderBy) {
 const DataTable = ({ url, title }) => {
 	const classes = useStyles();
 
+	const documentsUrls = [
+		"administrative-process",
+		"frequency-relation",
+		"frequency-sheet",
+		"box-archiving",
+	];
+
 	const [headCells, setHeadCells] = useState([]);
 	const [rows, setRows] = useState([]);
 
