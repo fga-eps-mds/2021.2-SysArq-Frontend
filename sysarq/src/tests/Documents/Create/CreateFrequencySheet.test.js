@@ -117,7 +117,7 @@ describe("Create Frequency Sheet Screen Test", () => {
 		expect(screen.getByText("Editar")).toBeInTheDocument();
 		expect(screen.getByText("Excluir")).toBeInTheDocument();
 
-		// await screen.findByDisplayValue("18");
+		await screen.findByDisplayValue("person_name_test");
 
 		// screen.debug();
 	});

@@ -185,14 +185,18 @@ function App() {
 
 						<Route path="/documents/box-archiving">
 							<PrivateRoute exact path="/documents/box-archiving">
-								<CreateBoxArchiving />
+								<CreateBoxArchiving detail={false} />
 							</PrivateRoute>
 
 							<PrivateRoute
 								exact={false}
 								path="/documents/box-archiving/create"
 							>
-								<CreateBoxArchiving />
+								<CreateBoxArchiving detail={false} />
+							</PrivateRoute>
+
+							<PrivateRoute path="/documents/box-archiving/view/:id">
+								<CreateBoxArchiving detail />
 							</PrivateRoute>
 						</Route>
 

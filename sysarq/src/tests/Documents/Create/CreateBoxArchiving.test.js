@@ -1,5 +1,8 @@
 import { screen, fireEvent, render, within } from "@testing-library/react";
 
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
+
 import { server } from "../../support/server";
 
 import {
@@ -292,5 +295,23 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		const successAlert = await screen.findByRole("alert");
 		expect(successAlert).toHaveTextContent(/Documento cadastrado!/i);
+	});
+
+	it("detailPage test", async () => {
+		const history = createMemoryHistory();
+		history.push("/documents/box-archiving/view/1");
+
+		render(
+			<Router history={history}>
+				<CreateBoxArchiving detail />
+			</Router>
+		);
+
+		expect(screen.getByText("Editar")).toBeInTheDocument();
+		expect(screen.getByText("Excluir")).toBeInTheDocument();
+
+		await screen.findByDisplayValue("7");
+
+		// screen.debug();
 	});
 });
