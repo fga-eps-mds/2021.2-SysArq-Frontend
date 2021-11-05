@@ -109,6 +109,7 @@ const DataTable = ({ url, title }) => {
 		"document-type/",
 		"shelf/",
 		"rack/",
+		"public-worker/",
 	];
 
 	const [headCells, setHeadCells] = useState([]);
@@ -351,7 +352,7 @@ const DataTable = ({ url, title }) => {
 										</TableCell>
 
 										{headCells.indexOf(headCell) === headCells.length - 1 &&
-										url.indexOf("search") === -1 ? (
+										fieldUrls.indexOf(url) !== -1 ? (
 											<TableCell aling="right">{}</TableCell>
 										) : (
 											""
