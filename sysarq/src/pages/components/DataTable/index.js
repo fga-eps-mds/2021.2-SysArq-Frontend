@@ -367,9 +367,13 @@ const DataTable = ({ url, title }) => {
 										hover
 										tabIndex={-1}
 										key={row.id}
-										onClick={() => {
-											window.location = `/documents/${row.docName}/view/${row.id}`;
-										}}
+										onClick={
+											url.indexOf("search") === -1
+												? null
+												: () => {
+														window.location = `/documents/${row.docName}/view/${row.id}`;
+												  }
+										}
 									>
 										{Array.from(Array(headCells.length).keys()).map(
 											(headCellIndex) => (

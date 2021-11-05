@@ -116,7 +116,7 @@ const DocumentsTypeInput = ({
 						<Chip
 							icon={<Info />}
 							label={
-								addedType.month === null
+								addedType.month === null || addedType.month === ""
 									? `${addedType.document_type_name} - ${addedType.year}`
 									: `${addedType.document_type_name} - ${addedType.month}/${addedType.year}`
 							}
