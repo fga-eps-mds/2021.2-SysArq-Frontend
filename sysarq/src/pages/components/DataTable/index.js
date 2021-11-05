@@ -248,6 +248,7 @@ const DataTable = ({ url, title }) => {
 
 		if (id === "temporality_date" || id === "document_type_name") {
 			if (typeof row[id] === "undefined") return "-";
+			if (typeof row[id] !== "object") return row[id];
 			const obj = row[id];
 			for (let i = 0; i < obj.length; i += 1) {
 				if (i < obj.length - 1) {
