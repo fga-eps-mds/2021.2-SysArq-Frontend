@@ -22,7 +22,6 @@ import {
 import MuiLink from "@material-ui/core/Link";
 
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 
 import tableHeadCells from "./tablesHeadCells";
 
@@ -103,11 +102,13 @@ function getComparator(order, orderBy) {
 const DataTable = ({ url, title }) => {
 	const classes = useStyles();
 
-	const documentsUrls = [
-		"administrative-process",
-		"frequency-relation",
-		"frequency-sheet",
-		"box-archiving",
+	const fieldUrls = [
+		"document-subject/",
+		"unity/",
+		"box-abbreviation/",
+		"document-type/",
+		"shelf/",
+		"rack/",
 	];
 
 	const [headCells, setHeadCells] = useState([]);
@@ -386,16 +387,8 @@ const DataTable = ({ url, title }) => {
 													</TableCell>
 
 													{headCellIndex === headCells.length - 1 &&
-													url.indexOf("search") === -1 ? (
+													fieldUrls.indexOf(url) !== -1 ? (
 														<TableCell align="right">
-															{documentsUrls.indexOf(url) !== -1 ? (
-																<IconButton color="secondary" size="small">
-																	<EditIcon />
-																</IconButton>
-															) : (
-																""
-															)}
-
 															<IconButton
 																style={{ color: "#fe0000" }}
 																color="inherit"
