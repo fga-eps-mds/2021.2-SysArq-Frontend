@@ -544,13 +544,14 @@ const CreateBoxArchiving = () => {
 				)}
 			</Grid>
 
-			<DocumentsTypeInput
-				typeList={typeList}
-				setTypeList={setTypeList}
-				typeListHelperText={typeListHelperText}
-				setTypeListHelperText={setTypeListHelperText}
-				connectionError={connectionError}
-			/>
+					<DocumentsTypeInput
+						typeList={typeList}
+						setTypeList={setTypeList}
+						typeListHelperText={typeListHelperText}
+						setTypeListHelperText={setTypeListHelperText}
+						isDetailPage={detail}
+						connectionError={connectionError}
+					/>
 
 					<BoxInput
 						set={setBox}
