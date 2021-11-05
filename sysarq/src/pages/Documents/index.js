@@ -6,25 +6,25 @@ const Documents = () => (
 		<MenuCard
 			icon="administrative-process-icon"
 			title="Processo Administrativo"
-			url="/documents/administrative-process/create"
+			url="/documents/administrative-process"
 			lg={3}
 		/>
 		<MenuCard
 			icon="frequency-relation-icon"
 			title="Relação de Frequências"
-			url="/documents/frequency-relation/create"
+			url="/documents/frequency-relation"
 			lg={3}
 		/>
 		<MenuCard
 			icon="frequency-sheet-icon"
 			title="Folha de Frequências"
-			url="/documents/frequency-sheet/create"
+			url="/documents/frequency-sheet"
 			lg={3}
 		/>
 		<MenuCard
 			icon="box-archiving-icon"
 			title="Arquivamento de Caixas"
-			url="/documents/box-archiving/create"
+			url="/documents/box-archiving"
 			lg={3}
 		/>
 	</CardContainer>
