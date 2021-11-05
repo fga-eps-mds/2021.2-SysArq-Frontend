@@ -397,14 +397,19 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								.catch(() => connectionError());
 
 							axiosArchives
-								.get(`public-worker/${responseAdministrative.data.sender_user}/`, {
-									headers: {
-										Authorization: `JWT ${localStorage.getItem("tk")}`,
-									},
-								})
+								.get(
+									`public-worker/${responseAdministrative.data.sender_user}/`,
+									{
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
+									}
+								)
 								.then((response) => {
 									setPublicWorker(response.data);
-									setPublicWorkerDetail(`${response.data.name}, ${response.data.cpf}`)
+									setPublicWorkerDetail(
+										`${response.data.name}, ${response.data.cpf}`
+									);
 								})
 								.catch(() => connectionError());
 
