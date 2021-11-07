@@ -1,6 +1,6 @@
-[![Build](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/workflows/Compilação/badge.svg)](https://github.com/fga-eps-mds/2021.1-PC-GO1-Profile/actions/workflows/build.yml)
-[![Style](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/workflows/Estilo/badge.svg)](https://github.com/fga-eps-mds/2021.1-PC-GO1-Profile/actions/workflows/style.yml)
-[![Tests](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/workflows/Testes/badge.svg)](https://github.com/fga-eps-mds/2021.1-PC-GO1-Profile/actions/workflows/test.yml)
+[![Build](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/workflows/Compilação/badge.svg)](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/actions/workflows/build.yml)
+[![Style](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/workflows/Estilo/badge.svg)](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/actions/workflows/style.yml)
+[![Tests](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/workflows/Testes/badge.svg)](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/actions/workflows/test.yml)
 
 # Interface Gráfica do SysArq
 
@@ -19,7 +19,7 @@
 
 Interface gráfica do usuário do sistema *[SysArq](https://fga-eps-mds.github.io/2021.1-PC-GO1/)*. 
 
-A interface é composta pelo design, interface de navegação e ferramentas de interação com o usuário. **[Saiba mais](https://fga-eps-mds.github.io/2021.1-PC-GO1/documentation/)**
+A interface gráfica é composta pelo design, interface de navegação e ferramentas de interação com o usuário. **[Saiba mais](https://fga-eps-mds.github.io/2021.1-PC-GO1/documentation/)**
 
 ## Execução
 
