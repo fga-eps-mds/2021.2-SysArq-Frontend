@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import {
 	Grid,
+	TextField,
 	FormControl,
 	InputLabel,
 	Select,
@@ -12,7 +13,13 @@ import {
 import { axiosArchives, axiosProfile } from "../../../Api";
 import { logout } from "../../../support";
 
-const RackInput = ({ set, connectionError, rack }) => {
+const RackInput = ({
+	set,
+	connectionError,
+	isDetailPage,
+	rackDetail,
+	rack,
+}) => {
 	const [racks, setRacks] = useState([]);
 
 	const handleChange = (event) => set(event.target.value);
@@ -41,27 +48,37 @@ const RackInput = ({ set, connectionError, rack }) => {
 
 	return (
 		<Grid item xs={12} sm={6} md={4}>
-			<FormControl fullWidth>
-				<InputLabel id="select-rack-label">Prateleira</InputLabel>
-				<Select
-					style={{ textAlign: "left" }}
-					labelId="select-rack-label"
-					id="select-rack"
-					value={rack}
-					onChange={handleChange}
-					renderValue={(value) => `${value.number}`}
-				>
-					<MenuItem value="">
-						<em>Nenhuma</em>
-					</MenuItem>
-
-					{racks.map((rackOption) => (
-						<MenuItem key={rackOption.id} value={rackOption}>
-							{rackOption.number}
+			{isDetailPage ? (
+				<TextField
+					fullWidth
+					id="rack"
+					label="Prateleira"
+					value={rackDetail}
+					inputProps={{ readOnly: true }}
+				/>
+			) : (
+				<FormControl fullWidth>
+					<InputLabel id="select-rack-label">Prateleira</InputLabel>
+					<Select
+						style={{ textAlign: "left" }}
+						labelId="select-rack-label"
+						id="select-rack"
+						value={rack}
+						onChange={handleChange}
+						renderValue={(value) => `${value.number}`}
+					>
+						<MenuItem value="">
+							<em>Nenhuma</em>
 						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
+
+						{racks.map((rackOption) => (
+							<MenuItem key={rackOption.id} value={rackOption}>
+								{rackOption.number}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
+			)}
 		</Grid>
 	);
 };
@@ -69,6 +86,8 @@ const RackInput = ({ set, connectionError, rack }) => {
 RackInput.propTypes = {
 	set: PropTypes.func.isRequired,
 	connectionError: PropTypes.func.isRequired,
+	isDetailPage: PropTypes.bool.isRequired,
+	rackDetail: PropTypes.string.isRequired,
 	rack: PropTypes.string.isRequired,
 };
 

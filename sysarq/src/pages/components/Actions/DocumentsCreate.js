@@ -40,33 +40,40 @@ const Link = withStyles({
 	},
 })(MuiLink);
 
-const DocumentsCreate = ({ loading, onSubmit }) => {
+const DocumentsCreate = ({ isDetailPage, loading, onSubmit }) => {
 	const classes = useStyles();
 
 	return (
 		<Box className={`${classes.spreadBox} ${classes.box}`}>
-			<Typography>
-				<Link className={classes.link} href="/documents">
-					Cancelar
-				</Link>
-			</Typography>
-			{loading ? (
-				<CircularProgress />
+			{isDetailPage ? (
+				""
 			) : (
-				<Button
-					style={{ fontWeight: "bold" }}
-					variant="contained"
-					color="primary"
-					onClick={onSubmit}
-				>
-					CADASTRAR
-				</Button>
+				<>
+					<Typography>
+						<Link className={classes.link} href="/documents">
+							Cancelar
+						</Link>
+					</Typography>
+					{loading ? (
+						<CircularProgress />
+					) : (
+						<Button
+							style={{ fontWeight: "bold" }}
+							variant="contained"
+							color="primary"
+							onClick={onSubmit}
+						>
+							CADASTRAR
+						</Button>
+					)}
+				</>
 			)}
 		</Box>
 	);
 };
 
 DocumentsCreate.propTypes = {
+	isDetailPage: PropTypes.bool.isRequired,
 	loading: PropTypes.bool.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 };

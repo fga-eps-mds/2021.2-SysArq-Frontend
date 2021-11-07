@@ -1,5 +1,8 @@
 import { screen, render, fireEvent, within } from "@testing-library/react";
 
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
+
 import { server } from "../../support/server";
 
 import { submitClick, input } from "../../support";
@@ -138,5 +141,23 @@ describe("Create Frequency Relation Screen Test", () => {
 		// expect(errorAlert).toHaveTextContent(
 		// 	/Verifique sua conexão com a internet e recarregue a página./i
 		// );
+	});
+
+	it("detailPage test", async () => {
+		const history = createMemoryHistory();
+		history.push("/documents/frequency-relation/view/1");
+
+		render(
+			<Router history={history}>
+				<CreateFrequencyRelation detail />
+			</Router>
+		);
+
+		expect(screen.getByText("Editar")).toBeInTheDocument();
+		expect(screen.getByText("Excluir")).toBeInTheDocument();
+
+		// await screen.findByDisplayValue("18");
+
+		// screen.debug();
 	});
 });

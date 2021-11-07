@@ -27,6 +27,7 @@ const DocumentsTypeInput = ({
 	setTypeList,
 	typeListHelperText,
 	setTypeListHelperText,
+	isDetailPage,
 	connectionError,
 }) => {
 	const [openNewTypeDialog, setOpenNewTypeDialog] = useState(false);
@@ -76,7 +77,7 @@ const DocumentsTypeInput = ({
 
 		const newType = {
 			document_type_id: type.id,
-			documentTypeName: type.document_name,
+			document_type_name: type.document_name,
 			month,
 			year,
 			temporality_date: parseInt(type.temporality, 10) + parseInt(year, 10),
@@ -115,17 +116,23 @@ const DocumentsTypeInput = ({
 						<Chip
 							icon={<Info />}
 							label={
-								addedType.month === null
-									? `${addedType.documentTypeName} - ${addedType.year}`
-									: `${addedType.documentTypeName} - ${addedType.month}/${addedType.year}`
+								addedType.month === null || addedType.month === ""
+									? `${addedType.document_type_name} - ${addedType.year}`
+									: `${addedType.document_type_name} - ${addedType.month}/${addedType.year}`
 							}
 							color="secondary"
 							deleteIcon={<CancelIcon data-testid="delete" />}
-							onDelete={() => handleDeleteType(addedType)}
+							onDelete={
+								isDetailPage ? false : () => handleDeleteType(addedType)
+							}
 						/>
 					))}
 
-					<AddChip label="Adicionar Tipo" onClick={handleOpenNewTypeDialog} />
+					{isDetailPage ? (
+						""
+					) : (
+						<AddChip label="Adicionar Tipo" onClick={handleOpenNewTypeDialog} />
+					)}
 				</ChipsContainer>
 			</Grid>
 
@@ -188,6 +195,7 @@ DocumentsTypeInput.propTypes = {
 	setTypeList: PropTypes.func.isRequired,
 	typeListHelperText: PropTypes.string.isRequired,
 	setTypeListHelperText: PropTypes.func.isRequired,
+	isDetailPage: PropTypes.string.isRequired,
 	connectionError: PropTypes.func.isRequired,
 };
 

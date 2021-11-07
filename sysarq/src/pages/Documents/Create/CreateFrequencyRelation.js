@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-import Grid from "@material-ui/core/Grid";
+import { useParams } from "react-router-dom";
+
+import { Grid, CircularProgress } from "@material-ui/core";
 
 import {
 	initialDate,
@@ -11,9 +14,11 @@ import {
 	getUnits,
 } from "../../../support";
 
-import { axiosArchives, axiosProfile } from "../../../Api";
+import { axiosProfile, axiosArchives } from "../../../Api";
 
 import CardContainer from "../../components/Container/CardContainer";
+
+import DocumentsDetail from "../../components/Actions/DocumentsDetail";
 
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 import ReferencePeriodInput from "../../components/Inputs/ReferencePeriodInput";
@@ -23,18 +28,23 @@ import CommonSet from "../../components/CommonSet/CommonSet";
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
-const CreateFrequencyRelation = () => {
+const CreateFrequencyRelation = ({ detail }) => {
+	const params = detail ? useParams() : "";
+
+	const [documentTypeDetail, setDocumentTypeDetail] = useState("");
+	const [senderUnitDetail, setSenderUnitDetail] = useState("");
+
 	const [units, setUnits] = useState([]);
 
 	const [processNumber, setProcessNumber] = useState("");
-	const [documentDate, setDocumentDate] = useState(initialDate);
-	const [receivedDate, setReceivedDate] = useState(initialDate);
+	const [documentDate, setDocumentDate] = useState(detail ? "" : initialDate);
+	const [receivedDate, setReceivedDate] = useState(detail ? "" : initialDate);
 	const [documentType, setDocumentType] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
 	const [notesLocal, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState([
-		formatDate(initialPeriod),
-	]);
+	const [referencePeriod, setReferencePeriod] = useState(
+		detail ? [] : [formatDate(initialPeriod)]
+	);
 
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
@@ -48,7 +58,7 @@ const CreateFrequencyRelation = () => {
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(detail);
 
 	const handleAlertClose = () => setOpenAlert(false);
 
@@ -168,51 +178,139 @@ const CreateFrequencyRelation = () => {
 	};
 
 	useEffect(() => {
+		if (detail) {
+			setLoading(true);
+
+			axiosProfile
+				.post(`api/token/refresh/`, {
+					refresh: localStorage.getItem("tkr"),
+				})
+				.then((res) => {
+					localStorage.setItem("tk", res.data.access);
+					localStorage.setItem("tkr", res.data.refresh);
+
+					axiosArchives
+						.get(`frequency-relation/${params.id}/`, {
+							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						})
+						.then((responseFrequencyRelation) => {
+							// axiosArchives
+							// 	.get(
+							// 		`document-type/${responseFrequencyRelation.data.document_type_id}/`,
+							// 		{
+							// 			headers: {
+							// 				Authorization: `JWT ${localStorage.getItem("tk")}`,
+							// 			},
+							// 		}
+							// 	)
+							// 	.then((response) => {
+							// 		setDocumentType(response.data);
+							// 	})
+							// 	.catch(() => connectionError());
+
+							// axiosArchives
+							// 	.get(`unity/${responseFrequencyRelation.data.sender_unity}/`, {
+							// 		headers: {
+							// 			Authorization: `JWT ${localStorage.getItem("tk")}`,
+							// 		},
+							// 	})
+							// 	.then((response) => {
+							// 		setSenderUnit(response.data);
+							// 	})
+							// 	.catch(() => connectionError());
+
+							setDocumentTypeDetail(
+								responseFrequencyRelation.data.document_type_name
+							);
+							setSenderUnitDetail(
+								responseFrequencyRelation.data.sender_unity_name
+							);
+
+							setProcessNumber(responseFrequencyRelation.data.process_number);
+							setDocumentDate(responseFrequencyRelation.data.document_date);
+							setReceivedDate(responseFrequencyRelation.data.received_date);
+
+							setNotes(
+								responseFrequencyRelation.data.notes
+									? responseFrequencyRelation.data.notes
+									: "-"
+							);
+
+							setReferencePeriod(
+								responseFrequencyRelation.data.reference_period
+							);
+
+							setLoading(false);
+						})
+						.catch(() => connectionError());
+				})
+				.catch((error) => {
+					axiosProfileError(error, connectionError);
+				});
+		}
+
 		getUnits(setUnits, connectionError);
 	}, []);
 
 	return (
 		<CardContainer title="Relação de Frequências" spacing={1}>
-			<Grid item xs={12} sm={6} md={4}>
-				<NumberProcessInput
-					setHelperText={setProcessNumberHelperText}
-					set={setProcessNumber}
-					number={processNumber}
-					helperText={processNumberHelperText}
-				/>
-			</Grid>
+			{detail ? <DocumentsDetail /> : ""}
 
-			<CommonSet
-				units={units}
-				documentDate={documentDate}
-				setDocumentDate={setDocumentDate}
-				receivedDate={receivedDate}
-				setReceivedDate={setReceivedDate}
-				documentType={documentType}
-				setDocumentType={setDocumentType}
-				senderUnit={senderUnit}
-				setSenderUnit={setSenderUnit}
-				notes={notesLocal}
-				setNotes={setNotes}
-				setDocumentDateHelperText={setDocumentDateHelperText}
-				documentDateHelperText={documentDateHelperText}
-				setReceivedDateHelperText={setReceivedDateHelperText}
-				receivedDateHelperText={receivedDateHelperText}
-				documentTypeHelperText={documentTypeHelperText}
-				setDocumentTypeHelperText={setDocumentTypeHelperText}
-				senderUnitHelperText={senderUnitHelperText}
-				setSenderUnitHelperText={setSenderUnitHelperText}
-				connectionError={connectionError}
+			{detail && loading ? (
+				<CircularProgress style={{ margin: "auto" }} />
+			) : (
+				<>
+					<Grid item xs={12} sm={6} md={4}>
+						<NumberProcessInput
+							setHelperText={setProcessNumberHelperText}
+							set={setProcessNumber}
+							number={processNumber}
+							helperText={processNumberHelperText}
+							isDetailPage={detail}
+						/>
+					</Grid>
+
+					<CommonSet
+						isDetailPage={detail}
+						setDocumentDateHelperText={setDocumentDateHelperText}
+						setDocumentDate={setDocumentDate}
+						documentDate={documentDate}
+						documentDateHelperText={documentDateHelperText}
+						setReceivedDateHelperText={setReceivedDateHelperText}
+						setReceivedDate={setReceivedDate}
+						receivedDate={receivedDate}
+						receivedDateHelperText={receivedDateHelperText}
+						documentTypeDetail={documentTypeDetail}
+						setDocumentTypeHelperText={setDocumentTypeHelperText}
+						setDocumentType={setDocumentType}
+						connectionError={connectionError}
+						documentType={documentType}
+						documentTypeHelperText={documentTypeHelperText}
+						senderUnitDetail={senderUnitDetail}
+						setSenderUnitHelperText={setSenderUnitHelperText}
+						setSenderUnit={setSenderUnit}
+						senderUnit={senderUnit}
+						units={units}
+						senderUnitHelperText={senderUnitHelperText}
+						setNotes={setNotes}
+						notes={notesLocal}
+					/>
+
+					<ReferencePeriodInput
+						referencePeriod={referencePeriod}
+						setReferencePeriod={setReferencePeriod}
+						setReferencePeriodHelperText={setReferencePeriodHelperText}
+						referencePeriodHelperText={referencePeriodHelperText}
+						isDetailPage={detail}
+					/>
+				</>
+			)}
+
+			<DocumentsCreate
+				isDetailPage={detail}
+				loading={loading}
+				onSubmit={onSubmit}
 			/>
-
-			<ReferencePeriodInput
-				referencePeriod={referencePeriod}
-				setReferencePeriod={setReferencePeriod}
-				setReferencePeriodHelperText={setReferencePeriodHelperText}
-				referencePeriodHelperText={referencePeriodHelperText}
-			/>
-
-			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
 
 			<PopUpAlert
 				open={openAlert}
@@ -222,6 +320,10 @@ const CreateFrequencyRelation = () => {
 			/>
 		</CardContainer>
 	);
+};
+
+CreateFrequencyRelation.propTypes = {
+	detail: PropTypes.bool.isRequired,
 };
 
 export default CreateFrequencyRelation;

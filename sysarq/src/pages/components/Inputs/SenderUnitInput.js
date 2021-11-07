@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import {
 	Grid,
+	TextField,
 	FormControl,
 	InputLabel,
 	Select,
@@ -11,6 +12,8 @@ import {
 } from "@material-ui/core";
 
 const SenderUnitInput = ({
+	isDetailPage,
+	senderUnitDetail,
 	setHelperText,
 	set,
 	senderUnit,
@@ -24,39 +27,51 @@ const SenderUnitInput = ({
 
 	return (
 		<Grid item xs={12} sm={12} md={12}>
-			<FormControl fullWidth error={senderUnitHelperText !== ""}>
-				<InputLabel id="select-senderUnit-label">
-					Unidade que Encaminhou*
-				</InputLabel>
-				<Select
-					style={{ textAlign: "left" }}
-					labelId="select-senderUnit-label"
-					id="select-senderUnit"
-					value={senderUnit}
-					onChange={handleChange}
-					renderValue={(value) => `${value.unity_name}`}
-				>
-					<MenuItem key={0} value="">
-						<em>Nenhuma</em>
-					</MenuItem>
-
-					{units.map((senderUnitOption) => (
-						<MenuItem key={senderUnitOption.id} value={senderUnitOption}>
-							{senderUnitOption.unity_name}
+			{isDetailPage ? (
+				<TextField
+					fullWidth
+					id="senderUnit"
+					label="Unidade que Encaminhou"
+					value={senderUnitDetail}
+					inputProps={{ readOnly: true }}
+				/>
+			) : (
+				<FormControl fullWidth error={senderUnitHelperText !== ""}>
+					<InputLabel id="select-senderUnit-label">
+						Unidade que Encaminhou*
+					</InputLabel>
+					<Select
+						style={{ textAlign: "left" }}
+						labelId="select-senderUnit-label"
+						id="select-senderUnit"
+						value={senderUnit}
+						onChange={handleChange}
+						renderValue={(value) => `${value.unity_name}`}
+					>
+						<MenuItem key={0} value="">
+							<em>Nenhuma</em>
 						</MenuItem>
-					))}
-				</Select>
-				{senderUnitHelperText ? (
-					<FormHelperText>{senderUnitHelperText}</FormHelperText>
-				) : (
-					""
-				)}
-			</FormControl>
+
+						{units.map((senderUnitOption) => (
+							<MenuItem key={senderUnitOption.id} value={senderUnitOption}>
+								{senderUnitOption.unity_name}
+							</MenuItem>
+						))}
+					</Select>
+					{senderUnitHelperText ? (
+						<FormHelperText>{senderUnitHelperText}</FormHelperText>
+					) : (
+						""
+					)}
+				</FormControl>
+			)}
 		</Grid>
 	);
 };
 
 SenderUnitInput.propTypes = {
+	isDetailPage: PropTypes.bool.isRequired,
+	senderUnitDetail: PropTypes.string.isRequired,
 	setHelperText: PropTypes.func.isRequired,
 	set: PropTypes.func.isRequired,
 	senderUnit: PropTypes.string.isRequired,

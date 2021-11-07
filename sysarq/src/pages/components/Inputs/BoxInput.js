@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import {
 	Grid,
+	TextField,
 	FormControl,
 	InputLabel,
 	Select,
@@ -19,6 +20,10 @@ const BoxInput = ({
 	connectionError,
 	setClearFields,
 	clearFields,
+	isDetailPage,
+	boxAbbreviationDetail,
+	boxYearDetail,
+	boxNumberDetail,
 	box,
 }) => {
 	const [boxAbbreviations, setBoxAbbreviations] = useState([]);
@@ -149,87 +154,121 @@ const BoxInput = ({
 
 	return (
 		<>
-			<Grid item xs={12} sm={12} md={4}>
-				<FormControl fullWidth>
-					<InputLabel id="select-boxAbbreviation-label">
-						Sigla da Caixa
-					</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-boxAbbreviation-label"
-						id="select-boxAbbreviation"
-						value={boxAbbreviation}
-						onChange={handleBoxAbbreviationChange}
-						renderValue={(value) => `${value}`}
-					>
-						<MenuItem value="">
-							<em>Nenhuma</em>
-						</MenuItem>
-
-						{boxAbbreviations.map((abbreviationOption) => (
-							<MenuItem key={abbreviationOption} value={abbreviationOption}>
-								{abbreviationOption}
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-			</Grid>
-			<Grid item xs={12} sm={6} md={4}>
-				<FormControl fullWidth>
-					<InputLabel id="select-boxYear-label">Ano da Caixa</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-boxYear-label"
-						id="select-boxYear"
-						value={boxYear}
-						onChange={handleBoxYearChange}
-						renderValue={(value) => `${value}`}
-					>
-						<MenuItem value="">
-							<em>Nenhum</em>
-						</MenuItem>
-
-						{boxYears.map((yearOption) => (
-							<MenuItem key={yearOption} value={yearOption}>
-								{yearOption}
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-			</Grid>
-			<Grid item xs={12} sm={6} md={4}>
-				<FormControl fullWidth>
-					<InputLabel id="select-box-label">Número da Caixa</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-box-label"
-						id="select-box"
-						value={box}
-						onChange={handleChange}
-						renderValue={(value) => `${value.number}`}
-					>
-						<MenuItem value="">
-							<em>Nenhum</em>
-						</MenuItem>
-
-						{boxesFilteredByAbbreviationAndYear.map((boxOption) => (
-							<MenuItem key={boxOption.id} value={boxOption}>
-								{boxOption.number}
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-			</Grid>
-
-			{boxAbbreviation && (!boxYear || !box) ? (
-				<Grid item xs={12} sm={12} md={12}>
-					<Alert severity="warning">
-						Selecione o Ano da Caixa e o Número da Caixa para cadastrar uma
-						Caixa corretamente.
-					</Alert>
-				</Grid>
+			{isDetailPage ? (
+				<>
+					<Grid item xs={12} sm={12} md={4}>
+						<TextField
+							fullWidth
+							id="boxAbbreviation"
+							label="Sigla da Caixa"
+							value={boxAbbreviationDetail}
+							inputProps={{ readOnly: true }}
+						/>
+					</Grid>
+					<Grid item xs={12} sm={6} md={4}>
+						<TextField
+							fullWidth
+							id="boxYear"
+							label="Ano da Caixa"
+							value={boxYearDetail}
+							inputProps={{ readOnly: true }}
+						/>
+					</Grid>
+					<Grid item xs={12} sm={6} md={4}>
+						<TextField
+							fullWidth
+							id="boxNumber"
+							label="Número da Caixa"
+							value={boxNumberDetail}
+							inputProps={{ readOnly: true }}
+						/>
+					</Grid>
+				</>
 			) : (
-				""
+				<>
+					<Grid item xs={12} sm={12} md={4}>
+						<FormControl fullWidth>
+							<InputLabel id="select-boxAbbreviation-label">
+								Sigla da Caixa
+							</InputLabel>
+							<Select
+								style={{ textAlign: "left" }}
+								labelId="select-boxAbbreviation-label"
+								id="select-boxAbbreviation"
+								value={boxAbbreviation}
+								onChange={handleBoxAbbreviationChange}
+								renderValue={(value) => `${value}`}
+							>
+								<MenuItem value="">
+									<em>Nenhuma</em>
+								</MenuItem>
+
+								{boxAbbreviations.map((abbreviationOption) => (
+									<MenuItem key={abbreviationOption} value={abbreviationOption}>
+										{abbreviationOption}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</Grid>
+					<Grid item xs={12} sm={6} md={4}>
+						<FormControl fullWidth>
+							<InputLabel id="select-boxYear-label">Ano da Caixa</InputLabel>
+							<Select
+								style={{ textAlign: "left" }}
+								labelId="select-boxYear-label"
+								id="select-boxYear"
+								value={boxYear}
+								onChange={handleBoxYearChange}
+								renderValue={(value) => `${value}`}
+							>
+								<MenuItem value="">
+									<em>Nenhum</em>
+								</MenuItem>
+
+								{boxYears.map((yearOption) => (
+									<MenuItem key={yearOption} value={yearOption}>
+										{yearOption}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</Grid>
+					<Grid item xs={12} sm={6} md={4}>
+						<FormControl fullWidth>
+							<InputLabel id="select-box-label">Número da Caixa</InputLabel>
+							<Select
+								style={{ textAlign: "left" }}
+								labelId="select-box-label"
+								id="select-box"
+								value={box}
+								onChange={handleChange}
+								renderValue={(value) => `${value.number}`}
+							>
+								<MenuItem value="">
+									<em>Nenhum</em>
+								</MenuItem>
+
+								{boxesFilteredByAbbreviationAndYear.map((boxOption) => (
+									<MenuItem key={boxOption.id} value={boxOption}>
+										{boxOption.number}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</Grid>
+
+					{boxAbbreviation && (!boxYear || !box) ? (
+						<Grid item xs={12} sm={12} md={12}>
+							<Alert severity="warning">
+								Selecione o Ano da Caixa e o Número da Caixa para cadastrar uma
+								Caixa corretamente.
+							</Alert>
+						</Grid>
+					) : (
+						""
+					)}
+				</>
 			)}
 		</>
 	);
@@ -240,6 +279,10 @@ BoxInput.propTypes = {
 	connectionError: PropTypes.func.isRequired,
 	clearFields: PropTypes.bool.isRequired,
 	setClearFields: PropTypes.func.isRequired,
+	isDetailPage: PropTypes.bool.isRequired,
+	boxAbbreviationDetail: PropTypes.string.isRequired,
+	boxYearDetail: PropTypes.string.isRequired,
+	boxNumberDetail: PropTypes.string.isRequired,
 	box: PropTypes.string.isRequired,
 };
 
