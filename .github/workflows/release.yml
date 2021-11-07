@@ -41,8 +41,8 @@ jobs:
 
       - name: Configurar Usuário do GitHub e Clonar Repositório de Documentação
         run: |
-          git config --global user.name 'Matheus'
-          git config --global user.email 'J-Matheus@users.noreply.github.com'
+          git config --global user.name 'pc-go1'
+          git config --global user.email 'sysarq.fga@gmail.com'
           git clone https://.:${{ secrets.PAT }}@github.com/fga-eps-mds/2021.1-PC-GO1.git target
 
       - name: Atualizar Documentação
