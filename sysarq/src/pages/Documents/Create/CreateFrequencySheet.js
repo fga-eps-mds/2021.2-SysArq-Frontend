@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+
+import { useParams } from "react-router-dom";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-import {
-	Grid,
-	TextField,
-	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
-	FormHelperText,
-} from "@material-ui/core";
+import { Grid, CircularProgress, TextField } from "@material-ui/core";
 
 import {
 	formatDate,
@@ -21,44 +16,58 @@ import {
 	autocompl,
 } from "../../../support";
 
-import { axiosArchives, axiosProfile } from "../../../Api";
+import { axiosProfile, axiosArchives } from "../../../Api";
 
 import CardContainer from "../../components/Container/CardContainer";
+import DocumentsDetail from "../../components/Actions/DocumentsDetail";
 
+import DocumentTypeInput from "../../components/Inputs/DocumentTypeInput";
 import NotesInput from "../../components/Inputs/NotesInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
-const CreateFrequencySheet = () => {
-	const url = "document-type/";
-	const [types, setTypes] = useState([]);
+const CreateFrequencySheet = ({ detail }) => {
+	const params = detail ? useParams() : "";
+
+	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
+	const [typeDetail, setTypeDetail] = useState("");
+
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
 	]);
-	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
+
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
-	const [senderProcessNumber, setSenderProcessNumber] = useState("");
+
+	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
 	const [roleWorker, setRole] = useState("");
 	const [workerClass, setWorkerClass] = useState("");
 	const [workplaceWorker, setWorkplace] = useState("");
 	const [district, setDistrict] = useState("");
-	const [notesLocal, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState(initialPeriod);
+
+	const [referencePeriod, setReferencePeriod] = useState(
+		detail ? "" : initialPeriod
+	);
+
+	const [senderProcessNumber, setSenderProcessNumber] = useState("");
 	const [type, setType] = useState("");
+	const [notesLocal, setNotes] = useState("");
+
+	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 	const [roleHelperText, setRoleHelperText] = useState("");
 	const [workplaceHelperText, setWorkplaceHelperText] = useState("");
 	const [districtHelperText, setDistrictHelperText] = useState("");
+
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
 		useState("");
+
 	const [typeHelperText, setTypeHelperText] = useState("");
-	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(detail);
 
 	const handleSenderProcessNumberChange = (event) =>
 		setSenderProcessNumber(event.target.value);
@@ -92,11 +101,6 @@ const CreateFrequencySheet = () => {
 	const handleReferencePeriodChange = (date) => {
 		setReferencePeriodHelperText("");
 		setReferencePeriod(date);
-	};
-
-	const handleTypeChange = (event) => {
-		setTypeHelperText("");
-		setType(event.target.value);
 	};
 
 	const handleAlertClose = () => setOpenAlert(false);
@@ -212,28 +216,6 @@ const CreateFrequencySheet = () => {
 		return "post done";
 	};
 
-	useEffect(() => {
-		axiosProfile
-			.post(`api/token/refresh/`, {
-				refresh: localStorage.getItem("tkr"),
-			})
-			.then((r) => {
-				localStorage.setItem("tkr", r.data.refresh);
-				localStorage.setItem("tk", r.data.access);
-				axiosArchives
-					.get(url, {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
-					.then((response) => setTypes(response.data))
-					.catch(() => connectionError());
-
-				getPublicWorkers(setPublicWorkers, connectionError);
-			})
-			.catch((error) => {
-				axiosProfileError(error, connectionError);
-			});
-	}, []);
-
 	const publicWorkerOptions = publicWorkers.map((option) => {
 		const firstLetter = option.name[0].toUpperCase();
 		return {
@@ -242,162 +224,236 @@ const CreateFrequencySheet = () => {
 		};
 	});
 
+	useEffect(() => {
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tkr", res.data.refresh);
+				localStorage.setItem("tk", res.data.access);
+
+				getPublicWorkers(setPublicWorkers, connectionError);
+
+				if (detail) {
+					setLoading(true);
+
+					axiosArchives
+						.get(`frequency-sheet/${params.id}/`, {
+							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						})
+						.then((responseFrequencySheet) => {
+							// axiosArchives
+							// 	.get(
+							// 		`document-type/${responseFrequencySheet.data.document_type_id}/`,
+							// 		{
+							// 			headers: {
+							// 				Authorization: `JWT ${localStorage.getItem("tk")}`,
+							// 			},
+							// 		}
+							// 	)
+							// 	.then((response) => {
+							// 		setType(response.data);
+							// 	})
+							// 	.catch(() => connectionError());
+
+							// axiosArchives
+							// 	.get(`public-worker/${responseAdministrative.data.sender_user}/`, {
+							// 		headers: {
+							// 			Authorization: `JWT ${localStorage.getItem("tk")}`,
+							// 		},
+							// 	})
+							// 	.then((response) => {
+							// 		setPublicWorker(response.data);
+							// 	})
+							// 	.catch(() => connectionError());
+
+							setTypeDetail(responseFrequencySheet.data.document_type_name);
+
+							setPublicWorkerDetail(
+								`${responseFrequencySheet.data.person_name}, ${responseFrequencySheet.data.cpf}`
+							);
+
+							setRole(responseFrequencySheet.data.role);
+							setWorkplace(responseFrequencySheet.data.workplace);
+							setDistrict(responseFrequencySheet.data.municipal_area);
+							setReferencePeriod(responseFrequencySheet.data.reference_period);
+
+							setWorkerClass(
+								responseFrequencySheet.data.category
+									? responseFrequencySheet.data.category
+									: "-"
+							);
+
+							setSenderProcessNumber(
+								responseFrequencySheet.data.process_number
+									? responseFrequencySheet.data.process_number
+									: "-"
+							);
+
+							setNotes(
+								responseFrequencySheet.data.notes
+									? responseFrequencySheet.data.notes
+									: "-"
+							);
+
+							setLoading(false);
+						})
+						.catch(() => connectionError());
+				}
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+	}, []);
+
 	return (
 		<CardContainer title="Folha de Frequências" spacing={1}>
-			<Grid item xs={12} sm={12} md={12}>
-				{autocompl(
-					publicWorkers,
-					publicWorkerInput,
-					handlePublicWorkerChange,
-					setPublicWorkerInput,
-					publicWorkerOptions,
-					publicWorkerHelperText
-				)}
-				{/* <Autocomplete
-					id="workerName"
-					data-testid="autocomplete"
-					value={publicWorkers.name}
-					onChange={(event, newValue) => {
-						handlePublicWorkerChange(newValue);
-					}}
-					inputValue={publicWorkerInput}
-					onInputChange={(event, newInputValue) => {
-						setPublicWorkerInput(newInputValue);
-					}}
-					options={publicWorkerOptions.sort(
-						(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
-					)}
-					groupBy={(option) => option.firstLetter}
-					getOptionLabel={(option) => `${option.name}, ${option.cpf}`}
-					getOptionSelected={(option, value) => option.name === value.name}
-					autoHighlight
-					renderInput={(params) => (
+			{detail ? <DocumentsDetail /> : ""}
+
+			{detail && loading ? (
+				<CircularProgress style={{ margin: "auto" }} />
+			) : (
+				<>
+					<Grid item xs={12} sm={12} md={12}>
+						{detail ? (
+							<TextField
+								fullWidth
+								id="publicWorker"
+								label="Servidor"
+								value={publicWorkerDetail}
+								inputProps={{ readOnly: true }}
+							/>
+						) : (
+							autocompl(
+								publicWorkers,
+								publicWorkerInput,
+								handlePublicWorkerChange,
+								setPublicWorkerInput,
+								publicWorkerOptions,
+								publicWorkerHelperText
+							)
+						)}
+					</Grid>
+
+					<Grid item xs={12} sm={12} md={12}>
 						<TextField
-							// eslint-disable-next-line
-							{...params}
-							value={params.value}
-							label="Nome, CPF*"
-							error={publicWorkerHelperText !== ""}
-							helperText={publicWorkerHelperText}
+							fullWidth
+							id="role"
+							label={detail ? "Cargo" : "Cargo*"}
+							value={roleWorker}
+							onChange={handleRoleChange}
+							error={roleHelperText !== ""}
+							helperText={roleHelperText}
+							inputProps={{ maxLength: 100, readOnly: detail }}
+							multiline
 						/>
-					)}
-				/> */}
-			</Grid>
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="role"
-					label="Cargo*"
-					value={roleWorker}
-					onChange={handleRoleChange}
-					error={roleHelperText !== ""}
-					helperText={roleHelperText}
-					inputProps={{ maxLength: 100 }}
-					multiline
-				/>
-			</Grid>
+					<Grid item xs={12} sm={12} md={12}>
+						<TextField
+							fullWidth
+							id="workerClass"
+							label="Classe"
+							value={workerClass}
+							onChange={handleWorkerClassChange}
+							inputProps={{ maxLength: 100, readOnly: detail }}
+							multiline
+						/>
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="workerClass"
-					label="Classe"
-					value={workerClass}
-					onChange={handleWorkerClassChange}
-					inputProps={{ maxLength: 100 }}
-					multiline
-				/>
-			</Grid>
+					<Grid item xs={12} sm={12} md={12}>
+						<TextField
+							fullWidth
+							id="workplace"
+							label={detail ? "Lotação" : "Lotação*"}
+							value={workplaceWorker}
+							onChange={handleWorkplaceChange}
+							error={workplaceHelperText !== ""}
+							helperText={workplaceHelperText}
+							inputProps={{ maxLength: 100, readOnly: detail }}
+							multiline
+						/>
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="workplace"
-					label="Lotação*"
-					value={workplaceWorker}
-					onChange={handleWorkplaceChange}
-					error={workplaceHelperText !== ""}
-					helperText={workplaceHelperText}
-					inputProps={{ maxLength: 100 }}
-					multiline
-				/>
-			</Grid>
+					<Grid item xs={12} sm={12} md={12}>
+						<TextField
+							fullWidth
+							id="district"
+							label={detail ? "Município" : "Município*"}
+							value={district}
+							onChange={handleDistrictChange}
+							error={districtHelperText !== ""}
+							helperText={districtHelperText}
+							inputProps={{ maxLength: 100, readOnly: detail }}
+							multiline
+						/>
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<TextField
-					fullWidth
-					id="district"
-					label="Município*"
-					value={district}
-					onChange={handleDistrictChange}
-					error={districtHelperText !== ""}
-					helperText={districtHelperText}
-					inputProps={{ maxLength: 100 }}
-					multiline
-				/>
-			</Grid>
+					<Grid item xs={12} sm={12} md={6}>
+						{detail ? (
+							<TextField
+								fullWidth
+								id="referencePeriodDate"
+								label="Período de Referência"
+								value={
+									referencePeriod
+										? `${referencePeriod.substring(
+												5,
+												7
+										  )}/${referencePeriod.substring(0, 4)}`
+										: ""
+								}
+								inputProps={{ readOnly: true }}
+							/>
+						) : (
+							<KeyboardDatePicker
+								style={{ width: "100%" }}
+								id="period-date-picker-dialog"
+								label="Período de Referencia*"
+								format="MM/yyyy"
+								value={referencePeriod}
+								onChange={handleReferencePeriodChange}
+								openTo="month"
+								views={["month", "year"]}
+								okLabel="Confirmar"
+								cancelLabel="Cancelar"
+								error={referencePeriodHelperText !== ""}
+								helperText={referencePeriodHelperText}
+							/>
+						)}
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={6}>
-				<KeyboardDatePicker
-					style={{ width: "100%" }}
-					id="period-date-picker-dialog"
-					label="Período de Referencia*"
-					format="MM/yyyy"
-					value={referencePeriod}
-					onChange={handleReferencePeriodChange}
-					openTo="month"
-					views={["month", "year"]}
-					okLabel="Confirmar"
-					cancelLabel="Cancelar"
-					error={referencePeriodHelperText !== ""}
-					helperText={referencePeriodHelperText}
-				/>
-			</Grid>
+					<Grid item xs={12} sm={12} md={6}>
+						<TextField
+							fullWidth
+							id="sender-process-number"
+							label="Número do Processo Encaminhador"
+							value={senderProcessNumber}
+							onChange={handleSenderProcessNumberChange}
+							inputProps={{ maxLength: 20, readOnly: detail }}
+						/>
+					</Grid>
 
-			<Grid item xs={12} sm={12} md={6}>
-				<TextField
-					fullWidth
-					id="sender-process-number"
-					label="Número do Processo Encaminhador"
-					value={senderProcessNumber}
-					onChange={handleSenderProcessNumberChange}
-					inputProps={{ maxLength: 20 }}
-				/>
-			</Grid>
+					<DocumentTypeInput
+						isDetailPage={detail}
+						documentTypeDetail={typeDetail}
+						setHelperText={setTypeHelperText}
+						set={setType}
+						connectionError={connectionError}
+						documentType={type}
+						documentTypeHelperText={typeHelperText}
+					/>
 
-			<Grid item xs={12} sm={12} md={12}>
-				<FormControl fullWidth error={typeHelperText !== ""}>
-					<InputLabel id="select-type-label">Tipo do Documento*</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-type-label"
-						id="select-type"
-						value={type}
-						onChange={handleTypeChange}
-						renderValue={(value) => `${value.document_name}`}
-					>
-						<MenuItem key={0} value="">
-							<em>Nenhum</em>
-						</MenuItem>
+					<NotesInput isDetailPage={detail} set={setNotes} notes={notesLocal} />
+				</>
+			)}
 
-						{types.map((typeOption) => (
-							<MenuItem key={typeOption.id} value={typeOption}>
-								{typeOption.document_name}
-							</MenuItem>
-						))}
-					</Select>
-					{typeHelperText ? (
-						<FormHelperText>{typeHelperText}</FormHelperText>
-					) : (
-						""
-					)}
-				</FormControl>
-			</Grid>
-
-			<NotesInput set={setNotes} notes={notesLocal} />
-
-			<DocumentsCreate loading={loading} onSubmit={onSubmit} />
+			<DocumentsCreate
+				isDetailPage={detail}
+				loading={loading}
+				onSubmit={onSubmit}
+			/>
 
 			<PopUpAlert
 				open={openAlert}
@@ -407,6 +463,10 @@ const CreateFrequencySheet = () => {
 			/>
 		</CardContainer>
 	);
+};
+
+CreateFrequencySheet.propTypes = {
+	detail: PropTypes.bool.isRequired,
 };
 
 export default CreateFrequencySheet;

@@ -65,6 +65,7 @@ export function getUnits(setUnits, connectionError) {
 		.then((res) => {
 			localStorage.setItem("tk", res.data.access);
 			localStorage.setItem("tkr", res.data.refresh);
+
 			axiosArchives
 				.get("unity/", {
 					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
@@ -120,7 +121,7 @@ export function autocompl(
 					// eslint-disable-next-line
 					{...params}
 					value={params.value}
-					label="Nome, CPF*"
+					label="Servidor, CPF*"
 					error={publicWorkerHelperText !== ""}
 					helperText={publicWorkerHelperText}
 				/>

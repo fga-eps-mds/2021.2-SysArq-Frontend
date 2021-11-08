@@ -68,6 +68,16 @@ export const server = setupServer(
 		)
 	),
 
+	rest.get(`${hostApiArchives}document-subject/:id`, (req, res, ctx) =>
+		res(
+			ctx.json({
+				id: 2,
+				subject_name: "subject_name_test",
+				temporality: "2035-09-10",
+			})
+		)
+	),
+
 	rest.get(`${hostApiArchives}public-worker/`, (req, res, ctx) =>
 		res(
 			ctx.json([
@@ -218,12 +228,51 @@ export const server = setupServer(
 		return res(ctx.status(404));
 	}),
 
+	rest.get(`${hostApiArchives}frequency-relation/:id`, (req, res, ctx) =>
+		res(
+			ctx.json({
+				id: 1,
+				document_type_name: "document_type_name_test",
+				sender_unity_name: "sender_unity_name_test",
+				process_number: "2",
+				document_date: "2003-04-05",
+				received_date: "2006-07-08",
+				notes: "notes_test",
+				reference_period: ["2009-10-01"],
+			})
+		)
+	),
+
 	rest.post(`${hostApiArchives}administrative-process/`, (req, res, ctx) => {
 		if (req.body.process_number === "50") {
 			return res(ctx.status(201));
 		}
 		return res(ctx.status(404));
 	}),
+
+	rest.get(`${hostApiArchives}administrative-process/:id`, (req, res, ctx) =>
+		res(
+			ctx.json({
+				id: 1,
+				subject_id: 2,
+				dest_unity_id: 3,
+				sender_unity: 4,
+				unity_id: 5,
+				is_eliminated: false,
+				is_filed: false,
+				administrative_process_number: "6",
+				send_date: "2007-08-09",
+				cpf_cnpj: "10111213141",
+				reference_month_year: "2016-05-01",
+				process_number: "18",
+				notice_date: "2019-08-21",
+				interested: "interested_name",
+				archiving_date: "2022-11-24",
+				sender_user_name: "sender_user_name_test",
+				notes: "notes_test",
+			})
+		)
+	),
 
 	rest.post(`${hostApiArchives}box-archiving/`, (req, res, ctx) => {
 		if (
@@ -241,10 +290,69 @@ export const server = setupServer(
 		return res(ctx.status(404));
 	}),
 
+	rest.get(`${hostApiArchives}box-archiving/:id`, (req, res, ctx) =>
+		res(
+			ctx.json({
+				id: 1,
+				abbreviation_id: 2,
+				sender_unity: 4,
+				shelf_number: "5",
+				rack_number: "6",
+				process_number: "7",
+				received_date: "2008-09-10",
+				document_types: [
+					{
+						document_type_id: 2,
+						document_type_name: "tipo",
+						year: 2013,
+						month: "2",
+						temporality_date: 2014,
+					},
+				],
+				origin_box_id: 11,
+				origin_box: {
+					number: "1",
+					year: 2021,
+					subject_list: [
+						{
+							name: "Teste",
+							date: ["2021-11-04", "2021-11-05"],
+						},
+						{
+							name: "Teste 2",
+							date: ["2021-11-05"],
+						},
+					],
+				},
+			})
+		)
+	),
+
 	rest.post(`${hostApiArchives}frequency-sheet/`, (req, res, ctx) => {
 		if (req.body.person_id === 1 && req.body.role === "teste") {
 			return res(ctx.status(201));
 		}
 		return res(ctx.status(404));
-	})
+	}),
+
+	rest.get(`${hostApiArchives}frequency-sheet/:id`, (req, res, ctx) =>
+		res(
+			ctx.json({
+				id: 1,
+				person_id: 1,
+				person_name: "person_name_test",
+				cpf: "12345678910",
+				role: "role_test",
+				category: "category_test",
+				workplace: "workplace_test",
+				municipal_area: "municipal_area_test",
+				reference_period: "2021-11-01",
+				notes: "notes_test",
+				process_number: "2",
+				document_type_id: 1,
+				temporality_date: 2033,
+				document_type_name: "document_type_name_test",
+			})
+		)
+	)
 );

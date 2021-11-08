@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import {
 	Grid,
+	TextField,
 	FormControl,
 	InputLabel,
 	Select,
@@ -14,6 +15,8 @@ import { axiosArchives, axiosProfile } from "../../../Api";
 import { logout } from "../../../support";
 
 const DocumentTypeInput = ({
+	isDetailPage,
+	documentTypeDetail,
 	setHelperText,
 	set,
 	connectionError,
@@ -35,11 +38,14 @@ const DocumentTypeInput = ({
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
+
 				axiosArchives
 					.get("document-type/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
-					.then((response) => setDocumentTypes(response.data))
+					.then((response) => {
+						setDocumentTypes(response.data);
+					})
 					.catch(() => connectionError());
 			})
 			.catch((error) => {
@@ -47,43 +53,55 @@ const DocumentTypeInput = ({
 					logout();
 				} else connectionError();
 			});
-	}, []);
+	}, [documentType]);
 
 	return (
 		<Grid item xs={12} sm={12} md={12}>
-			<FormControl fullWidth error={documentTypeHelperText !== ""}>
-				<InputLabel id="select-documentType-label">
-					Tipo de Documento*
-				</InputLabel>
-				<Select
-					style={{ textAlign: "left" }}
-					labelId="select-documentType-label"
-					id="select-documentType"
-					value={documentType}
-					onChange={handleChange}
-					renderValue={(value) => `${value.document_name}`}
-				>
-					<MenuItem key={0} value="">
-						<em>Nenhum</em>
-					</MenuItem>
-
-					{documentTypes.map((documentTypeOption) => (
-						<MenuItem key={documentTypeOption.id} value={documentTypeOption}>
-							{documentTypeOption.document_name}
+			{isDetailPage ? (
+				<TextField
+					fullWidth
+					id="documentType"
+					label="Tipo de Documento"
+					value={documentTypeDetail}
+					inputProps={{ readOnly: true }}
+				/>
+			) : (
+				<FormControl fullWidth error={documentTypeHelperText !== ""}>
+					<InputLabel id="select-documentType-label">
+						Tipo de Documento*
+					</InputLabel>
+					<Select
+						style={{ textAlign: "left" }}
+						labelId="select-documentType-label"
+						id="select-documentType"
+						value={documentType}
+						onChange={handleChange}
+						renderValue={(value) => `${value.document_name}`}
+					>
+						<MenuItem key={0} value="">
+							<em>Nenhum</em>
 						</MenuItem>
-					))}
-				</Select>
-				{documentTypeHelperText ? (
-					<FormHelperText>{documentTypeHelperText}</FormHelperText>
-				) : (
-					""
-				)}
-			</FormControl>
+
+						{documentTypes.map((documentTypeOption) => (
+							<MenuItem key={documentTypeOption.id} value={documentTypeOption}>
+								{documentTypeOption.document_name}
+							</MenuItem>
+						))}
+					</Select>
+					{documentTypeHelperText ? (
+						<FormHelperText>{documentTypeHelperText}</FormHelperText>
+					) : (
+						""
+					)}
+				</FormControl>
+			)}
 		</Grid>
 	);
 };
 
 DocumentTypeInput.propTypes = {
+	isDetailPage: PropTypes.bool.isRequired,
+	documentTypeDetail: PropTypes.string.isRequired,
 	setHelperText: PropTypes.func.isRequired,
 	set: PropTypes.func.isRequired,
 	connectionError: PropTypes.func.isRequired,
