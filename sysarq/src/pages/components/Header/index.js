@@ -25,19 +25,19 @@ function Header() {
 			<div className="div-media">
 				<ul>
 					<li>
+						<a href="/documents">Cadastro</a>
+					</li>
+					<li>
 						<a href="/search">Pesquisar</a>
 					</li>
 					<li>
 						<a href="/fields">Campos</a>
 					</li>
 					<li>
-						<a href="/documents">Cadastro</a>
+						<a href="/">Relatório</a>
 					</li>
 					<li>
 						<a href="/">Configurações</a>
-					</li>
-					<li>
-						<a href="/">Relatório</a>
 					</li>
 					<li>
 						<a onClick={logout} href="/login">
@@ -49,27 +49,27 @@ function Header() {
 
 			<BottomNavigation showLabels>
 				<BottomNavigationAction
-					label="Pesquisar"
-					href="/search"
-					icon={<StarsIcon />}
-				/>
-				<BottomNavigationAction
 					label="Campos Obrigatórios"
 					href="/fields"
 					icon={<StarsIcon />}
 				/>
+				<BottomNavigationAction
+					label="Pesquisar"
+					href="/search"
+					icon={<StarsIcon />}
+				/>				
 				<BottomNavigationAction
 					label="Cadastro"
 					href="/documents"
 					icon={<StarsIcon />}
 				/>
 				<BottomNavigationAction
-					label="Configurações"
+					label="Relatório"
 					href="#"
 					icon={<StarsIcon />}
 				/>
 				<BottomNavigationAction
-					label="Relatório"
+					label="Configurações"
 					href="#"
 					icon={<StarsIcon />}
 				/>
