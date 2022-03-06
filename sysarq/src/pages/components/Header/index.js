@@ -49,18 +49,18 @@ function Header() {
 
 			<BottomNavigation showLabels>
 				<BottomNavigationAction
-					label="Campos Obrigatórios"
-					href="/fields"
+					label="Cadastro"
+					href="/documents"
 					icon={<StarsIcon />}
 				/>
 				<BottomNavigationAction
 					label="Pesquisar"
 					href="/search"
 					icon={<StarsIcon />}
-				/>				
+				/>
 				<BottomNavigationAction
-					label="Cadastro"
-					href="/documents"
+					label="Campos Obrigatórios"
+					href="/fields"
 					icon={<StarsIcon />}
 				/>
 				<BottomNavigationAction
