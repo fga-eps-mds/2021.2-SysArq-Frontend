@@ -163,6 +163,7 @@ export default function CreateBoxAbbreviation() {
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar caixa";
+	const redirectTo = "/fields/box-abbreviation";
 
 	return createForm(
 		fields,
@@ -173,6 +174,7 @@ export default function CreateBoxAbbreviation() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		redirectTo
 	);
 }

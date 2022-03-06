@@ -119,6 +119,7 @@ export default function CreatePublicWorker() {
 
 	const pageTitle = "Arquivo Geral da Policia Civil de Goiás";
 	const pageSubtitle = "Cadastrar servidor";
+	const redirectTo = "/fields/public-worker";
 
 	return createForm(
 		values,
@@ -129,6 +130,7 @@ export default function CreatePublicWorker() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		redirectTo
 	);
 }

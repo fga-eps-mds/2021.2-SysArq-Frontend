@@ -190,6 +190,7 @@ export default function CreateUnity() {
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar unidade";
+	const redirectTo = "/fields/unity";
 
 	return createForm(
 		fields,
@@ -200,6 +201,7 @@ export default function CreateUnity() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		redirectTo
 	);
 }

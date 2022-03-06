@@ -118,6 +118,7 @@ export default function CreateDocumentSubject() {
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar assunto do documento";
+	const redirectTo = "/fields/document-subject";
 
 	return createForm(
 		fields,
@@ -128,6 +129,7 @@ export default function CreateDocumentSubject() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		redirectTo
 	);
 }

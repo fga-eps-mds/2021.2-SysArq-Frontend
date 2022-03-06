@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import {
@@ -49,6 +50,9 @@ export default function CreateShelfOrRack({ urlType }) {
 	const [openAlert, setOpenAlert] = useState(false);
 	const [alertHelperText, setAlertHelperText] = useState("");
 	const [severityAlert, setSeverityAlert] = useState("error");
+
+	const [ redirect, setRedirect ] = useState(false);
+	const [ disabled, setDisabled ] = useState(false);
 
 	const handleAlertClose = () => {
 		setOpenAlert(false);
@@ -135,17 +139,25 @@ export default function CreateShelfOrRack({ urlType }) {
 		setRackNumberError(false);
 		setRackHelperText("");
 
+		setDisabled(true);
+		setTimeout(() => {
+			setRedirect(true);
+		}, 3000);
+
 		return null;
 	};
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar estantes e prateleiras";
+	const redirectTo = "/fields/shelf";
 
 	useEffect(() => {
 		setType(urlType === "shelf" ? "Estante" : "Prateleira");
 	}, []);
 
 	return (
+		<>
+		{redirect ? <Redirect to={redirectTo} /> :
 		<div className="create-form-container">
 			<Paper className="form-cadastro-container" elevation={10}>
 				<h1>{title}</h1>
@@ -212,7 +224,7 @@ export default function CreateShelfOrRack({ urlType }) {
 						</Grid>
 					</Container>
 				</div>
-				<button data-testid="click" type="button" onClick={onClick}>
+				<button disabled={disabled} data-testid="click" type="button" onClick={onClick}>
 					CADASTRAR
 				</button>
 			</Paper>
@@ -223,6 +235,8 @@ export default function CreateShelfOrRack({ urlType }) {
 				helperText={alertHelperText}
 			/>
 		</div>
+		}
+		</>
 	);
 }
 
