@@ -66,6 +66,18 @@ export default function CreateShelfOrRack({ urlType }) {
 		setType(event.target.value);
 	};
 
+	const onSuccess = () => {
+		
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText(`${type} cadastrada!`);
+		// For some reason, the value of the labels doesn't change
+		// when using setNumberE() and setNumberP(), but goes to none
+		// when the type changes
+		setType("Prateleira");
+		setType("Estante");
+	}
+
 	const onClick = () => {
 		if (numberE === "" && type === "Estante") {
 			setShelfNumberError(true);
@@ -97,9 +109,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							}
 						)
 						.then(() => {
-							setOpenAlert(true);
-							setSeverityAlert("success");
-							setAlertHelperText("Estante cadastrada!");
+							onSuccess();
 						})
 						.catch(() => {
 							connectionError();
@@ -116,9 +126,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							}
 						)
 						.then(() => {
-							setOpenAlert(true);
-							setSeverityAlert("success");
-							setAlertHelperText("Prateleira cadastrada!");
+							onSuccess();
 						})
 						.catch(() => {
 							connectionError();

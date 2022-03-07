@@ -72,6 +72,14 @@ export default function CreateDocumentSubject() {
 		},
 	];
 
+	const onSuccess = () => {
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Assunto cadastrado!");
+		setTemporality("");
+		setDocumentSubject("");
+	}
+
 	const onClick = () => {
 		if (documentSubject === "") {
 			setdocumentSubjectError(true);
@@ -100,9 +108,7 @@ export default function CreateDocumentSubject() {
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => {
-						setOpenAlert(true);
-						setSeverityAlert("success");
-						setAlertHelperText("Assunto cadastrado!");
+						onSuccess();
 					})
 					.catch(() => {
 						connectionError();
