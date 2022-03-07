@@ -8,8 +8,8 @@ import Login from "./pages/Login/index";
 
 import PrivateRoute from "./routes/privateRoute";
 
-import Search from "./pages/Search";
-import SearchList from "./pages/SearchList";
+import Search from "./pages/Search/Search";
+import SearchList from "./pages/Search/SearchList";
 
 import Fields from "./pages/Fields";
 import DocumentSubject from "./pages/Fields/List/DocumentSubject";
