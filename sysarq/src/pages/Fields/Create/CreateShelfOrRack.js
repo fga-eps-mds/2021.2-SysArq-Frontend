@@ -76,6 +76,8 @@ export default function CreateShelfOrRack({ urlType }) {
 		// when the type changes
 		setType("Prateleira");
 		setType("Estante");
+		setNumberE("");
+		setNumberP("");
 	}
 
 	const onClick = () => {
