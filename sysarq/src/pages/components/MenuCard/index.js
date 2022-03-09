@@ -22,6 +22,9 @@ import FrequencyRelationIcon from "@material-ui/icons/Description";
 import FrequencySheetIcon from "@material-ui/icons/AccountBox";
 import BoxArchivingIcon from "@material-ui/icons/AllInbox";
 
+import CreateUser from "@material-ui/icons/PersonAdd";
+import Settings from '@material-ui/icons/Settings';
+
 import "./styles.css";
 
 const useStyles = makeStyles(() => ({
@@ -54,6 +57,10 @@ const Icon = ({ iconName }) => {
 		icon = <FrequencyRelationIcon className={classes.icon} />;
 	} else if (iconName === "frequency-sheet-icon") {
 		icon = <FrequencySheetIcon className={classes.icon} />;
+	} else if (iconName === "CreateUser") {
+		icon = <CreateUser className={classes.icon} />;
+	} else if (iconName === "Settings") {
+		icon = <Settings className={classes.icon} />;
 	} else {
 		icon = <BoxArchivingIcon className={classes.icon} />;
 	}
