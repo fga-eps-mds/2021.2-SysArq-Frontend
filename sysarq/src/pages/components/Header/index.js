@@ -37,7 +37,7 @@ function Header() {
 						<a href="/">Relatório</a>
 					</li>
 					<li>
-						<a href="/Config">Configurações</a>
+						<a href="/settings">Configurações</a>
 					</li>
 					<li>
 						<a onClick={logout} href="/login">
@@ -70,7 +70,7 @@ function Header() {
 				/>
 				<BottomNavigationAction
 					label="Configurações"
-					href="/Settings"
+					href="/settings"
 					icon={<StarsIcon />}
 				/>
 			</BottomNavigation>

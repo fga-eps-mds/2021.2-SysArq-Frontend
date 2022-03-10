@@ -16,13 +16,13 @@ export default function Settings() {
 					<MenuCard
 						icon="CreateUser"
 						title="Cadastro de usuários"
-						url="/Settings"
+						url="/settings"
 						lg={6}
 					/>
 					<MenuCard
 						icon="Settings"
 						title="Gerenciamento de usuários"
-						url="/Settings"
+						url="/settings"
 						lg={6}
 					/>
 				</CardContainer>

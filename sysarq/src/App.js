@@ -223,7 +223,7 @@ function App() {
 							</PrivateRoute>
 						</Route>
 					</Route>
-					<PrivateRoute exact path="/Settings">
+					<PrivateRoute exact path="/settings">
 						<Settings />
 					</PrivateRoute>
 				</Switch>
