@@ -36,6 +36,8 @@ import CreateFrequencySheet from "./pages/Documents/Create/CreateFrequencySheet"
 import BoxArchiving from "./pages/Documents/List/BoxArchiving";
 import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
 
+import Settings from "./pages/Settings/Settings";
+
 import "./App.css";
 
 function App() {
@@ -221,6 +223,9 @@ function App() {
 							</PrivateRoute>
 						</Route>
 					</Route>
+					<PrivateRoute exact path="/settings">
+						<Settings />
+					</PrivateRoute>
 				</Switch>
 			</Router>
 		</ThemeProvider>
