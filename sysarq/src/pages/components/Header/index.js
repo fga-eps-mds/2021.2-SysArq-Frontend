@@ -70,7 +70,7 @@ function Header() {
 				/>
 				<BottomNavigationAction
 					label="Configurações"
-					href="/Config"
+					href="/Settings"
 					icon={<StarsIcon />}
 				/>
 			</BottomNavigation>
