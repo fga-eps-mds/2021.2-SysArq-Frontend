@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { maskBr } from "js-brasil";
 import PropTypes from "prop-types";
 
 import { useParams } from "react-router-dom";
@@ -271,7 +272,7 @@ const CreateFrequencySheet = ({ detail }) => {
 							setTypeDetail(responseFrequencySheet.data.document_type_name);
 
 							setPublicWorkerDetail(
-								`${responseFrequencySheet.data.person_name}, ${responseFrequencySheet.data.cpf}`
+								`${responseFrequencySheet.data.person_name}, ${maskBr.cpf(responseFrequencySheet.data.cpf)}`
 							);
 
 							setRole(responseFrequencySheet.data.role);
