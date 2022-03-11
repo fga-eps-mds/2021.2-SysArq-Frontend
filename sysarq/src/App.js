@@ -8,8 +8,8 @@ import Login from "./pages/Login/index";
 
 import PrivateRoute from "./routes/privateRoute";
 
-import Search from "./pages/Search";
-import SearchList from "./pages/SearchList";
+import Search from "./pages/Search/Search";
+import SearchList from "./pages/Search/SearchList";
 
 import Fields from "./pages/Fields";
 import DocumentSubject from "./pages/Fields/List/DocumentSubject";
@@ -35,6 +35,8 @@ import FrequencySheet from "./pages/Documents/List/FrequencySheet";
 import CreateFrequencySheet from "./pages/Documents/Create/CreateFrequencySheet";
 import BoxArchiving from "./pages/Documents/List/BoxArchiving";
 import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
+
+import Settings from "./pages/Settings/Settings";
 
 import "./App.css";
 
@@ -221,6 +223,9 @@ function App() {
 							</PrivateRoute>
 						</Route>
 					</Route>
+					<PrivateRoute exact path="/settings">
+						<Settings />
+					</PrivateRoute>
 				</Switch>
 			</Router>
 		</ThemeProvider>

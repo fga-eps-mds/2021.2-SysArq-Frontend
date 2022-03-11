@@ -5,7 +5,6 @@ import { axiosArchives, axiosProfile } from "../../../Api";
 import createForm from "../form";
 import { axiosProfileError } from "../../../support";
 
-
 const useStyles = makeStyles({
 	input: {
 		width: "100%",
@@ -24,6 +23,7 @@ const useStyles = makeStyles({
 
 export default function CreatePublicWorker() {
 	const classes = useStyles();
+
 
 	const [workerName, setName] = useState("");
 	const [workerCpf, setCpf] = useState("");
@@ -51,13 +51,15 @@ export default function CreatePublicWorker() {
 
 	const onClick = () => {
 
-		const cpfNumbers = workerCpf.replace(/\D/g, "");
 
+		const cpfNumbers = workerCpf.replace(/\D/g, "");
+    
 		if (workerName === "") {
 			setNameError(true);
 			setNameHelperText("Insira um nome");
 			return "Erro";
 		}
+
 		if (!validateBr.cpf(cpfNumbers)) {
 			setCpfError(true);
 			setCpfHelperText("Insira um CPF válido");
