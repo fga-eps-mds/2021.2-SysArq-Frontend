@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { maskBr } from "js-brasil";
 import PropTypes from "prop-types";
 
 import { useParams } from "react-router-dom";
@@ -408,7 +409,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								.then((response) => {
 									setPublicWorker(response.data);
 									setPublicWorkerDetail(
-										`${response.data.name}, ${response.data.cpf}`
+										`${response.data.name}, ${maskBr.cpf(response.data.cpf)}`
 									);
 								})
 								.catch(() => connectionError());

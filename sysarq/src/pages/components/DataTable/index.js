@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { maskBr } from "js-brasil";
 import PropTypes from "prop-types";
 
 import {
@@ -263,6 +264,10 @@ const DataTable = ({ url, title }) => {
 	};
 
 	const cellContent = (row, id) => {
+		if (id === "cpf") {
+			return maskBr.cpf(row[id]);
+		}
+
 		if (id === "is_filed") {
 			if (row[id] === true) {
 				return "Sim";
