@@ -64,6 +64,8 @@ export default function CreateShelfOrRack({ urlType }) {
 
 	const handleValueChange = (event) => {
 		setType(event.target.value);
+		setNumberE('');
+		setNumberP('');
 	};
 
 	const onSuccess = () => {
@@ -71,13 +73,8 @@ export default function CreateShelfOrRack({ urlType }) {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText(`${type} cadastrada!`);
-		// For some reason, the value of the labels doesn't change
-		// when using setNumberE() and setNumberP(), but goes to none
-		// when the type changes
-		setType("Prateleira");
-		setType("Estante");
-		setNumberE("");
-		setNumberP("");
+		setNumberE('');
+		setNumberP('');
 	}
 
 	const onClick = () => {
@@ -191,6 +188,7 @@ export default function CreateShelfOrRack({ urlType }) {
 										id="Estante"
 										label="Número da estante*"
 										type="number"
+										value={numberE}
 										onChange={(event) => {
 											setNumberE(event.target.value);
 											setShelfNumberError(false);
@@ -208,6 +206,7 @@ export default function CreateShelfOrRack({ urlType }) {
 										id="Prateleira"
 										label="Número da prateleira*"
 										type="number"
+										value={numberP}
 										onChange={(event) => {
 											setNumberP(event.target.value);
 											setRackNumberError(false);
