@@ -49,6 +49,14 @@ export default function CreatePublicWorker() {
 		);
 	};
 
+	const onSuccess = () => {
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Servidor cadastrado!");
+		setName("");
+		setCpf("");
+	}
+
 	const onClick = () => {
 
 
@@ -83,9 +91,8 @@ export default function CreatePublicWorker() {
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => {
-						setOpenAlert(true);
-						setSeverityAlert("success");
-						setAlertHelperText("Servidor cadastrado!");
+
+						onSuccess();
 					})
 					.catch(() => {
 						connectionError();

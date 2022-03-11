@@ -64,7 +64,18 @@ export default function CreateShelfOrRack({ urlType }) {
 
 	const handleValueChange = (event) => {
 		setType(event.target.value);
+		setNumberE('');
+		setNumberP('');
 	};
+
+	const onSuccess = () => {
+		
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText(`${type} cadastrada!`);
+		setNumberE('');
+		setNumberP('');
+	}
 
 	const onClick = () => {
 		if (numberE === "" && type === "Estante") {
@@ -97,9 +108,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							}
 						)
 						.then(() => {
-							setOpenAlert(true);
-							setSeverityAlert("success");
-							setAlertHelperText("Estante cadastrada!");
+							onSuccess();
 						})
 						.catch(() => {
 							connectionError();
@@ -116,9 +125,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							}
 						)
 						.then(() => {
-							setOpenAlert(true);
-							setSeverityAlert("success");
-							setAlertHelperText("Prateleira cadastrada!");
+							onSuccess();
 						})
 						.catch(() => {
 							connectionError();
@@ -181,6 +188,7 @@ export default function CreateShelfOrRack({ urlType }) {
 										id="Estante"
 										label="Número da estante*"
 										type="number"
+										value={numberE}
 										onChange={(event) => {
 											setNumberE(event.target.value);
 											setShelfNumberError(false);
@@ -198,6 +206,7 @@ export default function CreateShelfOrRack({ urlType }) {
 										id="Prateleira"
 										label="Número da prateleira*"
 										type="number"
+										value={numberP}
 										onChange={(event) => {
 											setNumberP(event.target.value);
 											setRackNumberError(false);

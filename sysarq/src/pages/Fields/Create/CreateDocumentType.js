@@ -48,6 +48,14 @@ export default function CreateDocumentType() {
 		);
 	};
 
+	const onSuccess = () => {
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Tipo cadastrado!");
+		setDocumentName("");
+		setTemporality("");
+	}
+
 	const onClick = () => {
 		if (documentName === "") {
 			setdocumentTypeError(true);
@@ -76,9 +84,7 @@ export default function CreateDocumentType() {
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => {
-						setOpenAlert(true);
-						setSeverityAlert("success");
-						setAlertHelperText("Tipo cadastrado!");
+						onSuccess();
 					})
 					.catch(() => {
 						connectionError();
