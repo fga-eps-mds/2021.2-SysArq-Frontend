@@ -8,7 +8,6 @@ import {
 	Paper,
 	Toolbar,
 	Typography,
-	Button,
 	TableContainer,
 	Table,
 	TableHead,
@@ -316,15 +315,6 @@ const DataTable = ({ url, title }) => {
 					<Typography className={classes.title} variant="h6" component="div">
 						{title}
 					</Typography>
-					<Button
-						disableElevation
-						style={{ fontWeight: "bold" }}
-						variant="outlined"
-						color="secondary"
-						href={`${url}create`}
-					>
-						Adicionar
-					</Button>
 				</Toolbar>
 				<TableContainer>
 					<Table>
