@@ -37,7 +37,7 @@ import BoxArchiving from "./pages/Documents/List/BoxArchiving";
 import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
 
 import Settings from "./pages/Settings/Settings";
-import RegisterUser from "./pages/components/RegisterUser";
+import RegisterUser from "./pages/RegisterUser";
 
 import "./App.css";
 
