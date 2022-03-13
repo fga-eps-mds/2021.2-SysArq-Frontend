@@ -1,7 +1,8 @@
 import React, { useState } from "react"
 import { validateBr } from 'js-brasil';
 
-import { Container, Paper, makeStyles, Typography, TextField } from "@material-ui/core"
+import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { Container, Paper, makeStyles, Typography, TextField, InputAdornment, IconButton } from "@material-ui/core";
 import { axiosProfile } from "../../Api";
 import { axiosProfileError } from "../../support";
 import PopUpAlert from '../components/PopUpAlert';
@@ -80,6 +81,7 @@ const RegisterUser = () => {
     const [passwordConfirmationError, setPasswordConfirmationError] = useState(false)
     const [passwordConfirmationHelperText, setPasswordConfirmationHelperText] = useState("")
 
+    const [showPassword, setShowPassword] = useState(false)
     const handleChange = (helper, error, main, event) => {
         helper("")
         error(false)
@@ -246,6 +248,21 @@ const RegisterUser = () => {
                     error={passwordError}
                     onChange={handlePassword} 
                     helperText={passwordHelperText}
+                    type={showPassword ? "text" : "password"}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    onMouseDown={(event) => event.preventDefault}
+                                    data-testid="showPass"
+                                >
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }}
                 />
                 <TextField
                     className={classes.input}
@@ -256,6 +273,21 @@ const RegisterUser = () => {
                     error={passwordConfirmationError}
                     onChange={handlePasswordConfirmation} 
                     helperText={passwordConfirmationHelperText}
+                    type={showPassword ? "text" : "password"}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    onMouseDown={(event) => event.preventDefault}
+                                    data-testid="showPass"
+                                >
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }}
                 />
 
                 <button type="button" variant="contained" onClick={onClick} className={classes.button}>REGISTRAR</button>
