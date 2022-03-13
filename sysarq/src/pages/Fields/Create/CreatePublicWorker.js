@@ -143,6 +143,8 @@ export default function CreatePublicWorker() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"Servidor",
+		"public-worker/"
 	);
 }

@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 		margin: "auto",
 		width: "85%",
+		minWidth: 0
 	},
 
 	title: {
@@ -310,7 +311,7 @@ const DataTable = ({ url, title }) => {
 
 	return (
 		<>
-			<Paper className={classes.paper}>
+			<Paper className={classes.paper} elevation={10}>
 				<Toolbar>
 					<Typography className={classes.title} variant="h6" component="div">
 						{title}

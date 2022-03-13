@@ -42,6 +42,7 @@ import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 
 import "date-fns";
+import DataTable from "../../components/DataTable";
 
 const isPersonRegistryLengthValid = (registryLength) =>
 	registryLength === 11 || registryLength === 15;
@@ -515,6 +516,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	});
 
 	return (
+		<>
+		
 		<CardContainer title="Processo Administrativo" spacing={1}>
 			{detail ? <DocumentsDetail /> : ""}
 
@@ -922,6 +925,12 @@ const CreateAdministrativeProcess = ({ detail }) => {
 				helperText={alertHelperText}
 			/>
 		</CardContainer>
+
+
+			<div style={{marginBottom: "100px"}}>
+				<DataTable title="Processo Administrativo" url="administrative-process/" />
+			</div>
+		</>
 	);
 };
 

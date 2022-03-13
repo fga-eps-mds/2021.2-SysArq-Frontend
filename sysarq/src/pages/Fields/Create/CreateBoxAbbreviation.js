@@ -47,6 +47,7 @@ export default function CreateBoxAbbreviation() {
 	const [severityAlert, setSeverityAlert] = useState("error");
 
 	const handleAlertClose = () => {
+        console.log(alertHelperText)
 		setOpenAlert(false);
 	};
 	const connectionError = () => {
@@ -181,6 +182,8 @@ export default function CreateBoxAbbreviation() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+        alertHelperText,
+        "caixa",
+        "box-abbreviation/"
 	);
 }

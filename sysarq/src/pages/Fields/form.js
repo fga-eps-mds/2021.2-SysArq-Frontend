@@ -2,6 +2,7 @@ import React from "react";
 import { Paper, TextField, Grid, Container } from "@material-ui/core";
 import InputMask from 'react-input-mask';
 import PopUpAlert from "../components/PopUpAlert";
+import DataTable from "../components/DataTable";
 
 export default function createForm(
 	fields,
@@ -12,9 +13,12 @@ export default function createForm(
 	openAlert,
 	handleAlertClose,
 	severityAlert,
-	alertHelperText
+	alertHelperText,
+    listaTitle,
+    listaUrl
 ) {
 	return (
+        <>
 		<div className="create-form-container">
 			<Paper className="form-cadastro-container" elevation={10}>
 				<h1>{title}</h1>
@@ -83,5 +87,10 @@ export default function createForm(
 				helperText={alertHelperText}
 			/>
 		</div>
+
+            <div style={{marginBottom: "100px" }}>
+                <DataTable title={listaTitle} url={listaUrl } />
+            </div>
+    </>
 	);
 }

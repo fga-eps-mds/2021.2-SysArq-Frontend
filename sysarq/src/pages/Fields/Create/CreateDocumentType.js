@@ -131,6 +131,8 @@ export default function CreateDocumentType() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"Tipo de Documento",
+		"document-type/"
 	);
 }

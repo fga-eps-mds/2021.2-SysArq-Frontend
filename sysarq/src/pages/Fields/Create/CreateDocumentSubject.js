@@ -134,6 +134,8 @@ export default function CreateDocumentSubject() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"Assunto do Documento",
+		"document-subject/"
 	);
 }

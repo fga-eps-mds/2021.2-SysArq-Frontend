@@ -27,6 +27,7 @@ import NotesInput from "../../components/Inputs/NotesInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
+import DataTable from "../../components/DataTable";
 
 const CreateFrequencySheet = ({ detail }) => {
 	const params = detail ? useParams() : "";
@@ -309,6 +310,7 @@ const CreateFrequencySheet = ({ detail }) => {
 	}, []);
 
 	return (
+		<>
 		<CardContainer title="Folha de Frequências" spacing={1}>
 			{detail ? <DocumentsDetail /> : ""}
 
@@ -463,6 +465,12 @@ const CreateFrequencySheet = ({ detail }) => {
 				helperText={alertHelperText}
 			/>
 		</CardContainer>
+
+		<div style={{marginBottom: "100px"}}>
+			<DataTable title="Folhas de Frequência" url="frequency-sheet/" />
+		</div>
+
+		</>
 	);
 };
 

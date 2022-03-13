@@ -27,6 +27,7 @@ import CommonSet from "../../components/CommonSet/CommonSet";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
+import DataTable from "../../components/DataTable";
 
 const CreateFrequencyRelation = ({ detail }) => {
 	const params = detail ? useParams() : "";
@@ -253,6 +254,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 	}, []);
 
 	return (
+		<>
 		<CardContainer title="Relação de Frequências" spacing={1}>
 			{detail ? <DocumentsDetail /> : ""}
 
@@ -319,6 +321,12 @@ const CreateFrequencyRelation = ({ detail }) => {
 				helperText={alertHelperText}
 			/>
 		</CardContainer>
+		
+		<div style={{marginBottom: "100px"}}>
+				<DataTable title="Relação de Frequências" url="frequency-relation/" />
+		</div>
+
+		</>
 	);
 };
 

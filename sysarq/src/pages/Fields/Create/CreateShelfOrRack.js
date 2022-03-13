@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import { axiosProfileError } from "../../../support";
 import PopUpAlert from "../../components/PopUpAlert";
+import DataTable from "../../components/DataTable";
 
 const useStyles = makeStyles({
 	input: {
@@ -153,6 +154,7 @@ export default function CreateShelfOrRack({ urlType }) {
 	}, []);
 
 	return (
+		<>
 		<div className="create-form-container">
 			<Paper className="form-cadastro-container" elevation={10}>
 				<h1>{title}</h1>
@@ -232,6 +234,14 @@ export default function CreateShelfOrRack({ urlType }) {
 				helperText={alertHelperText}
 			/>
 		</div>
+		
+		<div style={{ display: "flex", marginLeft: "10px", marginRight: "10px", marginBottom: "100px" }}>
+			<DataTable title="Estante" url="shelf/" />
+			<div style={{width: "25px"}} />
+			<DataTable title="Prateleira" url="rack/" />
+		</div>
+
+		</>
 	);
 }
 

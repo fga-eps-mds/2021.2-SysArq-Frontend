@@ -66,6 +66,7 @@ import NotesInput from "../../components/Inputs/NotesInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
+import DataTable from "../../components/DataTable";
 
 const CreateBoxArchiving = ({ detail }) => {
 	const params = detail ? useParams() : "";
@@ -516,6 +517,7 @@ const CreateBoxArchiving = ({ detail }) => {
 	}, []);
 
 	return (
+		<>
 		<CardContainer title="Arquivamento de Caixas" spacing={1}>
 			{detail ? <DocumentsDetail /> : ""}
 
@@ -903,6 +905,12 @@ const CreateBoxArchiving = ({ detail }) => {
 				helperText={alertHelperText}
 			/>
 		</CardContainer>
+		
+		<div style={{marginBottom: "100px"}}>
+			<DataTable title="Arquivamento de Caixas" url="box-archiving/" />
+		</div>
+
+		</>
 	);
 };
 
