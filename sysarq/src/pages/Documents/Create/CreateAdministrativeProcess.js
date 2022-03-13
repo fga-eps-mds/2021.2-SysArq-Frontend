@@ -517,418 +517,423 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 	return (
 		<>
-		
-		<CardContainer title="Processo Administrativo" spacing={1}>
-			{detail ? <DocumentsDetail /> : ""}
+			<CardContainer title="Processo Administrativo" spacing={1}>
+				{detail ? <DocumentsDetail /> : ""}
 
-			{detail && loading ? (
-				<CircularProgress style={{ margin: "auto" }} />
-			) : (
-				<>
-					<Grid item xs={12} sm={6} md={6}>
-						<NumberProcessInput
-							setHelperText={setProcessNumberHelperText}
-							set={setProcessNumber}
-							number={processNumber}
-							helperText={processNumberHelperText}
-							isDetailPage={detail}
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={6} md={6}>
-						{detail ? (
-							<TextField
-								fullWidth
-								id="noticeDate"
-								label="Data de Autuação"
-								value={
-									noticeDate
-										? `${noticeDate.substring(8, 10)}/${noticeDate.substring(
-												5,
-												7
-										  )}/${noticeDate.substring(0, 4)}`
-										: ""
-								}
-								inputProps={{ readOnly: true }}
+				{detail && loading ? (
+					<CircularProgress style={{ margin: "auto" }} />
+				) : (
+					<>
+						<Grid item xs={12} sm={6} md={6}>
+							<NumberProcessInput
+								setHelperText={setProcessNumberHelperText}
+								set={setProcessNumber}
+								number={processNumber}
+								helperText={processNumberHelperText}
+								isDetailPage={detail}
 							/>
-						) : (
-							<KeyboardDatePicker
-								okLabel="Confirmar"
-								cancelLabel="Cancelar"
-								style={{ width: "100%" }}
-								id="notice-date-picker-dialog"
-								label="Data de Autuação*"
-								format="dd/MM/yyyy"
-								value={noticeDate}
-								onChange={handleNoticeDateChange}
-								KeyboardButtonProps={{
-									"aria-label": "change notice date",
-								}}
-								error={noticeDateHelperText !== ""}
-								helperText={noticeDateHelperText}
-							/>
-						)}
-					</Grid>
+						</Grid>
 
-					<Grid item xs={12} sm={12} md={8}>
-						<TextField
-							fullWidth
-							id="interested"
-							label={detail ? "Interessado" : "Interessado*"}
-							value={interestedPerson}
-							onChange={handleInterestedChange}
-							error={interestedHelperText !== ""}
-							helperText={interestedHelperText}
-							multiline
-							inputProps={{ maxLength: 150, readOnly: detail }}
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={12} md={4}>
-						<TextField
-							fullWidth
-							id="cpf-cpnj"
-							label="CPF/CNPJ"
-							placeholder="Somente números"
-							value={personRegistry}
-							onChange={handlePersonRegistryChange}
-							error={personRegistryHelperText !== ""}
-							helperText={personRegistryHelperText}
-							inputProps={{ maxLength: 15, readOnly: detail }}
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={12} md={12}>
-						{detail ? (
-							<TextField
-								fullWidth
-								id="destinationUnit"
-								label="Assunto do Documento"
-								value={subjectDetail}
-								inputProps={{ readOnly: true }}
-							/>
-						) : (
-							<FormControl fullWidth error={subjectHelperText !== ""}>
-								<InputLabel id="select-subject-label">
-									Assunto do Documento*
-								</InputLabel>
-								<Select
-									style={{ textAlign: "left" }}
-									labelId="select-subject-label"
-									id="select-subject"
-									value={subject}
-									onChange={handleSubjectChange}
-									renderValue={(value) => `${value.subject_name}`}
-								>
-									<MenuItem key={0} value="">
-										<em>Nenhum</em>
-									</MenuItem>
-
-									{subjects.map((subjectOption) => (
-										<MenuItem key={subjectOption.id} value={subjectOption}>
-											{subjectOption.subject_name}
-										</MenuItem>
-									))}
-								</Select>
-								{subjectHelperText ? (
-									<FormHelperText>{subjectHelperText}</FormHelperText>
-								) : (
-									""
-								)}
-							</FormControl>
-						)}
-					</Grid>
-
-					<Grid item xs={12} sm={12} md={8}>
-						{detail ? (
-							<TextField
-								fullWidth
-								id="destinationUnit"
-								label="Unidade de Destino"
-								value={destinationUnitDetail}
-								inputProps={{ readOnly: true }}
-							/>
-						) : (
-							<FormControl fullWidth>
-								<InputLabel id="select-destinationUnit-label">
-									Unidade de Destino
-								</InputLabel>
-								<Select
-									style={{ textAlign: "left" }}
-									labelId="select-destinationUnit-label"
-									id="select-destinationUnit"
-									value={destinationUnit}
-									onChange={handleDestinationUnitChange}
-									renderValue={(value) => `${value.unity_name}`}
-								>
-									<MenuItem key={0} value="">
-										<em>Nenhuma</em>
-									</MenuItem>
-
-									{units.map((destUnitOption) => (
-										<MenuItem id={destUnitOption.id} value={destUnitOption}>
-											{destUnitOption.unity_name}
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-						)}
-					</Grid>
-
-					<Grid item xs={12} sm={12} md={4}>
-						{detail ? (
-							<TextField
-								fullWidth
-								id="archivingDate"
-								label="Data de Arquivamento"
-								value={
-									archivingDate
-										? `${archivingDate.substring(
-												8,
-												10
-										  )}/${archivingDate.substring(
-												5,
-												7
-										  )}/${archivingDate.substring(0, 4)}`
-										: ""
-								}
-								inputProps={{ readOnly: true }}
-							/>
-						) : (
-							<KeyboardDatePicker
-								okLabel="Confirmar"
-								cancelLabel="Cancelar"
-								style={{ width: "100%" }}
-								id="archiving-date-picker-dialog"
-								label="Data de Arquivamento*"
-								format="dd/MM/yyyy"
-								value={archivingDate}
-								onChange={handleArchivingDateChange}
-								KeyboardButtonProps={{
-									"aria-label": "change archiving date",
-								}}
-								error={archivingDateHelperText !== ""}
-								helperText={archivingDateHelperText}
-							/>
-						)}
-					</Grid>
-
-					<SenderUnitInput
-						isDetailPage={detail}
-						senderUnitDetail={senderUnitDetail}
-						setHelperText={setSenderUnitHelperText}
-						set={setSenderUnit}
-						senderUnit={senderUnit}
-						units={units}
-						senderUnitHelperText={senderUnitHelperText}
-					/>
-
-					<Grid item xs={12} sm={12} md={12}>
-						{detail ? (
-							<TextField
-								fullWidth
-								id="publicWorker"
-								label="Servidor"
-								value={publicWorkerDetail}
-								inputProps={{ readOnly: true }}
-							/>
-						) : (
-							autocompl(
-								publicWorkers,
-								publicWorkerInput,
-								handlePublicWorkerChange,
-								setPublicWorkerInput,
-								publicWorkerOptions,
-								publicWorkerHelperText
-							)
-						)}
-					</Grid>
-
-					<Grid item xs={12} sm={12} md={4}>
-						{detail ? (
-							<TextField
-								fullWidth
-								id="referenceDate"
-								label="Referência"
-								value={
-									reference !== "-"
-										? `${reference.substring(5, 7)}/${reference.substring(
-												0,
-												4
-										  )}`
-										: reference
-								}
-								inputProps={{ readOnly: true }}
-							/>
-						) : (
-							<KeyboardDatePicker
-								okLabel="Confirmar"
-								cancelLabel="Cancelar"
-								style={{ width: "100%" }}
-								id="reference-date-picker-dialog"
-								openTo="year"
-								views={["year", "month"]}
-								label="Referência"
-								format="MM/yyyy"
-								value={reference}
-								onChange={handleReferenceChange}
-								error={referenceHelperText !== ""}
-								helperText={referenceHelperText}
-							/>
-						)}
-					</Grid>
-
-					<Grid item xs={12} sm={12} md={8}>
-						{detail ? (
-							<TextField
-								fullWidth
-								id="status"
-								label="Status"
-								value={status}
-								inputProps={{ readOnly: true }}
-							/>
-						) : (
-							<FormControl fullWidth error={statusHelperText !== ""}>
-								<InputLabel id="select-status-label">Status*</InputLabel>
-								<Select
-									style={{ textAlign: "left" }}
-									labelId="select-status-label"
-									id="select-status"
-									value={status}
-									onChange={handleStatusChange}
-									renderValue={(value) => `${value}`}
-								>
-									<MenuItem value="">
-										<em>Nenhum</em>
-									</MenuItem>
-									<MenuItem value="Arquivado">Arquivado</MenuItem>
-									<MenuItem value="Eliminado">Eliminado</MenuItem>
-									<MenuItem value="Desarquivado">Desarquivado</MenuItem>
-								</Select>
-								{statusHelperText ? (
-									<FormHelperText>{statusHelperText}</FormHelperText>
-								) : (
-									""
-								)}
-							</FormControl>
-						)}
-					</Grid>
-
-					{status === "Desarquivado" ? (
-						<>
-							<Grid item xs={12} sm={12} md={12}>
-								{detail ? (
-									<TextField
-										fullWidth
-										id="unarchiveDestinationUnit"
-										label="Unid. Destino do Desarquivamento"
-										value={unarchiveDestinationUnitDetail}
-										inputProps={{ readOnly: true }}
-									/>
-								) : (
-									<FormControl fullWidth>
-										<InputLabel id="select-unarchiveDestinationUnit-label">
-											Unid. Destino do Desarquivamento
-										</InputLabel>
-										<Select
-											style={{ textAlign: "left" }}
-											labelId="select-unarchiveDestinationUnit-label"
-											id="select-unarchiveDestinationUnit"
-											value={unarchiveDestinationUnit}
-											onChange={handleUnarchiveDestinationUnit}
-											renderValue={(value) => `${value.unity_name}`}
-										>
-											<MenuItem key={0} value="">
-												<em>Nenhuma</em>
-											</MenuItem>
-
-											{units.map((unarchiveDestinationUnitOption) => (
-												<MenuItem
-													id={unarchiveDestinationUnitOption.id}
-													value={unarchiveDestinationUnitOption}
-												>
-													{unarchiveDestinationUnitOption.unity_name}
-												</MenuItem>
-											))}
-										</Select>
-									</FormControl>
-								)}
-							</Grid>
-
-							<Grid item xs={12} sm={12} md={6}>
+						<Grid item xs={12} sm={6} md={6}>
+							{detail ? (
 								<TextField
 									fullWidth
-									id="unarchiveProcessNumber"
-									label="Nº do Processo do Desarquivamento"
-									value={unarchiveProcessNumber}
-									onChange={handleUnarchiveProcessNumberChange}
-									inputProps={{ maxLength: 15, readOnly: detail }}
+									id="noticeDate"
+									label="Data de Autuação"
+									value={
+										noticeDate
+											? `${noticeDate.substring(8, 10)}/${noticeDate.substring(
+													5,
+													7
+											  )}/${noticeDate.substring(0, 4)}`
+											: ""
+									}
+									inputProps={{ readOnly: true }}
 								/>
-							</Grid>
+							) : (
+								<KeyboardDatePicker
+									okLabel="Confirmar"
+									cancelLabel="Cancelar"
+									style={{ width: "100%" }}
+									id="notice-date-picker-dialog"
+									label="Data de Autuação*"
+									format="dd/MM/yyyy"
+									value={noticeDate}
+									onChange={handleNoticeDateChange}
+									KeyboardButtonProps={{
+										"aria-label": "change notice date",
+									}}
+									error={noticeDateHelperText !== ""}
+									helperText={noticeDateHelperText}
+								/>
+							)}
+						</Grid>
 
-							<Grid item xs={12} sm={12} md={6}>
-								{detail ? (
+						<Grid item xs={12} sm={12} md={8}>
+							<TextField
+								fullWidth
+								id="interested"
+								label={detail ? "Interessado" : "Interessado*"}
+								value={interestedPerson}
+								onChange={handleInterestedChange}
+								error={interestedHelperText !== ""}
+								helperText={interestedHelperText}
+								multiline
+								inputProps={{ maxLength: 150, readOnly: detail }}
+							/>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							<TextField
+								fullWidth
+								id="cpf-cpnj"
+								label="CPF/CNPJ"
+								placeholder="Somente números"
+								value={personRegistry}
+								onChange={handlePersonRegistryChange}
+								error={personRegistryHelperText !== ""}
+								helperText={personRegistryHelperText}
+								inputProps={{ maxLength: 15, readOnly: detail }}
+							/>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={12}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="destinationUnit"
+									label="Assunto do Documento"
+									value={subjectDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<FormControl fullWidth error={subjectHelperText !== ""}>
+									<InputLabel id="select-subject-label">
+										Assunto do Documento*
+									</InputLabel>
+									<Select
+										style={{ textAlign: "left" }}
+										labelId="select-subject-label"
+										id="select-subject"
+										value={subject}
+										onChange={handleSubjectChange}
+										renderValue={(value) => `${value.subject_name}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{subjects.map((subjectOption) => (
+											<MenuItem key={subjectOption.id} value={subjectOption}>
+												{subjectOption.subject_name}
+											</MenuItem>
+										))}
+									</Select>
+									{subjectHelperText ? (
+										<FormHelperText>{subjectHelperText}</FormHelperText>
+									) : (
+										""
+									)}
+								</FormControl>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={8}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="destinationUnit"
+									label="Unidade de Destino"
+									value={destinationUnitDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<FormControl fullWidth>
+									<InputLabel id="select-destinationUnit-label">
+										Unidade de Destino
+									</InputLabel>
+									<Select
+										style={{ textAlign: "left" }}
+										labelId="select-destinationUnit-label"
+										id="select-destinationUnit"
+										value={destinationUnit}
+										onChange={handleDestinationUnitChange}
+										renderValue={(value) => `${value.unity_name}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhuma</em>
+										</MenuItem>
+
+										{units.map((destUnitOption) => (
+											<MenuItem id={destUnitOption.id} value={destUnitOption}>
+												{destUnitOption.unity_name}
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="archivingDate"
+									label="Data de Arquivamento"
+									value={
+										archivingDate
+											? `${archivingDate.substring(
+													8,
+													10
+											  )}/${archivingDate.substring(
+													5,
+													7
+											  )}/${archivingDate.substring(0, 4)}`
+											: ""
+									}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<KeyboardDatePicker
+									okLabel="Confirmar"
+									cancelLabel="Cancelar"
+									style={{ width: "100%" }}
+									id="archiving-date-picker-dialog"
+									label="Data de Arquivamento*"
+									format="dd/MM/yyyy"
+									value={archivingDate}
+									onChange={handleArchivingDateChange}
+									KeyboardButtonProps={{
+										"aria-label": "change archiving date",
+									}}
+									error={archivingDateHelperText !== ""}
+									helperText={archivingDateHelperText}
+								/>
+							)}
+						</Grid>
+
+						<SenderUnitInput
+							isDetailPage={detail}
+							senderUnitDetail={senderUnitDetail}
+							setHelperText={setSenderUnitHelperText}
+							set={setSenderUnit}
+							senderUnit={senderUnit}
+							units={units}
+							senderUnitHelperText={senderUnitHelperText}
+						/>
+
+						<Grid item xs={12} sm={12} md={12}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="publicWorker"
+									label="Servidor"
+									value={publicWorkerDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								autocompl(
+									publicWorkers,
+									publicWorkerInput,
+									handlePublicWorkerChange,
+									setPublicWorkerInput,
+									publicWorkerOptions,
+									publicWorkerHelperText
+								)
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="referenceDate"
+									label="Referência"
+									value={
+										reference !== "-"
+											? `${reference.substring(5, 7)}/${reference.substring(
+													0,
+													4
+											  )}`
+											: reference
+									}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<KeyboardDatePicker
+									okLabel="Confirmar"
+									cancelLabel="Cancelar"
+									style={{ width: "100%" }}
+									id="reference-date-picker-dialog"
+									openTo="year"
+									views={["year", "month"]}
+									label="Referência"
+									format="MM/yyyy"
+									value={reference}
+									onChange={handleReferenceChange}
+									error={referenceHelperText !== ""}
+									helperText={referenceHelperText}
+								/>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={8}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="status"
+									label="Status"
+									value={status}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<FormControl fullWidth error={statusHelperText !== ""}>
+									<InputLabel id="select-status-label">Status*</InputLabel>
+									<Select
+										style={{ textAlign: "left" }}
+										labelId="select-status-label"
+										id="select-status"
+										value={status}
+										onChange={handleStatusChange}
+										renderValue={(value) => `${value}`}
+									>
+										<MenuItem value="">
+											<em>Nenhum</em>
+										</MenuItem>
+										<MenuItem value="Arquivado">Arquivado</MenuItem>
+										<MenuItem value="Eliminado">Eliminado</MenuItem>
+										<MenuItem value="Desarquivado">Desarquivado</MenuItem>
+									</Select>
+									{statusHelperText ? (
+										<FormHelperText>{statusHelperText}</FormHelperText>
+									) : (
+										""
+									)}
+								</FormControl>
+							)}
+						</Grid>
+
+						{status === "Desarquivado" ? (
+							<>
+								<Grid item xs={12} sm={12} md={12}>
+									{detail ? (
+										<TextField
+											fullWidth
+											id="unarchiveDestinationUnit"
+											label="Unid. Destino do Desarquivamento"
+											value={unarchiveDestinationUnitDetail}
+											inputProps={{ readOnly: true }}
+										/>
+									) : (
+										<FormControl fullWidth>
+											<InputLabel id="select-unarchiveDestinationUnit-label">
+												Unid. Destino do Desarquivamento
+											</InputLabel>
+											<Select
+												style={{ textAlign: "left" }}
+												labelId="select-unarchiveDestinationUnit-label"
+												id="select-unarchiveDestinationUnit"
+												value={unarchiveDestinationUnit}
+												onChange={handleUnarchiveDestinationUnit}
+												renderValue={(value) => `${value.unity_name}`}
+											>
+												<MenuItem key={0} value="">
+													<em>Nenhuma</em>
+												</MenuItem>
+
+												{units.map((unarchiveDestinationUnitOption) => (
+													<MenuItem
+														id={unarchiveDestinationUnitOption.id}
+														value={unarchiveDestinationUnitOption}
+													>
+														{unarchiveDestinationUnitOption.unity_name}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									)}
+								</Grid>
+
+								<Grid item xs={12} sm={12} md={6}>
 									<TextField
 										fullWidth
-										id="unarchiveDate"
-										label="Data de Desarquivamento"
-										value={
-											unarchiveDate !== "-"
-												? `${unarchiveDate.substring(
-														8,
-														10
-												  )}/${unarchiveDate.substring(
-														5,
-														7
-												  )}/${unarchiveDate.substring(0, 4)}`
-												: unarchiveDate
-										}
-										inputProps={{ readOnly: true }}
+										id="unarchiveProcessNumber"
+										label="Nº do Processo do Desarquivamento"
+										value={unarchiveProcessNumber}
+										onChange={handleUnarchiveProcessNumberChange}
+										inputProps={{ maxLength: 15, readOnly: detail }}
 									/>
-								) : (
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										style={{ width: "100%" }}
-										id="unarchive-date-picker-dialog"
-										label="Data de Desarquivamento"
-										format="dd/MM/yyyy"
-										value={unarchiveDate}
-										onChange={handleUnarchiveDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change unarchive date",
-										}}
-										error={unarchiveDateHelperText !== ""}
-										helperText={unarchiveDateHelperText}
-									/>
-								)}
-							</Grid>
-						</>
-					) : (
-						""
-					)}
+								</Grid>
 
-					<NotesInput set={setNotes} notes={notesLocal} isDetailPage={detail} />
-				</>
-			)}
+								<Grid item xs={12} sm={12} md={6}>
+									{detail ? (
+										<TextField
+											fullWidth
+											id="unarchiveDate"
+											label="Data de Desarquivamento"
+											value={
+												unarchiveDate !== "-"
+													? `${unarchiveDate.substring(
+															8,
+															10
+													  )}/${unarchiveDate.substring(
+															5,
+															7
+													  )}/${unarchiveDate.substring(0, 4)}`
+													: unarchiveDate
+											}
+											inputProps={{ readOnly: true }}
+										/>
+									) : (
+										<KeyboardDatePicker
+											okLabel="Confirmar"
+											cancelLabel="Cancelar"
+											style={{ width: "100%" }}
+											id="unarchive-date-picker-dialog"
+											label="Data de Desarquivamento"
+											format="dd/MM/yyyy"
+											value={unarchiveDate}
+											onChange={handleUnarchiveDateChange}
+											KeyboardButtonProps={{
+												"aria-label": "change unarchive date",
+											}}
+											error={unarchiveDateHelperText !== ""}
+											helperText={unarchiveDateHelperText}
+										/>
+									)}
+								</Grid>
+							</>
+						) : (
+							""
+						)}
 
-			<DocumentsCreate
-				isDetailPage={detail}
-				loading={loading}
-				onSubmit={onSubmit}
-			/>
+						<NotesInput
+							set={setNotes}
+							notes={notesLocal}
+							isDetailPage={detail}
+						/>
+					</>
+				)}
 
-			<PopUpAlert
-				open={openAlert}
-				handleClose={handleAlertClose}
-				severity={severityAlert}
-				helperText={alertHelperText}
-			/>
-		</CardContainer>
+				<DocumentsCreate
+					isDetailPage={detail}
+					loading={loading}
+					onSubmit={onSubmit}
+				/>
 
+				<PopUpAlert
+					open={openAlert}
+					handleClose={handleAlertClose}
+					severity={severityAlert}
+					helperText={alertHelperText}
+				/>
+			</CardContainer>
 
-			<div style={{marginBottom: "100px"}}>
-				<DataTable title="Processo Administrativo" url="administrative-process/" />
+			<div style={{ marginBottom: "100px" }}>
+				<DataTable
+					title="Processo Administrativo"
+					url="administrative-process/"
+				/>
 			</div>
 		</>
 	);

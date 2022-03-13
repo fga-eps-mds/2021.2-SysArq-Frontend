@@ -54,7 +54,7 @@ export default function CreateDocumentType() {
 		setAlertHelperText("Tipo cadastrado!");
 		setDocumentName("");
 		setTemporality("");
-	}
+	};
 
 	const onClick = () => {
 		if (documentName === "") {

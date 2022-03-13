@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 		margin: "auto",
 		width: "85%",
-		minWidth: 0
+		minWidth: 0,
 	},
 
 	title: {

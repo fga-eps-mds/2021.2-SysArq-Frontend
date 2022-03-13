@@ -273,7 +273,9 @@ const CreateFrequencySheet = ({ detail }) => {
 							setTypeDetail(responseFrequencySheet.data.document_type_name);
 
 							setPublicWorkerDetail(
-								`${responseFrequencySheet.data.person_name}, ${maskBr.cpf(responseFrequencySheet.data.cpf)}`
+								`${responseFrequencySheet.data.person_name}, ${maskBr.cpf(
+									responseFrequencySheet.data.cpf
+								)}`
 							);
 
 							setRole(responseFrequencySheet.data.role);
@@ -311,165 +313,168 @@ const CreateFrequencySheet = ({ detail }) => {
 
 	return (
 		<>
-		<CardContainer title="Folha de Frequências" spacing={1}>
-			{detail ? <DocumentsDetail /> : ""}
+			<CardContainer title="Folha de Frequências" spacing={1}>
+				{detail ? <DocumentsDetail /> : ""}
 
-			{detail && loading ? (
-				<CircularProgress style={{ margin: "auto" }} />
-			) : (
-				<>
-					<Grid item xs={12} sm={12} md={12}>
-						{detail ? (
+				{detail && loading ? (
+					<CircularProgress style={{ margin: "auto" }} />
+				) : (
+					<>
+						<Grid item xs={12} sm={12} md={12}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="publicWorker"
+									label="Servidor"
+									value={publicWorkerDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								autocompl(
+									publicWorkers,
+									publicWorkerInput,
+									handlePublicWorkerChange,
+									setPublicWorkerInput,
+									publicWorkerOptions,
+									publicWorkerHelperText
+								)
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
-								id="publicWorker"
-								label="Servidor"
-								value={publicWorkerDetail}
-								inputProps={{ readOnly: true }}
+								id="role"
+								label={detail ? "Cargo" : "Cargo*"}
+								value={roleWorker}
+								onChange={handleRoleChange}
+								error={roleHelperText !== ""}
+								helperText={roleHelperText}
+								inputProps={{ maxLength: 100, readOnly: detail }}
+								multiline
 							/>
-						) : (
-							autocompl(
-								publicWorkers,
-								publicWorkerInput,
-								handlePublicWorkerChange,
-								setPublicWorkerInput,
-								publicWorkerOptions,
-								publicWorkerHelperText
-							)
-						)}
-					</Grid>
+						</Grid>
 
-					<Grid item xs={12} sm={12} md={12}>
-						<TextField
-							fullWidth
-							id="role"
-							label={detail ? "Cargo" : "Cargo*"}
-							value={roleWorker}
-							onChange={handleRoleChange}
-							error={roleHelperText !== ""}
-							helperText={roleHelperText}
-							inputProps={{ maxLength: 100, readOnly: detail }}
-							multiline
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={12} md={12}>
-						<TextField
-							fullWidth
-							id="workerClass"
-							label="Classe"
-							value={workerClass}
-							onChange={handleWorkerClassChange}
-							inputProps={{ maxLength: 100, readOnly: detail }}
-							multiline
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={12} md={12}>
-						<TextField
-							fullWidth
-							id="workplace"
-							label={detail ? "Lotação" : "Lotação*"}
-							value={workplaceWorker}
-							onChange={handleWorkplaceChange}
-							error={workplaceHelperText !== ""}
-							helperText={workplaceHelperText}
-							inputProps={{ maxLength: 100, readOnly: detail }}
-							multiline
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={12} md={12}>
-						<TextField
-							fullWidth
-							id="district"
-							label={detail ? "Município" : "Município*"}
-							value={district}
-							onChange={handleDistrictChange}
-							error={districtHelperText !== ""}
-							helperText={districtHelperText}
-							inputProps={{ maxLength: 100, readOnly: detail }}
-							multiline
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={12} md={6}>
-						{detail ? (
+						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
-								id="referencePeriodDate"
-								label="Período de Referência"
-								value={
-									referencePeriod
-										? `${referencePeriod.substring(
-												5,
-												7
-										  )}/${referencePeriod.substring(0, 4)}`
-										: ""
-								}
-								inputProps={{ readOnly: true }}
+								id="workerClass"
+								label="Classe"
+								value={workerClass}
+								onChange={handleWorkerClassChange}
+								inputProps={{ maxLength: 100, readOnly: detail }}
+								multiline
 							/>
-						) : (
-							<KeyboardDatePicker
-								style={{ width: "100%" }}
-								id="period-date-picker-dialog"
-								label="Período de Referencia*"
-								format="MM/yyyy"
-								value={referencePeriod}
-								onChange={handleReferencePeriodChange}
-								openTo="month"
-								views={["month", "year"]}
-								okLabel="Confirmar"
-								cancelLabel="Cancelar"
-								error={referencePeriodHelperText !== ""}
-								helperText={referencePeriodHelperText}
-							/>
-						)}
-					</Grid>
+						</Grid>
 
-					<Grid item xs={12} sm={12} md={6}>
-						<TextField
-							fullWidth
-							id="sender-process-number"
-							label="Número do Processo Encaminhador"
-							value={senderProcessNumber}
-							onChange={handleSenderProcessNumberChange}
-							inputProps={{ maxLength: 20, readOnly: detail }}
+						<Grid item xs={12} sm={12} md={12}>
+							<TextField
+								fullWidth
+								id="workplace"
+								label={detail ? "Lotação" : "Lotação*"}
+								value={workplaceWorker}
+								onChange={handleWorkplaceChange}
+								error={workplaceHelperText !== ""}
+								helperText={workplaceHelperText}
+								inputProps={{ maxLength: 100, readOnly: detail }}
+								multiline
+							/>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={12}>
+							<TextField
+								fullWidth
+								id="district"
+								label={detail ? "Município" : "Município*"}
+								value={district}
+								onChange={handleDistrictChange}
+								error={districtHelperText !== ""}
+								helperText={districtHelperText}
+								inputProps={{ maxLength: 100, readOnly: detail }}
+								multiline
+							/>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={6}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="referencePeriodDate"
+									label="Período de Referência"
+									value={
+										referencePeriod
+											? `${referencePeriod.substring(
+													5,
+													7
+											  )}/${referencePeriod.substring(0, 4)}`
+											: ""
+									}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<KeyboardDatePicker
+									style={{ width: "100%" }}
+									id="period-date-picker-dialog"
+									label="Período de Referencia*"
+									format="MM/yyyy"
+									value={referencePeriod}
+									onChange={handleReferencePeriodChange}
+									openTo="month"
+									views={["month", "year"]}
+									okLabel="Confirmar"
+									cancelLabel="Cancelar"
+									error={referencePeriodHelperText !== ""}
+									helperText={referencePeriodHelperText}
+								/>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={6}>
+							<TextField
+								fullWidth
+								id="sender-process-number"
+								label="Número do Processo Encaminhador"
+								value={senderProcessNumber}
+								onChange={handleSenderProcessNumberChange}
+								inputProps={{ maxLength: 20, readOnly: detail }}
+							/>
+						</Grid>
+
+						<DocumentTypeInput
+							isDetailPage={detail}
+							documentTypeDetail={typeDetail}
+							setHelperText={setTypeHelperText}
+							set={setType}
+							connectionError={connectionError}
+							documentType={type}
+							documentTypeHelperText={typeHelperText}
 						/>
-					</Grid>
 
-					<DocumentTypeInput
-						isDetailPage={detail}
-						documentTypeDetail={typeDetail}
-						setHelperText={setTypeHelperText}
-						set={setType}
-						connectionError={connectionError}
-						documentType={type}
-						documentTypeHelperText={typeHelperText}
-					/>
+						<NotesInput
+							isDetailPage={detail}
+							set={setNotes}
+							notes={notesLocal}
+						/>
+					</>
+				)}
 
-					<NotesInput isDetailPage={detail} set={setNotes} notes={notesLocal} />
-				</>
-			)}
+				<DocumentsCreate
+					isDetailPage={detail}
+					loading={loading}
+					onSubmit={onSubmit}
+				/>
 
-			<DocumentsCreate
-				isDetailPage={detail}
-				loading={loading}
-				onSubmit={onSubmit}
-			/>
+				<PopUpAlert
+					open={openAlert}
+					handleClose={handleAlertClose}
+					severity={severityAlert}
+					helperText={alertHelperText}
+				/>
+			</CardContainer>
 
-			<PopUpAlert
-				open={openAlert}
-				handleClose={handleAlertClose}
-				severity={severityAlert}
-				helperText={alertHelperText}
-			/>
-		</CardContainer>
-
-		<div style={{marginBottom: "100px"}}>
-			<DataTable title="Folhas de Frequência" url="frequency-sheet/" />
-		</div>
-
+			<div style={{ marginBottom: "100px" }}>
+				<DataTable title="Folhas de Frequência" url="frequency-sheet/" />
+			</div>
 		</>
 	);
 };

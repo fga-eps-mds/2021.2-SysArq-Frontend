@@ -78,7 +78,7 @@ export default function CreateDocumentSubject() {
 		setAlertHelperText("Assunto cadastrado!");
 		setTemporality("");
 		setDocumentSubject("");
-	}
+	};
 
 	const onClick = () => {
 		if (documentSubject === "") {

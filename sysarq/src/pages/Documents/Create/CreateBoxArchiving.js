@@ -518,358 +518,367 @@ const CreateBoxArchiving = ({ detail }) => {
 
 	return (
 		<>
-		<CardContainer title="Arquivamento de Caixas" spacing={1}>
-			{detail ? <DocumentsDetail /> : ""}
+			<CardContainer title="Arquivamento de Caixas" spacing={1}>
+				{detail ? <DocumentsDetail /> : ""}
 
-			{detail && loading ? (
-				<CircularProgress style={{ margin: "auto" }} />
-			) : (
-				<>
-					<Grid item xs={12} sm={6} md={6}>
-						<NumberProcessInput
-							setHelperText={setProcessNumberHelperText}
-							set={setProcessNumber}
-							number={processNumber}
-							helperText={processNumberHelperText}
+				{detail && loading ? (
+					<CircularProgress style={{ margin: "auto" }} />
+				) : (
+					<>
+						<Grid item xs={12} sm={6} md={6}>
+							<NumberProcessInput
+								setHelperText={setProcessNumberHelperText}
+								set={setProcessNumber}
+								number={processNumber}
+								helperText={processNumberHelperText}
+								isDetailPage={detail}
+							/>
+						</Grid>
+
+						<Grid item xs={12} sm={6} md={6}>
+							<ReceivedDateInput
+								isDetailPage={detail}
+								setHelperText={setReceivedDateHelperText}
+								set={setReceivedDate}
+								receivedDate={receivedDate}
+								helperText={receivedDateHelperText}
+							/>
+						</Grid>
+
+						<SenderUnitInput
 							isDetailPage={detail}
+							senderUnitDetail={senderUnitDetail}
+							setHelperText={setSenderUnitHelperText}
+							set={setSenderUnit}
+							senderUnit={senderUnit}
+							units={units}
+							senderUnitHelperText={senderUnitHelperText}
 						/>
-					</Grid>
 
-					<Grid item xs={12} sm={6} md={6}>
-						<ReceivedDateInput
-							isDetailPage={detail}
-							setHelperText={setReceivedDateHelperText}
-							set={setReceivedDate}
-							receivedDate={receivedDate}
-							helperText={receivedDateHelperText}
-						/>
-					</Grid>
+						<Grid item xs={12} sm={12} md={12}>
+							<SpecialLabels label="Caixa de Origem" />
 
-					<SenderUnitInput
-						isDetailPage={detail}
-						senderUnitDetail={senderUnitDetail}
-						setHelperText={setSenderUnitHelperText}
-						set={setSenderUnit}
-						senderUnit={senderUnit}
-						units={units}
-						senderUnitHelperText={senderUnitHelperText}
-					/>
-
-					<Grid item xs={12} sm={12} md={12}>
-						<SpecialLabels label="Caixa de Origem" />
-
-						{originBox.number !== undefined ? (
-							<Accordion>
-								<AccordionSummary expandIcon={<ExpandMoreIcon />}>
-									<Typography>
-										{originBox.number}/{originBox.year}
-									</Typography>
-								</AccordionSummary>
-								<AccordionDetails>
-									<div style={{ width: "100%" }}>
-										<TableContainer style={{ width: "100%" }} component={Paper}>
-											<Table size="small">
-												<TableHead>
-													<TableRow>
-														<TableCell>Assunto</TableCell>
-														<TableCell>Datas</TableCell>
-														{detail ? "" : <TableCell>{}</TableCell>}
-													</TableRow>
-												</TableHead>
-												<TableBody>
-													{originBox.subjects_list.map(
-														(subject, subjectIndex) => (
-															<TableRow key={subject.name}>
-																<TableCell>{subject.name}</TableCell>
-																<TableCell>
-																	<ChipsContainer
-																		justifyContent="left"
-																		marginTop="0%"
-																	>
-																		{subject.dates.map((addedDate) => (
-																			<Chip
-																				icon={<TimelapseIcon />}
-																				label={`${addedDate.substring(
-																					8,
-																					10
-																				)}/${addedDate.substring(
-																					5,
-																					7
-																				)}/${addedDate.substring(0, 4)}`}
-																				color="secondary"
-																				deleteIcon={
-																					<CancelIcon data-testid="delete" />
-																				}
-																				onDelete={
-																					detail
-																						? false
-																						: () =>
-																								handleDeleteOriginBoxSubjectDate(
-																									subjectIndex,
-																									addedDate
-																								)
-																				}
-																			/>
-																		))}
-
-																		{detail ? (
-																			""
-																		) : (
-																			<AddChip
-																				label="Adicionar Data"
-																				onClick={() =>
-																					handleOpenNewOriginBoxSubjectDateDialog(
-																						subjectIndex
-																					)
-																				}
-																			/>
-																		)}
-																	</ChipsContainer>
-																</TableCell>
-																{detail ? (
-																	""
-																) : (
+							{originBox.number !== undefined ? (
+								<Accordion>
+									<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+										<Typography>
+											{originBox.number}/{originBox.year}
+										</Typography>
+									</AccordionSummary>
+									<AccordionDetails>
+										<div style={{ width: "100%" }}>
+											<TableContainer
+												style={{ width: "100%" }}
+												component={Paper}
+											>
+												<Table size="small">
+													<TableHead>
+														<TableRow>
+															<TableCell>Assunto</TableCell>
+															<TableCell>Datas</TableCell>
+															{detail ? "" : <TableCell>{}</TableCell>}
+														</TableRow>
+													</TableHead>
+													<TableBody>
+														{originBox.subjects_list.map(
+															(subject, subjectIndex) => (
+																<TableRow key={subject.name}>
+																	<TableCell>{subject.name}</TableCell>
 																	<TableCell>
 																		<ChipsContainer
-																			justifyContent="right"
+																			justifyContent="left"
 																			marginTop="0%"
 																		>
-																			<Chip
-																				variant="outlined"
-																				label="Excluir"
-																				icon={<CloseIcon />}
-																				color="secondary"
-																				clickable
-																				onClick={() =>
-																					handleDeleteOriginBoxSubject(
-																						subjectIndex
-																					)
-																				}
-																			/>
+																			{subject.dates.map((addedDate) => (
+																				<Chip
+																					icon={<TimelapseIcon />}
+																					label={`${addedDate.substring(
+																						8,
+																						10
+																					)}/${addedDate.substring(
+																						5,
+																						7
+																					)}/${addedDate.substring(0, 4)}`}
+																					color="secondary"
+																					deleteIcon={
+																						<CancelIcon data-testid="delete" />
+																					}
+																					onDelete={
+																						detail
+																							? false
+																							: () =>
+																									handleDeleteOriginBoxSubjectDate(
+																										subjectIndex,
+																										addedDate
+																									)
+																					}
+																				/>
+																			))}
+
+																			{detail ? (
+																				""
+																			) : (
+																				<AddChip
+																					label="Adicionar Data"
+																					onClick={() =>
+																						handleOpenNewOriginBoxSubjectDateDialog(
+																							subjectIndex
+																						)
+																					}
+																				/>
+																			)}
 																		</ChipsContainer>
 																	</TableCell>
-																)}
-															</TableRow>
-														)
-													)}
-												</TableBody>
-											</Table>
-										</TableContainer>
+																	{detail ? (
+																		""
+																	) : (
+																		<TableCell>
+																			<ChipsContainer
+																				justifyContent="right"
+																				marginTop="0%"
+																			>
+																				<Chip
+																					variant="outlined"
+																					label="Excluir"
+																					icon={<CloseIcon />}
+																					color="secondary"
+																					clickable
+																					onClick={() =>
+																						handleDeleteOriginBoxSubject(
+																							subjectIndex
+																						)
+																					}
+																				/>
+																			</ChipsContainer>
+																		</TableCell>
+																	)}
+																</TableRow>
+															)
+														)}
+													</TableBody>
+												</Table>
+											</TableContainer>
 
-										{detail ? (
-											""
-										) : (
-											<div
-												style={{
-													display: "flex",
-													justifyContent: "space-between",
-												}}
-											>
-												<ChipsContainer justifyContent="left" marginTop="0.5%">
-													<Chip
-														variant="outlined"
-														color="secondary"
-														label="Excluir Caixa de Origem"
-														icon={<DeleteForeverRoundedIcon />}
-														onClick={() => handleDeleteOriginBox()}
-														clickable
-													/>
-												</ChipsContainer>
-												<ChipsContainer justifyContent="right" marginTop="0.5%">
-													<Chip
-														label="Adicionar Assunto"
-														icon={<AddCircleIcon />}
-														color="primary"
-														onClick={() =>
-															handleOpenNewOriginBoxSubjectDialog()
-														}
-														clickable
-													/>
-												</ChipsContainer>
-											</div>
-										)}
-									</div>
-								</AccordionDetails>
-							</Accordion>
-						) : (
-							<ChipsContainer justifyContent="left" marginTop="0%">
-								{detail ? (
-									<Chip label="Não cadastrada" />
-								) : (
-									<AddChip
-										label="Adicionar Caixa de Origem"
-										onClick={handleOpenNewOriginBoxDialog}
-									/>
-								)}
-							</ChipsContainer>
-						)}
-					</Grid>
+											{detail ? (
+												""
+											) : (
+												<div
+													style={{
+														display: "flex",
+														justifyContent: "space-between",
+													}}
+												>
+													<ChipsContainer
+														justifyContent="left"
+														marginTop="0.5%"
+													>
+														<Chip
+															variant="outlined"
+															color="secondary"
+															label="Excluir Caixa de Origem"
+															icon={<DeleteForeverRoundedIcon />}
+															onClick={() => handleDeleteOriginBox()}
+															clickable
+														/>
+													</ChipsContainer>
+													<ChipsContainer
+														justifyContent="right"
+														marginTop="0.5%"
+													>
+														<Chip
+															label="Adicionar Assunto"
+															icon={<AddCircleIcon />}
+															color="primary"
+															onClick={() =>
+																handleOpenNewOriginBoxSubjectDialog()
+															}
+															clickable
+														/>
+													</ChipsContainer>
+												</div>
+											)}
+										</div>
+									</AccordionDetails>
+								</Accordion>
+							) : (
+								<ChipsContainer justifyContent="left" marginTop="0%">
+									{detail ? (
+										<Chip label="Não cadastrada" />
+									) : (
+										<AddChip
+											label="Adicionar Caixa de Origem"
+											onClick={handleOpenNewOriginBoxDialog}
+										/>
+									)}
+								</ChipsContainer>
+							)}
+						</Grid>
 
-					<DocumentsTypeInput
-						typeList={typeList}
-						setTypeList={setTypeList}
-						typeListHelperText={typeListHelperText}
-						setTypeListHelperText={setTypeListHelperText}
-						isDetailPage={detail}
-						connectionError={connectionError}
-					/>
+						<DocumentsTypeInput
+							typeList={typeList}
+							setTypeList={setTypeList}
+							typeListHelperText={typeListHelperText}
+							setTypeListHelperText={setTypeListHelperText}
+							isDetailPage={detail}
+							connectionError={connectionError}
+						/>
 
-					<BoxInput
-						set={setBox}
-						connectionError={connectionError}
-						setClearFields={setClearBoxFields}
-						clearFields={clearBoxFields}
-						isDetailPage={detail}
-						boxAbbreviationDetail={boxAbbreviationDetail}
-						boxYearDetail={boxYearDetail}
-						boxNumberDetail={boxNumberDetail}
-						box={box}
-					/>
+						<BoxInput
+							set={setBox}
+							connectionError={connectionError}
+							setClearFields={setClearBoxFields}
+							clearFields={clearBoxFields}
+							isDetailPage={detail}
+							boxAbbreviationDetail={boxAbbreviationDetail}
+							boxYearDetail={boxYearDetail}
+							boxNumberDetail={boxNumberDetail}
+							box={box}
+						/>
 
-					<ShelfInput
-						set={setShelf}
-						connectionError={connectionError}
-						isDetailPage={detail}
-						shelfDetail={shelfDetail}
-						shelf={shelf}
-					/>
+						<ShelfInput
+							set={setShelf}
+							connectionError={connectionError}
+							isDetailPage={detail}
+							shelfDetail={shelfDetail}
+							shelf={shelf}
+						/>
 
-					<RackInput
-						set={setRack}
-						connectionError={connectionError}
-						isDetailPage={detail}
-						rackDetail={rackDetail}
-						rack={rack}
-					/>
+						<RackInput
+							set={setRack}
+							connectionError={connectionError}
+							isDetailPage={detail}
+							rackDetail={rackDetail}
+							rack={rack}
+						/>
 
-					<NotesInput set={setNotes} notes={notes} isDetailPage={detail} />
-				</>
-			)}
+						<NotesInput set={setNotes} notes={notes} isDetailPage={detail} />
+					</>
+				)}
 
-			<Dialog
-				fullWidth
-				maxWidth="xs"
-				open={openNewOriginBoxDialog}
-				onClose={handleCloseNewOriginBoxDialog}
-				aria-labelledby="newOriginBox-dialog-title"
-			>
-				<DialogTitle id="newOriginBox-dialog-title">
-					Nova Caixa de Origem
-				</DialogTitle>
-				<DialogContent>
-					<TextField
-						fullWidth
-						id="newOriginBoxNumber"
-						label="Número da Caixa*"
-						value={newOriginBoxNumber}
-						onChange={handleNewOriginBoxNumberChange}
-						error={newOriginBoxNumberHelperText !== ""}
-						helperText={newOriginBoxNumberHelperText}
-						inputProps={{ maxLength: 20 }}
-					/>
-					<TextField
-						fullWidth
-						margin="normal"
-						id="newOriginBoxYear"
-						label="Ano*"
-						value={newOriginBoxYear}
-						onChange={handleNewOriginBoxYearChange}
-						error={newOriginBoxYearHelperText !== ""}
-						helperText={newOriginBoxYearHelperText}
-						inputProps={{ maxLength: 4 }}
-					/>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleCloseNewOriginBoxDialog} color="primary">
-						Cancelar
-					</Button>
-					<Button onClick={handleAddNewOriginBox} color="primary">
-						Confirmar
-					</Button>
-				</DialogActions>
-			</Dialog>
+				<Dialog
+					fullWidth
+					maxWidth="xs"
+					open={openNewOriginBoxDialog}
+					onClose={handleCloseNewOriginBoxDialog}
+					aria-labelledby="newOriginBox-dialog-title"
+				>
+					<DialogTitle id="newOriginBox-dialog-title">
+						Nova Caixa de Origem
+					</DialogTitle>
+					<DialogContent>
+						<TextField
+							fullWidth
+							id="newOriginBoxNumber"
+							label="Número da Caixa*"
+							value={newOriginBoxNumber}
+							onChange={handleNewOriginBoxNumberChange}
+							error={newOriginBoxNumberHelperText !== ""}
+							helperText={newOriginBoxNumberHelperText}
+							inputProps={{ maxLength: 20 }}
+						/>
+						<TextField
+							fullWidth
+							margin="normal"
+							id="newOriginBoxYear"
+							label="Ano*"
+							value={newOriginBoxYear}
+							onChange={handleNewOriginBoxYearChange}
+							error={newOriginBoxYearHelperText !== ""}
+							helperText={newOriginBoxYearHelperText}
+							inputProps={{ maxLength: 4 }}
+						/>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={handleCloseNewOriginBoxDialog} color="primary">
+							Cancelar
+						</Button>
+						<Button onClick={handleAddNewOriginBox} color="primary">
+							Confirmar
+						</Button>
+					</DialogActions>
+				</Dialog>
 
-			<Dialog
-				fullWidth
-				maxWidth="xs"
-				open={openNewOriginBoxSubjectDialog}
-				onClose={handleCloseNewOriginBoxSubjectDialog}
-				aria-labelledby="newOriginBoxSubject-dialog-title"
-			>
-				<DialogTitle id="newOriginBoxSubject-dialog-title">
-					Novo Assunto
-				</DialogTitle>
-				<DialogContent>
-					<TextField
-						fullWidth
-						id="newOriginBoxSubject"
-						label="Assunto*"
-						value={newOriginBoxSubject}
-						onChange={handleNewOriginBoxSubjectChange}
-						error={newOriginBoxSubjectHelperText !== ""}
-						helperText={newOriginBoxSubjectHelperText}
-						inputProps={{ maxLength: 100 }}
-						multiline
-					/>
-				</DialogContent>
-				<DialogActions>
-					<Button
-						onClick={handleCloseNewOriginBoxSubjectDialog}
-						color="primary"
-					>
-						Cancelar
-					</Button>
-					<Button onClick={handleAddNewOriginBoxSubject} color="primary">
-						Confirmar
-					</Button>
-				</DialogActions>
-			</Dialog>
+				<Dialog
+					fullWidth
+					maxWidth="xs"
+					open={openNewOriginBoxSubjectDialog}
+					onClose={handleCloseNewOriginBoxSubjectDialog}
+					aria-labelledby="newOriginBoxSubject-dialog-title"
+				>
+					<DialogTitle id="newOriginBoxSubject-dialog-title">
+						Novo Assunto
+					</DialogTitle>
+					<DialogContent>
+						<TextField
+							fullWidth
+							id="newOriginBoxSubject"
+							label="Assunto*"
+							value={newOriginBoxSubject}
+							onChange={handleNewOriginBoxSubjectChange}
+							error={newOriginBoxSubjectHelperText !== ""}
+							helperText={newOriginBoxSubjectHelperText}
+							inputProps={{ maxLength: 100 }}
+							multiline
+						/>
+					</DialogContent>
+					<DialogActions>
+						<Button
+							onClick={handleCloseNewOriginBoxSubjectDialog}
+							color="primary"
+						>
+							Cancelar
+						</Button>
+						<Button onClick={handleAddNewOriginBoxSubject} color="primary">
+							Confirmar
+						</Button>
+					</DialogActions>
+				</Dialog>
 
-			<Dialog
-				fullWidth
-				maxWidth="xs"
-				open={openNewOriginBoxSubjectDateDialog}
-				onClose={handleCloseNewOriginBoxSubjectDateDialog}
-				aria-labelledby="newOriginBoxSubjectDate-dialog-title"
-			>
-				<DialogTitle id="newOriginBoxSubjectDate-dialog-title">
-					Nova Data
-				</DialogTitle>
-				<DialogContent>
-					<KeyboardDatePicker
-						style={{ width: "100%" }}
-						id="newOriginBoxSubject-date-picker-dialog"
-						label="Data*"
-						format="dd/MM/yyyy"
-						value={newOriginBoxSubjectDate}
-						onChange={handleNewOriginBoxSubjectDateChange}
-						okLabel="Confirmar"
-						cancelLabel=""
-						clearable
-						clearLabel="Limpar"
-						showTodayButton
-						todayLabel="Hoje"
-						KeyboardButtonProps={{
-							"aria-label": "change newOriginBoxSubject date",
-						}}
-						error={newOriginBoxSubjectDateHelperText !== ""}
-						helperText={newOriginBoxSubjectDateHelperText}
-					/>
-				</DialogContent>
-				<DialogActions>
-					<Button
-						onClick={handleCloseNewOriginBoxSubjectDateDialog}
-						color="primary"
-					>
-						Cancelar
-					</Button>
-					<Button onClick={handleAddNewOriginBoxSubjectDate} color="primary">
-						Confirmar
-					</Button>
-				</DialogActions>
-			</Dialog>
+				<Dialog
+					fullWidth
+					maxWidth="xs"
+					open={openNewOriginBoxSubjectDateDialog}
+					onClose={handleCloseNewOriginBoxSubjectDateDialog}
+					aria-labelledby="newOriginBoxSubjectDate-dialog-title"
+				>
+					<DialogTitle id="newOriginBoxSubjectDate-dialog-title">
+						Nova Data
+					</DialogTitle>
+					<DialogContent>
+						<KeyboardDatePicker
+							style={{ width: "100%" }}
+							id="newOriginBoxSubject-date-picker-dialog"
+							label="Data*"
+							format="dd/MM/yyyy"
+							value={newOriginBoxSubjectDate}
+							onChange={handleNewOriginBoxSubjectDateChange}
+							okLabel="Confirmar"
+							cancelLabel=""
+							clearable
+							clearLabel="Limpar"
+							showTodayButton
+							todayLabel="Hoje"
+							KeyboardButtonProps={{
+								"aria-label": "change newOriginBoxSubject date",
+							}}
+							error={newOriginBoxSubjectDateHelperText !== ""}
+							helperText={newOriginBoxSubjectDateHelperText}
+						/>
+					</DialogContent>
+					<DialogActions>
+						<Button
+							onClick={handleCloseNewOriginBoxSubjectDateDialog}
+							color="primary"
+						>
+							Cancelar
+						</Button>
+						<Button onClick={handleAddNewOriginBoxSubjectDate} color="primary">
+							Confirmar
+						</Button>
+					</DialogActions>
+				</Dialog>
 
-			{/* <DropzoneDialog
+				{/* <DropzoneDialog
 				// <Button onClick={() => setOpen(true)}>Abrir</Button>
 				dropzoneClass={{ color: "#fff" }}
 				dropzoneParagraphClass={{ text: { color: "#fff" } }}
@@ -892,24 +901,23 @@ const CreateBoxArchiving = ({ detail }) => {
 				getDropRejectMessage
 			/> */}
 
-			<DocumentsCreate
-				isDetailPage={detail}
-				loading={loading}
-				onSubmit={onSubmit}
-			/>
+				<DocumentsCreate
+					isDetailPage={detail}
+					loading={loading}
+					onSubmit={onSubmit}
+				/>
 
-			<PopUpAlert
-				open={openAlert}
-				handleClose={handleAlertClose}
-				severity={severityAlert}
-				helperText={alertHelperText}
-			/>
-		</CardContainer>
-		
-		<div style={{marginBottom: "100px"}}>
-			<DataTable title="Arquivamento de Caixas" url="box-archiving/" />
-		</div>
+				<PopUpAlert
+					open={openAlert}
+					handleClose={handleAlertClose}
+					severity={severityAlert}
+					helperText={alertHelperText}
+				/>
+			</CardContainer>
 
+			<div style={{ marginBottom: "100px" }}>
+				<DataTable title="Arquivamento de Caixas" url="box-archiving/" />
+			</div>
 		</>
 	);
 };

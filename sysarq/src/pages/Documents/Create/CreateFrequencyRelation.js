@@ -255,77 +255,76 @@ const CreateFrequencyRelation = ({ detail }) => {
 
 	return (
 		<>
-		<CardContainer title="Relação de Frequências" spacing={1}>
-			{detail ? <DocumentsDetail /> : ""}
+			<CardContainer title="Relação de Frequências" spacing={1}>
+				{detail ? <DocumentsDetail /> : ""}
 
-			{detail && loading ? (
-				<CircularProgress style={{ margin: "auto" }} />
-			) : (
-				<>
-					<Grid item xs={12} sm={6} md={4}>
-						<NumberProcessInput
-							setHelperText={setProcessNumberHelperText}
-							set={setProcessNumber}
-							number={processNumber}
-							helperText={processNumberHelperText}
+				{detail && loading ? (
+					<CircularProgress style={{ margin: "auto" }} />
+				) : (
+					<>
+						<Grid item xs={12} sm={6} md={4}>
+							<NumberProcessInput
+								setHelperText={setProcessNumberHelperText}
+								set={setProcessNumber}
+								number={processNumber}
+								helperText={processNumberHelperText}
+								isDetailPage={detail}
+							/>
+						</Grid>
+
+						<CommonSet
+							isDetailPage={detail}
+							setDocumentDateHelperText={setDocumentDateHelperText}
+							setDocumentDate={setDocumentDate}
+							documentDate={documentDate}
+							documentDateHelperText={documentDateHelperText}
+							setReceivedDateHelperText={setReceivedDateHelperText}
+							setReceivedDate={setReceivedDate}
+							receivedDate={receivedDate}
+							receivedDateHelperText={receivedDateHelperText}
+							documentTypeDetail={documentTypeDetail}
+							setDocumentTypeHelperText={setDocumentTypeHelperText}
+							setDocumentType={setDocumentType}
+							connectionError={connectionError}
+							documentType={documentType}
+							documentTypeHelperText={documentTypeHelperText}
+							senderUnitDetail={senderUnitDetail}
+							setSenderUnitHelperText={setSenderUnitHelperText}
+							setSenderUnit={setSenderUnit}
+							senderUnit={senderUnit}
+							units={units}
+							senderUnitHelperText={senderUnitHelperText}
+							setNotes={setNotes}
+							notes={notesLocal}
+						/>
+
+						<ReferencePeriodInput
+							referencePeriod={referencePeriod}
+							setReferencePeriod={setReferencePeriod}
+							setReferencePeriodHelperText={setReferencePeriodHelperText}
+							referencePeriodHelperText={referencePeriodHelperText}
 							isDetailPage={detail}
 						/>
-					</Grid>
+					</>
+				)}
 
-					<CommonSet
-						isDetailPage={detail}
-						setDocumentDateHelperText={setDocumentDateHelperText}
-						setDocumentDate={setDocumentDate}
-						documentDate={documentDate}
-						documentDateHelperText={documentDateHelperText}
-						setReceivedDateHelperText={setReceivedDateHelperText}
-						setReceivedDate={setReceivedDate}
-						receivedDate={receivedDate}
-						receivedDateHelperText={receivedDateHelperText}
-						documentTypeDetail={documentTypeDetail}
-						setDocumentTypeHelperText={setDocumentTypeHelperText}
-						setDocumentType={setDocumentType}
-						connectionError={connectionError}
-						documentType={documentType}
-						documentTypeHelperText={documentTypeHelperText}
-						senderUnitDetail={senderUnitDetail}
-						setSenderUnitHelperText={setSenderUnitHelperText}
-						setSenderUnit={setSenderUnit}
-						senderUnit={senderUnit}
-						units={units}
-						senderUnitHelperText={senderUnitHelperText}
-						setNotes={setNotes}
-						notes={notesLocal}
-					/>
+				<DocumentsCreate
+					isDetailPage={detail}
+					loading={loading}
+					onSubmit={onSubmit}
+				/>
 
-					<ReferencePeriodInput
-						referencePeriod={referencePeriod}
-						setReferencePeriod={setReferencePeriod}
-						setReferencePeriodHelperText={setReferencePeriodHelperText}
-						referencePeriodHelperText={referencePeriodHelperText}
-						isDetailPage={detail}
-					/>
-				</>
-			)}
+				<PopUpAlert
+					open={openAlert}
+					handleClose={handleAlertClose}
+					severity={severityAlert}
+					helperText={alertHelperText}
+				/>
+			</CardContainer>
 
-			<DocumentsCreate
-				isDetailPage={detail}
-				loading={loading}
-				onSubmit={onSubmit}
-			/>
-
-			<PopUpAlert
-				open={openAlert}
-				handleClose={handleAlertClose}
-				severity={severityAlert}
-				helperText={alertHelperText}
-			/>
-		</CardContainer>
-		
-		<div style={{marginBottom: "100px"}}>
+			<div style={{ marginBottom: "100px" }}>
 				<DataTable title="Relação de Frequências" url="frequency-relation/" />
-		</div>
-
+			</div>
 		</>
 	);
 };
