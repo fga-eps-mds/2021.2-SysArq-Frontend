@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import { validateBr } from 'js-brasil';
-
+import InputMask from "react-input-mask";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { Container, Paper, makeStyles, Typography, TextField, InputAdornment, IconButton } from "@material-ui/core";
 import { axiosProfile } from "../../Api";
@@ -82,6 +82,7 @@ const RegisterUser = () => {
     const [passwordConfirmationHelperText, setPasswordConfirmationHelperText] = useState("")
 
     const [showPassword, setShowPassword] = useState(false)
+
     const handleChange = (helper, error, main, event) => {
         helper("")
         error(false)
@@ -229,16 +230,22 @@ const RegisterUser = () => {
                     onChange={handleLastNameChange} 
                     helperText={lastNameHelperText}
                 />
-                <TextField
-                    className={classes.input}
-                    margin="normal" 
-                    id="cpf" 
-                    label="CPF" 
+                <InputMask
+                    mask="999.999.999-99"
+                    onChange={handleCpfChange}
                     value={cpf} 
-                    error={cpfError}
-                    onChange={handleCpfChange} 
-                    helperText={cpfHelperText}
-                />
+                    alwaysShowMask
+                >
+                    <TextField
+                        className={classes.input}
+                        margin="normal" 
+                        id="cpf" 
+                        label="CPF" 
+                        error={cpfError}
+                        onChange={handleCpfChange} 
+                        helperText={cpfHelperText}
+                    />
+                </InputMask>
                 <TextField
                     className={classes.input}
                     margin="normal" 
