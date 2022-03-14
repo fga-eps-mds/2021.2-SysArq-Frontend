@@ -10,7 +10,7 @@ services:
       - ./.env
 
     volumes:
-      - ./sysarq:/code
+      - ./sysarq
       - /code/node_modules
 
       # o primeiro volume garante que as alterações realizadas no projeto sejam propagadas no container
