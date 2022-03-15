@@ -135,6 +135,7 @@ const CreateFrequencySheet = ({ detail }) => {
 		setNotes("");
 		setReferencePeriod(initialPeriod);
 		setType("");
+		window.location.reload();
 	};
 
 	const onSubmit = () => {

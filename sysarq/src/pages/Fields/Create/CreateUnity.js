@@ -60,6 +60,7 @@ export default function CreateUnity() {
 		setCounty("");
 		setTelephoneNumber("");
 		setNote("");
+		window.location.reload();
 	};
 
 	const onClick = () => {

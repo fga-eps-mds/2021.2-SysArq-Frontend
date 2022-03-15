@@ -88,6 +88,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 		setSenderUnit("");
 		setNotes("");
 		setReferencePeriod([formatDate(initialPeriod)]);
+		window.location.reload();
 	};
 
 	const onSubmit = () => {

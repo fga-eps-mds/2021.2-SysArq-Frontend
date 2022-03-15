@@ -54,6 +54,7 @@ export default function CreatePublicWorker() {
 		setAlertHelperText("Servidor cadastrado!");
 		setName("");
 		setCpf("");
+		window.location.reload();
 	};
 
 	const onClick = () => {

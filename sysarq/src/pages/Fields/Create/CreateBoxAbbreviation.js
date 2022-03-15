@@ -65,6 +65,7 @@ export default function CreateBoxAbbreviation() {
 		setBoxNumber("");
 		setBoxAbbreviation("");
 		setBoxYear("");
+		window.location.reload();
 	};
 
 	const onClick = () => {

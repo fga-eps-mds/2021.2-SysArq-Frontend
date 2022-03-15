@@ -205,6 +205,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setUnarchiveProcessNumber("");
 		setUnarchiveDate(initialDate);
 		setNotes("");
+		window.location.reload();
 	};
 
 	const onSubmit = () => {

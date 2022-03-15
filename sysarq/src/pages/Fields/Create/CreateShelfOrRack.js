@@ -75,6 +75,7 @@ export default function CreateShelfOrRack({ urlType }) {
 		setAlertHelperText(`${type} cadastrada!`);
 		setNumberE("");
 		setNumberP("");
+		window.location.reload();
 	};
 
 	const onClick = () => {
