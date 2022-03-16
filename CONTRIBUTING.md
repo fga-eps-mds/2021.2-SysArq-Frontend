@@ -1,62 +1,55 @@
-## Como começar?
-* Para contribuir no projeto é recomendado abrir as issues existentes no repositório de [documentação](https://github.com/fga-eps-mds/2021.1-PC-GO1) e o backlog do produto em [SysArq Docs](https://fga-eps-mds.github.io/2021.1-PC-GO1/) para entender o que o projeto precisa atualmente.
-* Se você perceber que o seu problema ainda não foi documentado crie uma issue, porém priorize as já existentes.
 
 ## Como contribuir?
-
-* Se você for um colaborador externo, dê um fork no projeto.
-* Issues só poderão ser criadas com os [templates de issue](https://github.com/fga-eps-mds/2021.1-PC-GO1/tree/main/.github/ISSUE_TEMPLATE) especificados no repositório.
-* Issues só podem ser criadas no repositório de [documentação](https://github.com/fga-eps-mds/2021.1-PC-GO1)
-* A criação de branches deve seguir a política de branches.
-* No desenvolvimento, usar nossa [política de commits](#política-de-commits)
-* Pull requests só serão aceitos se estiverem com o [template de pull request](.github/PULL_REQUEST_TEMPLATE.md) especificado no repositório.
+* Navegue pelas issues criadas no repositório para entender o que o projeto está precisando no momento.
+* Se identificar algo novo, crie uma issue utilizando um dos templates.
+* Crie uma branch baseada na *devel* e desenvolva a solução (verificar a [política de commits](#política-de-commits)).
+* Para usuários externos, trabalhe no fork do projeto.
+* Ao finalizar a implementação, abra um *Pull Request* que iremos revisar.
 
 ## Política de branches
 
-Nossa política segue algumas características do Gitflow. Então separamos nossas branches em:
+Nossa política de branches segue algumas características do Gitflow e é dividida da seguinte forma:
 
 ### *main*
 
-A main será nossa branch de produção, ou seja, nela estará a versão estável do projeto. E por questões de segurança ela será bloqueada para commits e push. A interação com a main vai se dá através da de Pull requests que virão da branch **devel**.
+É a branch de produção, nela estará a versão mais estável e validada do projeto. Por isso, commits e pushes são bloqueados para garantir a segurança. A main é atualizada via *Pull Request* da *devel*.
 
 ### *devel*
 
-A devel será nossa branch de desenvolvimento, ou seja, vai agrupar o trabalho vindo das branches de features, o objetivo é criar uma release que será submetida para **main**. 
+Trata-se da branch de desenvolvimento, aonde recebe novas features e correções das *branches de features*. Ao chegar num ponto estável de release, é feito o *merge* com a *main*.
 
-### *branches de features*
+### *branch de feature*
 
-As branches de features são criadas a partir da **devel**, e serve para o desenvolvimento de features presentes nas issues do repositório. No final do desenvolvimento a funcionalidade desenvolvida nessa branch deve ser enviada para a **devel**, através de um pull request.
+É a branch aonde as novas features e correções destacadas nas issues são desenvolvidas. Ao finalizar a implementação, é feito um *Pull Request* para a *devel*. Sua nomeclatura é da seguinte forma:
 
-Nomenclatura das branches de features:
-	O nome das branches de features devem seguir um padrão `X_Nome_da_issue` , onde X é o número da issue correspondente a funcionalidade. 
-
-### *hotfix branches* 
-
-Hotfix branches são criadas a partir da **main** e servem para resolver de forma rápida os bugs em produção. Essa branch deve seguir a seguinte nomenclatura: hotfix_Nome_do_bug.
-
-## Política de commits 
-
-Os commits devem descrever de forma simples e sucinta as modificações feitas. E devem ser escritas em português. Exemplo:
-
-`git commit -m ”Cria nova model”`
-
-## Commits em pares
-
-Quando se está usando a técnica de pair programming deve-se deixar especificado todos os autores envolvidos no desenvolvimento da funcionalidade. Por isso é necessário utilizar a tag co-authored-by do Github, a seguir um passo a passo:
-
-1 - Após usar o comando `git add` para adicionar as mudanças feitas, execute o seguinte comando:
-	`git commit`
-
-2 - Abrirá um editor de texto mostrando algumas configurações do que foi feito. Na primeira linha digite a mensagem do commit e depois pule duas linhas e adiciona a co-autoria como no exemplo abaixo: 
 ```
-Add new routers
+<número da issue>-descricao_da_feature
+ ```
+ 
+ Ex: 6-cadastro_de_usuarios
+ 
+### *branch de hotfix*
 
+É a branch utilizada para corrigir bugs identificados em produção, sendo assim, é criada a partir da *main* e segue o seguinte padrão:
 
-Co-authored-by: Paulo Vitor <paulovitorrocha.unb@gmail.com>
-Co-authored-by: Joao Rossi <bielrossiborba@gmail.com>
+```
+hotfix_descricao_do_bug
 ```
 
-Depois disso salve e o commit será contabilizado pelo Github.
+## Política de commits
 
-Obs: Não exclua nada, apenas acrescente o que foi dito acima.
+O  commit deve descrever de forma objetiva as modificações feitas e devem ser escritos em **português**.
+
+### Co-autoria
+
+Durante os pareamentos, deve-se identificar os autores que trabalharam em conjunto no commit, por exemplo:
+```
+"Cria tela de login de usuários
+
+
+Co-authored-by: <nome> <email@dominio.com>
+Co-authored-by: <nome> <email@dominio.com>"
+```
+
+
 
