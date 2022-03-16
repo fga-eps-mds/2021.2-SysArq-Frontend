@@ -77,8 +77,9 @@ export default function CreateDocumentSubject() {
 		setSeverityAlert("success");
 		setAlertHelperText("Assunto cadastrado!");
 		setTemporality("");
-		setDocumentSubject("");
-	}
+		setDocumentSubject(""); 
+		window.location.reload();
+	};
 
 	const onClick = () => {
 		if (documentSubject === "") {
@@ -134,6 +135,8 @@ export default function CreateDocumentSubject() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"Assunto do Documento",
+		"document-subject/"
 	);
 }

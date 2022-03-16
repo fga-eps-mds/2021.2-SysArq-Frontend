@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { validateBr } from 'js-brasil';
+import { validateBr } from "js-brasil";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import createForm from "../form";
 import { axiosProfileError } from "../../../support";
@@ -23,7 +23,6 @@ const useStyles = makeStyles({
 
 export default function CreatePublicWorker() {
 	const classes = useStyles();
-
 
 	const [workerName, setName] = useState("");
 	const [workerCpf, setCpf] = useState("");
@@ -55,13 +54,12 @@ export default function CreatePublicWorker() {
 		setAlertHelperText("Servidor cadastrado!");
 		setName("");
 		setCpf("");
-	}
+		window.location.reload();
+	};
 
 	const onClick = () => {
-
-
 		const cpfNumbers = workerCpf.replace(/\D/g, "");
-    
+
 		if (workerName === "") {
 			setNameError(true);
 			setNameHelperText("Insira um nome");
@@ -91,7 +89,6 @@ export default function CreatePublicWorker() {
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => {
-
 						onSuccess();
 					})
 					.catch(() => {
@@ -102,8 +99,8 @@ export default function CreatePublicWorker() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-			setCpf('');
-			setName('');
+		setCpf("");
+		setName("");
 		return null;
 	};
 
@@ -134,7 +131,7 @@ export default function CreatePublicWorker() {
 	const pageTitle = "Arquivo Geral da Policia Civil de Goiás";
 	const pageSubtitle = "Cadastrar servidor";
 
-	return createForm(		
+	return createForm(
 		values,
 		pageTitle,
 		pageSubtitle,
@@ -143,6 +140,8 @@ export default function CreatePublicWorker() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"Servidor",
+		"public-worker/"
 	);
 }

@@ -65,7 +65,8 @@ export default function CreateBoxAbbreviation() {
 		setBoxNumber("");
 		setBoxAbbreviation("");
 		setBoxYear("");
-	}
+		window.location.reload();
+	};
 
 	const onClick = () => {
 		if (boxNumber === "") {
@@ -181,6 +182,8 @@ export default function CreateBoxAbbreviation() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"caixa",
+		"box-abbreviation/"
 	);
 }

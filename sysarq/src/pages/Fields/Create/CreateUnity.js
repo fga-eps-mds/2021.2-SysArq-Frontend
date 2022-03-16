@@ -60,7 +60,8 @@ export default function CreateUnity() {
 		setCounty("");
 		setTelephoneNumber("");
 		setNote("");
-	}
+		window.location.reload();
+	};
 
 	const onClick = () => {
 		if (unityName === "") {
@@ -211,6 +212,8 @@ export default function CreateUnity() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"Unidade",
+		"unity/"
 	);
 }
