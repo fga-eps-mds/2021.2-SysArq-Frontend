@@ -50,7 +50,7 @@ export function logout() {
 	window.location = "/login";
 }
 
-export function axiosProfileError(error, connectionError) {
+export function axiosProfileError(error, connectionError=null) {
 	if (error.response && error.response.status === 401) {
 		logout();
 	} else {

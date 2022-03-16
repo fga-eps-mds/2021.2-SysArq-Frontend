@@ -16,7 +16,7 @@ export default function Settings() {
 					<MenuCard
 						icon="CreateUser"
 						title="Cadastro de usuários"
-						url="/settings"
+						url="/register-user"
 						lg={6}
 					/>
 					<MenuCard
