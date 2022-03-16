@@ -28,6 +28,8 @@ const headCellsSearch = () => {
 		"Eliminado",
 		"temporality_date",
 		"Temporalidade",
+		"user_name",
+		"nome de usuario",
 	];
 
 	const headCellsSearchList = [];
@@ -262,6 +264,21 @@ const boxArchivingHeadCells = [
 		label: "Tipos do Documento",
 	},
 ];
+const usersCells = [
+	{
+		id: "user_name",
+		numeric: false,
+		label: "Nome de usuario",
+	},
+	{
+		id: "cpf",
+		numeric: false,
+		label: "CPF",
+	}
+
+
+];
+
 
 const tableHeadCells = (url) => {
 	let headCells = [];
@@ -280,6 +297,8 @@ const tableHeadCells = (url) => {
 		headCells = rackHeadCells;
 	} else if (url === "public-worker/") {
 		headCells = publicWorkerHeadCells;
+	}else if(url === "list-users/"){
+		headCells = usersCells;
 	} else if (url === "administrative-process/") {
 		headCells = administrativeProcessHeadCells;
 	} else if (url === "frequency-relation/") {

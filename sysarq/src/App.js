@@ -37,6 +37,7 @@ import BoxArchiving from "./pages/Documents/List/BoxArchiving";
 import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
 
 import Settings from "./pages/Settings/Settings";
+import ListUsers from "./pages/ListUsers"
 
 import "./App.css";
 
@@ -225,6 +226,9 @@ function App() {
 					</Route>
 					<PrivateRoute exact path="/settings">
 						<Settings />
+					</PrivateRoute>
+					<PrivateRoute exact path="/list-users">
+						<ListUsers />
 					</PrivateRoute>
 				</Switch>
 			</Router>
