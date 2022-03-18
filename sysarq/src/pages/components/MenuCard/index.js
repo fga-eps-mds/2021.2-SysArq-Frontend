@@ -23,7 +23,7 @@ import FrequencySheetIcon from "@material-ui/icons/AccountBox";
 import BoxArchivingIcon from "@material-ui/icons/AllInbox";
 
 import CreateUser from "@material-ui/icons/PersonAdd";
-import Settings from '@material-ui/icons/Settings';
+import Settings from "@material-ui/icons/Settings";
 
 import "./styles.css";
 
