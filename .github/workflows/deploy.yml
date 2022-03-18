@@ -23,4 +23,4 @@ jobs:
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
-          heroku_email: "sysarq.fga@gmail.com"
+          heroku_email: ${{ secrets.HEROKU_API_EMAIL }}
