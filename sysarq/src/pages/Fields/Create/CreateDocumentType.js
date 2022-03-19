@@ -48,6 +48,15 @@ export default function CreateDocumentType() {
 		);
 	};
 
+	const onSuccess = () => {
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Tipo cadastrado!");
+		setDocumentName("");
+		setTemporality("");
+		window.location.reload();
+	};
+
 	const onClick = () => {
 		if (documentName === "") {
 			setdocumentTypeError(true);
@@ -76,9 +85,7 @@ export default function CreateDocumentType() {
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => {
-						setOpenAlert(true);
-						setSeverityAlert("success");
-						setAlertHelperText("Tipo cadastrado!");
+						onSuccess();
 					})
 					.catch(() => {
 						connectionError();
@@ -125,6 +132,8 @@ export default function CreateDocumentType() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"Tipo de Documento",
+		"document-type/"
 	);
 }

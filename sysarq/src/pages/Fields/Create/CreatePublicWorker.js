@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { validateBr } from "js-brasil";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import createForm from "../form";
 import { axiosProfileError } from "../../../support";
-
-const isCpfValid = (cpfLength) => cpfLength === 11;
 
 const useStyles = makeStyles({
 	input: {
@@ -49,13 +48,25 @@ export default function CreatePublicWorker() {
 		);
 	};
 
+	const onSuccess = () => {
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Servidor cadastrado!");
+		setName("");
+		setCpf("");
+		window.location.reload();
+	};
+
 	const onClick = () => {
+		const cpfNumbers = workerCpf.replace(/\D/g, "");
+
 		if (workerName === "") {
 			setNameError(true);
 			setNameHelperText("Insira um nome");
 			return "Erro";
 		}
-		if (!isCpfValid(workerCpf.length)) {
+
+		if (!validateBr.cpf(cpfNumbers)) {
 			setCpfError(true);
 			setCpfHelperText("Insira um CPF válido");
 			return "Erro";
@@ -73,24 +84,23 @@ export default function CreatePublicWorker() {
 						`public-worker/`,
 						{
 							name: workerName,
-							cpf: workerCpf,
+							cpf: cpfNumbers,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => {
-						setOpenAlert(true);
-						setSeverityAlert("success");
-						setAlertHelperText("Servidor cadastrado!");
+						onSuccess();
 					})
 					.catch(() => {
 						connectionError();
 					});
-
 				return res;
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
+		setCpf("");
+		setName("");
 		return null;
 	};
 
@@ -108,6 +118,7 @@ export default function CreatePublicWorker() {
 		{
 			type: "text",
 			placeholder: "CPF*",
+			maxlength: 11,
 			setValue: setCpf,
 			value: workerCpf,
 			helperText: cpfHelperText,
@@ -129,6 +140,8 @@ export default function CreatePublicWorker() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"Servidor",
+		"public-worker/"
 	);
 }

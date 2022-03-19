@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import { axiosProfileError } from "../../../support";
 import PopUpAlert from "../../components/PopUpAlert";
+import DataTable from "../../components/DataTable";
 
 const useStyles = makeStyles({
 	input: {
@@ -64,6 +65,17 @@ export default function CreateShelfOrRack({ urlType }) {
 
 	const handleValueChange = (event) => {
 		setType(event.target.value);
+		setNumberE("");
+		setNumberP("");
+	};
+
+	const onSuccess = () => {
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText(`${type} cadastrada!`);
+		setNumberE("");
+		setNumberP("");
+		window.location.reload();
 	};
 
 	const onClick = () => {
@@ -97,9 +109,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							}
 						)
 						.then(() => {
-							setOpenAlert(true);
-							setSeverityAlert("success");
-							setAlertHelperText("Estante cadastrada!");
+							onSuccess();
 						})
 						.catch(() => {
 							connectionError();
@@ -116,9 +126,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							}
 						)
 						.then(() => {
-							setOpenAlert(true);
-							setSeverityAlert("success");
-							setAlertHelperText("Prateleira cadastrada!");
+							onSuccess();
 						})
 						.catch(() => {
 							connectionError();
@@ -146,83 +154,100 @@ export default function CreateShelfOrRack({ urlType }) {
 	}, []);
 
 	return (
-		<div className="create-form-container">
-			<Paper className="form-cadastro-container" elevation={10}>
-				<h1>{title}</h1>
-				<h2>{subtitle}</h2>
-				<div className="inputs-container">
-					<Container className="container">
-						<Grid container spacing={2}>
-							<Grid item xs={12} sm={12} md={12} key={1}>
-								<FormControl fullWidth>
-									<InputLabel id="select-shelf-rack-label">
-										Selecione
-									</InputLabel>
-									<Select
-										style={{ textAlign: "left" }}
-										labelId="select-shelf-rack-label"
-										id="select-shelf"
-										value={type}
-										onChange={handleValueChange}
-										renderValue={(value) => `${value}`}
-									>
-										<MenuItem key={0} value="Estante">
-											Estante
-										</MenuItem>
-										<MenuItem key={1} value="Prateleira">
-											Prateleira
-										</MenuItem>
-									</Select>
-								</FormControl>
+		<>
+			<div className="create-form-container">
+				<Paper className="form-cadastro-container" elevation={10}>
+					<h1>{title}</h1>
+					<h2>{subtitle}</h2>
+					<div className="inputs-container">
+						<Container className="container">
+							<Grid container spacing={2}>
+								<Grid item xs={12} sm={12} md={12} key={1}>
+									<FormControl fullWidth>
+										<InputLabel id="select-shelf-rack-label">
+											Selecione
+										</InputLabel>
+										<Select
+											style={{ textAlign: "left" }}
+											labelId="select-shelf-rack-label"
+											id="select-shelf"
+											value={type}
+											onChange={handleValueChange}
+											renderValue={(value) => `${value}`}
+										>
+											<MenuItem key={0} value="Estante">
+												Estante
+											</MenuItem>
+											<MenuItem key={1} value="Prateleira">
+												Prateleira
+											</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+								{type === "Estante" ? (
+									<Grid item xs={12} sm={12} md={12} key={2}>
+										<TextField
+											id="Estante"
+											label="Número da estante*"
+											type="number"
+											value={numberE}
+											onChange={(event) => {
+												setNumberE(event.target.value);
+												setShelfNumberError(false);
+												setShelfHelperText("");
+											}}
+											className={classes.input}
+											helperText={shelfHelperText}
+											error={shelfNumberError}
+										/>
+									</Grid>
+								) : (
+									<Grid item xs={12} sm={12} md={12}>
+										<TextField
+											key={1}
+											id="Prateleira"
+											label="Número da prateleira*"
+											type="number"
+											value={numberP}
+											onChange={(event) => {
+												setNumberP(event.target.value);
+												setRackNumberError(false);
+												setRackHelperText("");
+											}}
+											className={classes.input}
+											helperText={rackHelperText}
+											error={rackNumberError}
+										/>
+									</Grid>
+								)}
 							</Grid>
-							{type === "Estante" ? (
-								<Grid item xs={12} sm={12} md={12} key={2}>
-									<TextField
-										id="Estante"
-										label="Número da estante*"
-										type="number"
-										onChange={(event) => {
-											setNumberE(event.target.value);
-											setShelfNumberError(false);
-											setShelfHelperText("");
-										}}
-										className={classes.input}
-										helperText={shelfHelperText}
-										error={shelfNumberError}
-									/>
-								</Grid>
-							) : (
-								<Grid item xs={12} sm={12} md={12}>
-									<TextField
-										key={1}
-										id="Prateleira"
-										label="Número da prateleira*"
-										type="number"
-										onChange={(event) => {
-											setNumberP(event.target.value);
-											setRackNumberError(false);
-											setRackHelperText("");
-										}}
-										className={classes.input}
-										helperText={rackHelperText}
-										error={rackNumberError}
-									/>
-								</Grid>
-							)}
-						</Grid>
-					</Container>
-				</div>
-				<button data-testid="click" type="button" onClick={onClick}>
-					CADASTRAR
-				</button>
-			</Paper>
-			<PopUpAlert
-				open={openAlert}
-				handleClose={handleAlertClose}
-				severity={severityAlert}
-				helperText={alertHelperText}
-			/>
-		</div>
+						</Container>
+					</div>
+					<button data-testid="click" type="button" onClick={onClick}>
+						CADASTRAR
+					</button>
+				</Paper>
+				<PopUpAlert
+					open={openAlert}
+					handleClose={handleAlertClose}
+					severity={severityAlert}
+					helperText={alertHelperText}
+				/>
+			</div>
+
+			<div
+				style={{
+					display: "flex",
+					marginLeft: "10px",
+					marginRight: "10px",
+					marginBottom: "100px",
+				}}
+			>
+				<DataTable title="Estante" url="shelf/" />
+				<div style={{ width: "25px" }} />
+				<DataTable title="Prateleira" url="rack/" />
+			</div>
+		</>
 	);
 }
 

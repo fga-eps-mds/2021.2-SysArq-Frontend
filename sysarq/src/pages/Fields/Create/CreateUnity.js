@@ -49,6 +49,20 @@ export default function CreateUnity() {
 		setSeverityAlert("error");
 	};
 
+	const onSuccess = () => {
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Unidade cadastrada!");
+		setUnityName("");
+		setUnityAbbreviation("");
+		setAdiministrativeBond("");
+		setBondAbbreviation("");
+		setCounty("");
+		setTelephoneNumber("");
+		setNote("");
+		window.location.reload();
+	};
+
 	const onClick = () => {
 		if (unityName === "") {
 			setunityNameError(true);
@@ -77,9 +91,7 @@ export default function CreateUnity() {
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => {
-						setOpenAlert(true);
-						setSeverityAlert("success");
-						setAlertHelperText("Unidade cadastrada!");
+						onSuccess();
 					})
 					.catch(() => {
 						connectionError();
@@ -200,6 +212,8 @@ export default function CreateUnity() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"Unidade",
+		"unity/"
 	);
 }

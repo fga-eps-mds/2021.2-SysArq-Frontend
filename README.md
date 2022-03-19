@@ -1,25 +1,25 @@
-[![Build](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/workflows/Compilação/badge.svg)](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/actions/workflows/build.yml)
-[![Style](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/workflows/Estilo/badge.svg)](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/actions/workflows/style.yml)
-[![Tests](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/workflows/Testes/badge.svg)](https://github.com/fga-eps-mds/2021.1-PC-GO1-Frontend/actions/workflows/test.yml)
+[![Build](https://github.com/fga-eps-mds/2021.2-SysArq-Frontend/workflows/Compilação/badge.svg)](https://github.com/fga-eps-mds/2021.2-SysArq-Frontend/actions/workflows/build.yml)
+[![Style](https://github.com/fga-eps-mds/2021.2-SysArq-Frontend/workflows/Estilo/badge.svg)](https://github.com/fga-eps-mds/2021.2-SysArq-Frontend/actions/workflows/style.yml)
+[![Tests](https://github.com/fga-eps-mds/2021.2-SysArq-Frontend/workflows/Testes/badge.svg)](https://github.com/fga-eps-mds/2021.2-SysArq-Frontend/actions/workflows/test.yml)
 
 # Interface Gráfica do SysArq
 
-[![codecov](https://codecov.io/gh/fga-eps-mds/2021.1-PC-GO1-Frontend/branch/main/graph/badge.svg?token=Y9IOQCM8P3)](https://codecov.io/gh/fga-eps-mds/2021.1-PC-GO1-Frontend)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-PC-GO1-Frontend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.1-PC-GO1-Frontend)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-PC-GO1-Frontend&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.1-PC-GO1-Frontend)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-PC-GO1-Frontend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.1-PC-GO1-Frontend)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-PC-GO1-Frontend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.1-PC-GO1-Frontend)
+[![codecov](https://codecov.io/gh/fga-eps-mds/2021.2-SysArq-Frontend/branch/main/graph/badge.svg?token=RXYTQNV55A)](https://codecov.io/gh/fga-eps-mds/2021.2-SysArq-Frontend)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
 
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-PC-GO1-Frontend&metric=bugs)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.1-PC-GO1-Frontend)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-PC-GO1-Frontend&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.1-PC-GO1-Frontend)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-PC-GO1-Frontend&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.1-PC-GO1-Frontend)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-PC-GO1-Frontend&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.1-PC-GO1-Frontend)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-PC-GO1-Frontend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.1-PC-GO1-Frontend)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-PC-GO1-Frontend&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.1-PC-GO1-Frontend)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=bugs)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
 
-Interface gráfica do usuário do sistema *[SysArq](https://fga-eps-mds.github.io/2021.1-PC-GO1/)*. 
+Interface gráfica do usuário do sistema *[SysArq](https://fga-eps-mds.github.io/2021-2-SysArq-Doc/)*.
 
-A interface gráfica é composta pelo design, interface de navegação e ferramentas de interação com o usuário. **[Saiba mais](https://fga-eps-mds.github.io/2021.1-PC-GO1/documentation/)**
+A interface gráfica é composta pelo design, interface de navegação e ferramentas de interação com o usuário. **[Saiba mais](https://fga-eps-mds.github.io/2021-2-SysArq-Doc/documentation/)**
 
 ## Execução
 

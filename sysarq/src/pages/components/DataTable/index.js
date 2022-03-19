@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { maskBr } from "js-brasil";
 import PropTypes from "prop-types";
 
 import {
@@ -7,7 +8,6 @@ import {
 	Paper,
 	Toolbar,
 	Typography,
-	Button,
 	TableContainer,
 	Table,
 	TableHead,
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 		margin: "auto",
 		width: "85%",
+		minWidth: 0,
 	},
 
 	title: {
@@ -263,6 +264,10 @@ const DataTable = ({ url, title }) => {
 	};
 
 	const cellContent = (row, id) => {
+		if (id === "cpf") {
+			return maskBr.cpf(row[id]);
+		}
+
 		if (id === "is_filed") {
 			if (row[id] === true) {
 				return "Sim";
@@ -306,20 +311,11 @@ const DataTable = ({ url, title }) => {
 
 	return (
 		<>
-			<Paper className={classes.paper}>
+			<Paper className={classes.paper} elevation={10}>
 				<Toolbar>
 					<Typography className={classes.title} variant="h6" component="div">
 						{title}
 					</Typography>
-					<Button
-						disableElevation
-						style={{ fontWeight: "bold" }}
-						variant="outlined"
-						color="secondary"
-						href={`${url}create`}
-					>
-						Adicionar
-					</Button>
 				</Toolbar>
 				<TableContainer>
 					<Table>

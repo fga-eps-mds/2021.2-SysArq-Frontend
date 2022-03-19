@@ -57,6 +57,17 @@ export default function CreateBoxAbbreviation() {
 		);
 	};
 
+	const onSuccess = () => {
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Caixa cadastrada!");
+		setBoxName("");
+		setBoxNumber("");
+		setBoxAbbreviation("");
+		setBoxYear("");
+		window.location.reload();
+	};
+
 	const onClick = () => {
 		if (boxNumber === "") {
 			setboxNumberError(true);
@@ -93,9 +104,7 @@ export default function CreateBoxAbbreviation() {
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => {
-						setOpenAlert(true);
-						setSeverityAlert("success");
-						setAlertHelperText("Caixa cadastrada!");
+						onSuccess();
 					})
 					.catch(() => {
 						connectionError();
@@ -173,6 +182,8 @@ export default function CreateBoxAbbreviation() {
 		openAlert,
 		handleAlertClose,
 		severityAlert,
-		alertHelperText
+		alertHelperText,
+		"caixa",
+		"box-abbreviation/"
 	);
 }

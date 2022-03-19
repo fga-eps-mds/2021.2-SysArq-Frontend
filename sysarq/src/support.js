@@ -1,5 +1,6 @@
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { TextField } from "@material-ui/core";
+import { maskBr } from "js-brasil";
 import { axiosArchives, axiosProfile } from "./Api";
 
 export const initialDate = new Date();
@@ -49,7 +50,7 @@ export function logout() {
 	window.location = "/login";
 }
 
-export function axiosProfileError(error, connectionError) {
+export function axiosProfileError(error, connectionError = null) {
 	if (error.response && error.response.status === 401) {
 		logout();
 	} else {
@@ -113,7 +114,7 @@ export function autocompl(
 				(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
 			)}
 			groupBy={(option) => option.firstLetter}
-			getOptionLabel={(option) => `${option.name}, ${option.cpf}`}
+			getOptionLabel={(option) => `${option.name}, ${maskBr.cpf(option.cpf)}`}
 			getOptionSelected={(option, value) => option.name === value.name}
 			autoHighlight
 			renderInput={(params) => (

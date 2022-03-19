@@ -1,8 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import DataTable from "./components/DataTable/index";
-
+import DataTable from "../components/DataTable/index";
+/**
+ *
+ * não mais utilizado, mas pode servir para uma possivel tela de pesquisa especializada no futuro
+ *
+ */
 export default function SearchList() {
 	let url = "";
 	if (
