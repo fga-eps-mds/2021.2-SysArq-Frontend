@@ -41,7 +41,4 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-      - name: build
-        run: |
-          yarn build
-        fail_ci_if_error: true
+          fail_ci_if_error: true
