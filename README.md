@@ -17,9 +17,9 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
 
-Interface gráfica do usuário do sistema *[SysArq](https://fga-eps-mds.github.io/2021.2-SysArq/)*. 
+Interface gráfica do usuário do sistema *[SysArq](https://fga-eps-mds.github.io/2021-2-SysArq-Doc/)*.
 
-A interface gráfica é composta pelo design, interface de navegação e ferramentas de interação com o usuário. <!--**[Saiba mais](https://fga-eps-mds.github.io/2021.1-PC-GO1/documentation/)**-->
+A interface gráfica é composta pelo design, interface de navegação e ferramentas de interação com o usuário. **[Saiba mais](https://fga-eps-mds.github.io/2021-2-SysArq-Doc/documentation/)**
 
 ## Execução
 
