@@ -4,7 +4,7 @@
 
 # Interface Gráfica do SysArq
 
-[![codecov](https://codecov.io/gh/fga-eps-mds/2021.1-PC-GO1-Frontend/branch/main/graph/badge.svg?token=Y9IOQCM8P3)](https://codecov.io/gh/fga-eps-mds/2021.1-PC-GO1-Frontend)
+[![codecov](https://codecov.io/gh/fga-eps-mds/2021.2-SysArq-Frontend/branch/main/graph/badge.svg?token=RXYTQNV55A)](https://codecov.io/gh/fga-eps-mds/2021.2-SysArq-Frontend)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.2-SysArq-Frontend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=fga-eps-mds_2021.2-SysArq-Frontend)
