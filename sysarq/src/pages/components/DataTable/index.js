@@ -137,6 +137,18 @@ const DataTable = ({ url, title }) => {
 		);
 	};
 
+	const handleTemporalityStatus = (responseData) => (
+		responseData.map((item) => {
+			const obj = { ...item };
+			const now = new Date();
+			if (obj.temporality_date === now.getFullYear()) {
+				obj.color = 'rgba(244,215,88,0.4)';
+			}
+			return obj;
+		})
+	)
+	
+
 	useEffect(() => {
 		if (updateTable) {
 			setHeadCells(tableHeadCells(url));
@@ -185,7 +197,16 @@ const DataTable = ({ url, title }) => {
 
 								setRows(listTable);
 							} else {
-								setRows(response.data);
+								let data = [ ...response.data ];
+								if (url === 'administrative-process/' || url === 'frequency-sheet/' || url === 'frequency-relation/') {
+									data = handleTemporalityStatus(response.data);
+									if (data.some((item) => item.color)) {
+										setOpenAlert(true);
+										setSeverityAlert('warning');
+										setAlertHelperText('Alguns documentos atingiram a temporalidade, eles estao em amarelo');
+									} 
+								}
+								setRows(data);
 							}
 
 							setUpdateTable(false);
@@ -363,6 +384,7 @@ const DataTable = ({ url, title }) => {
 								.map((row) => (
 									<TableRow
 										hover
+										style={row.color ? {backgroundColor: row.color} : {}}
 										tabIndex={-1}
 										key={row.id}
 										onClick={
