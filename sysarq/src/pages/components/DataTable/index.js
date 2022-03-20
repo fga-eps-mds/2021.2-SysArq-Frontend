@@ -63,6 +63,13 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "14px",
 		color: "#5389b5",
 	},
+
+	label: {
+		fontFamily: ['Montserrat', 'sans-serif'],
+		marginLeft: theme.spacing(3),
+		marginBottom: theme.spacing(0.5),
+		fontSize: "13px",
+	},
 }));
 
 const Link = withStyles({
@@ -128,6 +135,8 @@ const DataTable = ({ url, title }) => {
 
 	const [updateTable, setUpdateTable] = useState(true);
 
+	const [showTemporalityText, setShowTemporalityText] = useState(false);
+
 	const connectionError = () => {
 		setOpenAlert(true);
 		setSeverityAlert("error");
@@ -159,7 +168,7 @@ const DataTable = ({ url, title }) => {
 			const today = new Date();
 			const temporalityDate = calcTemporalityDate(obj.temporality_date, obj[dateProperty]);
 			if (temporalityDate >= today) {
-				obj.color = 'rgba(244,215,88,0.4)';
+				obj.color = 'rgba(244, 215, 88, 0.4)';
 			}
 			return obj;
 		})
@@ -218,9 +227,7 @@ const DataTable = ({ url, title }) => {
 								if (url === 'administrative-process/' || url === 'frequency-sheet/' || url === 'frequency-relation/') {
 									data = handleTemporalityStatus(data);
 									if (data.some((item) => item.color)) {
-										setOpenAlert(true);
-										setSeverityAlert('warning');
-										setAlertHelperText('Alguns documentos atingiram a temporalidade, eles estao em amarelo');
+										setShowTemporalityText(true);
 									}
 								}
 								setRows(data);
@@ -356,6 +363,7 @@ const DataTable = ({ url, title }) => {
 					</Typography>
 				</Toolbar>
 				<TableContainer>
+					{showTemporalityText && <Typography component="div" className={classes.label}>Documentos que já atingiram sua temporalidade estão destacados em amarelo.</Typography>}
 					<Table>
 						<TableHead>
 							<TableRow>
@@ -401,7 +409,7 @@ const DataTable = ({ url, title }) => {
 								.map((row) => (
 									<TableRow
 										hover
-										style={row.color ? {backgroundColor: row.color} : {}}
+										style= {{backgroundColor: row.color}} 
 										tabIndex={-1}
 										key={row.id}
 										onClick={
