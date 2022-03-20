@@ -140,16 +140,18 @@ const DataTable = ({ url, title }) => {
 	const calcTemporalityDate = (temporalityYear, dateProperty) => {
 		let temporalityDate = dateProperty.slice();
 		const datePropertyYear = dateProperty.slice(0, 4);
-		temporalityDate = temporalityDate.replace(datePropertyYear, temporalityYear.toString());
+		temporalityDate = temporalityDate.replace(
+			datePropertyYear,
+			temporalityYear.toString()
+		);
 		return new Date(temporalityDate);
-	}
+	};
 
 	const handleTemporalityStatus = (responseData) => {
-		
 		const datePropertyOptions = {
-			'administrative-process/': 'notice_date',
-			'frequency-sheet/': 'reference_period',
-			'frequency-relation/': 'document_date'
+			"administrative-process/": "notice_date",
+			"frequency-sheet/": "reference_period",
+			"frequency-relation/": "document_date",
 		};
 
 		const dateProperty = datePropertyOptions[url];
@@ -157,14 +159,16 @@ const DataTable = ({ url, title }) => {
 		return responseData.map((item) => {
 			const obj = { ...item };
 			const today = new Date();
-			const temporalityDate = calcTemporalityDate(obj.temporality_date, obj[dateProperty]);
+			const temporalityDate = calcTemporalityDate(
+				obj.temporality_date,
+				obj[dateProperty]
+			);
 			if (temporalityDate >= today) {
-				obj.color = 'rgba(244,215,88,0.4)';
+				obj.color = "rgba(244,215,88,0.4)";
 			}
 			return obj;
-		})
-	}
-	
+		});
+	};
 
 	useEffect(() => {
 		if (updateTable) {
@@ -214,13 +218,19 @@ const DataTable = ({ url, title }) => {
 
 								setRows(listTable);
 							} else {
-								let data = [ ...response.data ];
-								if (url === 'administrative-process/' || url === 'frequency-sheet/' || url === 'frequency-relation/') {
+								let data = [...response.data];
+								if (
+									url === "administrative-process/" ||
+									url === "frequency-sheet/" ||
+									url === "frequency-relation/"
+								) {
 									data = handleTemporalityStatus(data);
 									if (data.some((item) => item.color)) {
 										setOpenAlert(true);
-										setSeverityAlert('warning');
-										setAlertHelperText('Alguns documentos atingiram a temporalidade, eles estao em amarelo');
+										setSeverityAlert("warning");
+										setAlertHelperText(
+											"Alguns documentos atingiram a temporalidade, eles estao em amarelo"
+										);
 									}
 								}
 								setRows(data);
@@ -401,7 +411,7 @@ const DataTable = ({ url, title }) => {
 								.map((row) => (
 									<TableRow
 										hover
-										style={row.color ? {backgroundColor: row.color} : {}}
+										style={row.color ? { backgroundColor: row.color } : {}}
 										tabIndex={-1}
 										key={row.id}
 										onClick={

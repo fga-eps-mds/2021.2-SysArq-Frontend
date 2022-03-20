@@ -11,11 +11,11 @@ const Fields = () => (
 			url="/fields/document-subject/create"
 			lg={4}
 		/>
-		<MenuCard 
-			icon="unit-icon" 
-			title="Unidade" 
-			url="/fields/unity/create" 
-			lg={4} 
+		<MenuCard
+			icon="unit-icon"
+			title="Unidade"
+			url="/fields/unity/create"
+			lg={4}
 		/>
 		<MenuCard
 			icon="abbreviation-icon"

@@ -14,7 +14,7 @@ const PopUpAlert = ({ open, handleClose, severity, helperText }) => {
 			return "Success";
 		}
 		return "Aviso";
-	}
+	};
 
 	return (
 		<Snackbar
@@ -30,7 +30,7 @@ const PopUpAlert = ({ open, handleClose, severity, helperText }) => {
 			</Alert>
 		</Snackbar>
 	);
-}
+};
 
 PopUpAlert.propTypes = {
 	open: PropTypes.bool.isRequired,
