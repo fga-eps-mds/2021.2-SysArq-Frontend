@@ -77,7 +77,7 @@ export default function CreateDocumentSubject() {
 		setSeverityAlert("success");
 		setAlertHelperText("Assunto cadastrado!");
 		setTemporality("");
-		setDocumentSubject("");
+		setDocumentSubject(""); 
 		window.location.reload();
 	};
 

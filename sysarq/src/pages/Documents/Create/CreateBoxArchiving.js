@@ -916,8 +916,8 @@ const CreateBoxArchiving = ({ detail }) => {
 				/>
 			</CardContainer>
 
-			<div style={{ marginBottom: "100px" }}>
-				<DataTable title="Arquivamento de Caixas" url="box-archiving/" />
+			<div style={{ marginBottom: "100px" }} >
+				<DataTable title="Arquivamento de Caixas" url="box-archiving/"/>
 			</div>
 		</>
 	);

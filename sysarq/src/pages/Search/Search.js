@@ -7,6 +7,7 @@ import imgBox from "../assets/logo.png";
 import "./Search.css";
 
 export default function Search() {
+
 	return (
 		<body id="body">
 			<section>
