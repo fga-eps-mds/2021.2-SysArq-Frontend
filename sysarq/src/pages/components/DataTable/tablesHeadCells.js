@@ -43,20 +43,6 @@ const headCellsSearch = () => {
 	return headCellsSearchList;
 };
 
-const documentSubjectHeadCells = [
-	{
-		id: "subject_name",
-		numeric: false,
-		label: "Nome do Assunto",
-	},
-
-	{
-		id: "temporality",
-		numeric: false,
-		label: "Temporalidade",
-	},
-];
-
 const unityHeadCells = [
 	{
 		id: "unity_name",
@@ -132,6 +118,12 @@ const documentTypeHeadCells = [
 		id: "document_name",
 		numeric: false,
 		label: "Nome do Documento",
+	},
+
+	{
+		id: "subject_name",
+		numeric: false,
+		label: "Assunto do Documento",
 	},
 
 	{
@@ -265,10 +257,7 @@ const boxArchivingHeadCells = [
 
 const tableHeadCells = (url) => {
 	let headCells = [];
-
-	if (url === "document-subject/") {
-		headCells = documentSubjectHeadCells;
-	} else if (url === "unity/") {
+	if (url === "unity/") {
 		headCells = unityHeadCells;
 	} else if (url === "box-abbreviation/") {
 		headCells = headCellsBoxAbbreviation;

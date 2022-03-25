@@ -7,8 +7,8 @@ const Fields = () => (
 	<CardContainer title="Campos Obrigatórios" spacing={2}>
 		<MenuCard
 			icon="subject-icon"
-			title="Assunto do Documento"
-			url="/fields/document-subject/create"
+			title="Nome do Documento"
+			url="/fields/document-type/create"
 			lg={4}
 		/>
 		<MenuCard
@@ -21,12 +21,6 @@ const Fields = () => (
 			icon="abbreviation-icon"
 			title="Caixa"
 			url="/fields/box-abbreviation/create"
-			lg={4}
-		/>
-		<MenuCard
-			icon="document-type-icon"
-			title="Tipo de Documento"
-			url="/fields/document-type/create"
 			lg={4}
 		/>
 		<MenuCard

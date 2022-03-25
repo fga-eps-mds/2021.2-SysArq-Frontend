@@ -20,14 +20,17 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function CreateDocumentType() {
+export default function CreateDocumentName() {
 	const classes = useStyles();
 
+	const [documentSubject, setDocumentSubject] = useState("");
 	const [documentName, setDocumentName] = useState("");
 	const [temporalityValue, setTemporality] = useState("");
 
-	const [documentTypeHelperText, setdocumentTypeHelperText] = useState("");
-	const [documentTypeError, setdocumentTypeError] = useState(false);
+	const [documentSubjectHelperText, setdocumentSubjectHelperText] = useState("");
+    const [documentSubjectError, setdocumentSubjectError] = useState(false);
+	const [documentNameHelperText, setdocumentNameHelperText] = useState("");
+	const [documentNameError, setdocumentNameError] = useState(false);
 	const [temporalityHelperText, settemporalityHelperText] = useState("");
 	const [temporalityError, settemporalityError] = useState(false);
 
@@ -58,9 +61,14 @@ export default function CreateDocumentType() {
 	};
 
 	const onClick = () => {
+		if (documentSubject === "") {
+            setdocumentSubjectError(true);
+            setdocumentSubjectHelperText("Assunto inválido");
+            return "Erro";
+        }
 		if (documentName === "") {
-			setdocumentTypeError(true);
-			setdocumentTypeHelperText("Tipo de documento inválido");
+			setdocumentNameError(true);
+			setdocumentNameHelperText("Tipo de documento inválido");
 			return "Erro";
 		}
 		if (temporalityValue === "") {
@@ -80,6 +88,7 @@ export default function CreateDocumentType() {
 						`document-type/`,
 						{
 							document_name: documentName,
+							subject_name: documentSubject,							
 							temporality: temporalityValue,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
@@ -103,11 +112,23 @@ export default function CreateDocumentType() {
 			placeholder: "Nome do documento*",
 			setValue: setDocumentName,
 			value: documentName,
-			helperText: documentTypeHelperText,
-			error: documentTypeError,
-			setHelperText: setdocumentTypeHelperText,
-			setError: setdocumentTypeError,
+			helperText: documentNameHelperText,
+			error: documentNameError,
+			setHelperText: setdocumentNameHelperText,
+			setError: setdocumentNameError,
 		},
+
+		{
+			type: "text",
+			placeholder: "Assunto do documento*",
+			setValue: setDocumentSubject,
+			value: documentSubject,
+			helperText: documentSubjectHelperText,
+			error: documentSubjectError,
+			setHelperText: setdocumentSubjectHelperText,
+			setError: setdocumentSubjectError,
+		},
+		
 		{
 			type: "number",
 			placeholder: "Temporalidade (anos)*",
