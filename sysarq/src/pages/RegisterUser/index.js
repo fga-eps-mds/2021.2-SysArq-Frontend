@@ -222,6 +222,7 @@ const RegisterUser = () => {
 		axiosProfile
 			.post(`users/register/`, {
 				username,
+				user_type: userType,
 				first_name: firstName,
 				last_name: lastName,
 				cpf,
@@ -270,9 +271,9 @@ const RegisterUser = () => {
 							id="user-type"
 							value={userType} 
 							onChange={handleUserTypeChange}>
-								<MenuItem value="Administrador">Administrador</MenuItem>
-								<MenuItem value="Alimentador">Alimentador</MenuItem>
-								<MenuItem value="Visualizador">Visualizador</MenuItem>
+								<MenuItem value="AD">Administrador</MenuItem>
+								<MenuItem value="AL">Alimentador</MenuItem>
+								<MenuItem value="VI">Visualizador</MenuItem>
 						</Select>
 						{userTypeError && <FormHelperText>Defina o tipo de usuário</FormHelperText>}
 				</FormControl>
