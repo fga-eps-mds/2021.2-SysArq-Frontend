@@ -81,7 +81,7 @@ const server = setupServer(
 		);
 	}),
 
-	rest.get(`${axiosArchives}document-type/`, async (req, res, ctx) => {
+	rest.get(`${axiosArchives}document-name/`, async (req, res, ctx) => {
 		return res(
 			ctx.json([
 				{
@@ -103,7 +103,7 @@ const server = setupServer(
 		);
 	}),
 
-	rest.delete(`${axiosArchives}document-type/:id`, async (req, res, ctx) => {
+	rest.delete(`${axiosArchives}document-name/:id`, async (req, res, ctx) => {
 		const { id } = req.params;
 
 		if (id === "1") {
@@ -242,7 +242,7 @@ describe("DataTable and tablesHeadCells Test", () => {
 	});
 
 	it("test successful deletion", async () => {
-		render(<DataTable title="Tipo de Documento" url="document-type/" />);
+		render(<DataTable title="Tipo de Documento" url="document-name/" />);
 
 		await screen.findByText("a-document-name-test");
 
@@ -253,7 +253,7 @@ describe("DataTable and tablesHeadCells Test", () => {
 	});
 
 	it("test fail deletion - field in use", async () => {
-		render(<DataTable title="Tipo de Documento" url="document-type/" />);
+		render(<DataTable title="Tipo de Documento" url="document-name/" />);
 
 		await screen.findByText("document-name-test1");
 
@@ -266,7 +266,7 @@ describe("DataTable and tablesHeadCells Test", () => {
 	});
 
 	it("test fail deletion - connectionError", async () => {
-		render(<DataTable title="Tipo de Documento" url="document-type/" />);
+		render(<DataTable title="Tipo de Documento" url="document-name/" />);
 
 		await screen.findByText("document-name-test2");
 

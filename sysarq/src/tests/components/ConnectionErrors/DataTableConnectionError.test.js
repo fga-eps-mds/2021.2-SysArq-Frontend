@@ -10,7 +10,7 @@ afterAll(() => failedDocumentTypeServer.close());
 
 describe("DataTable Connection Error Test", () => {
 	it("connectionError test", async () => {
-		render(<DataTable title="Tipo de Documento" url="document-type/" />);
+		render(<DataTable title="Tipo de Documento" url="document-name/" />);
 
 		const errorAlert = await screen.findByRole("alert");
 		expect(errorAlert).toHaveTextContent(
@@ -22,14 +22,14 @@ describe("DataTable Connection Error Test", () => {
 
 	it("wrong token test", async () => {
 		localStorage.setItem("tkr", 401);
-		render(<DataTable title="Tipo de Documento" url="document-type/" />);
+		render(<DataTable title="Tipo de Documento" url="document-name/" />);
 		await screen.findByText("Tipo de Documento");
 	});
 
 	it("refreshToken connectionError test", async () => {
 		localStorage.setItem("tkr", 404);
 
-		render(<DataTable title="Tipo de Documento" url="document-type/" />);
+		render(<DataTable title="Tipo de Documento" url="document-name/" />);
 
 		const errorAlert = await screen.findByRole("alert");
 		expect(errorAlert).toHaveTextContent(

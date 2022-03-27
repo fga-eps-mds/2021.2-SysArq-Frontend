@@ -5,7 +5,7 @@ import { setupServer } from "msw/node";
 import { testEvent } from "./inputTest.test";
 import { auth } from "../../support";
 
-const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}document-type/`;
+const axiosArchives = `${process.env.REACT_APP_URL_API_ARCHIVES}document-name/`;
 const axiosProfile = process.env.REACT_APP_URL_API_PROFILE;
 
 const server = setupServer(

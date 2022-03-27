@@ -85,7 +85,7 @@ export default function CreateDocumentName() {
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
 					.post(
-						`document-type/`,
+						`document-name/`,
 						{
 							document_name: documentName,
 							subject_name: documentSubject,							
@@ -154,7 +154,7 @@ export default function CreateDocumentName() {
 		handleAlertClose,
 		severityAlert,
 		alertHelperText,
-		"Tipo de Documento",
-		"document-type/"
+		"Nome do Documento",
+		"document-name/"
 	);
 }

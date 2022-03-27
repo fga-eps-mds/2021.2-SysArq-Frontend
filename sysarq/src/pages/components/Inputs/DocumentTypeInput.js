@@ -40,7 +40,7 @@ const DocumentTypeInput = ({
 				localStorage.setItem("tkr", res.data.refresh);
 
 				axiosArchives
-					.get("document-type/", {
+					.get("document-name/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => {

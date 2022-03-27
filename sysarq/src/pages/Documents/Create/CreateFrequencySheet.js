@@ -248,7 +248,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						.then((responseFrequencySheet) => {
 							// axiosArchives
 							// 	.get(
-							// 		`document-type/${responseFrequencySheet.data.document_type_id}/`,
+							// 		`document-name/${responseFrequencySheet.data.document_type_id}/`,
 							// 		{
 							// 			headers: {
 							// 				Authorization: `JWT ${localStorage.getItem("tk")}`,

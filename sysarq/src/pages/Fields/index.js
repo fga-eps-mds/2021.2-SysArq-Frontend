@@ -8,7 +8,7 @@ const Fields = () => (
 		<MenuCard
 			icon="subject-icon"
 			title="Nome do Documento"
-			url="/fields/document-type/create"
+			url="/fields/document-name/create"
 			lg={4}
 		/>
 		<MenuCard

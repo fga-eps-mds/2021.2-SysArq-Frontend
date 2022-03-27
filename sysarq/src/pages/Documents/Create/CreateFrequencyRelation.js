@@ -198,7 +198,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 						.then((responseFrequencyRelation) => {
 							// axiosArchives
 							// 	.get(
-							// 		`document-type/${responseFrequencyRelation.data.document_type_id}/`,
+							// 		`document-name/${responseFrequencyRelation.data.document_type_id}/`,
 							// 		{
 							// 			headers: {
 							// 				Authorization: `JWT ${localStorage.getItem("tk")}`,

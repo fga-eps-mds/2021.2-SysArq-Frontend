@@ -113,7 +113,7 @@ const headCellsBoxAbbreviation = [
 	},
 ];
 
-const documentTypeHeadCells = [
+const documentNameHeadCells = [
 	{
 		id: "document_name",
 		numeric: false,
@@ -203,7 +203,7 @@ const frequencyRelationHeadCells = [
 		label: "Data de Recebimento",
 	},
 	{
-		id: "document_type_name",
+		id: "document_name_name",
 		numeric: false,
 		label: "Tipo de Documento",
 	},
@@ -249,7 +249,7 @@ const boxArchivingHeadCells = [
 		label: "Unidade que Encaminhou",
 	},
 	{
-		id: "document_type_name",
+		id: "document_name_name",
 		numeric: false,
 		label: "Tipos do Documento",
 	},
@@ -261,8 +261,8 @@ const tableHeadCells = (url) => {
 		headCells = unityHeadCells;
 	} else if (url === "box-abbreviation/") {
 		headCells = headCellsBoxAbbreviation;
-	} else if (url === "document-type/") {
-		headCells = documentTypeHeadCells;
+	} else if (url === "document-name/") {
+		headCells = documentNameHeadCells;
 	} else if (url === "shelf/") {
 		headCells = shelfHeadCells;
 	} else if (url === "rack/") {

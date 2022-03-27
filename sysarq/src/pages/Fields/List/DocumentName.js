@@ -3,5 +3,5 @@ import React from "react";
 import DataTable from "../../components/DataTable";
 
 export default function DocumentName() {
-	return <DataTable title="Nome de Documento" url="document-type/" />;
+	return <DataTable title="Nome de Documento" url="document-name/" />;
 }

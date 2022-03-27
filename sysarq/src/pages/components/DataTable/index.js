@@ -107,7 +107,7 @@ const DataTable = ({ url, title }) => {
 		"document-subject/",
 		"unity/",
 		"box-abbreviation/",
-		"document-type/",
+		"document-name/",
 		"shelf/",
 		"rack/",
 		"public-worker/",

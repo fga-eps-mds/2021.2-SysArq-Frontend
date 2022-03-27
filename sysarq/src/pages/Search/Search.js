@@ -35,7 +35,7 @@ export default function Search() {
 					<MenuCard
 						icon="document-type-icon"
 						title="Tipo de Documento"
-						url="/fields/document-type"
+						url="/fields/document-name"
 						lg={2}
 					/>
 					<MenuCard
