@@ -100,16 +100,7 @@ export default function CreateBoxAbbreviation() {
 	};
 
 	const fields = [
-		{
-			type: "text",
-			placeholder: "Sigla da caixa*",
-			setValue: setBoxAbbreviation,
-			value: boxAbbreviation,
-			helperText: boxAbbreviationHelperText,
-			error: boxAbbreviationError,
-			setHelperText: setboxAbbreviationHelperText,
-			setError: setboxAbbreviationError,
-		},
+		
 		{
 			type: "text",
 			placeholder: "Nome completo",
@@ -123,11 +114,22 @@ export default function CreateBoxAbbreviation() {
 			setError: () => {
 				"";
 			},
+		},
+		
+		{
+			type: "text",
+			placeholder: "Sigla da caixa*",
+			setValue: setBoxAbbreviation,
+			value: boxAbbreviation,
+			helperText: boxAbbreviationHelperText,
+			error: boxAbbreviationError,
+			setHelperText: setboxAbbreviationHelperText,
+			setError: setboxAbbreviationError,
 		}
 	];
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
-	const subtitle = "Cadastrar caixa";
+	const subtitle = "Cadastrar Sigla da Caixa";
 
 	return createForm(
 		fields,
@@ -139,7 +141,7 @@ export default function CreateBoxAbbreviation() {
 		handleAlertClose,
 		severityAlert,
 		alertHelperText,
-		"caixa",
+		"Sigla da Caixa",
 		"box-abbreviation/"
 	);
 }

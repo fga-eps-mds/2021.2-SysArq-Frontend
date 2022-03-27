@@ -21,7 +21,7 @@ const headCellsSearch = () => {
 		"rack_number",
 		"Prateleira",
 		"abbreviation_name",
-		"Caixa",
+		"Sigla da Caixa",
 		"is_filed",
 		"Arquivado",
 		"is_eliminated",
@@ -102,17 +102,6 @@ const unityHeadCells = [
 ];
 
 const headCellsBoxAbbreviation = [
-	{
-		id: "number",
-		numeric: true,
-		label: "Número",
-	},
-
-	{
-		id: "abbreviation",
-		numeric: false,
-		label: "Sigla",
-	},
 
 	{
 		id: "name",
@@ -121,10 +110,11 @@ const headCellsBoxAbbreviation = [
 	},
 
 	{
-		id: "year",
-		numeric: true,
-		label: "Ano",
+		id: "abbreviation",
+		numeric: false,
+		label: "Sigla",
 	},
+
 ];
 
 const documentTypeHeadCells = [
