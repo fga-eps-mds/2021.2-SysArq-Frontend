@@ -202,7 +202,7 @@ const CreateFrequencySheet = ({ detail }) => {
 							reference_period: formatDate(referencePeriod),
 							notes: notesLocal,
 							process_number: senderProcessNumber,
-							document_type_id: type.id,
+							document_name_id: type.id,
 							temporality_date:
 								parseInt(type.temporality, 10) +
 								parseInt(referencePeriod.getFullYear(), 10),
@@ -246,32 +246,8 @@ const CreateFrequencySheet = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencySheet) => {
-							// axiosArchives
-							// 	.get(
-							// 		`document-name/${responseFrequencySheet.data.document_type_id}/`,
-							// 		{
-							// 			headers: {
-							// 				Authorization: `JWT ${localStorage.getItem("tk")}`,
-							// 			},
-							// 		}
-							// 	)
-							// 	.then((response) => {
-							// 		setType(response.data);
-							// 	})
-							// 	.catch(() => connectionError());
-
-							// axiosArchives
-							// 	.get(`public-worker/${responseAdministrative.data.sender_user}/`, {
-							// 		headers: {
-							// 			Authorization: `JWT ${localStorage.getItem("tk")}`,
-							// 		},
-							// 	})
-							// 	.then((response) => {
-							// 		setPublicWorker(response.data);
-							// 	})
-							// 	.catch(() => connectionError());
-
-							setTypeDetail(responseFrequencySheet.data.document_type_name);
+							
+							setTypeDetail(responseFrequencySheet.data.document_name_name);
 
 							setPublicWorkerDetail(
 								`${responseFrequencySheet.data.person_name}, ${maskBr.cpf(

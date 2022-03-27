@@ -125,7 +125,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 		}
 
 		if (documentType === "") {
-			setDocumentTypeHelperText("Selecione um tipo de documento");
+			setDocumentTypeHelperText("Selecione um nome de documento");
 			setLoading(false);
 			return "documentType error";
 		}
@@ -162,7 +162,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 							received_date: formatDate(receivedDate),
 							reference_period: referencePeriod,
 							sender_unity: senderUnit.id,
-							document_type_id: documentType.id,
+							document_name_id: documentType.id,
 							temporality_date:
 								parseInt(documentType.temporality, 10) +
 								parseInt(documentDate.getFullYear(), 10),
@@ -196,33 +196,9 @@ const CreateFrequencyRelation = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencyRelation) => {
-							// axiosArchives
-							// 	.get(
-							// 		`document-name/${responseFrequencyRelation.data.document_type_id}/`,
-							// 		{
-							// 			headers: {
-							// 				Authorization: `JWT ${localStorage.getItem("tk")}`,
-							// 			},
-							// 		}
-							// 	)
-							// 	.then((response) => {
-							// 		setDocumentType(response.data);
-							// 	})
-							// 	.catch(() => connectionError());
-
-							// axiosArchives
-							// 	.get(`unity/${responseFrequencyRelation.data.sender_unity}/`, {
-							// 		headers: {
-							// 			Authorization: `JWT ${localStorage.getItem("tk")}`,
-							// 		},
-							// 	})
-							// 	.then((response) => {
-							// 		setSenderUnit(response.data);
-							// 	})
-							// 	.catch(() => connectionError());
 
 							setDocumentTypeDetail(
-								responseFrequencyRelation.data.document_type_name
+								responseFrequencyRelation.data.document_name_name
 							);
 							setSenderUnitDetail(
 								responseFrequencyRelation.data.sender_unity_name
