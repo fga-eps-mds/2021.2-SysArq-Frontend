@@ -365,7 +365,7 @@ const CreateBoxArchiving = ({ detail }) => {
 
 		if (!typeList.length) {
 			setTypeListHelperText(
-				"Não é possível criar um Arquivamento de Caixas sem um Tipo do Documento."
+				"Não é possível criar um Arquivamento de Caixas sem um Nome do Documento."
 			);
 			setLoading(false);
 			return "typeList error";

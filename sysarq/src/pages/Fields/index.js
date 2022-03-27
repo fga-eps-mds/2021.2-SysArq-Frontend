@@ -6,7 +6,7 @@ import "./styles.css";
 const Fields = () => (
 	<CardContainer title="Campos Obrigatórios" spacing={2}>
 		<MenuCard
-			icon="subject-icon"
+			icon="document-name-icon"
 			title="Nome do Documento"
 			url="/fields/document-name/create"
 			lg={4}

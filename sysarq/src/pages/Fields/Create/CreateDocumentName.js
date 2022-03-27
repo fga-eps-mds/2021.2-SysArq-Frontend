@@ -54,7 +54,7 @@ export default function CreateDocumentName() {
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
-		setAlertHelperText("Tipo cadastrado!");
+		setAlertHelperText("Nome de documento cadastrado!");
 		setDocumentName("");
 		setTemporality("");
 		window.location.reload();
@@ -68,7 +68,7 @@ export default function CreateDocumentName() {
         }
 		if (documentName === "") {
 			setdocumentNameError(true);
-			setdocumentNameHelperText("Tipo de documento inválido");
+			setdocumentNameHelperText("Nome de documento inválido");
 			return "Erro";
 		}
 		if (temporalityValue === "") {
@@ -142,7 +142,7 @@ export default function CreateDocumentName() {
 	];
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
-	const subtitle = "Cadastrar tipo do documento";
+	const subtitle = "Cadastrar nome do documento";
 
 	return createForm(
 		fields,

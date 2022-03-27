@@ -12,7 +12,7 @@ const headCellsSearch = () => {
 		"CPF",
 		"document_subject_name",
 		"Assunto do documento",
-		"document_type_name",
+		"document_name_name",
 		"Tipo do documento",
 		"sender_unity_name",
 		"Unidade que encaminhou",
@@ -182,7 +182,7 @@ const administrativeProcessHeadCells = [
 	{
 		id: "document_subject_name",
 		numeric: false,
-		label: "Assunto",
+		label: "Assunto do Documento",
 	},
 ];
 
@@ -205,7 +205,7 @@ const frequencyRelationHeadCells = [
 	{
 		id: "document_name_name",
 		numeric: false,
-		label: "Tipo de Documento",
+		label: "Nome de Documento",
 	},
 ];
 
@@ -251,7 +251,7 @@ const boxArchivingHeadCells = [
 	{
 		id: "document_name_name",
 		numeric: false,
-		label: "Tipos do Documento",
+		label: "Nome do Documento",
 	},
 ];
 
