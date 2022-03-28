@@ -31,7 +31,7 @@ const Fields = () => (
 		/>
 		<MenuCard
 			icon="shelf-rack-icon"
-			title="Estante e Prateleira"
+			title="Localidade do Documento"
 			url="/fields/shelf/create"
 			lg={4}
 		/>
