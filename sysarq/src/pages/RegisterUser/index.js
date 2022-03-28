@@ -14,7 +14,7 @@ import {
 	MenuItem,
 	Select,
 	FormControl,
-	FormHelperText
+	FormHelperText,
 } from "@material-ui/core";
 import { axiosProfile } from "../../Api";
 import { axiosProfileError } from "../../support";
@@ -108,14 +108,13 @@ const RegisterUser = () => {
 	};
 
 	const handleUsernameChange = (event) =>
-	handleChange(setUsernameHelperText, setUsernameError, setUsername, event);
-	
+		handleChange(setUsernameHelperText, setUsernameError, setUsername, event);
 
 	const handleUserTypeChange = (event) => {
 		setUserType(event.target.value);
 		setUserTypeError(false);
-	}
-	
+	};
+
 	const handleFirstNameChange = (event) =>
 		handleChange(
 			setFirstNameHelperText,
@@ -260,24 +259,28 @@ const RegisterUser = () => {
 					helperText={usernameHelperText}
 				/>
 
-				<FormControl 
-					fullwidth 
-					error={userTypeError} 
-					className={classes.input} 
-					margin="normal">
-						<InputLabel id="user-type-label">Tipo de usuário</InputLabel>
-						<Select 
-							labelId="user-type-label"
-							id="user-type"
-							value={userType} 
-							onChange={handleUserTypeChange}>
-								<MenuItem value="AD">Administrador</MenuItem>
-								<MenuItem value="AL">Alimentador</MenuItem>
-								<MenuItem value="VI">Visualizador</MenuItem>
-						</Select>
-						{userTypeError && <FormHelperText>Defina o tipo de usuário</FormHelperText>}
+				<FormControl
+					fullwidth
+					error={userTypeError}
+					className={classes.input}
+					margin="normal"
+				>
+					<InputLabel id="user-type-label">Tipo de usuário</InputLabel>
+					<Select
+						labelId="user-type-label"
+						id="user-type"
+						value={userType}
+						onChange={handleUserTypeChange}
+					>
+						<MenuItem value="AD">Administrador</MenuItem>
+						<MenuItem value="AL">Alimentador</MenuItem>
+						<MenuItem value="VI">Visualizador</MenuItem>
+					</Select>
+					{userTypeError && (
+						<FormHelperText>Defina o tipo de usuário</FormHelperText>
+					)}
 				</FormControl>
-				
+
 				<TextField
 					className={classes.input}
 					margin="normal"

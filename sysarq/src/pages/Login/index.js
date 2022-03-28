@@ -25,6 +25,7 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { axiosProfile } from "../../Api";
 
 import logo from "../../assets/logo.png";
+import { logout, parseJwt } from "../../support";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -170,6 +171,19 @@ const Login = () => {
 				localStorage.setItem("tk", response.data.access);
 				localStorage.setItem("tkr", response.data.refresh);
 				localStorage.setItem("isLogged", true);
+
+				const userId = parseJwt(response.data.access).user_id;
+				return userId;
+			})
+			.then((userId) => {
+				axiosProfile
+					.get(`/users/${userId}`)
+					.then((response) => {
+						localStorage.setItem("user_type", response.data.user_type);
+					})
+					.catch(() => {
+						logout();
+					});
 
 				window.location = "/";
 			})

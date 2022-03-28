@@ -13,6 +13,8 @@ function Header() {
 	)
 		return null;
 
+	const userType = localStorage.getItem("user_type");
+
 	return (
 		<div className="header">
 			<a href="/">
@@ -24,21 +26,33 @@ function Header() {
 
 			<div className="div-media">
 				<ul>
-					<li>
-						<a href="/documents">Cadastro</a>
-					</li>
+					{(userType === "AD" || userType === "AL") && (
+						<li>
+							<a href="/documents">Cadastro</a>
+						</li>
+					)}
+
 					<li>
 						<a href="/search">Pesquisar</a>
 					</li>
-					<li>
-						<a href="/fields">Campos</a>
-					</li>
-					<li>
-						<a href="/">Relatório</a>
-					</li>
-					<li>
-						<a href="/settings">Configurações</a>
-					</li>
+
+					{(userType === "AD" || userType === "AL") && (
+						<li>
+							<a href="/fields">Campos</a>
+						</li>
+					)}
+
+					{userType === "AD" && (
+						<li>
+							<a href="/">Relatório</a>
+						</li>
+					)}
+
+					{userType === "AD" && (
+						<li>
+							<a href="/settings">Configurações</a>
+						</li>
+					)}
 					<li>
 						<a onClick={logout} href="/login">
 							Sair
@@ -48,31 +62,39 @@ function Header() {
 			</div>
 
 			<BottomNavigation showLabels>
-				<BottomNavigationAction
-					label="Cadastro"
-					href="/documents"
-					icon={<StarsIcon />}
-				/>
+				{(userType === "AD" || userType === "AL") && (
+					<BottomNavigationAction
+						label="Cadastro"
+						href="/documents"
+						icon={<StarsIcon />}
+					/>
+				)}
 				<BottomNavigationAction
 					label="Pesquisar"
 					href="/search"
 					icon={<StarsIcon />}
 				/>
-				<BottomNavigationAction
-					label="Campos Obrigatórios"
-					href="/fields"
-					icon={<StarsIcon />}
-				/>
-				<BottomNavigationAction
-					label="Relatório"
-					href="#"
-					icon={<StarsIcon />}
-				/>
-				<BottomNavigationAction
-					label="Configurações"
-					href="/settings"
-					icon={<StarsIcon />}
-				/>
+				{(userType === "AD" || userType === "AL") && (
+					<BottomNavigationAction
+						label="Campos Obrigatórios"
+						href="/fields"
+						icon={<StarsIcon />}
+					/>
+				)}
+				{userType === "AD" && (
+					<BottomNavigationAction
+						label="Relatório"
+						href="#"
+						icon={<StarsIcon />}
+					/>
+				)}
+				{userType === "AD" && (
+					<BottomNavigationAction
+						label="Configurações"
+						href="/settings"
+						icon={<StarsIcon />}
+					/>
+				)}
 			</BottomNavigation>
 			<button type="submit" onClick={logout}>
 				Sair
