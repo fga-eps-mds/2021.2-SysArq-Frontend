@@ -28,7 +28,7 @@ export default function Search() {
 					/>
 					<MenuCard
 						icon="abbreviation-icon"
-						title="Caixa"
+						title="Sigla da Caixa"
 						url="/fields/box-abbreviation"
 						lg={2}
 					/>
