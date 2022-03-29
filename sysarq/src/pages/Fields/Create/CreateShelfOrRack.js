@@ -146,8 +146,77 @@ export default function CreateShelfOrRack({ urlType }) {
 		return null;
 	};
 
+	function menuDocumentsDropIn() {
+		switch (type) {
+			case 'Estante':
+				return (
+					<Grid item xs={12} sm={12} md={12} key={2}>
+						<TextField
+							id="Estante"
+							label="Número da estante*"
+							type="number"
+							value={numberE}
+							onChange={(event) => {
+								setNumberE(event.target.value);
+								setShelfNumberError(false);
+								setShelfHelperText("");
+							}}
+							className={classes.input}
+							helperText={shelfHelperText}
+							error={shelfNumberError}
+						/>
+					</Grid>
+				)
+
+			case 'Prateleira':
+				return (
+					<Grid item xs={12} sm={12} md={12}>
+						<TextField
+							key={1}
+							id="Prateleira"
+							label="Número da prateleira*"
+							type="number"
+							value={numberP}
+							onChange={(event) => {
+								setNumberP(event.target.value);
+								setRackNumberError(false);
+								setRackHelperText("");
+							}}
+							className={classes.input}
+							helperText={rackHelperText}
+							error={rackNumberError}
+						/>
+					</Grid>
+				)
+
+			case 'Localidade':
+				return (
+					<Grid item xs={12} sm={12} md={12}>
+						<TextField
+							key={1}
+							id="Localidade"
+							label="Localidade do Arquivo*"
+							type="text"
+							onChange={(event) => {
+								setNumberP(event.target.value);
+								setRackNumberError(false);
+								setRackHelperText("");
+							}}
+							className={classes.input}
+							helperText={rackHelperText}
+							error={rackNumberError}
+						/>
+					</Grid>
+				)
+			default:
+				break;
+		}
+
+		return null;
+	}
+
 	const title = "Arquivo Geral da Policia Civil de Goiás";
-	const subtitle = "Cadastrar estantes e prateleiras";
+	const subtitle = "Localização do Arquivo";
 
 	useEffect(() => {
 		setType(urlType === "shelf" ? "Estante" : "Prateleira");
@@ -181,45 +250,16 @@ export default function CreateShelfOrRack({ urlType }) {
 											<MenuItem key={1} value="Prateleira">
 												Prateleira
 											</MenuItem>
+											<MenuItem key={2} value="Localidade">
+												Localidade do Arquivo
+											</MenuItem>
 										</Select>
 									</FormControl>
 								</Grid>
-								{type === "Estante" ? (
-									<Grid item xs={12} sm={12} md={12} key={2}>
-										<TextField
-											id="Estante"
-											label="Número da estante*"
-											type="number"
-											value={numberE}
-											onChange={(event) => {
-												setNumberE(event.target.value);
-												setShelfNumberError(false);
-												setShelfHelperText("");
-											}}
-											className={classes.input}
-											helperText={shelfHelperText}
-											error={shelfNumberError}
-										/>
-									</Grid>
-								) : (
-									<Grid item xs={12} sm={12} md={12}>
-										<TextField
-											key={1}
-											id="Prateleira"
-											label="Número da prateleira*"
-											type="number"
-											value={numberP}
-											onChange={(event) => {
-												setNumberP(event.target.value);
-												setRackNumberError(false);
-												setRackHelperText("");
-											}}
-											className={classes.input}
-											helperText={rackHelperText}
-											error={rackNumberError}
-										/>
-									</Grid>
-								)}
+								{
+									// ! Não mexe
+									menuDocumentsDropIn()
+								}
 							</Grid>
 						</Container>
 					</div>

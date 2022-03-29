@@ -40,7 +40,7 @@ export default function Search() {
 					/>
 					<MenuCard
 						icon="shelf-rack-icon"
-						title="Estante e Prateleira"
+						title="Localidade do Documento"
 						url="/fields/shelf"
 						lg={2}
 					/>
