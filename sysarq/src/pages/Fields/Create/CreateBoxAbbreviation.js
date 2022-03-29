@@ -29,17 +29,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreateBoxAbbreviation() {
 	const classes = useStyles();
-	const [boxNumber, setBoxNumber] = useState("");
 	const [boxAbbreviation, setBoxAbbreviation] = useState("");
 	const [boxName, setBoxName] = useState("");
-	const [boxYear, setBoxYear] = useState("");
 
-	const [yearHelperText, setYearHelperText] = useState("");
-	const [yearError, setYearError] = useState(false);
-	const [boxNumberHelperText, setboxNumberHelperText] = useState("");
-	const [boxNumberError, setboxNumberError] = useState(false);
-	const [boxAbbreviationHelperText, setboxAbbreviationHelperText] =
-		useState("");
+	
+	const [boxAbbreviationHelperText, setboxAbbreviationHelperText] = useState("");
 	const [boxAbbreviationError, setboxAbbreviationError] = useState(false);
 
 	const [openAlert, setOpenAlert] = useState(false);
@@ -62,26 +56,14 @@ export default function CreateBoxAbbreviation() {
 		setSeverityAlert("success");
 		setAlertHelperText("Caixa cadastrada!");
 		setBoxName("");
-		setBoxNumber("");
 		setBoxAbbreviation("");
-		setBoxYear("");
 		window.location.reload();
 	};
 
 	const onClick = () => {
-		if (boxNumber === "") {
-			setboxNumberError(true);
-			setboxNumberHelperText("Número inválido");
-			return "Erro";
-		}
 		if (boxAbbreviation === "") {
 			setboxAbbreviationError(true);
 			setboxAbbreviationHelperText("Sigla inválida");
-			return "Erro";
-		}
-		if (boxYear === "" || parseInt(boxYear, 10) < 1900) {
-			setYearError(true);
-			setYearHelperText("Ano inválido");
 			return "Erro";
 		}
 
@@ -96,10 +78,8 @@ export default function CreateBoxAbbreviation() {
 					.post(
 						`box-abbreviation/`,
 						{
-							number: boxNumber,
 							abbreviation: boxAbbreviation,
-							name: boxName,
-							year: boxYear,
+							name: boxName
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -113,37 +93,14 @@ export default function CreateBoxAbbreviation() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-		setYearError(false);
-		setboxNumberError(false);
 		setboxAbbreviationError(false);
 
-		setYearHelperText("");
-		setboxNumberHelperText("");
 		setboxAbbreviationHelperText("");
 		return null;
 	};
 
 	const fields = [
-		{
-			type: "number",
-			placeholder: "Número da caixa*",
-			setValue: setBoxNumber,
-			value: boxNumber,
-			helperText: boxNumberHelperText,
-			error: boxNumberError,
-			setHelperText: setboxNumberHelperText,
-			setError: setboxNumberError,
-		},
-		{
-			type: "text",
-			placeholder: "Sigla da caixa*",
-			setValue: setBoxAbbreviation,
-			value: boxAbbreviation,
-			helperText: boxAbbreviationHelperText,
-			error: boxAbbreviationError,
-			setHelperText: setboxAbbreviationHelperText,
-			setError: setboxAbbreviationError,
-		},
+		
 		{
 			type: "text",
 			placeholder: "Nome completo",
@@ -158,20 +115,21 @@ export default function CreateBoxAbbreviation() {
 				"";
 			},
 		},
+		
 		{
-			type: "number",
-			placeholder: "Ano*",
-			setValue: setBoxYear,
-			value: boxYear,
-			helperText: yearHelperText,
-			error: yearError,
-			setHelperText: setYearHelperText,
-			setError: setYearError,
-		},
+			type: "text",
+			placeholder: "Sigla da caixa*",
+			setValue: setBoxAbbreviation,
+			value: boxAbbreviation,
+			helperText: boxAbbreviationHelperText,
+			error: boxAbbreviationError,
+			setHelperText: setboxAbbreviationHelperText,
+			setError: setboxAbbreviationError,
+		}
 	];
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
-	const subtitle = "Cadastrar caixa";
+	const subtitle = "Cadastrar Sigla da Caixa";
 
 	return createForm(
 		fields,
@@ -183,7 +141,7 @@ export default function CreateBoxAbbreviation() {
 		handleAlertClose,
 		severityAlert,
 		alertHelperText,
-		"caixa",
+		"Sigla da Caixa",
 		"box-abbreviation/"
 	);
 }
