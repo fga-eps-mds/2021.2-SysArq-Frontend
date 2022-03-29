@@ -365,7 +365,7 @@ const CreateBoxArchiving = ({ detail }) => {
 
 		if (!typeList.length) {
 			setTypeListHelperText(
-				"Não é possível criar um Arquivamento de Caixas sem um Tipo do Documento."
+				"Não é possível criar um Arquivamento de Caixas sem um Nome do Documento."
 			);
 			setLoading(false);
 			return "typeList error";
@@ -394,7 +394,7 @@ const CreateBoxArchiving = ({ detail }) => {
 							abbreviation_id: box.id === undefined ? "" : box.id,
 							shelf_id: shelf.id === undefined ? "" : shelf.id,
 							rack_id: rack.id === undefined ? "" : rack.id, //
-							document_types: typeList,
+							document_names: typeList,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -475,7 +475,7 @@ const CreateBoxArchiving = ({ detail }) => {
 
 							setProcessNumber(responseBoxArchiving.data.process_number);
 							setReceivedDate(responseBoxArchiving.data.received_date);
-							setTypeList(responseBoxArchiving.data.document_types);
+							setTypeList(responseBoxArchiving.data.document_names);
 
 							setNotes(
 								responseBoxArchiving.data.notes
