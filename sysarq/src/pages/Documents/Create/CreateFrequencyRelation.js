@@ -125,7 +125,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 		}
 
 		if (documentType === "") {
-			setDocumentTypeHelperText("Selecione um nome de documento");
+			setDocumentTypeHelperText("Selecione um nome do documento");
 			setLoading(false);
 			return "documentType error";
 		}

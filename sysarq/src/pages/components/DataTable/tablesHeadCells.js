@@ -119,13 +119,6 @@ const documentNameHeadCells = [
 		numeric: false,
 		label: "Nome do Documento",
 	},
-
-	{
-		id: "subject_name",
-		numeric: false,
-		label: "Assunto do Documento",
-	},
-
 	{
 		id: "temporality",
 		numeric: false,
@@ -205,7 +198,7 @@ const frequencyRelationHeadCells = [
 	{
 		id: "document_name_name",
 		numeric: false,
-		label: "Nome de Documento",
+		label: "Nome do Documento",
 	},
 ];
 

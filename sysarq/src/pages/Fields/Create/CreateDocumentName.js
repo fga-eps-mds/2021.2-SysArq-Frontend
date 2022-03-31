@@ -23,12 +23,9 @@ const useStyles = makeStyles({
 export default function CreateDocumentName() {
 	const classes = useStyles();
 
-	const [documentSubject, setDocumentSubject] = useState("");
 	const [documentName, setDocumentName] = useState("");
 	const [temporalityValue, setTemporality] = useState("");
 
-	const [documentSubjectHelperText, setdocumentSubjectHelperText] = useState("");
-    const [documentSubjectError, setdocumentSubjectError] = useState(false);
 	const [documentNameHelperText, setdocumentNameHelperText] = useState("");
 	const [documentNameError, setdocumentNameError] = useState(false);
 	const [temporalityHelperText, settemporalityHelperText] = useState("");
@@ -54,21 +51,16 @@ export default function CreateDocumentName() {
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
-		setAlertHelperText("Nome de documento cadastrado!");
+		setAlertHelperText("Nome do documento cadastrado!");
 		setDocumentName("");
 		setTemporality("");
 		window.location.reload();
 	};
 
 	const onClick = () => {
-		if (documentSubject === "") {
-            setdocumentSubjectError(true);
-            setdocumentSubjectHelperText("Assunto inválido");
-            return "Erro";
-        }
 		if (documentName === "") {
 			setdocumentNameError(true);
-			setdocumentNameHelperText("Nome de documento inválido");
+			setdocumentNameHelperText("Nome inválido");
 			return "Erro";
 		}
 		if (temporalityValue === "") {
@@ -87,8 +79,7 @@ export default function CreateDocumentName() {
 					.post(
 						`document-name/`,
 						{
-							document_name: documentName,
-							subject_name: documentSubject,							
+							document_name: documentName,						
 							temporality: temporalityValue,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
@@ -109,26 +100,14 @@ export default function CreateDocumentName() {
 	const fields = [
 		{
 			type: "text",
-			placeholder: "Nome do documento*",
+			placeholder: "Nome*",
 			setValue: setDocumentName,
 			value: documentName,
 			helperText: documentNameHelperText,
 			error: documentNameError,
 			setHelperText: setdocumentNameHelperText,
 			setError: setdocumentNameError,
-		},
-
-		{
-			type: "text",
-			placeholder: "Assunto do documento*",
-			setValue: setDocumentSubject,
-			value: documentSubject,
-			helperText: documentSubjectHelperText,
-			error: documentSubjectError,
-			setHelperText: setdocumentSubjectHelperText,
-			setError: setdocumentSubjectError,
-		},
-		
+		},		
 		{
 			type: "number",
 			placeholder: "Temporalidade (anos)*",

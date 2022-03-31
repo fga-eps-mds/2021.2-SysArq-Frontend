@@ -61,14 +61,14 @@ const DocumentTypeInput = ({
 				<TextField
 					fullWidth
 					id="documentType"
-					label="Nome de Documento"
+					label="Nome do Documento"
 					value={documentTypeDetail}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
 				<FormControl fullWidth error={documentTypeHelperText !== ""}>
 					<InputLabel id="select-documentType-label">
-						Nome de Documento*
+						Nome do Documento*
 					</InputLabel>
 					<Select
 						style={{ textAlign: "left" }}
