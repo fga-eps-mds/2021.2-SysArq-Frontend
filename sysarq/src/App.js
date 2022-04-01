@@ -87,6 +87,7 @@ function App() {
 							<PrivateRoute
 								exact={false}
 								path="/fields/document-subject/create"
+								permission="AL"
 							>
 								<CreateDocumentSubject />
 							</PrivateRoute>
@@ -100,6 +101,7 @@ function App() {
 							<PrivateRoute
 								exact={false}
 								path="/fields/box-abbreviation/create"
+								permission="AL"
 							>
 								<CreateBoxAbbreviation />
 							</PrivateRoute>
@@ -109,7 +111,11 @@ function App() {
 							<PrivateRoute exact path="/fields/unity">
 								<Unity />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/unity/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/unity/create"
+								permission="AL"
+							>
 								<CreateUnity />
 							</PrivateRoute>
 						</Route>
@@ -118,7 +124,11 @@ function App() {
 							<PrivateRoute exact path="/fields/document-type">
 								<DocumentType />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/document-type/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/document-type/create"
+								permission="AL"
+							>
 								<CreateDocumentType />
 							</PrivateRoute>
 						</Route>
@@ -127,7 +137,11 @@ function App() {
 							<PrivateRoute exact path="/fields/shelf">
 								<Shelf />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/shelf/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/shelf/create"
+								permission="AL"
+							>
 								<CreateShelfOrRack urlType="shelf" />
 							</PrivateRoute>
 						</Route>
@@ -136,7 +150,11 @@ function App() {
 							<PrivateRoute exact path="/fields/rack">
 								<Rack />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/rack/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/rack/create"
+								permission="AL"
+							>
 								<CreateShelfOrRack urlType="rack" />
 							</PrivateRoute>
 						</Route>
@@ -145,7 +163,11 @@ function App() {
 							<PrivateRoute exact path="/fields/public-worker">
 								<PublicWorker />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/public-worker/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/public-worker/create"
+								permission="AL"
+							>
 								<CreatePublicWorker urlType="public-worker" />
 							</PrivateRoute>
 						</Route>
@@ -164,6 +186,7 @@ function App() {
 							<PrivateRoute
 								exact={false}
 								path="/documents/administrative-process/create"
+								permission="AL"
 							>
 								<CreateAdministrativeProcess detail={false} />
 							</PrivateRoute>
@@ -182,7 +205,7 @@ function App() {
 								exact={false}
 								path="/documents/frequency-relation/create"
 							>
-								<CreateFrequencyRelation detail={false} />
+								<CreateFrequencyRelation detail={false} permission="AL" />
 							</PrivateRoute>
 
 							<PrivateRoute path="/documents/frequency-relation/view/:id">
@@ -198,6 +221,7 @@ function App() {
 							<PrivateRoute
 								exact={false}
 								path="/documents/box-archiving/create"
+								permission="AL"
 							>
 								<CreateBoxArchiving detail={false} />
 							</PrivateRoute>
@@ -215,6 +239,7 @@ function App() {
 							<PrivateRoute
 								exact={false}
 								path="/documents/frequency-sheet/create"
+								permission="AL"
 							>
 								<CreateFrequencySheet detail={false} />
 							</PrivateRoute>
@@ -224,11 +249,11 @@ function App() {
 							</PrivateRoute>
 						</Route>
 					</Route>
-					<PrivateRoute exact path="/settings">
+					<PrivateRoute exact path="/settings" permission="AD">
 						<Settings />
 					</PrivateRoute>
 
-					<PrivateRoute exact path="/register-user">
+					<PrivateRoute exact path="/register-user" permission="AD">
 						<RegisterUser />
 					</PrivateRoute>
 				</Switch>
