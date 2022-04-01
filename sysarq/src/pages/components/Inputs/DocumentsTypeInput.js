@@ -101,7 +101,7 @@ const DocumentsTypeInput = ({
 	return (
 		<>
 			<Grid item xs={12} sm={12} md={12}>
-				<SpecialLabels label="Tipo do Documento" />
+				<SpecialLabels label="Nome do Documento" />
 
 				{typeListHelperText !== "" ? (
 					<Alert styles={{ width: "100%" }} severity="error">

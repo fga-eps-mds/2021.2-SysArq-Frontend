@@ -41,7 +41,7 @@ export const failedRackServer = setupServer(
 
 export const failedDocumentTypeServer = setupServer(
 	refreshTokenRequest,
-	rest.get(`${hostApiArchives}document-type/`, (req, res, ctx) =>
+	rest.get(`${hostApiArchives}document-name/`, (req, res, ctx) =>
 		res(ctx.status(404))
 	)
 );
@@ -166,7 +166,7 @@ export const server = setupServer(
 		)
 	),
 
-	rest.get(`${hostApiArchives}document-type/`, (req, res, ctx) =>
+	rest.get(`${hostApiArchives}document-name/`, (req, res, ctx) =>
 		res(
 			ctx.json([
 				{

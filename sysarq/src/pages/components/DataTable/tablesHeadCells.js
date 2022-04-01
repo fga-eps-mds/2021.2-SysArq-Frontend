@@ -12,7 +12,7 @@ const headCellsSearch = () => {
 		"CPF",
 		"document_subject_name",
 		"Assunto do documento",
-		"document_type_name",
+		"document_name_name",
 		"Tipo do documento",
 		"sender_unity_name",
 		"Unidade que encaminhou",
@@ -42,20 +42,6 @@ const headCellsSearch = () => {
 
 	return headCellsSearchList;
 };
-
-const documentSubjectHeadCells = [
-	{
-		id: "subject_name",
-		numeric: false,
-		label: "Nome do Assunto",
-	},
-
-	{
-		id: "temporality",
-		numeric: false,
-		label: "Temporalidade",
-	},
-];
 
 const unityHeadCells = [
 	{
@@ -117,13 +103,12 @@ const headCellsBoxAbbreviation = [
 
 ];
 
-const documentTypeHeadCells = [
+const documentNameHeadCells = [
 	{
 		id: "document_name",
 		numeric: false,
 		label: "Nome do Documento",
 	},
-
 	{
 		id: "temporality",
 		numeric: false,
@@ -180,7 +165,7 @@ const administrativeProcessHeadCells = [
 	{
 		id: "document_subject_name",
 		numeric: false,
-		label: "Assunto",
+		label: "Assunto do Documento",
 	},
 ];
 
@@ -201,9 +186,9 @@ const frequencyRelationHeadCells = [
 		label: "Data de Recebimento",
 	},
 	{
-		id: "document_type_name",
+		id: "document_name_name",
 		numeric: false,
-		label: "Tipo de Documento",
+		label: "Nome do Documento",
 	},
 ];
 
@@ -247,23 +232,20 @@ const boxArchivingHeadCells = [
 		label: "Unidade que Encaminhou",
 	},
 	{
-		id: "document_type_name",
+		id: "document_name_name",
 		numeric: false,
-		label: "Tipos do Documento",
+		label: "Nome do Documento",
 	},
 ];
 
 const tableHeadCells = (url) => {
 	let headCells = [];
-
-	if (url === "document-subject/") {
-		headCells = documentSubjectHeadCells;
-	} else if (url === "unity/") {
+	if (url === "unity/") {
 		headCells = unityHeadCells;
 	} else if (url === "box-abbreviation/") {
 		headCells = headCellsBoxAbbreviation;
-	} else if (url === "document-type/") {
-		headCells = documentTypeHeadCells;
+	} else if (url === "document-name/") {
+		headCells = documentNameHeadCells;
 	} else if (url === "shelf/") {
 		headCells = shelfHeadCells;
 	} else if (url === "rack/") {

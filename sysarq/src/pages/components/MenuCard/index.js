@@ -10,10 +10,9 @@ import {
 	Typography,
 } from "@material-ui/core";
 
-import SubjectIcon from "@material-ui/icons/Subject";
 import AbbreviationIcon from "@material-ui/icons/LocalOffer";
 import UnitIcon from "@material-ui/icons/HomeWork";
-import DocumentTypeIcon from "@material-ui/icons/Class";
+import DocumentNameIcon from "@material-ui/icons/Class";
 import ShelfRackIcon from "@material-ui/icons/GridOn";
 import PublicWorkerIcon from "@material-ui/icons/Person";
 
@@ -39,14 +38,12 @@ const Icon = ({ iconName }) => {
 
 	let icon = "";
 
-	if (iconName === "subject-icon") {
-		icon = <SubjectIcon className={classes.icon} />;
-	} else if (iconName === "abbreviation-icon") {
+	if (iconName === "abbreviation-icon") {
 		icon = <AbbreviationIcon className={classes.icon} />;
 	} else if (iconName === "unit-icon") {
 		icon = <UnitIcon className={classes.icon} />;
-	} else if (iconName === "document-type-icon") {
-		icon = <DocumentTypeIcon className={classes.icon} />;
+	} else if (iconName === "document-name-icon") {
+		icon = <DocumentNameIcon className={classes.icon} />;
 	} else if (iconName === "shelf-rack-icon") {
 		icon = <ShelfRackIcon className={classes.icon} />;
 	} else if (iconName === "public-worker-icon") {
@@ -68,7 +65,7 @@ const Icon = ({ iconName }) => {
 	return icon;
 };
 
-const MenuCard = ({ icon, title, url, lg }) => (
+const MenuCard = ({ icon, title, url, lg}) => (
 	<Grid item xs={12} sm={12} md={6} lg={lg}>
 		<Card id="card">
 			<CardActionArea id="card-action" href={url}>

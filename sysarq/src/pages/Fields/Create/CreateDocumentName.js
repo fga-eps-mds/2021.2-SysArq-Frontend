@@ -20,14 +20,14 @@ const useStyles = makeStyles({
 	},
 });
 
-export default function CreateDocumentType() {
+export default function CreateDocumentName() {
 	const classes = useStyles();
 
 	const [documentName, setDocumentName] = useState("");
 	const [temporalityValue, setTemporality] = useState("");
 
-	const [documentTypeHelperText, setdocumentTypeHelperText] = useState("");
-	const [documentTypeError, setdocumentTypeError] = useState(false);
+	const [documentNameHelperText, setdocumentNameHelperText] = useState("");
+	const [documentNameError, setdocumentNameError] = useState(false);
 	const [temporalityHelperText, settemporalityHelperText] = useState("");
 	const [temporalityError, settemporalityError] = useState(false);
 
@@ -51,7 +51,7 @@ export default function CreateDocumentType() {
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
-		setAlertHelperText("Tipo cadastrado!");
+		setAlertHelperText("Nome do documento cadastrado!");
 		setDocumentName("");
 		setTemporality("");
 		window.location.reload();
@@ -59,8 +59,8 @@ export default function CreateDocumentType() {
 
 	const onClick = () => {
 		if (documentName === "") {
-			setdocumentTypeError(true);
-			setdocumentTypeHelperText("Tipo de documento inválido");
+			setdocumentNameError(true);
+			setdocumentNameHelperText("Nome inválido");
 			return "Erro";
 		}
 		if (temporalityValue === "") {
@@ -77,9 +77,9 @@ export default function CreateDocumentType() {
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
 					.post(
-						`document-type/`,
+						`document-name/`,
 						{
-							document_name: documentName,
+							document_name: documentName,						
 							temporality: temporalityValue,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
@@ -100,14 +100,14 @@ export default function CreateDocumentType() {
 	const fields = [
 		{
 			type: "text",
-			placeholder: "Nome do documento*",
+			placeholder: "Nome*",
 			setValue: setDocumentName,
 			value: documentName,
-			helperText: documentTypeHelperText,
-			error: documentTypeError,
-			setHelperText: setdocumentTypeHelperText,
-			setError: setdocumentTypeError,
-		},
+			helperText: documentNameHelperText,
+			error: documentNameError,
+			setHelperText: setdocumentNameHelperText,
+			setError: setdocumentNameError,
+		},		
 		{
 			type: "number",
 			placeholder: "Temporalidade (anos)*",
@@ -121,7 +121,7 @@ export default function CreateDocumentType() {
 	];
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
-	const subtitle = "Cadastrar tipo do documento";
+	const subtitle = "Cadastrar nome do documento";
 
 	return createForm(
 		fields,
@@ -133,7 +133,7 @@ export default function CreateDocumentType() {
 		handleAlertClose,
 		severityAlert,
 		alertHelperText,
-		"Tipo de Documento",
-		"document-type/"
+		"Nome do Documento",
+		"document-name/"
 	);
 }

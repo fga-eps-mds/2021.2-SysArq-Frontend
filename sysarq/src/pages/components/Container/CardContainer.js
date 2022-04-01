@@ -74,7 +74,7 @@ const CardContainer = ({ title, spacing, children }) => {
 						<Grid item xs={12}>
 							<Card className={classes.card}>
 								<Typography className={classes.title}>{title}</Typography>
-								<Grid container spacing={spacing}>
+								<Grid justifyContent="center" container spacing={spacing}>
 									{children}
 								</Grid>
 							</Card>

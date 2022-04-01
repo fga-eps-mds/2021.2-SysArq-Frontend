@@ -12,14 +12,12 @@ import Search from "./pages/Search/Search";
 import SearchList from "./pages/Search/SearchList";
 
 import Fields from "./pages/Fields";
-import DocumentSubject from "./pages/Fields/List/DocumentSubject";
-import CreateDocumentSubject from "./pages/Fields/Create/CreateDocumentSubject";
 import BoxAbbreviation from "./pages/Fields/List/BoxAbbreviation";
 import CreateBoxAbbreviation from "./pages/Fields/Create/CreateBoxAbbreviation";
 import Unity from "./pages/Fields/List/Unity";
 import CreateUnity from "./pages/Fields/Create/CreateUnity";
-import DocumentType from "./pages/Fields/List/DocumentType";
-import CreateDocumentType from "./pages/Fields/Create/CreateDocumentType";
+import DocumentName from "./pages/Fields/List/DocumentName";
+import CreateDocumentName from "./pages/Fields/Create/CreateDocumentName";
 import Shelf from "./pages/Fields/List/Shelf";
 import Rack from "./pages/Fields/List/Rack";
 import CreateShelfOrRack from "./pages/Fields/Create/CreateShelfOrRack";
@@ -79,19 +77,6 @@ function App() {
 							<Fields />
 						</PrivateRoute>
 
-						<Route path="/fields/document-subject">
-							<PrivateRoute exact path="/fields/document-subject">
-								<DocumentSubject />
-							</PrivateRoute>
-
-							<PrivateRoute
-								exact={false}
-								path="/fields/document-subject/create"
-							>
-								<CreateDocumentSubject />
-							</PrivateRoute>
-						</Route>
-
 						<Route path="/fields/box-abbreviation">
 							<PrivateRoute exact path="/fields/box-abbreviation">
 								<BoxAbbreviation />
@@ -114,12 +99,12 @@ function App() {
 							</PrivateRoute>
 						</Route>
 
-						<Route path="/fields/document-type">
-							<PrivateRoute exact path="/fields/document-type">
-								<DocumentType />
+						<Route path="/fields/document-name">
+							<PrivateRoute exact path="/fields/document-name">
+								<DocumentName />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/document-type/create">
-								<CreateDocumentType />
+							<PrivateRoute exact={false} path="/fields/document-name/create">
+								<CreateDocumentName />
 							</PrivateRoute>
 						</Route>
 
