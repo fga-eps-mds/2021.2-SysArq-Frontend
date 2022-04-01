@@ -18,7 +18,7 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import TimelapseIcon from "@material-ui/icons/Timelapse";
 import CancelIcon from "@material-ui/icons/Cancel";
 
-import { initialPeriod, isDateNotValid, formatDate } from "../../../support";
+import { initialPeriod, isDateNotValid, formatDateName } from "../../../support";
 
 import SpecialLabels from "../SpecialLabels";
 
@@ -52,7 +52,7 @@ const ReferencePeriodInput = ({
 		}
 
 		const periodList = referencePeriod;
-		const formattedPeriod = formatDate(period);
+		const formattedPeriod = formatDateName(period);
 
 		if (periodList.indexOf(formattedPeriod) !== -1) {
 			setPeriodHelperText("Período já adicionado");
@@ -91,7 +91,7 @@ const ReferencePeriodInput = ({
 					{referencePeriod.map((addedPeriod) => (
 						<Chip
 							icon={<TimelapseIcon />}
-							label={`${addedPeriod.substring(5, 7)}/${addedPeriod.substring(
+							label={`${addedPeriod.substring(5, 8)}/${addedPeriod.substring(
 								0,
 								4
 							)}`}
@@ -128,7 +128,7 @@ const ReferencePeriodInput = ({
 						style={{ width: "100%" }}
 						id="period-date-picker-dialog"
 						label="Período"
-						format="MM/yyyy"
+						format="MMM/yyyy"
 						value={period}
 						onChange={handlePeriodChange}
 						openTo="month"

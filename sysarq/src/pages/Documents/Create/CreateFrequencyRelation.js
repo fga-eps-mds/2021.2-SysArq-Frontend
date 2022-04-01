@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { maskBr } from "js-brasil";
 import PropTypes from "prop-types";
 
 import { useParams } from "react-router-dom";
@@ -12,6 +13,7 @@ import {
 	isDateNotValid,
 	axiosProfileError,
 	getUnits,
+	getPublicWorkers,
 } from "../../../support";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
@@ -32,11 +34,25 @@ import DataTable from "../../components/DataTable";
 const CreateFrequencyRelation = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
+	const [senderPublicWorkerDetail, setSenderPublicWorkerDetail] = useState("");
+	const [receiverPublicWorkerDetail, setReceiverPublicWorkerDetail] = useState("");
 	const [documentTypeDetail, setDocumentTypeDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 
 	const [units, setUnits] = useState([]);
 
+	const [senderPublicWorkers, setSenderPublicWorkers] = useState([
+		{ id: 1, name: "inexiste", cpf: "55555555555" },
+	]);
+	const [receiverPublicWorkers, setReceiverPublicWorkers] = useState([
+		{ id: 1, name: "inexiste", cpf: "55555555555" },
+	]);
+
+	const [senderPublicWorkerInput, setSenderPublicWorkerInput] = useState("");
+	const [receiverPublicWorkerInput, setReceiverPublicWorkerInput] = useState("");
+
+	const [senderPublicWorker, setSenderPublicWorker] = useState(senderPublicWorkers.id);
+	const [receiverPublicWorker, setReceiverPublicWorker] = useState(receiverPublicWorkers.id);
 	const [processNumber, setProcessNumber] = useState("");
 	const [documentDate, setDocumentDate] = useState(detail ? "" : initialDate);
 	const [receivedDate, setReceivedDate] = useState(detail ? "" : initialDate);
@@ -46,7 +62,10 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [referencePeriod, setReferencePeriod] = useState(
 		detail ? [] : [formatDate(initialPeriod)]
 	);
-
+	
+	
+	const [senderPublicWorkerHelperText, setSenderPublicWorkerHelperText] = useState("");
+	const [receiverPublicWorkerHelperText, setReceiverPublicWorkerHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
 	const [documentDateHelperText, setDocumentDateHelperText] = useState("");
@@ -74,6 +93,24 @@ const CreateFrequencyRelation = ({ detail }) => {
 		);
 	};
 
+	const handleSenderPublicWorkerChange = (value) => {
+		setSenderPublicWorkerHelperText("");
+		if (!value) {
+			setSenderPublicWorker(undefined);
+			return;
+		}
+		setSenderPublicWorker(value);
+	};
+
+	const handleReceiverPublicWorkerChange = (value) => {
+		setReceiverPublicWorkerHelperText("");
+		if (!value) {
+			setReceiverPublicWorker(undefined);
+			return;
+		}
+		setReceiverPublicWorker(value);
+	};
+
 	const onSuccess = () => {
 		setLoading(false);
 
@@ -86,6 +123,10 @@ const CreateFrequencyRelation = ({ detail }) => {
 		setDocumentDate(initialDate);
 		setDocumentType("");
 		setSenderUnit("");
+		setSenderPublicWorkerInput("");
+		setSenderPublicWorker(undefined);
+		setReceiverPublicWorkerInput("");
+		setReceiverPublicWorker(undefined);
 		setNotes("");
 		setReferencePeriod([formatDate(initialPeriod)]);
 		window.location.reload();
@@ -136,6 +177,17 @@ const CreateFrequencyRelation = ({ detail }) => {
 			return "senderUnit error";
 		}
 
+		if (!senderPublicWorker) {
+			setSenderPublicWorkerHelperText("Selecione o servidor que encaminhou");
+			setLoading(false);
+			return "workerName error";
+		}
+		if (!receiverPublicWorker) {
+			setReceiverPublicWorkerHelperText("Selecione o servidor que recebeu");
+			setLoading(false);
+			return "workerName error";
+		}
+
 		if (referencePeriod.length === 0) {
 			setReferencePeriodHelperText(
 				"Não é possível criar uma Relação de Frequências sem um Período de Referência."
@@ -179,7 +231,27 @@ const CreateFrequencyRelation = ({ detail }) => {
 		return "post done";
 	};
 
+	const senderPublicWorkerOptions = senderPublicWorkers.map((option) => {
+		const firstLetter = option.name[0].toUpperCase();
+		return {
+			firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+			...option,
+		};
+	});
+
+	const receiverPublicWorkerOptions = receiverPublicWorkers.map((option) => {
+		const firstLetter = option.name[0].toUpperCase();
+		return {
+			firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+			...option,
+		};
+	});
+	
 	useEffect(() => {
+
+		getPublicWorkers(setSenderPublicWorkers, connectionError);
+		getPublicWorkers(setReceiverPublicWorkers, connectionError);
+
 		if (detail) {
 			setLoading(true);
 
@@ -189,7 +261,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 				})
 				.then((res) => {
 					localStorage.setItem("tk", res.data.access);
-					localStorage.setItem("tkr", res.data.refresh);
+					localStorage.setItem("tkr", res.data.refresh);					
 
 					axiosArchives
 						.get(`frequency-relation/${params.id}/`, {
@@ -203,6 +275,19 @@ const CreateFrequencyRelation = ({ detail }) => {
 							setSenderUnitDetail(
 								responseFrequencyRelation.data.sender_unity_name
 							);
+
+							setSenderPublicWorkerDetail(
+								`${responseFrequencyRelation.data.person_name}, ${maskBr.cpf(
+									responseFrequencyRelation.data.cpf
+								)}`
+							);
+
+							setReceiverPublicWorkerDetail(
+								`${responseFrequencyRelation.data.person_name}, ${maskBr.cpf(
+									responseFrequencyRelation.data.cpf
+								)}`
+							);
+
 
 							setProcessNumber(responseFrequencyRelation.data.process_number);
 							setDocumentDate(responseFrequencyRelation.data.document_date);
@@ -269,8 +354,22 @@ const CreateFrequencyRelation = ({ detail }) => {
 							setSenderUnitHelperText={setSenderUnitHelperText}
 							setSenderUnit={setSenderUnit}
 							senderUnit={senderUnit}
-							units={units}
 							senderUnitHelperText={senderUnitHelperText}
+							units={units}
+							senderPublicWorkers={senderPublicWorkers}
+							senderPublicWorkerInput={senderPublicWorkerInput}
+							handleSenderPublicWorkerChange={handleSenderPublicWorkerChange}
+							setSenderPublicWorkerInput={setSenderPublicWorkerInput}
+							senderPublicWorkerOptions={senderPublicWorkerOptions}
+							senderPublicWorkerHelperText={senderPublicWorkerHelperText}
+							senderPublicWorkerDetail={senderPublicWorkerDetail}
+							receiverPublicWorkers={receiverPublicWorkers}
+							receiverPublicWorkerInput={receiverPublicWorkerInput}
+							handleReceiverPublicWorkerChange={handleReceiverPublicWorkerChange}
+							setReceiverPublicWorkerInput={setReceiverPublicWorkerInput}
+							receiverPublicWorkerOptions={receiverPublicWorkerOptions}
+							receiverPublicWorkerHelperText={receiverPublicWorkerHelperText}
+							receiverPublicWorkerDetail={receiverPublicWorkerDetail}
 							setNotes={setNotes}
 							notes={notesLocal}
 						/>
