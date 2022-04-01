@@ -176,11 +176,6 @@ const frequencyRelationHeadCells = [
 		label: "Número do Processo",
 	},
 	{
-		id: "document_date",
-		numeric: false,
-		label: "Data do Documento",
-	},
-	{
 		id: "received_date",
 		numeric: false,
 		label: "Data de Recebimento",
