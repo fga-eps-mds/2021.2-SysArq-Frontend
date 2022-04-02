@@ -60,7 +60,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [senderUnit, setSenderUnit] = useState("");
 	const [notesLocal, setNotes] = useState("");
 	const [referencePeriod, setReferencePeriod] = useState(
-		detail ? [] : [formatDate(initialPeriod)]
+		detail ? [] : []
 	);
 	
 	
