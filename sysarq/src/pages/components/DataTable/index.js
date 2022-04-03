@@ -110,6 +110,7 @@ const DataTable = ({ url, title }) => {
 		"document-name/",
 		"shelf/",
 		"rack/",
+		"file-location/",
 		"public-worker/",
 	];
 
@@ -427,13 +428,13 @@ const DataTable = ({ url, title }) => {
 					onRowsPerPageChange={handleChangeRowsPerPage}
 				/>
 
-				{url === "shelf/" || url === "rack/" ? (
+				{url === "shelf/" || url === "rack/" || url === "file-location/" ? (
 					<Typography style={{ marginBottom: "1%" }}>
 						<Link
 							className={classes.link}
-							href={url === "shelf/" ? "/fields/rack" : "/fields/shelf"}
+							href={url === "shelf/" || "/fields/rack" || "/fields/shelf" || "/fields/file-location"}
 						>
-							Ver {url === "shelf/" ? "Prateleiras" : "Estantes"}
+							Ver {url === "shelf/" || "Prateleiras" || "Estantes" || "Localidades dos Arquivos"}
 						</Link>
 					</Typography>
 				) : (

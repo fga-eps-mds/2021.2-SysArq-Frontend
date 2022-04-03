@@ -20,6 +20,7 @@ import DocumentName from "./pages/Fields/List/DocumentName";
 import CreateDocumentName from "./pages/Fields/Create/CreateDocumentName";
 import Shelf from "./pages/Fields/List/Shelf";
 import Rack from "./pages/Fields/List/Rack";
+import FileLocation from "./pages/Fields/List/FileLocation";
 import CreateShelfOrRack from "./pages/Fields/Create/CreateShelfOrRack";
 import PublicWorker from "./pages/Fields/List/PublicWorker";
 import CreatePublicWorker from "./pages/Fields/Create/CreatePublicWorker";
@@ -123,6 +124,15 @@ function App() {
 							</PrivateRoute>
 							<PrivateRoute exact={false} path="/fields/rack/create">
 								<CreateShelfOrRack urlType="rack" />
+							</PrivateRoute>
+						</Route>
+						
+						<Route path="/fields/file-location">
+							<PrivateRoute exact path="/fields/file-location">
+								<FileLocation />
+							</PrivateRoute>
+							<PrivateRoute exact={false} path="/fields/file-location/create">
+								<CreateShelfOrRack urlType="file-location" />
 							</PrivateRoute>
 						</Route>
 
