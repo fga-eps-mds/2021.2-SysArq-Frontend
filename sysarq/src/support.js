@@ -109,6 +109,47 @@ export function getPublicWorkers(setPublicWorkers, connectionError) {
 		.catch(() => connectionError());
 }
 
+export function autocompl(
+	publicWorkers,
+	publicWorkerInput,
+	handlePublicWorkerChange,
+	setPublicWorkerInput,
+	publicWorkerOptions,
+	publicWorkerHelperText
+) {
+	return (
+		<Autocomplete
+			id="workerName"
+			data-testid="autocomplete"
+			value={publicWorkers.name}
+			onChange={(event, newValue) => {
+				handlePublicWorkerChange(newValue);
+			}}
+			inputValue={publicWorkerInput}
+			onInputChange={(event, newInputValue) => {
+				setPublicWorkerInput(newInputValue);
+			}}
+			options={publicWorkerOptions.sort(
+				(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+			)}
+			groupBy={(option) => option.firstLetter}
+			getOptionLabel={(option) => `${option.name}, ${maskBr.cpf(option.cpf)}`}
+			getOptionSelected={(option, value) => option.name === value.name}
+			autoHighlight
+			renderInput={(params) => (
+				<TextField
+					// eslint-disable-next-line
+					{...params}
+					value={params.value}
+					label="Servidor, CPF*"
+					error={publicWorkerHelperText !== ""}
+					helperText={publicWorkerHelperText}
+				/>
+			)}
+		/>
+	);
+}
+
 export function senderWorker(
 	senderPublicWorkers,
 	senderPublicWorkerInput,
@@ -141,7 +182,7 @@ export function senderWorker(
 					// eslint-disable-next-line
 					{...params}
 					value={params.value}
-					label="Servidor que Encaminhou*"
+					label="Servidor que encaminhou*"
 					error={senderPublicWorkerHelperText !== ""}
 					helperText={senderPublicWorkerHelperText}
 				/>
@@ -182,50 +223,9 @@ export function receiverWorker(
 					// eslint-disable-next-line
 					{...params}
 					value={params.value}
-					label="Servidor que recebeu o documento*"
+					label="Servidor que recebeu*"
 					error={receiverPublicWorkerHelperText !== ""}
 					helperText={receiverPublicWorkerHelperText}
-				/>
-			)}
-		/>
-	);
-}
-
-export function autocompl(
-	publicWorkers,
-	publicWorkerInput,
-	handlePublicWorkerChange,
-	setPublicWorkerInput,
-	publicWorkerOptions,
-	publicWorkerHelperText
-) {
-	return (
-		<Autocomplete
-			id="workerName"
-			data-testid="autocomplete"
-			value={publicWorkers.name}
-			onChange={(event, newValue) => {
-				handlePublicWorkerChange(newValue);
-			}}
-			inputValue={publicWorkerInput}
-			onInputChange={(event, newInputValue) => {
-				setPublicWorkerInput(newInputValue);
-			}}
-			options={publicWorkerOptions.sort(
-				(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
-			)}
-			groupBy={(option) => option.firstLetter}
-			getOptionLabel={(option) => `${option.name}, ${maskBr.cpf(option.cpf)}`}
-			getOptionSelected={(option, value) => option.name === value.name}
-			autoHighlight
-			renderInput={(params) => (
-				<TextField
-					// eslint-disable-next-line
-					{...params}
-					value={params.value}
-					label="Servidor que encaminhou*"
-					error={publicWorkerHelperText !== ""}
-					helperText={publicWorkerHelperText}
 				/>
 			)}
 		/>
