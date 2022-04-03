@@ -20,6 +20,8 @@ const headCellsSearch = () => {
 		"Estante",
 		"rack_number",
 		"Prateleira",
+		"fileLocation_number",
+		"Localidade",
 		"abbreviation_name",
 		"Sigla da Caixa",
 		"is_filed",
@@ -147,6 +149,14 @@ const rackHeadCells = [
 	},
 ];
 
+const fileLocationHeadCells = [
+	{
+		id: "file",
+		numeric: false,
+		label: "Localidade do Arquivo",
+	},
+];
+
 const publicWorkerHeadCells = [
 	{
 		id: "name",
@@ -268,6 +278,8 @@ const tableHeadCells = (url) => {
 		headCells = shelfHeadCells;
 	} else if (url === "rack/") {
 		headCells = rackHeadCells;
+	} else if (url === "file-location/") {
+		headCells = fileLocationHeadCells;
 	} else if (url === "public-worker/") {
 		headCells = publicWorkerHeadCells;
 	} else if (url === "administrative-process/") {
