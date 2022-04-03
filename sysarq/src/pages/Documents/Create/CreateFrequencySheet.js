@@ -13,7 +13,8 @@ import {
 	FormControl,
 	InputLabel,
 	Select,
-	MenuItem 
+	MenuItem,
+	FormHelperText,
 } from "@material-ui/core";
 
 import {
@@ -23,6 +24,7 @@ import {
 	axiosProfileError,
 	getPublicWorkers,
 	autocompl,
+	getUnits,
 } from "../../../support";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
@@ -42,19 +44,19 @@ const CreateFrequencySheet = ({ detail }) => {
 
 	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
 	const [typeDetail, setTypeDetail] = useState("");
-	const [workplaceWorkerDetail, setworkplaceWorkerDetail] = useState("");
+	const [workplaceWorkerDetail, setWorkplaceWorkerDetail] = useState("");
 
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
 	]);
-	const [units, setUnits] = useState([]);
+	const [workplaceWorkers, setWorkplaceWorkers] = useState([]);
 
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 
 	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
+	const [workplaceWorker, setWorkplaceWorker] = useState("");
 	const [roleWorker, setRole] = useState("");
 	const [workerClass, setWorkerClass] = useState("");
-	const [workplaceWorker, setWorkplace] = useState("");
 	const [district, setDistrict] = useState("");
 
 	const [referencePeriod, setReferencePeriod] = useState("");
@@ -66,6 +68,7 @@ const CreateFrequencySheet = ({ detail }) => {
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 	const [roleHelperText, setRoleHelperText] = useState("");
 	const [districtHelperText, setDistrictHelperText] = useState("");
+	const [workplaceWorkerHelperText, setWorkplaceWorkerHelperText] = useState("");
 
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
 		useState("");
@@ -90,16 +93,17 @@ const CreateFrequencySheet = ({ detail }) => {
 		setPublicWorker(value);
 	};
 
+	const handleWorkplaceWorkerChange = (event) => {
+		setWorkplaceWorkerHelperText("");
+		setWorkplaceWorker(event.target.value);
+	};
+
 	const handleRoleChange = (event) => {
 		setRoleHelperText("");
 		setRole(event.target.value);
 	};
 
 	const handleWorkerClassChange = (event) => setWorkerClass(event.target.value);
-
-	const handleWorkplaceChange = (event) => {
-		setWorkplace(event.target.value);
-	};
 
 	const handleDistrictChange = (event) => {
 		setDistrictHelperText("");
@@ -136,7 +140,7 @@ const CreateFrequencySheet = ({ detail }) => {
 		setSenderProcessNumber("");
 		setRole("");
 		setWorkerClass("");
-		setWorkplace("");
+		setWorkplaceWorker("");
 		setDistrict("");
 		setNotes("");
 		setReferencePeriod(initialPeriod);
@@ -174,6 +178,12 @@ const CreateFrequencySheet = ({ detail }) => {
 		) {
 			setLoading(false);
 			return "reference error";
+		}
+
+		if (workplaceWorker === "") {
+			setWorkplaceWorkerHelperText("Selecione uma unidade");
+			setLoading(false);
+			return "senderUnit error";
 		}
 
 		if (type === "") {
@@ -256,10 +266,9 @@ const CreateFrequencySheet = ({ detail }) => {
 							);
 
 							setRole(responseFrequencySheet.data.role);
-							setWorkplace(responseFrequencySheet.data.workplace);
 							setDistrict(responseFrequencySheet.data.municipal_area);
 							setReferencePeriod(responseFrequencySheet.data.reference_period);
-
+							setWorkplaceWorkerDetail(responseFrequencySheet.data.workplace_name);
 							setWorkerClass(
 								responseFrequencySheet.data.category
 									? responseFrequencySheet.data.category
@@ -278,22 +287,6 @@ const CreateFrequencySheet = ({ detail }) => {
 									: "-"
 							);
 
-							if (responseFrequencySheet.data.workplace) {
-								axiosArchives
-									.get(`unity/${responseFrequencySheet.data.workplace}/`, {
-										headers: {
-											Authorization: `JWT ${localStorage.getItem("tk")}`,
-										},
-									})
-									.then((response) => {
-										setWorkplace(response.data);
-										setworkplaceWorkerDetail(response.data.unity_name);
-									})
-									.catch(() => connectionError());
-							} else {
-								setPublicWorkerDetail("-");
-							}
-
 							setLoading(false);
 						})
 						.catch(() => connectionError());
@@ -303,13 +296,15 @@ const CreateFrequencySheet = ({ detail }) => {
 					.get("unity/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
-					.then((response) => setUnits(response.data))
+					.then((response) => setWorkplaceWorkers(response.data))
 					.catch(() => connectionError());
 
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
+
+			getUnits(setWorkplaceWorkers, connectionError);
 	}, []);
 
 	return (
@@ -372,38 +367,41 @@ const CreateFrequencySheet = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
-									id="workplace"
-									label={detail ? "Lotação" : "Lotação*"}
+									id="workplaceWorker"
+									label="Lotação*"
 									value={workplaceWorkerDetail}
 									inputProps={{ readOnly: true }}
-								/>	
+								/>
 							) : (
-								<FormControl fullWidth>
-									<InputLabel id="select-workplace-label">
-										Lotação
+								<FormControl fullWidth error={workplaceWorkerHelperText !== ""}>
+									<InputLabel id="select-workplaceWorker-label">
+										Lotação*
 									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
-										labelId="select-workplace-label"
-										id="select-workplace"
+										labelId="select-workplaceWorker-label"
+										id="select-workplaceWorker"
 										value={workplaceWorker}
-										onChange={handleWorkplaceChange}
-										renderValue={(value) => `${value.workplaceWorker}`}
+										onChange={handleWorkplaceWorkerChange}
+										renderValue={(value) => `${value.unity_name}`}
 									>
 										<MenuItem key={0} value="">
 											<em>Nenhuma</em>
 										</MenuItem>
 
-										{units.map((workplace) => (
-											<MenuItem id={workplace.id} value={workplace}>
-												{workplace.workplaceWorker}
-											</MenuItem>	
+										{workplaceWorkers.map((workplaceWorkerOption) => (
+											<MenuItem key={workplaceWorkerOption.id} value={workplaceWorkerOption}>
+												{workplaceWorkerOption.unity_name}
+											</MenuItem>
 										))}
 									</Select>
+									{workplaceWorkerHelperText ? (
+										<FormHelperText>{workplaceWorkerHelperText}</FormHelperText>
+									) : (
+										""
+									)}
 								</FormControl>
-
 							)}
-							
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
