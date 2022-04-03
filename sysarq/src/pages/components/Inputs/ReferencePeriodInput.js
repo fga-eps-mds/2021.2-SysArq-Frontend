@@ -77,7 +77,7 @@ const ReferencePeriodInput = ({
 	return (
 		<>
 			<Grid item xs={12} sm={12} md={12}>
-				<SpecialLabels label="Período de Referência" />
+				<SpecialLabels label="Período das Referências" />
 
 				{referencePeriodHelperText !== "" ? (
 					<Alert styles={{ width: "100%" }} severity="error">

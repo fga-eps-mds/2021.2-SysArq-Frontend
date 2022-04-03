@@ -51,7 +51,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [senderPublicWorker, setSenderPublicWorker] = useState(senderPublicWorkers.id);
 	const [receiverPublicWorker, setReceiverPublicWorker] = useState(receiverPublicWorkers.id);
 	const [processNumber, setProcessNumber] = useState("");
-	const [documentDate, setDocumentDate] = useState("");
 	const [receivedDate, setReceivedDate] = useState("");
 	const [documentType, setDocumentType] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
@@ -64,7 +63,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [receiverPublicWorkerHelperText, setReceiverPublicWorkerHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
-	const [documentDateHelperText, setDocumentDateHelperText] = useState("");
 	const [documentTypeHelperText, setDocumentTypeHelperText] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
@@ -115,7 +113,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 
 		setProcessNumber("");
 		setReceivedDate("");
-		setDocumentDate("");
 		setDocumentType("");
 		setSenderUnit("");
 		setSenderPublicWorkerInput("");
@@ -145,19 +142,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 			setLoading(false);
 			return "workerName error";
 		}
-
-		if (
-			isDateNotValid(
-				documentDate,
-				setDocumentDateHelperText,
-				"date",
-				"required"
-			)
-		) {
-			setLoading(false);
-			return "documentDate error";
-		}
-
 		if (
 			isDateNotValid(
 				receivedDate,
@@ -204,7 +188,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 							process_number: processNumber,
 							notes: notesLocal,
 							filer_user: "filer_user",
-							document_date: formatDate(documentDate),
 							received_date: formatDate(receivedDate),
 							reference_period: referencePeriod,
 							sender_unity: senderUnit.id,
@@ -213,9 +196,9 @@ const CreateFrequencyRelation = ({ detail }) => {
 							receiver_id: receiverPublicWorker.id,
 							receiver_cpf: receiverPublicWorker.cpf,
 							document_name_id: documentType.id,
-							temporality_date:
+							temporality_date: 
 								parseInt(documentType.temporality, 10) +
-								parseInt(documentDate.getFullYear(), 10),
+								parseInt(receivedDate.getFullYear(), 10),
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -281,7 +264,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 							);
 
 							setProcessNumber(responseFrequencyRelation.data.process_number);
-							setDocumentDate(responseFrequencyRelation.data.document_date);
 							setReceivedDate(responseFrequencyRelation.data.received_date);
 
 							setNotes(
@@ -317,7 +299,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 					<CircularProgress style={{ margin: "auto" }} />
 				) : (
 					<>
-						<Grid item xs={12} sm={6} md={4}>
+						<Grid item xs={12} sm={6} md={8}>
 							<NumberProcessInput
 								setHelperText={setProcessNumberHelperText}
 								set={setProcessNumber}
@@ -329,10 +311,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 
 						<CommonSet
 							isDetailPage={detail}
-							setDocumentDateHelperText={setDocumentDateHelperText}
-							setDocumentDate={setDocumentDate}
-							documentDate={documentDate}
-							documentDateHelperText={documentDateHelperText}
 							setReceivedDateHelperText={setReceivedDateHelperText}
 							setReceivedDate={setReceivedDate}
 							receivedDate={receivedDate}
