@@ -211,7 +211,7 @@ const frequencySheetHeadCells = [
 	{
 		id: "reference_period",
 		numeric: false,
-		label: "Período de Referência",
+		label: "Período de Frequência",
 	},
 ];
 
