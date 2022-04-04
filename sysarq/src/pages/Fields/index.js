@@ -6,9 +6,9 @@ import "./styles.css";
 const Fields = () => (
 	<CardContainer title="Campos Obrigatórios" spacing={2}>
 		<MenuCard
-			icon="subject-icon"
-			title="Assunto do Documento"
-			url="/fields/document-subject/create"
+			icon="document-name-icon"
+			title="Nome do Documento"
+			url="/fields/document-name/create"
 			lg={4}
 		/>
 		<MenuCard
@@ -19,19 +19,13 @@ const Fields = () => (
 		/>
 		<MenuCard
 			icon="abbreviation-icon"
-			title="Caixa"
+			title="Sigla da Caixa"
 			url="/fields/box-abbreviation/create"
 			lg={4}
 		/>
 		<MenuCard
-			icon="document-type-icon"
-			title="Tipo de Documento"
-			url="/fields/document-type/create"
-			lg={4}
-		/>
-		<MenuCard
 			icon="shelf-rack-icon"
-			title="Estante e Prateleira"
+			title="Localidade do Documento"
 			url="/fields/shelf/create"
 			lg={4}
 		/>

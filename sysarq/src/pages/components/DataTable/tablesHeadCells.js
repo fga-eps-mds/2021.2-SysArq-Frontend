@@ -12,7 +12,7 @@ const headCellsSearch = () => {
 		"CPF",
 		"document_subject_name",
 		"Assunto do documento",
-		"document_type_name",
+		"document_name_name",
 		"Tipo do documento",
 		"sender_unity_name",
 		"Unidade que encaminhou",
@@ -20,8 +20,10 @@ const headCellsSearch = () => {
 		"Estante",
 		"rack_number",
 		"Prateleira",
+		"fileLocation_number",
+		"Localidade",
 		"abbreviation_name",
-		"Caixa",
+		"Sigla da Caixa",
 		"is_filed",
 		"Arquivado",
 		"is_eliminated",
@@ -42,20 +44,6 @@ const headCellsSearch = () => {
 
 	return headCellsSearchList;
 };
-
-const documentSubjectHeadCells = [
-	{
-		id: "subject_name",
-		numeric: false,
-		label: "Nome do Assunto",
-	},
-
-	{
-		id: "temporality",
-		numeric: false,
-		label: "Temporalidade",
-	},
-];
 
 const unityHeadCells = [
 	{
@@ -102,17 +90,6 @@ const unityHeadCells = [
 ];
 
 const headCellsBoxAbbreviation = [
-	{
-		id: "number",
-		numeric: true,
-		label: "Número",
-	},
-
-	{
-		id: "abbreviation",
-		numeric: false,
-		label: "Sigla",
-	},
 
 	{
 		id: "name",
@@ -121,19 +98,19 @@ const headCellsBoxAbbreviation = [
 	},
 
 	{
-		id: "year",
-		numeric: true,
-		label: "Ano",
+		id: "abbreviation",
+		numeric: false,
+		label: "Sigla",
 	},
+
 ];
 
-const documentTypeHeadCells = [
+const documentNameHeadCells = [
 	{
 		id: "document_name",
 		numeric: false,
 		label: "Nome do Documento",
 	},
-
 	{
 		id: "temporality",
 		numeric: false,
@@ -154,6 +131,14 @@ const rackHeadCells = [
 		id: "number",
 		numeric: true,
 		label: "Número de Prateleira",
+	},
+];
+
+const fileLocationHeadCells = [
+	{
+		id: "file",
+		numeric: false,
+		label: "Localidade do Arquivo",
 	},
 ];
 
@@ -190,7 +175,7 @@ const administrativeProcessHeadCells = [
 	{
 		id: "document_subject_name",
 		numeric: false,
-		label: "Assunto",
+		label: "Assunto do Documento",
 	},
 ];
 
@@ -201,19 +186,14 @@ const frequencyRelationHeadCells = [
 		label: "Número do Processo",
 	},
 	{
-		id: "document_date",
-		numeric: false,
-		label: "Data do Documento",
-	},
-	{
 		id: "received_date",
 		numeric: false,
 		label: "Data de Recebimento",
 	},
 	{
-		id: "document_type_name",
+		id: "document_name_name",
 		numeric: false,
-		label: "Tipo de Documento",
+		label: "Nome do Documento",
 	},
 ];
 
@@ -236,7 +216,7 @@ const frequencySheetHeadCells = [
 	{
 		id: "reference_period",
 		numeric: false,
-		label: "Período de Referência",
+		label: "Período de Frequência",
 	},
 ];
 
@@ -257,27 +237,26 @@ const boxArchivingHeadCells = [
 		label: "Unidade que Encaminhou",
 	},
 	{
-		id: "document_type_name",
+		id: "document_name_name",
 		numeric: false,
-		label: "Tipos do Documento",
+		label: "Nome do Documento",
 	},
 ];
 
 const tableHeadCells = (url) => {
 	let headCells = [];
-
-	if (url === "document-subject/") {
-		headCells = documentSubjectHeadCells;
-	} else if (url === "unity/") {
+	if (url === "unity/") {
 		headCells = unityHeadCells;
 	} else if (url === "box-abbreviation/") {
 		headCells = headCellsBoxAbbreviation;
-	} else if (url === "document-type/") {
-		headCells = documentTypeHeadCells;
+	} else if (url === "document-name/") {
+		headCells = documentNameHeadCells;
 	} else if (url === "shelf/") {
 		headCells = shelfHeadCells;
 	} else if (url === "rack/") {
 		headCells = rackHeadCells;
+	} else if (url === "file-location/") {
+		headCells = fileLocationHeadCells;
 	} else if (url === "public-worker/") {
 		headCells = publicWorkerHeadCells;
 	} else if (url === "administrative-process/") {

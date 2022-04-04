@@ -15,9 +15,9 @@ export default function Search() {
 
 				<CardContainer title="Campos Obrigatórios" spacing={2}>
 					<MenuCard
-						icon="subject-icon"
-						title="Assunto do Documento"
-						url="/fields/document-subject"
+						icon="document-name-icon"
+						title="Nome do Documento"
+						url="/fields/document-name"
 						lg={2}
 					/>
 					<MenuCard
@@ -28,19 +28,13 @@ export default function Search() {
 					/>
 					<MenuCard
 						icon="abbreviation-icon"
-						title="Caixa"
+						title="Sigla da Caixa"
 						url="/fields/box-abbreviation"
 						lg={2}
 					/>
 					<MenuCard
-						icon="document-type-icon"
-						title="Tipo de Documento"
-						url="/fields/document-type"
-						lg={2}
-					/>
-					<MenuCard
 						icon="shelf-rack-icon"
-						title="Estante e Prateleira"
+						title="Localidade do Documento"
 						url="/fields/shelf"
 						lg={2}
 					/>

@@ -12,16 +12,15 @@ import Search from "./pages/Search/Search";
 import SearchList from "./pages/Search/SearchList";
 
 import Fields from "./pages/Fields";
-import DocumentSubject from "./pages/Fields/List/DocumentSubject";
-import CreateDocumentSubject from "./pages/Fields/Create/CreateDocumentSubject";
 import BoxAbbreviation from "./pages/Fields/List/BoxAbbreviation";
 import CreateBoxAbbreviation from "./pages/Fields/Create/CreateBoxAbbreviation";
 import Unity from "./pages/Fields/List/Unity";
 import CreateUnity from "./pages/Fields/Create/CreateUnity";
-import DocumentType from "./pages/Fields/List/DocumentType";
-import CreateDocumentType from "./pages/Fields/Create/CreateDocumentType";
+import DocumentName from "./pages/Fields/List/DocumentName";
+import CreateDocumentName from "./pages/Fields/Create/CreateDocumentName";
 import Shelf from "./pages/Fields/List/Shelf";
 import Rack from "./pages/Fields/List/Rack";
+import FileLocation from "./pages/Fields/List/FileLocation";
 import CreateShelfOrRack from "./pages/Fields/Create/CreateShelfOrRack";
 import PublicWorker from "./pages/Fields/List/PublicWorker";
 import CreatePublicWorker from "./pages/Fields/Create/CreatePublicWorker";
@@ -78,18 +77,6 @@ function App() {
 							<Fields />
 						</PrivateRoute>
 
-							<PrivateRoute exact path="/fields/document-subject">
-								<DocumentSubject />
-							</PrivateRoute>
-
-							<PrivateRoute
-								exact={false}
-								path="/fields/document-subject/create"
-								permission="AL"
-							>
-								<CreateDocumentSubject />
-							</PrivateRoute>
-
 							<PrivateRoute exact path="/fields/box-abbreviation">
 								<BoxAbbreviation />
 							</PrivateRoute>
@@ -113,12 +100,12 @@ function App() {
 								<CreateUnity />
 							</PrivateRoute>
 
-							<PrivateRoute exact path="/fields/document-type">
+							<PrivateRoute exact path="/fields/document-name">
 								<DocumentType />
 							</PrivateRoute>
 							<PrivateRoute
 								exact={false}
-								path="/fields/document-type/create"
+								path="/fields/document-name/create"
 								permission="AL"
 							>
 								<CreateDocumentType />
@@ -144,6 +131,17 @@ function App() {
 								permission="AL"
 							>
 								<CreateShelfOrRack urlType="rack" />
+							</PrivateRoute>
+
+              <PrivateRoute exact path="/fields/file-location">
+								<Rack />
+							</PrivateRoute>
+							<PrivateRoute
+								exact={false}
+								path="/fields/file-location/create
+								permission="AL"
+							>
+								<CreateShelfOrRack urlType="file-location" />
 							</PrivateRoute>
 
 							<PrivateRoute exact path="/fields/public-worker">
