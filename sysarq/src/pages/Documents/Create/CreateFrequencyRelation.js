@@ -74,6 +74,16 @@ const CreateFrequencyRelation = ({ detail }) => {
 		);
 	};
 
+	const handleRequestError = (value) => {
+		setOpenAlert(true);
+		setSeverityAlert("error");
+		if (value === 400) {
+			setAlertHelperText("O N° de processo já existe");
+		} else {
+			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+		}
+	};
+
 	const onSuccess = () => {
 		setLoading(false);
 
@@ -170,7 +180,14 @@ const CreateFrequencyRelation = ({ detail }) => {
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => onSuccess())
-					.catch(() => connectionError());
+					.catch((err) => {
+						if (err.response.status === 401) {
+							axiosProfileError(err);
+							return false;
+						}
+						handleRequestError(err.response.status);
+						return false;
+					});
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);

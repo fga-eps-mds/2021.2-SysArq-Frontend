@@ -49,6 +49,16 @@ export default function CreateUnity() {
 		setSeverityAlert("error");
 	};
 
+	const handleRequestError = (value) => {
+		setOpenAlert(true);
+		setSeverityAlert("error");
+		if (value === 400) {
+			setAlertHelperText("Nome da unidade já existe");
+		} else {
+			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+		}
+	};
+
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
@@ -93,8 +103,13 @@ export default function CreateUnity() {
 					.then(() => {
 						onSuccess();
 					})
-					.catch(() => {
-						connectionError();
+					.catch((err) => {
+						if (err.response.status === 401) {
+							axiosProfileError(err);
+							return false;
+						}
+						handleRequestError(err.response.status);
+						return false;
 					});
 			})
 			.catch((error) => {
