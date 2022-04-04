@@ -19,7 +19,6 @@ import {
 
 import {
 	formatDate,
-	initialPeriod,
 	isDateNotValid,
 	axiosProfileError,
 	getPublicWorkers,
@@ -59,7 +58,7 @@ const CreateFrequencySheet = ({ detail }) => {
 	const [workerClass, setWorkerClass] = useState("");
 	const [district, setDistrict] = useState("");
 
-	const [referencePeriod, setReferencePeriod] = useState("");
+	const [referencePeriod, setReferencePeriod] = useState(null);
 
 	const [senderProcessNumber, setSenderProcessNumber] = useState("");
 	const [type, setType] = useState("");
@@ -143,7 +142,7 @@ const CreateFrequencySheet = ({ detail }) => {
 		setWorkplaceWorker("");
 		setDistrict("");
 		setNotes("");
-		setReferencePeriod(initialPeriod);
+		setReferencePeriod(null);
 		setType("");
 		window.location.reload();
 	};
