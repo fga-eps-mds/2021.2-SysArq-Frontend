@@ -219,25 +219,33 @@ const RegisterUser = () => {
 		}
 
 		axiosProfile
-			.post(`users/register/`, {
-				username,
-				user_type: userType,
-				first_name: firstName,
-				last_name: lastName,
-				cpf,
-				password,
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
 			})
-			.then(() => {
-				onSuccess();
-				return true;
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosProfile
+					.post(`users/register/`, {
+						username,
+						user_type: userType,
+						first_name: firstName,
+						last_name: lastName,
+						cpf,
+						password,
+					},
+					{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
+					.then(() => {
+						onSuccess();
+						return true;
+					})
+					.catch((err) => {
+						handleRequestError(err.response.status);
+						return false;
+					});
 			})
-			.catch((err) => {
-				if (err.response.status === 401) {
-					axiosProfileError(err);
-					return false;
-				}
-				handleRequestError(err.response.status);
-				return false;
+			.catch((error) => {
+				axiosProfileError(error)
 			});
 
 		return "Sucesso";
