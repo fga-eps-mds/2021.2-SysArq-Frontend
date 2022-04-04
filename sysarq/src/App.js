@@ -101,14 +101,14 @@ function App() {
 							</PrivateRoute>
 
 							<PrivateRoute exact path="/fields/document-name">
-								<DocumentType />
+								<DocumentName />
 							</PrivateRoute>
 							<PrivateRoute
 								exact={false}
 								path="/fields/document-name/create"
 								permission="AL"
 							>
-								<CreateDocumentType />
+								<CreateDocumentName />
 							</PrivateRoute>
 
 							<PrivateRoute exact path="/fields/shelf">
@@ -133,12 +133,12 @@ function App() {
 								<CreateShelfOrRack urlType="rack" />
 							</PrivateRoute>
 
-              <PrivateRoute exact path="/fields/file-location">
-								<Rack />
+                            <PrivateRoute exact path="/fields/file-location">
+								<FileLocation />
 							</PrivateRoute>
 							<PrivateRoute
 								exact={false}
-								path="/fields/file-location/create
+								path="/fields/file-location/create"
 								permission="AL"
 							>
 								<CreateShelfOrRack urlType="file-location" />
