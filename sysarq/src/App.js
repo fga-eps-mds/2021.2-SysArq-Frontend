@@ -74,12 +74,10 @@ function App() {
 						<SearchList />
 					</PrivateRoute>
 
-					<Route path="/fields">
 						<PrivateRoute exact path="/fields">
 							<Fields />
 						</PrivateRoute>
 
-						<Route path="/fields/document-subject">
 							<PrivateRoute exact path="/fields/document-subject">
 								<DocumentSubject />
 							</PrivateRoute>
@@ -91,9 +89,7 @@ function App() {
 							>
 								<CreateDocumentSubject />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/box-abbreviation">
 							<PrivateRoute exact path="/fields/box-abbreviation">
 								<BoxAbbreviation />
 							</PrivateRoute>
@@ -105,9 +101,7 @@ function App() {
 							>
 								<CreateBoxAbbreviation />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/unity">
 							<PrivateRoute exact path="/fields/unity">
 								<Unity />
 							</PrivateRoute>
@@ -118,9 +112,7 @@ function App() {
 							>
 								<CreateUnity />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/document-type">
 							<PrivateRoute exact path="/fields/document-type">
 								<DocumentType />
 							</PrivateRoute>
@@ -131,9 +123,7 @@ function App() {
 							>
 								<CreateDocumentType />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/shelf">
 							<PrivateRoute exact path="/fields/shelf">
 								<Shelf />
 							</PrivateRoute>
@@ -144,9 +134,7 @@ function App() {
 							>
 								<CreateShelfOrRack urlType="shelf" />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/rack">
 							<PrivateRoute exact path="/fields/rack">
 								<Rack />
 							</PrivateRoute>
@@ -157,9 +145,7 @@ function App() {
 							>
 								<CreateShelfOrRack urlType="rack" />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/public-worker">
 							<PrivateRoute exact path="/fields/public-worker">
 								<PublicWorker />
 							</PrivateRoute>
@@ -170,15 +156,11 @@ function App() {
 							>
 								<CreatePublicWorker urlType="public-worker" />
 							</PrivateRoute>
-						</Route>
-					</Route>
 
-					<Route path="/documents">
-						<PrivateRoute exact path="/documents">
+						<PrivateRoute exact path="/documents" permission="AL">
 							<Documents />
 						</PrivateRoute>
 
-						<Route path="/documents/administrative-process">
 							<PrivateRoute exact path="/documents/administrative-process">
 								<AdministrativeProcess />
 							</PrivateRoute>
@@ -194,9 +176,7 @@ function App() {
 							<PrivateRoute path="/documents/administrative-process/view/:id">
 								<CreateAdministrativeProcess detail />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/documents/frequency-relation">
 							<PrivateRoute exact path="/documents/frequency-relation">
 								<FrequencyRelation />
 							</PrivateRoute>
@@ -211,9 +191,7 @@ function App() {
 							<PrivateRoute path="/documents/frequency-relation/view/:id">
 								<CreateFrequencyRelation detail />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/documents/box-archiving">
 							<PrivateRoute exact path="/documents/box-archiving">
 								<BoxArchiving />
 							</PrivateRoute>
@@ -229,9 +207,7 @@ function App() {
 							<PrivateRoute path="/documents/box-archiving/view/:id">
 								<CreateBoxArchiving detail />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/documents/frequency-sheet">
 							<PrivateRoute exact path="/documents/frequency-sheet">
 								<FrequencySheet />
 							</PrivateRoute>
@@ -247,8 +223,6 @@ function App() {
 							<PrivateRoute path="/documents/frequency-sheet/view/:id">
 								<CreateFrequencySheet detail />
 							</PrivateRoute>
-						</Route>
-					</Route>
 					<PrivateRoute exact path="/settings" permission="AD">
 						<Settings />
 					</PrivateRoute>
