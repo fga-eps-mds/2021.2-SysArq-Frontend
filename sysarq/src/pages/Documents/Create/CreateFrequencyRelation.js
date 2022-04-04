@@ -51,7 +51,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [senderPublicWorker, setSenderPublicWorker] = useState(senderPublicWorkers.id);
 	const [receiverPublicWorker, setReceiverPublicWorker] = useState(receiverPublicWorkers.id);
 	const [processNumber, setProcessNumber] = useState("");
-	const [receivedDate, setReceivedDate] = useState("");
+	const [receivedDate, setReceivedDate] = useState(null);
 	const [documentType, setDocumentType] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
 	const [notesLocal, setNotes] = useState("");
@@ -112,7 +112,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 		setAlertHelperText("Documento cadastrado!");
 
 		setProcessNumber("");
-		setReceivedDate("");
+		setReceivedDate(null);
 		setDocumentType("");
 		setSenderUnit("");
 		setSenderPublicWorkerInput("");
