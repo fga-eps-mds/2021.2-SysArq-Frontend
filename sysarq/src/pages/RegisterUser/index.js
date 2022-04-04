@@ -9,7 +9,12 @@ import {
 	Typography,
 	TextField,
 	InputAdornment,
+	InputLabel,
 	IconButton,
+	MenuItem,
+	Select,
+	FormControl,
+	FormHelperText,
 } from "@material-ui/core";
 import { axiosProfile } from "../../Api";
 import { axiosProfileError } from "../../support";
@@ -68,6 +73,9 @@ const RegisterUser = () => {
 	const [usernameError, setUsernameError] = useState(false);
 	const [usernameHelperText, setUsernameHelperText] = useState("");
 
+	const [userType, setUserType] = useState("");
+	const [userTypeError, setUserTypeError] = useState(false);
+
 	const [firstName, setFirstName] = useState("");
 	const [firstNameError, setFirstNameError] = useState(false);
 	const [firstNameHelperText, setFirstNameHelperText] = useState("");
@@ -101,6 +109,11 @@ const RegisterUser = () => {
 
 	const handleUsernameChange = (event) =>
 		handleChange(setUsernameHelperText, setUsernameError, setUsername, event);
+
+	const handleUserTypeChange = (event) => {
+		setUserType(event.target.value);
+		setUserTypeError(false);
+	};
 
 	const handleFirstNameChange = (event) =>
 		handleChange(
@@ -149,6 +162,7 @@ const RegisterUser = () => {
 
 	const onSuccess = () => {
 		setUsername("");
+		setUserType("");
 		setFirstName("");
 		setLastName("");
 		setCpf("");
@@ -167,6 +181,10 @@ const RegisterUser = () => {
 			setUsernameHelperText(
 				"Insira um nome de usuário válido (deve conter ao menos 3 caracteres)"
 			);
+			inputError = true;
+		}
+		if (userType === "") {
+			setUserTypeError(true);
 			inputError = true;
 		}
 		if (firstName === "") {
@@ -203,6 +221,7 @@ const RegisterUser = () => {
 		axiosProfile
 			.post(`users/register/`, {
 				username,
+				user_type: userType,
 				first_name: firstName,
 				last_name: lastName,
 				cpf,
@@ -239,6 +258,29 @@ const RegisterUser = () => {
 					error={usernameError}
 					helperText={usernameHelperText}
 				/>
+
+				<FormControl
+					fullwidth
+					error={userTypeError}
+					className={classes.input}
+					margin="normal"
+				>
+					<InputLabel id="user-type-label">Tipo de usuário</InputLabel>
+					<Select
+						labelId="user-type-label"
+						id="user-type"
+						value={userType}
+						onChange={handleUserTypeChange}
+					>
+						<MenuItem value="AD">Administrador</MenuItem>
+						<MenuItem value="AL">Alimentador</MenuItem>
+						<MenuItem value="VI">Visualizador</MenuItem>
+					</Select>
+					{userTypeError && (
+						<FormHelperText>Defina o tipo de usuário</FormHelperText>
+					)}
+				</FormControl>
+
 				<TextField
 					className={classes.input}
 					margin="normal"

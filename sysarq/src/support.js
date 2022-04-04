@@ -66,6 +66,7 @@ export function logout() {
 	localStorage.removeItem("tk");
 	localStorage.removeItem("tkr");
 	localStorage.removeItem("isLogged");
+	localStorage.removeItem("user_type");
 	window.location = "/login";
 }
 
@@ -149,6 +150,18 @@ export function autocompl(
 		/>
 	);
 }
+
+export function parseJwt(token) {
+	const base64Payload = token.split(".")[1];
+	const payload = Buffer.from(base64Payload, "base64");
+	return JSON.parse(payload.toString());
+}
+
+export const userTypeMap = {
+	AD: 3,
+	AL: 2,
+	VI: 1,
+};
 
 export function senderWorker(
 	senderPublicWorkers,
