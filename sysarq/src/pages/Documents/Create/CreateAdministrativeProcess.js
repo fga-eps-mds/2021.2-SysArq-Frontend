@@ -21,7 +21,6 @@ import {
 	initialDate,
 	initialPeriod,
 	isDateNotValid,
-	isInt,
 	formatDate,
 	axiosProfileError,
 	getPublicWorkers,
@@ -43,9 +42,6 @@ import PopUpAlert from "../../components/PopUpAlert";
 
 import "date-fns";
 import DataTable from "../../components/DataTable";
-
-const isPersonRegistryLengthValid = (registryLength) =>
-	registryLength === 11 || registryLength === 15;
 
 const isStatusFiled = (status) => {
 	if (status === "Arquivado") {
@@ -81,7 +77,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [archivingDate, setArchivingDate] = useState(detail ? "" : initialDate);
 	const [reference, setReference] = useState(detail ? "" : initialPeriod);
 	const [processNumber, setProcessNumber] = useState("");
-	const [personRegistry, setPersonRegistry] = useState("");
 	const [interestedPerson, setInterested] = useState("");
 	const [subject, setSubject] = useState("");
 	const [destinationUnit, setDestinationUnit] = useState("");
@@ -96,7 +91,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [archivingDateHelperText, setArchivingDateHelperText] = useState("");
 	const [referenceHelperText, setReferenceHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
-	const [personRegistryHelperText, setPersonRegistryHelperText] = useState("");
 	const [interestedHelperText, setInterestedHelperText] = useState("");
 	const [subjectHelperText, setSubjectHelperText] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
@@ -132,11 +126,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const handleReferenceChange = (date) => {
 		setReferenceHelperText("");
 		setReference(date);
-	};
-
-	const handlePersonRegistryChange = (event) => {
-		setPersonRegistryHelperText("");
-		setPersonRegistry(event.target.value);
 	};
 
 	const handleInterestedChange = (event) => {
@@ -192,7 +181,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setArchivingDate(initialDate);
 		setReference(initialDate);
 		setProcessNumber("");
-		setPersonRegistry("");
 		setInterested("");
 		setSubject("");
 		setDestinationUnit("");
@@ -228,19 +216,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			setInterestedHelperText("Insira um interessado");
 			setLoading(false);
 			return "interested error";
-		}
-
-		if (personRegistry !== "") {
-			if (!isInt(personRegistry)) {
-				setPersonRegistryHelperText("Insira somente números");
-				setLoading(false);
-				return "personRegistry content error";
-			}
-			if (!isPersonRegistryLengthValid(personRegistry.length)) {
-				setPersonRegistryHelperText("Insira um CPF/CNPJ válido");
-				setLoading(false);
-				return "personRegistry length error";
-			}
 		}
 
 		if (subject === "") {
@@ -303,7 +278,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							reference_month_year:
 								reference !== null ? formatDate(reference) : null,
 							process_number: processNumber,
-							cpf_cnpj: personRegistry,
 							interested: interestedPerson,
 							subject_id: subject.id,
 							dest_unity_id: destinationUnit.id,
@@ -456,12 +430,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								);
 							}
 
-							setPersonRegistry(
-								responseAdministrative.data.cpf_cnpj
-									? responseAdministrative.data.cpf_cnpj
-									: "-"
-							);
-
 							setReference(
 								responseAdministrative.data.reference_month_year
 									? responseAdministrative.data.reference_month_year
@@ -570,7 +538,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							)}
 						</Grid>
 
-						<Grid item xs={12} sm={12} md={8}>
+						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
 								id="interested"
@@ -581,20 +549,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								helperText={interestedHelperText}
 								multiline
 								inputProps={{ maxLength: 150, readOnly: detail }}
-							/>
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
-							<TextField
-								fullWidth
-								id="cpf-cpnj"
-								label="CPF/CNPJ"
-								placeholder="Somente números"
-								value={personRegistry}
-								onChange={handlePersonRegistryChange}
-								error={personRegistryHelperText !== ""}
-								helperText={personRegistryHelperText}
-								inputProps={{ maxLength: 15, readOnly: detail }}
 							/>
 						</Grid>
 
