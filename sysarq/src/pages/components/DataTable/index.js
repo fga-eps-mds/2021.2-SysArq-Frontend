@@ -15,6 +15,7 @@ import {
 	TableCell,
 	TableSortLabel,
 	TableBody,
+	TextField,
 	IconButton,
 	TablePagination,
 } from "@material-ui/core";
@@ -22,6 +23,8 @@ import {
 import MuiLink from "@material-ui/core/Link";
 
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import BackIcon from "@material-ui/icons/ArrowBack";
 
 import tableHeadCells from "./tablesHeadCells";
 
@@ -128,7 +131,8 @@ const DataTable = ({ url, title }) => {
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
 
-	const [updateTable, setUpdateTable] = useState(true);
+	const [ updateTable, setUpdateTable ] = useState(false);
+	const [editRow, setEditRow] = useState(false);
 
 	const connectionError = () => {
 		setOpenAlert(true);
@@ -293,7 +297,7 @@ const DataTable = ({ url, title }) => {
 						setOpenAlert(true);
 						setSeverityAlert("success");
 						setAlertHelperText("Campo excluído com sucesso!");
-						setUpdateTable(true);
+						setUpdateTable(prev => !prev);
 					})
 					.catch((error) => {
 						setOpenAlert(true);
@@ -317,6 +321,10 @@ const DataTable = ({ url, title }) => {
 				axiosProfileError(error, connectionError);
 			});
 	};
+
+	// const handleEdit = () => {
+
+	// };
 
 	const cellContent = (row, id) => {
 		const monthMap = {
@@ -424,6 +432,26 @@ const DataTable = ({ url, title }) => {
 		handleRequestSort(event, property);
 	};
 
+	const handleUpdate = (id, values) => {
+		axiosProfile
+				.post(`api/token/refresh/`, {
+					refresh: localStorage.getItem("tkr"),
+				})
+				.then((res) => {
+					localStorage.setItem("tk", res.data.access);
+					localStorage.setItem("tkr", res.data.refresh);
+					return axiosArchives
+						.put(`${url}${id}/`, values,{
+							headers: { Authorization: `JWT ${localStorage.getItem("tkr")}`, 
+										"Content-Type": "application/json"},
+						})
+						.then(() => {
+							setUpdateTable(prev => !prev);
+						})
+				})
+				
+	};
+
 	return (
 		<>
 			<Paper className={classes.paper} elevation={10}>
@@ -496,31 +524,75 @@ const DataTable = ({ url, title }) => {
 												  }
 										}
 									>
-										{Array.from(Array(headCells.length).keys()).map(
-											(headCellIndex) => (
+										{headCells.map(
+											(headCell, headCellIndex) => (
 												<>
+												{ !editRow ? (
 													<TableCell
 														key={row[headCells[headCellIndex].id]}
 														align={headCellIndex === 0 ? "left" : "right"}
 													>
 														{cellContent(row, headCells[headCellIndex].id)}
 													</TableCell>
+												) : (
+													<TableCell
+														align={headCellIndex === 0 ? "left" : "right"}>														
+													<TextField													
+														defaultValue={row[headCells[headCellIndex].id]}
+														onChange={e => handleUpdate(row.id, {[headCell.id]: e.target.value})}
+													/>
+													</TableCell>
+												)}
 
 													{headCellIndex === headCells.length - 1 &&
-														fieldUrls.indexOf(url) !== -1 && (
-															<TableCell align="right">
+													fieldUrls.indexOf(url) !== -1 ? (																				
+														<TableCell align="right">
+															{ !editRow ? (
+															<>
+																<IconButton
+																style={{ color: "#000000" }}
+																color="inherit"
+																size="small"
+																>	
+																	<EditIcon
+																		data-testid="edit-field"
+																		onClick={() => setEditRow(prev => !prev)}																	
+																	/>
+																</IconButton>
+
 																<IconButton
 																	style={{ color: "#fe0000" }}
 																	color="inherit"
 																	size="small"
 																>
-																	<DeleteIcon
-																		data-testid="delete-field"
-																		onClick={() => deleteRow(row)}
+																<DeleteIcon
+																	data-testid="delete-field"
+																	onClick={() => deleteRow(row)}
+																/>
+																</IconButton>
+															</>																
+															) : (
+															<>
+																<IconButton
+																style={{ color: "#008000" }}
+																color="inherit"
+																size="small"
+																>
+																	<BackIcon
+																		data-testid="back-field"
+																		onClick={() => setEditRow(prev => !prev)}
 																	/>
 																</IconButton>
-															</TableCell>
-														)}
+															</>
+															)}
+															
+
+
+															
+														</TableCell>
+													) : (
+														""
+													)}
 												</>
 											)
 										)}
