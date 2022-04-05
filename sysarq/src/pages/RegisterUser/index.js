@@ -135,11 +135,9 @@ const RegisterUser = () => {
 		setOpenAlert(true);
 		setSeverityAlert("error");
 		if (status === 400) {
-			setAlertHelperText("O nome de usuário já está em uso");
+			setAlertHelperText("O nome de usuário ou CPF já está em uso");
 		} else {
-			setAlertHelperText(
-				"Verifique sua conexão com a internet e recarregue a página."
-			);
+			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página.");
 		}
 	};
 
