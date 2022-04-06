@@ -57,7 +57,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
 	const [subjectDetail, setSubjectDetail] = useState("");
-	const [destinationUnitDetail, setDestinationUnitDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
 	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] =
@@ -79,7 +78,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [processNumber, setProcessNumber] = useState("");
 	const [interestedPerson, setInterested] = useState("");
 	const [subject, setSubject] = useState("");
-	const [destinationUnit, setDestinationUnit] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
@@ -138,9 +136,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setSubject(event.target.value);
 	};
 
-	const handleDestinationUnitChange = (event) =>
-		setDestinationUnit(event.target.value);
-
 	const handleStatusChange = (event) => {
 		setStatusHelperText("");
 		setStatus(event.target.value);
@@ -183,7 +178,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setProcessNumber("");
 		setInterested("");
 		setSubject("");
-		setDestinationUnit("");
 		setSenderUnit("");
 		setPublicWorkerInput("");
 		setPublicWorker(undefined);
@@ -280,7 +274,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							process_number: processNumber,
 							interested: interestedPerson,
 							subject_id: subject.id,
-							dest_unity_id: destinationUnit.id,
 							sender_unity: senderUnit.id,
 							sender_user: publicWorker !== undefined ? publicWorker.id : null,
 							is_filed: isStatusFiled(status),
@@ -344,22 +337,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									setSubjectDetail(response.data.subject_name);
 								})
 								.catch(() => connectionError());
-
-							if (responseAdministrative.data.dest_unity_id) {
-								axiosArchives
-									.get(`unity/${responseAdministrative.data.dest_unity_id}/`, {
-										headers: {
-											Authorization: `JWT ${localStorage.getItem("tk")}`,
-										},
-									})
-									.then((response) => {
-										setDestinationUnit(response.data);
-										setDestinationUnitDetail(response.data.unity_name);
-									})
-									.catch(() => connectionError());
-							} else {
-								setDestinationUnitDetail("-");
-							}
 
 							axiosArchives
 								.get(`unity/${responseAdministrative.data.sender_unity}/`, {
@@ -589,42 +566,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									) : (
 										""
 									)}
-								</FormControl>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={8}>
-							{detail ? (
-								<TextField
-									fullWidth
-									id="destinationUnit"
-									label="Unidade de Destino"
-									value={destinationUnitDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<FormControl fullWidth>
-									<InputLabel id="select-destinationUnit-label">
-										Unidade de Destino
-									</InputLabel>
-									<Select
-										style={{ textAlign: "left" }}
-										labelId="select-destinationUnit-label"
-										id="select-destinationUnit"
-										value={destinationUnit}
-										onChange={handleDestinationUnitChange}
-										renderValue={(value) => `${value.unity_name}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhuma</em>
-										</MenuItem>
-
-										{units.map((destUnitOption) => (
-											<MenuItem id={destUnitOption.id} value={destUnitOption}>
-												{destUnitOption.unity_name}
-											</MenuItem>
-										))}
-									</Select>
 								</FormControl>
 							)}
 						</Grid>
