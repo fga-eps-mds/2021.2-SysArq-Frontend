@@ -644,7 +644,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								<TextField
 									fullWidth
 									id="referenceDate"
-									label="Referência"
+									label="Referência (AC4)"
 									value={
 										reference !== "-"
 											? `${reference.substring(5, 7)}/${reference.substring(
@@ -663,7 +663,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									id="reference-date-picker-dialog"
 									openTo="year"
 									views={["year", "month"]}
-									label="Referência"
+									label="Referência (AC4)"
 									format="MM/yyyy"
 									value={reference}
 									onChange={handleReferenceChange}
