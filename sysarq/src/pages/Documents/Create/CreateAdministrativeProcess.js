@@ -56,13 +56,13 @@ const isStatusFiled = (status) => {
 const CreateAdministrativeProcess = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
-	const [subjectDetail, setSubjectDetail] = useState("");
+	const [documentNameDetail, setDocumentNameDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
 	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] =
 		useState("");
 
-	const [subjects, setSubjects] = useState([]);
+	const [documentNames, setDocumentNames] = useState([]);
 	const [units, setUnits] = useState([]);
 
 	const [publicWorkers, setPublicWorkers] = useState([
@@ -77,7 +77,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [reference, setReference] = useState(detail ? "" : initialPeriod);
 	const [processNumber, setProcessNumber] = useState("");
 	const [interestedPerson, setInterested] = useState("");
-	const [subject, setSubject] = useState("");
+	const [documentName, setDocumentName] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
@@ -90,7 +90,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [referenceHelperText, setReferenceHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [interestedHelperText, setInterestedHelperText] = useState("");
-	const [subjectHelperText, setSubjectHelperText] = useState("");
+	const [documentNameHelperText, setDocumentNameHelperText] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
@@ -131,9 +131,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setInterested(event.target.value);
 	};
 
-	const handleSubjectChange = (event) => {
-		setSubjectHelperText("");
-		setSubject(event.target.value);
+	const handleDocumentNameChange = (event) => {
+		setDocumentNameHelperText("");
+		setDocumentName(event.target.value);
 	};
 
 	const handleStatusChange = (event) => {
@@ -177,7 +177,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setReference(initialDate);
 		setProcessNumber("");
 		setInterested("");
-		setSubject("");
+		setDocumentName("");
 		setSenderUnit("");
 		setPublicWorkerInput("");
 		setPublicWorker(undefined);
@@ -212,10 +212,10 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "interested error";
 		}
 
-		if (subject === "") {
-			setSubjectHelperText("Selecione um assunto");
+		if (documentName === "") {
+			setDocumentNameHelperText("Selecione um assunto");
 			setLoading(false);
-			return "subject error";
+			return "documentName error";
 		}
 
 		if (
@@ -273,7 +273,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								reference !== null ? formatDate(reference) : null,
 							process_number: processNumber,
 							interested: interestedPerson,
-							subject_id: subject.id,
+							document_name_id: documentName.id,
 							sender_unity: senderUnit.id,
 							sender_user: publicWorker !== undefined ? publicWorker.id : null,
 							is_filed: isStatusFiled(status),
@@ -289,7 +289,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							notes: notesLocal,
 							filer_user: "filer_user",
 							temporality_date:
-								parseInt(subject.temporality, 10) +
+								parseInt(documentName.temporality, 10) +
 								parseInt(archivingDate.getFullYear(), 10),
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
@@ -325,7 +325,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						.then((responseAdministrative) => {
 							axiosArchives
 								.get(
-									`document-subject/${responseAdministrative.data.subject_id}/`,
+									`document-name/${responseAdministrative.data.document_name_id}/`,
 									{
 										headers: {
 											Authorization: `JWT ${localStorage.getItem("tk")}`,
@@ -333,8 +333,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									}
 								)
 								.then((response) => {
-									setSubject(response.data);
-									setSubjectDetail(response.data.subject_name);
+									setDocumentName(response.data);
+									setDocumentNameDetail(response.data.document_name);
 								})
 								.catch(() => connectionError());
 
@@ -430,11 +430,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 				}
 
 				axiosArchives
-					.get("document-subject/", {
+					.get("document-name/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => {
-						setSubjects(response.data);
+						setDocumentNames(response.data);
 					})
 					.catch(() => connectionError());
 
@@ -534,35 +534,35 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								<TextField
 									fullWidth
 									id="destinationUnit"
-									label="Assunto do Documento"
-									value={subjectDetail}
+									label="Nome do Documento"
+									value={documentNameDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={subjectHelperText !== ""}>
-									<InputLabel id="select-subject-label">
-										Assunto do Documento*
+								<FormControl fullWidth error={documentNameHelperText !== ""}>
+									<InputLabel id="select-document_name-label">
+										Nome do Documento*
 									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
-										labelId="select-subject-label"
-										id="select-subject"
-										value={subject}
-										onChange={handleSubjectChange}
-										renderValue={(value) => `${value.subject_name}`}
+										labelId="select-document_name-label"
+										id="select-document_name"
+										value={documentName}
+										onChange={handleDocumentNameChange}
+										renderValue={(value) => `${value.document_name}`}
 									>
 										<MenuItem key={0} value="">
 											<em>Nenhum</em>
 										</MenuItem>
 
-										{subjects.map((subjectOption) => (
-											<MenuItem key={subjectOption.id} value={subjectOption}>
-												{subjectOption.subject_name}
+										{documentNames.map((documentNameOption) => (
+											<MenuItem key={documentNameOption.id} value={documentNameOption}>
+												{documentNameOption.document_name}
 											</MenuItem>
 										))}
 									</Select>
-									{subjectHelperText ? (
-										<FormHelperText>{subjectHelperText}</FormHelperText>
+									{documentNameHelperText ? (
+										<FormHelperText>{documentNameHelperText}</FormHelperText>
 									) : (
 										""
 									)}
