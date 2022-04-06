@@ -77,7 +77,7 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [units, setUnits] = useState([]);
 
 	const [processNumber, setProcessNumber] = useState("");
-	const [receivedDate, setReceivedDate] = useState(detail ? "" : initialDate);
+	const [receivedDate, setReceivedDate] = useState(detail ? "" : null);
 	const [senderUnit, setSenderUnit] = useState("");
 	const [box, setBox] = useState("");
 	const [shelf, setShelf] = useState("");
