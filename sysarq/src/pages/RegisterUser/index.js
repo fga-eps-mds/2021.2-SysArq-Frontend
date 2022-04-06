@@ -234,7 +234,7 @@ const RegisterUser = () => {
 						cpf,
 						password,
 					},
-					{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
 					.then(() => {
 						onSuccess();
 						return true;
@@ -265,6 +265,7 @@ const RegisterUser = () => {
 					onChange={handleUsernameChange}
 					error={usernameError}
 					helperText={usernameHelperText}
+					variant="outlined"
 				/>
 
 				<FormControl
@@ -298,6 +299,7 @@ const RegisterUser = () => {
 					error={firstNameError}
 					onChange={handleFirstNameChange}
 					helperText={firstNameHelperText}
+					variant="outlined"
 				/>
 				<TextField
 					className={classes.input}
@@ -308,6 +310,7 @@ const RegisterUser = () => {
 					error={lastNameError}
 					onChange={handleLastNameChange}
 					helperText={lastNameHelperText}
+					variant="outlined"
 				/>
 				<InputMask
 					mask="999.999.999-99"
@@ -323,6 +326,7 @@ const RegisterUser = () => {
 						error={cpfError}
 						onChange={handleCpfChange}
 						helperText={cpfHelperText}
+						variant="outlined"
 					/>
 				</InputMask>
 				<TextField
@@ -335,6 +339,7 @@ const RegisterUser = () => {
 					onChange={handlePassword}
 					helperText={passwordHelperText}
 					type={showPassword ? "text" : "password"}
+					variant="outlined"
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">
@@ -360,6 +365,7 @@ const RegisterUser = () => {
 					onChange={handlePasswordConfirmation}
 					helperText={passwordConfirmationHelperText}
 					type={showPassword ? "text" : "password"}
+					variant="outlined"
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">

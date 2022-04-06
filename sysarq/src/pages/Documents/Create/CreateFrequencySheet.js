@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-import { 
+import {
 	Grid,
 	CircularProgress,
 	TextField,
@@ -255,7 +255,7 @@ const CreateFrequencySheet = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencySheet) => {
-							
+
 							setTypeDetail(responseFrequencySheet.data.document_name_name);
 
 							setPublicWorkerDetail(
@@ -303,7 +303,7 @@ const CreateFrequencySheet = ({ detail }) => {
 				axiosProfileError(error, connectionError);
 			});
 
-			getUnits(setWorkplaceWorkers, connectionError);
+		getUnits(setWorkplaceWorkers, connectionError);
 	}, []);
 
 	return (
@@ -318,6 +318,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							{detail ? (
 								<TextField
+									variant="outlined"
 									fullWidth
 									id="publicWorker"
 									label="Servidor"
@@ -338,6 +339,7 @@ const CreateFrequencySheet = ({ detail }) => {
 
 						<Grid item xs={12} sm={12} md={12}>
 							<TextField
+								variant="outlined"
 								fullWidth
 								id="role"
 								label={detail ? "Cargo" : "Cargo*"}
@@ -352,6 +354,7 @@ const CreateFrequencySheet = ({ detail }) => {
 
 						<Grid item xs={12} sm={12} md={12}>
 							<TextField
+								variant="outlined"
 								fullWidth
 								id="workerClass"
 								label="Classe"
@@ -365,6 +368,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							{detail ? (
 								<TextField
+									variant="outlined"
 									fullWidth
 									id="workplaceWorker"
 									label="Lotação*"
@@ -405,6 +409,7 @@ const CreateFrequencySheet = ({ detail }) => {
 
 						<Grid item xs={12} sm={12} md={12}>
 							<TextField
+								variant="outlined"
 								fullWidth
 								id="district"
 								label={detail ? "Município" : "Município*"}
@@ -420,15 +425,16 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={6}>
 							{detail ? (
 								<TextField
+									variant="outlined"
 									fullWidth
 									id="referencePeriodDate"
 									label="Período de Frequência"
 									value={
 										referencePeriod
 											? `${referencePeriod.substring(
-													5,
-													7
-											  )}/${referencePeriod.substring(0, 4)}`
+												5,
+												7
+											)}/${referencePeriod.substring(0, 4)}`
 											: ""
 									}
 									inputProps={{ readOnly: true }}
@@ -453,6 +459,7 @@ const CreateFrequencySheet = ({ detail }) => {
 
 						<Grid item xs={12} sm={12} md={6}>
 							<TextField
+								variant="outlined"
 								fullWidth
 								id="sender-process-number"
 								label="Número do Processo Encaminhador"

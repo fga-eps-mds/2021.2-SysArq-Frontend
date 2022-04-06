@@ -541,12 +541,13 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									fullWidth
 									id="noticeDate"
 									label="Data de Autuação"
+									variant="outlined"
 									value={
 										noticeDate
 											? `${noticeDate.substring(8, 10)}/${noticeDate.substring(
-													5,
-													7
-											  )}/${noticeDate.substring(0, 4)}`
+												5,
+												7
+											)}/${noticeDate.substring(0, 4)}`
 											: ""
 									}
 									inputProps={{ readOnly: true }}
@@ -579,6 +580,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								onChange={handleInterestedChange}
 								error={interestedHelperText !== ""}
 								helperText={interestedHelperText}
+								variant="outlined"
 								multiline
 								inputProps={{ maxLength: 150, readOnly: detail }}
 							/>
@@ -590,6 +592,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								id="cpf-cpnj"
 								label="CPF/CNPJ"
 								placeholder="Somente números"
+								variant="outlined"
 								value={personRegistry}
 								onChange={handlePersonRegistryChange}
 								error={personRegistryHelperText !== ""}
@@ -604,6 +607,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									fullWidth
 									id="destinationUnit"
 									label="Assunto do Documento"
+									variant="outlined"
 									value={subjectDetail}
 									inputProps={{ readOnly: true }}
 								/>
@@ -645,6 +649,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									fullWidth
 									id="destinationUnit"
 									label="Unidade de Destino"
+									variant="outlined"
 									value={destinationUnitDetail}
 									inputProps={{ readOnly: true }}
 								/>
@@ -681,15 +686,16 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									fullWidth
 									id="archivingDate"
 									label="Data de Arquivamento"
+									variant="outlined"
 									value={
 										archivingDate
 											? `${archivingDate.substring(
-													8,
-													10
-											  )}/${archivingDate.substring(
-													5,
-													7
-											  )}/${archivingDate.substring(0, 4)}`
+												8,
+												10
+											)}/${archivingDate.substring(
+												5,
+												7
+											)}/${archivingDate.substring(0, 4)}`
 											: ""
 									}
 									inputProps={{ readOnly: true }}
@@ -729,6 +735,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									fullWidth
 									id="publicWorker"
 									label="Servidor"
+									variant="outlined"
 									value={publicWorkerDetail}
 									inputProps={{ readOnly: true }}
 								/>
@@ -750,12 +757,13 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									fullWidth
 									id="referenceDate"
 									label="Referência"
+									variant="outlined"
 									value={
 										reference !== "-"
 											? `${reference.substring(5, 7)}/${reference.substring(
-													0,
-													4
-											  )}`
+												0,
+												4
+											)}`
 											: reference
 									}
 									inputProps={{ readOnly: true }}
@@ -781,6 +789,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={8}>
 							{detail ? (
 								<TextField
+									variant="outlined"
 									fullWidth
 									id="status"
 									label="Status"
@@ -819,6 +828,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								<Grid item xs={12} sm={12} md={12}>
 									{detail ? (
 										<TextField
+											variant="outlined"
 											fullWidth
 											id="unarchiveDestinationUnit"
 											label="Unid. Destino do Desarquivamento"
@@ -858,6 +868,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								<Grid item xs={12} sm={12} md={6}>
 									<TextField
 										fullWidth
+										variant="outlined"
 										id="unarchiveProcessNumber"
 										label="Nº do Processo do Desarquivamento"
 										value={unarchiveProcessNumber}
@@ -870,17 +881,18 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									{detail ? (
 										<TextField
 											fullWidth
+											variant="outlined"
 											id="unarchiveDate"
 											label="Data de Desarquivamento"
 											value={
 												unarchiveDate !== "-"
 													? `${unarchiveDate.substring(
-															8,
-															10
-													  )}/${unarchiveDate.substring(
-															5,
-															7
-													  )}/${unarchiveDate.substring(0, 4)}`
+														8,
+														10
+													)}/${unarchiveDate.substring(
+														5,
+														7
+													)}/${unarchiveDate.substring(0, 4)}`
 													: unarchiveDate
 											}
 											inputProps={{ readOnly: true }}

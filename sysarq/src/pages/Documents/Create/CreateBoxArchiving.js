@@ -577,7 +577,7 @@ const CreateBoxArchiving = ({ detail }) => {
 														<TableRow>
 															<TableCell>Assunto</TableCell>
 															<TableCell>Datas</TableCell>
-															{detail ? "" : <TableCell>{}</TableCell>}
+															{detail ? "" : <TableCell>{ }</TableCell>}
 														</TableRow>
 													</TableHead>
 													<TableBody>
@@ -608,10 +608,10 @@ const CreateBoxArchiving = ({ detail }) => {
 																						detail
 																							? false
 																							: () =>
-																									handleDeleteOriginBoxSubjectDate(
-																										subjectIndex,
-																										addedDate
-																									)
+																								handleDeleteOriginBoxSubjectDate(
+																									subjectIndex,
+																									addedDate
+																								)
 																					}
 																				/>
 																			))}
@@ -769,6 +769,7 @@ const CreateBoxArchiving = ({ detail }) => {
 					<DialogContent>
 						<TextField
 							fullWidth
+							variant="outlined"
 							id="newOriginBoxNumber"
 							label="Número da Caixa*"
 							value={newOriginBoxNumber}
@@ -779,6 +780,7 @@ const CreateBoxArchiving = ({ detail }) => {
 						/>
 						<TextField
 							fullWidth
+							variant="outlined"
 							margin="normal"
 							id="newOriginBoxYear"
 							label="Ano*"
@@ -812,6 +814,7 @@ const CreateBoxArchiving = ({ detail }) => {
 					<DialogContent>
 						<TextField
 							fullWidth
+							variant="outlined"
 							id="newOriginBoxSubject"
 							label="Assunto*"
 							value={newOriginBoxSubject}

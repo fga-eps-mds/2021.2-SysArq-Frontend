@@ -40,17 +40,17 @@ export default function CreateShelfOrRack({ urlType }) {
 	const [type, setType] = useState("Estante");
 	const [numberE, setNumberE] = useState("");
 	const [numberP, setNumberP] = useState("");
-	
+
 	const [shelfHelperText, setShelfHelperText] = useState("");
 	const [shelfNumberError, setShelfNumberError] = useState(false);
-	
+
 	const [rackHelperText, setRackHelperText] = useState("");
 	const [rackNumberError, setRackNumberError] = useState(false);
-	
+
 	const [fileLocation, setFileLocation] = useState("");
 	const [fileLocationHelperText, setFileLocationHelperText] = useState("");
 	const [fileLocationNumberError, setFileLocationNumberError] = useState("");
-	
+
 	const [openAlert, setOpenAlert] = useState(false);
 	const [alertHelperText, setAlertHelperText] = useState("");
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -154,7 +154,7 @@ export default function CreateShelfOrRack({ urlType }) {
 						.catch(() => {
 							connectionError();
 						});
-				}		
+				}
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
@@ -165,7 +165,7 @@ export default function CreateShelfOrRack({ urlType }) {
 
 		setRackNumberError(false);
 		setRackHelperText("");
-		
+
 		setFileLocationNumberError(false)
 		setFileLocationHelperText("");
 
@@ -179,6 +179,7 @@ export default function CreateShelfOrRack({ urlType }) {
 					<Grid item xs={12} sm={12} md={12} key={2}>
 						<TextField
 							id="Estante"
+							variant="outlined"
 							label="Número da estante*"
 							type="number"
 							value={numberE}
@@ -198,6 +199,7 @@ export default function CreateShelfOrRack({ urlType }) {
 				return (
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
+							variant="outlined"
 							key={1}
 							id="Prateleira"
 							label="Número da prateleira*"
@@ -220,6 +222,7 @@ export default function CreateShelfOrRack({ urlType }) {
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
 							key={1}
+							variant="outlined"
 							id="Localidade"
 							label="Localidade do Arquivo*"
 							type="text"
