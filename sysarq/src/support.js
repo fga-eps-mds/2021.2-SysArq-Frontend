@@ -142,7 +142,7 @@ export function autocompl(
 					// eslint-disable-next-line
 					{...params}
 					value={params.value}
-					label="Servidor que Encaminhou*"
+					label="Servidor, CPF*"
 					error={publicWorkerHelperText !== ""}
 					helperText={publicWorkerHelperText}
 				/>

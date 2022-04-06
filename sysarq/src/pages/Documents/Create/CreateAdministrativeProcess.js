@@ -19,12 +19,12 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 
 import {
 	initialDate,
-	initialPeriod,
 	isDateNotValid,
 	formatDate,
 	axiosProfileError,
 	getPublicWorkers,
-	autocompl,
+	// autocompl,
+	senderWorker,
 } from "../../../support";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
@@ -56,13 +56,13 @@ const isStatusFiled = (status) => {
 const CreateAdministrativeProcess = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
-	const [documentNameDetail, setDocumentNameDetail] = useState("");
+	const [subjectDetail, setSubjectDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
 	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] =
 		useState("");
 
-	const [documentNames, setDocumentNames] = useState([]);
+	const [subjects, setSubjects] = useState([]);
 	const [units, setUnits] = useState([]);
 
 	const [publicWorkers, setPublicWorkers] = useState([
@@ -72,12 +72,12 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [publicWorker, setPublicWorker] = useState("");
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 
-	const [noticeDate, setNoticeDate] = useState(detail ? "" : initialDate);
-	const [archivingDate, setArchivingDate] = useState(detail ? "" : initialDate);
-	const [reference, setReference] = useState(detail ? "" : initialPeriod);
+	const [noticeDate, setNoticeDate] = useState(detail ? "" : null);
+	const [archivingDate, setArchivingDate] = useState(detail ? "" : null);
+	const [reference, setReference] = useState(detail ? "" : null);
 	const [processNumber, setProcessNumber] = useState("");
 	const [interestedPerson, setInterested] = useState("");
-	const [documentName, setDocumentName] = useState("");
+	const [subject, setSubject] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
@@ -90,7 +90,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [referenceHelperText, setReferenceHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [interestedHelperText, setInterestedHelperText] = useState("");
-	const [documentNameHelperText, setDocumentNameHelperText] = useState("");
+	const [subjectHelperText, setSubjectHelperText] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
@@ -131,9 +131,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setInterested(event.target.value);
 	};
 
-	const handleDocumentNameChange = (event) => {
-		setDocumentNameHelperText("");
-		setDocumentName(event.target.value);
+	const handleSubjectChange = (event) => {
+		setSubjectHelperText("");
+		setSubject(event.target.value);
 	};
 
 	const handleStatusChange = (event) => {
@@ -177,7 +177,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setReference(initialDate);
 		setProcessNumber("");
 		setInterested("");
-		setDocumentName("");
+		setSubject("");
 		setSenderUnit("");
 		setPublicWorkerInput("");
 		setPublicWorker(undefined);
@@ -212,10 +212,10 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "interested error";
 		}
 
-		if (documentName === "") {
-			setDocumentNameHelperText("Selecione um assunto");
+		if (subject === "") {
+			setSubjectHelperText("Selecione um assunto");
 			setLoading(false);
-			return "documentName error";
+			return "subject error";
 		}
 
 		if (
@@ -273,7 +273,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								reference !== null ? formatDate(reference) : null,
 							process_number: processNumber,
 							interested: interestedPerson,
-							document_name_id: documentName.id,
+							document_name_id: subject.id,
 							sender_unity: senderUnit.id,
 							sender_user: publicWorker !== undefined ? publicWorker.id : null,
 							is_filed: isStatusFiled(status),
@@ -289,7 +289,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							notes: notesLocal,
 							filer_user: "filer_user",
 							temporality_date:
-								parseInt(documentName.temporality, 10) +
+								parseInt(subject.temporality, 10) +
 								parseInt(archivingDate.getFullYear(), 10),
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
@@ -333,8 +333,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									}
 								)
 								.then((response) => {
-									setDocumentName(response.data);
-									setDocumentNameDetail(response.data.document_name);
+									setSubject(response.data);
+									setSubjectDetail(response.data.document_name);
 								})
 								.catch(() => connectionError());
 
@@ -434,7 +434,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => {
-						setDocumentNames(response.data);
+						setSubjects(response.data);
 					})
 					.catch(() => connectionError());
 
@@ -533,36 +533,36 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
-									id="destinationUnit"
-									label="Nome do Documento"
-									value={documentNameDetail}
+									id="subject"
+									label="Assunto do Documento"
+									value={subjectDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={documentNameHelperText !== ""}>
+								<FormControl fullWidth error={subjectHelperText !== ""}>
 									<InputLabel id="select-document_name-label">
-										Nome do Documento*
+										Assunto do Documento*
 									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-document_name-label"
 										id="select-document_name"
-										value={documentName}
-										onChange={handleDocumentNameChange}
+										value={subject}
+										onChange={handleSubjectChange}
 										renderValue={(value) => `${value.document_name}`}
 									>
 										<MenuItem key={0} value="">
 											<em>Nenhum</em>
 										</MenuItem>
 
-										{documentNames.map((documentNameOption) => (
-											<MenuItem key={documentNameOption.id} value={documentNameOption}>
-												{documentNameOption.document_name}
+										{subjects.map((subjectOption) => (
+											<MenuItem key={subjectOption.id} value={subjectOption}>
+												{subjectOption.document_name}
 											</MenuItem>
 										))}
 									</Select>
-									{documentNameHelperText ? (
-										<FormHelperText>{documentNameHelperText}</FormHelperText>
+									{subjectHelperText ? (
+										<FormHelperText>{subjectHelperText}</FormHelperText>
 									) : (
 										""
 									)}
@@ -580,7 +580,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							senderUnitHelperText={senderUnitHelperText}
 						/>
 
-						<Grid item xs={12} sm={12} md={4}>
+						<Grid item xs={12} sm={12} md={12}>
 							{detail ? (
 								<TextField
 									fullWidth
@@ -628,7 +628,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								autocompl(
+								senderWorker(
 									publicWorkers,
 									publicWorkerInput,
 									handlePublicWorkerChange,
