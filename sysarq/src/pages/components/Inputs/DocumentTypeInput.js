@@ -40,7 +40,7 @@ const DocumentTypeInput = ({
 				localStorage.setItem("tkr", res.data.refresh);
 
 				axiosArchives
-					.get("document-type/", {
+					.get("document-name/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => {
@@ -61,14 +61,14 @@ const DocumentTypeInput = ({
 				<TextField
 					fullWidth
 					id="documentType"
-					label="Tipo de Documento"
+					label="Nome do Documento"
 					value={documentTypeDetail}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
 				<FormControl fullWidth error={documentTypeHelperText !== ""}>
 					<InputLabel id="select-documentType-label">
-						Tipo de Documento*
+						Nome do Documento*
 					</InputLabel>
 					<Select
 						style={{ textAlign: "left" }}
