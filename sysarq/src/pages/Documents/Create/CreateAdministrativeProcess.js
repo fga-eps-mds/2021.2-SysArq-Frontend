@@ -19,13 +19,12 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 
 import {
 	initialDate,
-	initialPeriod,
 	isDateNotValid,
-	isInt,
 	formatDate,
 	axiosProfileError,
 	getPublicWorkers,
-	autocompl,
+	// autocompl,
+	senderWorker,
 } from "../../../support";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
@@ -44,9 +43,6 @@ import PopUpAlert from "../../components/PopUpAlert";
 import "date-fns";
 import DataTable from "../../components/DataTable";
 
-const isPersonRegistryLengthValid = (registryLength) =>
-	registryLength === 11 || registryLength === 15;
-
 const isStatusFiled = (status) => {
 	if (status === "Arquivado") {
 		return true;
@@ -61,7 +57,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
 	const [subjectDetail, setSubjectDetail] = useState("");
-	const [destinationUnitDetail, setDestinationUnitDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
 	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] =
@@ -77,14 +72,12 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [publicWorker, setPublicWorker] = useState("");
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 
-	const [noticeDate, setNoticeDate] = useState(detail ? "" : initialDate);
-	const [archivingDate, setArchivingDate] = useState(detail ? "" : initialDate);
-	const [reference, setReference] = useState(detail ? "" : initialPeriod);
+	const [noticeDate, setNoticeDate] = useState(detail ? "" : null);
+	const [archivingDate, setArchivingDate] = useState(detail ? "" : null);
+	const [reference, setReference] = useState(detail ? "" : null);
 	const [processNumber, setProcessNumber] = useState("");
-	const [personRegistry, setPersonRegistry] = useState("");
 	const [interestedPerson, setInterested] = useState("");
 	const [subject, setSubject] = useState("");
-	const [destinationUnit, setDestinationUnit] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
@@ -96,7 +89,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [archivingDateHelperText, setArchivingDateHelperText] = useState("");
 	const [referenceHelperText, setReferenceHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
-	const [personRegistryHelperText, setPersonRegistryHelperText] = useState("");
 	const [interestedHelperText, setInterestedHelperText] = useState("");
 	const [subjectHelperText, setSubjectHelperText] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
@@ -134,11 +126,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setReference(date);
 	};
 
-	const handlePersonRegistryChange = (event) => {
-		setPersonRegistryHelperText("");
-		setPersonRegistry(event.target.value);
-	};
-
 	const handleInterestedChange = (event) => {
 		setInterestedHelperText("");
 		setInterested(event.target.value);
@@ -148,9 +135,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setSubjectHelperText("");
 		setSubject(event.target.value);
 	};
-
-	const handleDestinationUnitChange = (event) =>
-		setDestinationUnit(event.target.value);
 
 	const handleStatusChange = (event) => {
 		setStatusHelperText("");
@@ -192,10 +176,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setArchivingDate(initialDate);
 		setReference(initialDate);
 		setProcessNumber("");
-		setPersonRegistry("");
 		setInterested("");
 		setSubject("");
-		setDestinationUnit("");
 		setSenderUnit("");
 		setPublicWorkerInput("");
 		setPublicWorker(undefined);
@@ -228,19 +210,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			setInterestedHelperText("Insira um interessado");
 			setLoading(false);
 			return "interested error";
-		}
-
-		if (personRegistry !== "") {
-			if (!isInt(personRegistry)) {
-				setPersonRegistryHelperText("Insira somente números");
-				setLoading(false);
-				return "personRegistry content error";
-			}
-			if (!isPersonRegistryLengthValid(personRegistry.length)) {
-				setPersonRegistryHelperText("Insira um CPF/CNPJ válido");
-				setLoading(false);
-				return "personRegistry length error";
-			}
 		}
 
 		if (subject === "") {
@@ -303,10 +272,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							reference_month_year:
 								reference !== null ? formatDate(reference) : null,
 							process_number: processNumber,
-							cpf_cnpj: personRegistry,
 							interested: interestedPerson,
-							subject_id: subject.id,
-							dest_unity_id: destinationUnit.id,
+							document_name_id: subject.id,
 							sender_unity: senderUnit.id,
 							sender_user: publicWorker !== undefined ? publicWorker.id : null,
 							is_filed: isStatusFiled(status),
@@ -358,7 +325,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						.then((responseAdministrative) => {
 							axiosArchives
 								.get(
-									`document-subject/${responseAdministrative.data.subject_id}/`,
+									`document-name/${responseAdministrative.data.document_name_id}/`,
 									{
 										headers: {
 											Authorization: `JWT ${localStorage.getItem("tk")}`,
@@ -367,25 +334,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								)
 								.then((response) => {
 									setSubject(response.data);
-									setSubjectDetail(response.data.subject_name);
+									setSubjectDetail(response.data.document_name);
 								})
 								.catch(() => connectionError());
-
-							if (responseAdministrative.data.dest_unity_id) {
-								axiosArchives
-									.get(`unity/${responseAdministrative.data.dest_unity_id}/`, {
-										headers: {
-											Authorization: `JWT ${localStorage.getItem("tk")}`,
-										},
-									})
-									.then((response) => {
-										setDestinationUnit(response.data);
-										setDestinationUnitDetail(response.data.unity_name);
-									})
-									.catch(() => connectionError());
-							} else {
-								setDestinationUnitDetail("-");
-							}
 
 							axiosArchives
 								.get(`unity/${responseAdministrative.data.sender_unity}/`, {
@@ -456,12 +407,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								);
 							}
 
-							setPersonRegistry(
-								responseAdministrative.data.cpf_cnpj
-									? responseAdministrative.data.cpf_cnpj
-									: "-"
-							);
-
 							setReference(
 								responseAdministrative.data.reference_month_year
 									? responseAdministrative.data.reference_month_year
@@ -485,7 +430,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 				}
 
 				axiosArchives
-					.get("document-subject/", {
+					.get("document-name/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => {
@@ -570,7 +515,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							)}
 						</Grid>
 
-						<Grid item xs={12} sm={12} md={8}>
+						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
 								id="interested"
@@ -584,41 +529,27 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							/>
 						</Grid>
 
-						<Grid item xs={12} sm={12} md={4}>
-							<TextField
-								fullWidth
-								id="cpf-cpnj"
-								label="CPF/CNPJ"
-								placeholder="Somente números"
-								value={personRegistry}
-								onChange={handlePersonRegistryChange}
-								error={personRegistryHelperText !== ""}
-								helperText={personRegistryHelperText}
-								inputProps={{ maxLength: 15, readOnly: detail }}
-							/>
-						</Grid>
-
 						<Grid item xs={12} sm={12} md={12}>
 							{detail ? (
 								<TextField
 									fullWidth
-									id="destinationUnit"
+									id="subject"
 									label="Assunto do Documento"
 									value={subjectDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
 								<FormControl fullWidth error={subjectHelperText !== ""}>
-									<InputLabel id="select-subject-label">
+									<InputLabel id="select-document_name-label">
 										Assunto do Documento*
 									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
-										labelId="select-subject-label"
-										id="select-subject"
+										labelId="select-document_name-label"
+										id="select-document_name"
 										value={subject}
 										onChange={handleSubjectChange}
-										renderValue={(value) => `${value.subject_name}`}
+										renderValue={(value) => `${value.document_name}`}
 									>
 										<MenuItem key={0} value="">
 											<em>Nenhum</em>
@@ -626,7 +557,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 										{subjects.map((subjectOption) => (
 											<MenuItem key={subjectOption.id} value={subjectOption}>
-												{subjectOption.subject_name}
+												{subjectOption.document_name}
 											</MenuItem>
 										))}
 									</Select>
@@ -639,43 +570,17 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							)}
 						</Grid>
 
-						<Grid item xs={12} sm={12} md={8}>
-							{detail ? (
-								<TextField
-									fullWidth
-									id="destinationUnit"
-									label="Unidade de Destino"
-									value={destinationUnitDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<FormControl fullWidth>
-									<InputLabel id="select-destinationUnit-label">
-										Unidade de Destino
-									</InputLabel>
-									<Select
-										style={{ textAlign: "left" }}
-										labelId="select-destinationUnit-label"
-										id="select-destinationUnit"
-										value={destinationUnit}
-										onChange={handleDestinationUnitChange}
-										renderValue={(value) => `${value.unity_name}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhuma</em>
-										</MenuItem>
+						<SenderUnitInput
+							isDetailPage={detail}
+							senderUnitDetail={senderUnitDetail}
+							setHelperText={setSenderUnitHelperText}
+							set={setSenderUnit}
+							senderUnit={senderUnit}
+							units={units}
+							senderUnitHelperText={senderUnitHelperText}
+						/>
 
-										{units.map((destUnitOption) => (
-											<MenuItem id={destUnitOption.id} value={destUnitOption}>
-												{destUnitOption.unity_name}
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
+						<Grid item xs={12} sm={12} md={12}>
 							{detail ? (
 								<TextField
 									fullWidth
@@ -713,16 +618,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							)}
 						</Grid>
 
-						<SenderUnitInput
-							isDetailPage={detail}
-							senderUnitDetail={senderUnitDetail}
-							setHelperText={setSenderUnitHelperText}
-							set={setSenderUnit}
-							senderUnit={senderUnit}
-							units={units}
-							senderUnitHelperText={senderUnitHelperText}
-						/>
-
 						<Grid item xs={12} sm={12} md={12}>
 							{detail ? (
 								<TextField
@@ -733,7 +628,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								autocompl(
+								senderWorker(
 									publicWorkers,
 									publicWorkerInput,
 									handlePublicWorkerChange,
@@ -749,7 +644,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								<TextField
 									fullWidth
 									id="referenceDate"
-									label="Referência"
+									label="Referência (AC4)"
 									value={
 										reference !== "-"
 											? `${reference.substring(5, 7)}/${reference.substring(
@@ -768,7 +663,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									id="reference-date-picker-dialog"
 									openTo="year"
 									views={["year", "month"]}
-									label="Referência"
+									label="Referência (AC4)"
 									format="MM/yyyy"
 									value={reference}
 									onChange={handleReferenceChange}
