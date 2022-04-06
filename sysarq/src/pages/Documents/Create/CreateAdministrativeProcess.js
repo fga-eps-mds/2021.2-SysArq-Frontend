@@ -570,6 +570,16 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							)}
 						</Grid>
 
+						<SenderUnitInput
+							isDetailPage={detail}
+							senderUnitDetail={senderUnitDetail}
+							setHelperText={setSenderUnitHelperText}
+							set={setSenderUnit}
+							senderUnit={senderUnit}
+							units={units}
+							senderUnitHelperText={senderUnitHelperText}
+						/>
+
 						<Grid item xs={12} sm={12} md={4}>
 							{detail ? (
 								<TextField
@@ -607,16 +617,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								/>
 							)}
 						</Grid>
-
-						<SenderUnitInput
-							isDetailPage={detail}
-							senderUnitDetail={senderUnitDetail}
-							setHelperText={setSenderUnitHelperText}
-							set={setSenderUnit}
-							senderUnit={senderUnit}
-							units={units}
-							senderUnitHelperText={senderUnitHelperText}
-						/>
 
 						<Grid item xs={12} sm={12} md={12}>
 							{detail ? (
