@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 
 import {
+    makeStyles,
 	Grid,
 	CircularProgress,
 	TextField,
@@ -13,6 +14,7 @@ import {
 	Select,
 	MenuItem,
 	FormHelperText,
+    Typography,
 } from "@material-ui/core";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
@@ -43,6 +45,15 @@ import PopUpAlert from "../../components/PopUpAlert";
 import "date-fns";
 import DataTable from "../../components/DataTable";
 
+const useStyles = makeStyles(() => ({
+	sectionTitle: {
+        textAlign: 'left',
+		color: "#5289B5",
+		fontWeight: "bold",
+		fontFamily: ['"Montserrat"', "sans-serif"],
+	}
+}));
+
 const isStatusFiled = (status) => {
 	if (status === "Arquivado") {
 		return true;
@@ -54,6 +65,7 @@ const isStatusFiled = (status) => {
 };
 
 const CreateAdministrativeProcess = ({ detail }) => {
+    const classes = useStyles();
 	const params = detail ? useParams() : "";
 
 	const [subjectDetail, setSubjectDetail] = useState("");
@@ -638,6 +650,24 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								)
 							)}
 						</Grid>
+
+                    <Grid item xs={12} sm={12} md={3}>
+                        <Typography className={classes.sectionTitle}>Localizacao do Arquivo:</Typography>
+                    </Grid>
+
+                    <Grid item xs={12} sm={12} md={9}/>
+
+                    <Grid item xs={12} sm={12} md={4}>
+                        <TextField fullWidth label='Estante'/>
+                    </Grid>
+
+                    <Grid item xs={12} sm={12} md={4}>
+                        <TextField fullWidth label='Prateleira'/>
+                    </Grid>
+
+                    <Grid item xs={12} sm={12} md={4}>
+                        <TextField fullWidth label='Localidade'/>
+                    </Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
 							{detail ? (
