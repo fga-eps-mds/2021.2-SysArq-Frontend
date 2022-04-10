@@ -13,17 +13,22 @@ import {
 	DialogTitle,
 	DialogContent,
 	DialogActions,
+	FormControl,
 	Accordion,
 	AccordionSummary,
 	AccordionDetails,
 	TableContainer,
 	Paper,
+	InputLabel,
+	Select,
+	MenuItem,
 	Table,
 	TableHead,
 	TableRow,
 	TableCell,
 	TableBody,
 	Button,
+	FormHelperText
 } from "@material-ui/core";
 
 import AddCircleIcon from "@material-ui/icons/AddCircle";
@@ -73,10 +78,16 @@ const CreateBoxArchiving = ({ detail }) => {
 
 	const [shelfDetail, setShelfDetail] = useState("");
 	const [rackDetail, setRackDetail] = useState("");
+	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] = useState("");
+	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
+	const [unarchiveDate, setUnarchiveDate] = useState(detail ? "" : initialDate);
+	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
+
 
 	const [units, setUnits] = useState([]);
 
 	const [processNumber, setProcessNumber] = useState("");
+	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
 	const [receivedDate, setReceivedDate] = useState(detail ? "" : null);
 	const [senderUnit, setSenderUnit] = useState("");
 	const [box, setBox] = useState("");
@@ -89,6 +100,10 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
+	const [statusHelperText, setStatusHelperText] = useState("");
+	const [status, setStatus] = useState("");
+
+
 
 	const [openNewOriginBoxDialog, setOpenNewOriginBoxDialog] = useState(false);
 
@@ -141,6 +156,14 @@ const CreateBoxArchiving = ({ detail }) => {
 		setNewOriginBoxYearHelperText("");
 		setNewOriginBoxYear(event.target.value);
 	};
+
+	const handleUnarchiveDateChange = (date) => {
+		setUnarchiveDateHelperText("");
+		setUnarchiveDate(date);
+	};
+
+	const handleUnarchiveDestinationUnit = (event) =>
+		setUnarchiveDestinationUnit(event.target.value);
 
 	const handleAddNewOriginBox = () => {
 		if (newOriginBoxNumber === "") {
@@ -219,6 +242,9 @@ const CreateBoxArchiving = ({ detail }) => {
 		setOpenNewOriginBoxSubjectDateDialog(true);
 	};
 
+	const handleUnarchiveProcessNumberChange = (event) =>
+		setUnarchiveProcessNumber(event.target.value);
+
 	const handleCloseNewOriginBoxSubjectDateDialog = () => {
 		setSelectedOriginBoxSubjectIndex(-1);
 		setOpenNewOriginBoxSubjectDateDialog(false);
@@ -227,6 +253,11 @@ const CreateBoxArchiving = ({ detail }) => {
 	const handleNewOriginBoxSubjectDateChange = (date) => {
 		setNewOriginBoxSubjectDateHelperText("");
 		setNewOriginBoxSubjectDate(date);
+	};
+
+	const handleStatusChange = (event) => {
+		setStatusHelperText("");
+		setStatus(event.target.value);
 	};
 
 	const handleAddNewOriginBoxSubjectDate = () => {
@@ -315,6 +346,10 @@ const CreateBoxArchiving = ({ detail }) => {
 		setNewOriginBoxSubject("");
 		setNewOriginBoxSubjectDate(initialDate);
 
+		setUnarchiveDestinationUnit("");
+		setUnarchiveProcessNumber("");
+		setUnarchiveDate(initialDate);
+		setStatus("");
 		setBox("");
 		setShelf("");
 		setRack("");
@@ -349,6 +384,20 @@ const CreateBoxArchiving = ({ detail }) => {
 			return "senderUnit error";
 		}
 
+		if (status === "") {
+			setStatusHelperText("Selecione um status");
+			setLoading(false);
+			return "status error";
+		}
+
+		if (
+			status === "Desarquivado" &&
+			isDateNotValid(unarchiveDate, setUnarchiveDateHelperText, "date")
+		) {
+			setLoading(false);
+			return "unarchiveDate error";
+		}
+
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -369,6 +418,15 @@ const CreateBoxArchiving = ({ detail }) => {
 							document_url: "", //
 							cover_sheet: "", //
 							filer_user: "filer_user", //
+							is_eliminated: status === "Eliminado",
+							unity_id:
+								status === "Desarquivado" ? unarchiveDestinationUnit.id: "",
+							send_date:
+								unarchiveDate !== null && status === "Desarquivado"
+									? formatDate(unarchiveDate)
+									: null,
+							box_process_number:
+								status === "Desarquivado" ? unarchiveProcessNumber : "",
 							abbreviation_id: box.id === undefined ? "" : box.id,
 							shelf_id: shelf.id === undefined ? "" : shelf.id,
 							rack_id: rack.id === undefined ? "" : rack.id, //
@@ -457,6 +515,52 @@ const CreateBoxArchiving = ({ detail }) => {
 
 								setOriginBox(originBoxDetail);
 							}
+
+							if (
+								!responseBoxArchiving.data.is_eliminated &&
+								!responseBoxArchiving.data.is_filed &&
+								responseBoxArchiving.data.unity_id
+							) {
+								axiosArchives
+									.get(`box-archiving/${responseBoxArchiving.data.unity_id}/`,{
+										headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+									})
+									.then((response) => {
+										setUnarchiveDestinationUnit(response.data);
+										setUnarchiveDestinationUnitDetail(response.data.unity_name)
+									})
+									.catch(() => connectionError());
+							} else {
+								setUnarchiveDestinationUnitDetail("-");
+							}
+
+							if (responseBoxArchiving.data.is_eliminated) {
+								setStatus("Eliminado");
+							} else if (responseBoxArchiving.data.is_filed) {
+								setStatus("Arquivado")
+							} else {
+								setStatus("Desarquivado");
+
+								setUnarchiveProcessNumber(
+									responseBoxArchiving.data.box_process_number
+										? responseBoxArchiving.data.box_process_number
+										: "-"
+								);
+
+								setUnarchiveDate(
+									responseBoxArchiving.data.send_date
+										? responseBoxArchiving.data.send_date
+										: "-"
+								)
+							}
+
+							setProcessNumber(responseBoxArchiving.data.processNumber);
+							
+							setNotes(
+								responseBoxArchiving.data.notes
+									? responseBoxArchiving.data.notes
+									: "-"
+							);
 
 							setLoading(false);
 						})
@@ -730,7 +834,7 @@ const CreateBoxArchiving = ({ detail }) => {
 						</Button>
 					</DialogActions>
 				</Dialog>
-
+				
 				<Dialog
 					fullWidth
 					maxWidth="xs"
@@ -766,7 +870,7 @@ const CreateBoxArchiving = ({ detail }) => {
 						</Button>
 					</DialogActions>
 				</Dialog>
-
+										
 				<Dialog
 					fullWidth
 					maxWidth="xs"
@@ -833,6 +937,136 @@ const CreateBoxArchiving = ({ detail }) => {
 				getFileRemovedMessage
 				getDropRejectMessage
 			/> */}
+						
+				<Grid item xs={12} sm={12} md={12}>
+					{detail ? (
+						<TextField
+							fullWidth
+							id="status"
+							label="Status"
+							value={status}
+							inputProps={{ readOnly: true }}
+						/>
+					) : (
+						<FormControl fullWidth error={statusHelperText !== ""}>
+							<InputLabel id="select-status-label">Status*</InputLabel>
+							<Select
+								style={{ textAlign: "left" }}
+								labelId="select-status-label"
+								id="select-status"
+								value={status}
+								onChange={handleStatusChange}
+								renderValue={(value) => `${value}`}
+							>
+							<MenuItem value="">
+								<em>Nenhum</em>
+							</MenuItem>
+							<MenuItem value="Arquivado">Arquivado</MenuItem>
+							<MenuItem value="Eliminado">Eliminado</MenuItem>
+							<MenuItem value="Desarquivado">Desarquivado</MenuItem>
+							</Select>
+							{statusHelperText ? (
+								<FormHelperText>{statusHelperText}</FormHelperText>
+							) : (
+								""
+							)}
+						</FormControl>
+					)}
+				</Grid>
+
+				{status === "Desarquivado" ? (
+							<>
+								<Grid item xs={12} sm={12} md={12}>
+									{detail ? (
+										<TextField
+											fullWidth
+											id="unarchiveDestinationUnit"
+											label="Unid. Destino do Desarquivamento"
+											value={unarchiveDestinationUnitDetail}
+											inputProps={{ readOnly: true }}
+										/>
+									) : (
+										<FormControl fullWidth>
+											<InputLabel id="select-unarchiveDestinationUnit-label">
+												Unid. Destino do Desarquivamento
+											</InputLabel>
+											<Select
+												style={{ textAlign: "left" }}
+												labelId="select-unarchiveDestinationUnit-label"
+												id="select-unarchiveDestinationUnit"
+												value={unarchiveDestinationUnit}
+												onChange={handleUnarchiveDestinationUnit}
+												renderValue={(value) => `${value.unity_name}`}
+											>
+												<MenuItem key={0} value="">
+													<em>Nenhuma</em>
+												</MenuItem>
+
+												{units.map((unarchiveDestinationUnitOption) => (
+													<MenuItem
+														id={unarchiveDestinationUnitOption.id}
+														value={unarchiveDestinationUnitOption}
+													>
+														{unarchiveDestinationUnitOption.unity_name}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									)}
+								</Grid>
+
+								<Grid item xs={12} sm={12} md={6}>
+									<TextField
+										fullWidth
+										id="unarchiveProcessNumber"
+										label="Nº do Processo do Desarquivamento"
+										value={unarchiveProcessNumber}
+										onChange={handleUnarchiveProcessNumberChange}
+										inputProps={{ maxLength: 15, readOnly: detail }}
+									/>
+								</Grid>
+
+								<Grid item xs={12} sm={12} md={6}>
+									{detail ? (
+										<TextField
+											fullWidth
+											id="unarchiveDate"
+											label="Data de Desarquivamento"
+											value={
+												unarchiveDate !== "-"
+													? `${unarchiveDate.substring(
+															8,
+															10
+													  )}/${unarchiveDate.substring(
+															5,
+															7
+													  )}/${unarchiveDate.substring(0, 4)}`
+													: unarchiveDate
+											}
+											inputProps={{ readOnly: true }}
+										/>
+									) : (
+										<KeyboardDatePicker
+											okLabel="Confirmar"
+											cancelLabel="Cancelar"
+											style={{ width: "100%" }}
+											id="unarchive-date-picker-dialog"
+											label="Data de Desarquivamento"
+											format="dd/MM/yyyy"
+											value={unarchiveDate}
+											onChange={handleUnarchiveDateChange}
+											KeyboardButtonProps={{
+												"aria-label": "change unarchive date",
+											}}
+											error={unarchiveDateHelperText !== ""}
+											helperText={unarchiveDateHelperText}
+										/>
+									)}
+								</Grid>
+							</>
+						) : (
+							""
+						)}
 
 				<DocumentsCreate
 					isDetailPage={detail}
