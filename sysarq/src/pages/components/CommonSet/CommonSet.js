@@ -82,6 +82,7 @@ const CommonSet = ({
 		<Grid item xs={12} sm={12} md={12}>
 							{isDetailPage ? (
 								<TextField
+									variant="outlined"
 									fullWidth
 									id="senderPublicWorker"
 									label="Servidor que encaminhou"
@@ -103,6 +104,7 @@ const CommonSet = ({
 		<Grid item xs={12} sm={12} md={12}>
 							{isDetailPage ? (
 								<TextField
+									variant="outlined"
 									fullWidth
 									id="receiverPublicWorker"
 									label="Servidor que recebeu"

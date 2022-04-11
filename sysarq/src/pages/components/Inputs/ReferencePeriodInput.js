@@ -125,6 +125,7 @@ const ReferencePeriodInput = ({
 				<DialogTitle id="newPeriod-dialog-title">Novo</DialogTitle>
 				<DialogContent>
 					<KeyboardDatePicker
+						inputVariant="outlined"
 						style={{ width: "100%" }}
 						id="period-date-picker-dialog"
 						label="Período"

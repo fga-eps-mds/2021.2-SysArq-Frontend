@@ -50,6 +50,7 @@ const ShelfInput = ({
 		<Grid item xs={12} sm={6} md={4}>
 			{isDetailPage ? (
 				<TextField
+					variant="outlined"
 					fullWidth
 					id="shelf"
 					label="Estante"
@@ -57,11 +58,12 @@ const ShelfInput = ({
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
-				<FormControl fullWidth>
+				<FormControl variant="outlined" fullWidth>
 					<InputLabel id="select-shelf-label">Estante</InputLabel>
 					<Select
 						style={{ textAlign: "left" }}
 						labelId="select-shelf-label"
+						label="Estante"
 						id="select-shelf"
 						value={shelf}
 						onChange={handleChange}

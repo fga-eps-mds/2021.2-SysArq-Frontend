@@ -153,6 +153,7 @@ const DocumentsTypeInput = ({
 						documentTypeHelperText={typeHelperText}
 					/>
 					<TextField
+						variant="outlined"
 						fullWidth
 						id="month"
 						label="Mês"
@@ -165,6 +166,7 @@ const DocumentsTypeInput = ({
 						inputProps={{ maxLength: 2 }}
 					/>
 					<TextField
+						variant="outlined"
 						fullWidth
 						id="year"
 						label="Ano*"

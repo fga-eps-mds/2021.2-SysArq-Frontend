@@ -538,10 +538,10 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						<Grid item xs={12} sm={6} md={6}>
 							{detail ? (
 								<TextField
+									variant="outlined"
 									fullWidth
 									id="noticeDate"
 									label="Data de Autuação"
-									variant="outlined"
 									value={
 										noticeDate
 											? `${noticeDate.substring(8, 10)}/${noticeDate.substring(
@@ -554,6 +554,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									okLabel="Confirmar"
 									cancelLabel="Cancelar"
 									style={{ width: "100%" }}
@@ -573,6 +574,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 						<Grid item xs={12} sm={12} md={8}>
 							<TextField
+								variant="outlined"
 								fullWidth
 								id="interested"
 								label={detail ? "Interessado" : "Interessado*"}
@@ -580,7 +582,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								onChange={handleInterestedChange}
 								error={interestedHelperText !== ""}
 								helperText={interestedHelperText}
-								variant="outlined"
 								multiline
 								inputProps={{ maxLength: 150, readOnly: detail }}
 							/>
@@ -604,21 +605,22 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							{detail ? (
 								<TextField
+									variant="outlined"
 									fullWidth
 									id="destinationUnit"
 									label="Assunto do Documento"
-									variant="outlined"
 									value={subjectDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={subjectHelperText !== ""}>
+								<FormControl variant="outlined" fullWidth error={subjectHelperText !== ""}>
 									<InputLabel id="select-subject-label">
 										Assunto do Documento*
 									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-subject-label"
+										label="Assunto do Documento*"
 										id="select-subject"
 										value={subject}
 										onChange={handleSubjectChange}
@@ -654,13 +656,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth>
+								<FormControl variant="outlined" fullWidth>
 									<InputLabel id="select-destinationUnit-label">
 										Unidade de Destino
 									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-destinationUnit-label"
+										label="Unidade de Destino"
 										id="select-destinationUnit"
 										value={destinationUnit}
 										onChange={handleDestinationUnitChange}
@@ -702,6 +705,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									okLabel="Confirmar"
 									cancelLabel="Cancelar"
 									style={{ width: "100%" }}
@@ -770,6 +774,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									okLabel="Confirmar"
 									cancelLabel="Cancelar"
 									style={{ width: "100%" }}
@@ -797,11 +802,12 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={statusHelperText !== ""}>
+								<FormControl variant="outlined" fullWidth error={statusHelperText !== ""}>
 									<InputLabel id="select-status-label">Status*</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-status-label"
+										label="Status*"
 										id="select-status"
 										value={status}
 										onChange={handleStatusChange}

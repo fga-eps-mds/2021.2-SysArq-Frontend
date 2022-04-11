@@ -158,6 +158,7 @@ const BoxInput = ({
 				<>
 					<Grid item xs={12} sm={12} md={4}>
 						<TextField
+							variant="outlined"
 							fullWidth
 							id="boxAbbreviation"
 							label="Sigla da Caixa"
@@ -167,6 +168,7 @@ const BoxInput = ({
 					</Grid>
 					<Grid item xs={12} sm={6} md={4}>
 						<TextField
+							variant="outlined"
 							fullWidth
 							id="boxYear"
 							label="Ano da Caixa"
@@ -176,6 +178,7 @@ const BoxInput = ({
 					</Grid>
 					<Grid item xs={12} sm={6} md={4}>
 						<TextField
+							variant="outlined"
 							fullWidth
 							id="boxNumber"
 							label="Número da Caixa"
@@ -187,13 +190,14 @@ const BoxInput = ({
 			) : (
 				<>
 					<Grid item xs={12} sm={12} md={4}>
-						<FormControl fullWidth>
+						<FormControl variant="outlined" fullWidth>
 							<InputLabel id="select-boxAbbreviation-label">
 								Sigla da Caixa
 							</InputLabel>
 							<Select
 								style={{ textAlign: "left" }}
 								labelId="select-boxAbbreviation-label"
+								label="Sigla da Caixa"
 								id="select-boxAbbreviation"
 								value={boxAbbreviation}
 								onChange={handleBoxAbbreviationChange}
@@ -212,11 +216,12 @@ const BoxInput = ({
 						</FormControl>
 					</Grid>
 					<Grid item xs={12} sm={6} md={4}>
-						<FormControl fullWidth>
+						<FormControl variant="outlined" fullWidth>
 							<InputLabel id="select-boxYear-label">Ano da Caixa</InputLabel>
 							<Select
 								style={{ textAlign: "left" }}
 								labelId="select-boxYear-label"
+								label="Ano da Caixa"
 								id="select-boxYear"
 								value={boxYear}
 								onChange={handleBoxYearChange}
@@ -235,11 +240,12 @@ const BoxInput = ({
 						</FormControl>
 					</Grid>
 					<Grid item xs={12} sm={6} md={4}>
-						<FormControl fullWidth>
+						<FormControl variant="outlined" fullWidth>
 							<InputLabel id="select-box-label">Número da Caixa</InputLabel>
 							<Select
 								style={{ textAlign: "left" }}
 								labelId="select-box-label"
+								label="Número da Caixa"
 								id="select-box"
 								value={box}
 								onChange={handleChange}

@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 		width: "100%",
 		height: 36,
 		marginBottom: "1rem",
-		maxWidth: 908,
+		// maxWidth: 908,
 		marginTop: "1rem",
 	},
 	inputDate: {
@@ -178,6 +178,7 @@ export default function CreateShelfOrRack({ urlType }) {
 				return (
 					<Grid item xs={12} sm={12} md={12} key={2}>
 						<TextField
+							fullWidth
 							id="Estante"
 							variant="outlined"
 							label="Número da estante*"
@@ -199,6 +200,7 @@ export default function CreateShelfOrRack({ urlType }) {
 				return (
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
+							fullWidth
 							variant="outlined"
 							key={1}
 							id="Prateleira"
@@ -222,6 +224,7 @@ export default function CreateShelfOrRack({ urlType }) {
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
 							key={1}
+							fullWidth
 							variant="outlined"
 							id="Localidade"
 							label="Localidade do Arquivo*"
@@ -261,13 +264,14 @@ export default function CreateShelfOrRack({ urlType }) {
 						<Container className="container">
 							<Grid container spacing={2}>
 								<Grid item xs={12} sm={12} md={12} key={1}>
-									<FormControl fullWidth>
+									<FormControl fullWidth variant="outlined">
 										<InputLabel id="select-shelf-rack-label">
 											Selecione
 										</InputLabel>
 										<Select
 											style={{ textAlign: "left" }}
 											labelId="select-shelf-rack-label"
+											label="Selecione"
 											id="select-shelf"
 											value={type}
 											onChange={handleValueChange}

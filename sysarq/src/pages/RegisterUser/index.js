@@ -269,6 +269,7 @@ const RegisterUser = () => {
 				/>
 
 				<FormControl
+					variant="outlined"
 					fullwidth
 					error={userTypeError}
 					className={classes.input}
@@ -277,6 +278,7 @@ const RegisterUser = () => {
 					<InputLabel id="user-type-label">Tipo de usuário</InputLabel>
 					<Select
 						labelId="user-type-label"
+						label="Tipo de usuário"
 						id="user-type"
 						value={userType}
 						onChange={handleUserTypeChange}

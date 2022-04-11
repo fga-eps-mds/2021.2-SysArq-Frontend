@@ -50,6 +50,7 @@ const RackInput = ({
 		<Grid item xs={12} sm={6} md={4}>
 			{isDetailPage ? (
 				<TextField
+					variant="outlined"
 					fullWidth
 					id="rack"
 					label="Prateleira"
@@ -57,11 +58,12 @@ const RackInput = ({
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
-				<FormControl fullWidth>
+				<FormControl variant="outlined" fullWidth>
 					<InputLabel id="select-rack-label">Prateleira</InputLabel>
 					<Select
 						style={{ textAlign: "left" }}
 						labelId="select-rack-label"
+						label="Prateleira"
 						id="select-rack"
 						value={rack}
 						onChange={handleChange}

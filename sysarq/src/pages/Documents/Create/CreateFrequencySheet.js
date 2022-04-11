@@ -376,13 +376,14 @@ const CreateFrequencySheet = ({ detail }) => {
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={workplaceWorkerHelperText !== ""}>
+								<FormControl variant="outlined" fullWidth error={workplaceWorkerHelperText !== ""}>
 									<InputLabel id="select-workplaceWorker-label">
 										Lotação*
 									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-workplaceWorker-label"
+										label="Lotação"
 										id="select-workplaceWorker"
 										value={workplaceWorker}
 										onChange={handleWorkplaceWorkerChange}
@@ -404,6 +405,7 @@ const CreateFrequencySheet = ({ detail }) => {
 										""
 									)}
 								</FormControl>
+
 							)}
 						</Grid>
 
@@ -442,6 +444,7 @@ const CreateFrequencySheet = ({ detail }) => {
 							) : (
 								<KeyboardDatePicker
 									style={{ width: "100%" }}
+									inputVariant="outlined"
 									id="period-date-picker-dialog"
 									label="Período de Frequência*"
 									format="MM/yyyy"
@@ -483,6 +486,7 @@ const CreateFrequencySheet = ({ detail }) => {
 							isDetailPage={detail}
 							set={setNotes}
 							notes={notesLocal}
+							multiline
 						/>
 					</>
 				)}

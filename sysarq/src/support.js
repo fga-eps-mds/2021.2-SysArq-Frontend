@@ -143,6 +143,7 @@ export function autocompl(
 					{...params}
 					value={params.value}
 					label="Servidor, CPF*"
+					variant="outlined"
 					error={publicWorkerHelperText !== ""}
 					helperText={publicWorkerHelperText}
 				/>
@@ -173,6 +174,7 @@ export function senderWorker(
 ) {
 	return (
 		<Autocomplete
+			variant="outlined"
 			id="workerName"
 			data-testid="autocomplete"
 			value={senderPublicWorkers.name}
@@ -194,6 +196,7 @@ export function senderWorker(
 				<TextField
 					// eslint-disable-next-line
 					{...params}
+					variant="outlined"
 					value={params.value}
 					label="Servidor que encaminhou*"
 					error={senderPublicWorkerHelperText !== ""}
@@ -214,6 +217,7 @@ export function receiverWorker(
 ) {
 	return (
 		<Autocomplete
+			variant="outlined"
 			id="workerName"
 			data-testid="autocomplete"
 			value={receiverPublicWorkers.name}
@@ -235,6 +239,7 @@ export function receiverWorker(
 				<TextField
 					// eslint-disable-next-line
 					{...params}
+					variant="outlined"
 					value={params.value}
 					label="Servidor que recebeu*"
 					error={receiverPublicWorkerHelperText !== ""}

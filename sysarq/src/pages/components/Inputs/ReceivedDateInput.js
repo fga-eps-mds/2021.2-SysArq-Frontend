@@ -22,6 +22,7 @@ const ReceivedDateInput = ({
 			{isDetailPage ? (
 				<TextField
 					fullWidth
+					variant="outlined"
 					id="receivedDate"
 					label="Data do Recebimento"
 					value={
@@ -37,6 +38,7 @@ const ReceivedDateInput = ({
 			) : (
 				<KeyboardDatePicker
 					style={{ width: "100%" }}
+					inputVariant="outlined"
 					id="received-date-picker-dialog"
 					label="Data de Recebimento*"
 					format="dd/MM/yyyy"
