@@ -15,6 +15,7 @@ import {
 	MenuItem,
 	FormHelperText,
     Typography,
+	Divider
 } from "@material-ui/core";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
@@ -52,6 +53,12 @@ const useStyles = makeStyles(() => ({
 		color: "#5289B5",
 		fontWeight: "bold",
 		fontFamily: ['"Montserrat"', "sans-serif"],
+	},
+	divider: {
+		marginTop: '8px',
+		backgroundColor: '#5289B5',
+		height: '3px',
+		marginBottom: '8px'
 	}
 }));
 
@@ -75,6 +82,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
     const [shelfDetail, setShelfDetail] = useState("");
     const [rackDetail, setRackDetail] = useState("");
     const [fileLocationDetail, setFileLocationDetail] = useState("");
+	const [boxAbbreviationDetail, setBoxAbbreviationDetail] = useState("");
 	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] =
 		useState("");
 
@@ -83,6 +91,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
     const [shelfs, setShelfs] = useState([]);
     const [racks, setRacks] = useState([]);
     const [fileLocations, setFileLocations] = useState([]);
+	const [boxAbbreviations, setBoxAbbreviations] = useState([]);
 
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
@@ -101,7 +110,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
     const [shelf, setShelf] = useState("");
     const [rack, setRack] = useState("");
     const [fileLocation, setFileLocation] = useState("");
-	// const [boxAbbreviation, setBoxAbbreviation] = useState("");
+	const [boxAbbreviation, setBoxAbbreviation] = useState("");
 	const [boxNumber, setBoxNumber] = useState("");
 	const [boxYear, setBoxYear] = useState("");
 	const [status, setStatus] = useState("");
@@ -120,6 +129,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
+	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] = useState("");
 	const [boxNumberHelperText, setBoxNumberHelperText] = useState("");
 	const [boxYearHelperText, setBoxYearHelperText] = useState("");
 
@@ -305,6 +315,12 @@ const CreateAdministrativeProcess = ({ detail }) => {
             return "file location error";
         }
 
+		if (!boxAbbreviation) {
+			setBoxAbbreviationHelperText("Selecione uma caixa");
+			setLoading(false)
+			return "box abbreviation error";
+		}
+
 		if (!boxNumber) {
 			setBoxNumberHelperText("Insira um número da caixa")
 			setLoading(false);
@@ -353,6 +369,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
                             file_location_id: fileLocation.id,
                             shelf_id: shelf.id,
                             rack_id: rack.id,
+							box_abbreviation_id: boxAbbreviation.id,
 							sender_unity: senderUnit.id,
 							sender_user: publicWorker !== undefined ? publicWorker.id : null,
 							is_filed: isStatusFiled(status),
@@ -430,7 +447,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								.catch(() => connectionError());
 
                             axiosArchives
-                                .get(`shelf/${responseAdministrative.data.shelf_id}`, {
+                                .get(`shelf/${responseAdministrative.data.shelf_id}/`, {
                                     headers: {
                                         Authorization: `JWT ${localStorage.getItem("tk")}`,
                                     },
@@ -442,7 +459,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
                                 .catch(() => connectionError());
 
                             axiosArchives
-                                .get(`rack/${responseAdministrative.data.rack_id}`, {
+                                .get(`rack/${responseAdministrative.data.rack_id}/`, {
                                     headers: {
                                         Authorization: `JWT ${localStorage.getItem("tk")}`,
                                     }
@@ -454,7 +471,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
                                 .catch(() => connectionError());
 
                             axiosArchives
-                                .get(`file-location/${responseAdministrative.data.file_location_id}`, {
+                                .get(`file-location/${responseAdministrative.data.file_location_id}/`, {
                                     headers: {
                                         Authorization: `JWT ${localStorage.getItem("tk")}`,
                                     }
@@ -464,6 +481,16 @@ const CreateAdministrativeProcess = ({ detail }) => {
                                     setFileLocationDetail(response.data.file);
                                 })
                                 .catch(() => connectionError());
+
+							axiosArchives
+								.get(`box-abbreviation/${responseAdministrative.data.box_abbreviation_id}/`, {
+									headers: {Authorization: `JWT ${localStorage.getItem("tk")}`}
+								})
+								.then((response) => {
+									setBoxAbbreviation(response.data);
+									setBoxAbbreviationDetail(response.data.abbreviation);
+								})
+								.catch(() => connectionError());
 
 							axiosArchives
 								.get(
@@ -580,6 +607,13 @@ const CreateAdministrativeProcess = ({ detail }) => {
                     })
                     .then((response) => setFileLocations(response.data))
                     .catch(() => connectionError());
+
+				axiosArchives
+					.get("box-abbreviation/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}`}
+					})
+					.then((response) => setBoxAbbreviations(response.data))
+					.catch(() => connectionError());
 
 				getPublicWorkers(setPublicWorkers, connectionError);
 			})
@@ -775,6 +809,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							)}
 						</Grid>
 
+
 						<Grid item xs={12} sm={12} md={12}>
 							<Typography className={classes.sectionTitle}>Localização do Arquivo:</Typography>
 						</Grid>
@@ -800,7 +835,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 										onChange={handleShelfChange}
 										renderValue={(value) => `${value.number}`}
 									>
-										<MenuItem key={-1} value="">
+										<MenuItem key={0} value="">
 											<em>Nenhum</em>
 										</MenuItem>
 
@@ -877,7 +912,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 										onChange={handleFileLocationChange}
 										renderValue={(value) => `${value.file}`}
 									>
-										<MenuItem key={-1} value="">
+										<MenuItem key={0} value="">
 											<em>Nenhum</em>
 										</MenuItem>
 
@@ -895,6 +930,10 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
+							<Divider className={classes.divider}/>
+						</Grid> 
+
+						<Grid item xs={12} sm={12} md={12}>
                         	<Typography className={classes.sectionTitle}>Caixa de Arquivamento:</Typography>
 						</Grid>
 
@@ -904,14 +943,43 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								<TextField
 									fullWidth
 									label="Sigla da Caixa"
-									value=""
+									value={boxAbbreviationDetail}
 								/>
 							) : (
-								<TextField
+								<FormControl
 									fullWidth
-									label="Sigla da Caixa*"
-									value=""
-								/>
+									error={boxAbbreviationHelperText !== ""}
+								>
+									<InputLabel id="select-box_abbreviation-label">
+										Sigla da caixa*
+									</ InputLabel>	
+									<Select
+										labelId="select-box_abbreviation-label"
+										id="select-box_abbreviation"
+										value={boxAbbreviation}
+										onChange={(event) => {
+											setBoxAbbreviation(event.target.value);
+											setBoxAbbreviationHelperText("");
+										}}
+										renderValue={(value) => `${value.abbreviation}`}
+									>
+
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{boxAbbreviations.map((boxAbbreviationOption) => (
+											<MenuItem key={boxAbbreviationOption.id} value={boxAbbreviationOption}>
+												{boxAbbreviationOption.abbreviation}
+											</MenuItem>
+										))}
+
+									</Select>
+
+									{boxAbbreviationHelperText !== "" && 
+										<FormHelperText>{boxAbbreviationHelperText}</FormHelperText>
+									}
+								</FormControl>
 							)}
 						</Grid>
 						<Grid item xs={12} sm={12} md={4}>
@@ -961,6 +1029,10 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 								/>
 							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={12}>
+							<Divider className={classes.divider} />
 						</Grid>
 						
 						<Grid item xs={12} sm={12} md={4}>
