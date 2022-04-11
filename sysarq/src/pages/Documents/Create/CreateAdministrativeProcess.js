@@ -111,8 +111,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
     const [rack, setRack] = useState("");
     const [fileLocation, setFileLocation] = useState("");
 	const [boxAbbreviation, setBoxAbbreviation] = useState("");
-	const [boxNumber, setBoxNumber] = useState("");
-	const [boxYear, setBoxYear] = useState("");
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
@@ -130,8 +128,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] = useState("");
-	const [boxNumberHelperText, setBoxNumberHelperText] = useState("");
-	const [boxYearHelperText, setBoxYearHelperText] = useState("");
 
     const [shelfHelperText, setShelfHelperText] = useState("");
     const [rackHelperText, setRackHelperText] = useState("");
@@ -319,18 +315,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			setBoxAbbreviationHelperText("Selecione uma caixa");
 			setLoading(false)
 			return "box abbreviation error";
-		}
-
-		if (!boxNumber) {
-			setBoxNumberHelperText("Insira um número da caixa")
-			setLoading(false);
-			return "box number error"
-		}
-
-		if (boxYear < 1900) {
-			setBoxYearHelperText("Insira um ano válido");
-			setLoading(false)
-			return "box year error"
 		}
 
 		if (status === "") {
@@ -937,7 +921,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
                         	<Typography className={classes.sectionTitle}>Caixa de Arquivamento:</Typography>
 						</Grid>
 
-						<Grid item xs={12} sm={12} md={4}>
+						<Grid item xs={12} sm={12} md={6}>
 							
 							{detail ? (
 								<TextField
@@ -951,7 +935,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									error={boxAbbreviationHelperText !== ""}
 								>
 									<InputLabel id="select-box_abbreviation-label">
-										Sigla da caixa*
+										Sigla da Caixa*
 									</ InputLabel>	
 									<Select
 										labelId="select-box_abbreviation-label"
@@ -980,54 +964,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 										<FormHelperText>{boxAbbreviationHelperText}</FormHelperText>
 									}
 								</FormControl>
-							)}
-						</Grid>
-						<Grid item xs={12} sm={12} md={4}>
-							
-							{detail ? (
-								<TextField
-									fullWidth
-									label="Número da Caixa"
-									value={boxNumber}
-									inputProps={{readOnly: true}}
-								/>
-							) : (
-								<TextField
-									fullWidth	
-									label="Número da Caixa*"
-									type="number"
-									error={boxNumberHelperText !== ""}
-									helperText={boxNumberHelperText}
-									value={boxNumber}
-									onChange={(event) => {
-										setBoxNumber(event.target.value);
-										setBoxNumberHelperText("");
-									}}
-								/>
-							)}
-						</Grid>
-						<Grid item xs={12} sm={12} md={4}>
-							
-							{detail ? (
-								<TextField
-									fullWidth
-									label="Ano da Caixa"
-									value={boxYear}
-								/>
-							) : (
-								<TextField
-									fullWidth
-									label="Ano da Caixa*"
-									type="number"
-									error={boxYearHelperText !== ""}
-									helperText={boxYearHelperText}
-									value={boxYear}
-									onChange={(event) => {
-										setBoxYear(event.target.value);
-										setBoxYearHelperText("");
-									}}
-
-								/>
 							)}
 						</Grid>
 
