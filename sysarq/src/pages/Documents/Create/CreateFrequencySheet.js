@@ -6,7 +6,16 @@ import { useParams } from "react-router-dom";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-import { Grid, CircularProgress, TextField } from "@material-ui/core";
+import {
+	Grid,
+	CircularProgress,
+	TextField,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem,
+	FormHelperText,
+} from "@material-ui/core";
 
 import {
 	// formatDateName,
@@ -77,6 +86,7 @@ const CreateFrequencySheet = ({ detail }) => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(detail);
+  const [data, setData] = useState({});
 
 	const monthMap = {
 		"01": "jan",
@@ -271,6 +281,7 @@ const CreateFrequencySheet = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencySheet) => {
+              setData(responseFrequencySheet)
 							setTypeDetail(responseFrequencySheet.data.document_name_name);
 
 							setPublicWorkerDetail(
@@ -336,7 +347,7 @@ const CreateFrequencySheet = ({ detail }) => {
 	return (
 		<>
 			<CardContainer title="Folha de Frequências" spacing={1}>
-				{detail ? <DocumentsDetail /> : ""}
+				{detail ? <DocumentsDetail data={data} /> : ""}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />
@@ -422,6 +433,7 @@ const CreateFrequencySheet = ({ detail }) => {
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
+								<>
 								<AutoComplete
 									value={workplaceWorker}
 									handleValueChange={handleWorkplaceWorkerChange}
@@ -432,6 +444,38 @@ const CreateFrequencySheet = ({ detail }) => {
 									label="Lotação*"
 									helperText={workplaceWorkerHelperText}
 								/>
+								<FormControl fullWidth error={workplaceWorkerHelperText !== ""}>
+									<InputLabel id="select-workplaceWorker-label">
+										Lotação*
+									</InputLabel>
+									<Select
+										style={{ textAlign: "left" }}
+										labelId="select-workplaceWorker-label"
+										id="select-workplaceWorker"
+										value={workplaceWorker}
+										onChange={handleWorkplaceWorkerChange}
+										renderValue={(value) => `${value.unity_name}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhuma</em>
+										</MenuItem>
+
+										{workplaceWorkers.map((workplaceWorkerOption) => (
+											<MenuItem
+												key={workplaceWorkerOption.id}
+												value={workplaceWorkerOption}
+											>
+												{workplaceWorkerOption.unity_name}
+											</MenuItem>
+										))}
+									</Select>
+									{workplaceWorkerHelperText ? (
+										<FormHelperText>{workplaceWorkerHelperText}</FormHelperText>
+									) : (
+										""
+									)}
+								</FormControl>
+								</>
 							)}
 						</Grid>
 

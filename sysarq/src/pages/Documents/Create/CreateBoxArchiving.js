@@ -165,6 +165,8 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(detail);
+  const [data, setData] = useState({});
+
 	const handleOpenNewOriginBoxDialog = () => setOpenNewOriginBoxDialog(true);
 
 	const handleCloseNewOriginBoxDialog = () => setOpenNewOriginBoxDialog(false);
@@ -586,6 +588,42 @@ const CreateBoxArchiving = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseBoxArchiving) => {
+              setData(responseBoxArchiving);
+							// axiosArchives
+							// 	.get(`unity/${responseBoxArchiving.data.sender_unity}/`, {
+							// 		headers: {
+							// 			Authorization: `JWT ${localStorage.getItem("tk")}`,
+							// 		},
+							// 	})
+							// 	.then((response) => {
+							// 		setSenderUnit(response.data);
+							// 	})
+							// 	.catch(() => connectionError());
+
+							if (responseBoxArchiving.data.abbreviation_id) {
+								axiosArchives
+									.get(
+										`box-abbreviation/${responseBoxArchiving.data.abbreviation_id}/`,
+										{
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										}
+									)
+									.then((response) => {
+										setBox(response.data);
+
+										setBoxAbbreviationDetail(response.data.abbreviation);
+										setBoxNumberDetail(response.data.number);
+										setBoxYearDetail(response.data.year);
+									})
+									.catch(() => connectionError());
+							} else {
+								setBoxAbbreviationDetail("-");
+								setBoxNumberDetail("-");
+								setBoxYearDetail("-");
+							}
+
 							setSenderUnitDetail(responseBoxArchiving.data.sender_unity_name);
 
 							setShelfDetail(
@@ -713,7 +751,7 @@ const CreateBoxArchiving = ({ detail }) => {
 	return (
 		<>
 			<CardContainer title="Arquivamento de Caixas" spacing={1}>
-				{detail ? <DocumentsDetail /> : ""}
+				{detail ? <DocumentsDetail data={data} /> : ""}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />

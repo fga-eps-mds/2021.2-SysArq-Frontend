@@ -141,6 +141,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(detail);
+  const [data, setData] = useState({});
 
 	const handlePublicWorkerChange = (value) => {
 		setPublicWorkerHelperText("");
@@ -406,6 +407,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							},
 						})
 						.then((responseAdministrative) => {
+              setData(responseAdministrative)
 							axiosArchives
 								.get(
 									`document-name/${responseAdministrative.data.document_name_id}/`,
@@ -663,7 +665,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	return (
 		<>
 			<CardContainer title="Processo Administrativo" spacing={1}>
-				{detail ? <DocumentsDetail /> : ""}
+				{detail ? <DocumentsDetail data={data} /> : ""}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />

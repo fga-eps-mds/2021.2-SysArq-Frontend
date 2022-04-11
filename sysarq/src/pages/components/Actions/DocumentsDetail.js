@@ -1,7 +1,9 @@
+/* eslint-disable */
 import React from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 import { makeStyles, Box, Button } from "@material-ui/core";
+import { axiosArchives } from "../../../Api.js";
 
 const useStyles = makeStyles((theme) => ({
 	box: {
@@ -18,8 +20,19 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const DocumentsDetail = () => {
+const DocumentsDetail = ({ data }) => {
 	const classes = useStyles();
+
+	console.log(data?.config?.url.split("/")[0]);
+
+	const handleDelete = () => {
+		axiosArchives
+			.delete(data.config.url, {
+				headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+			})
+			.then(() => history.back())
+			.catch(console.log);
+	};
 
 	return (
 		<Box className={`${classes.spreadBox} ${classes.box}`}>
@@ -28,6 +41,7 @@ const DocumentsDetail = () => {
 				variant="outlined"
 				color="inherit"
 				size="small"
+				onClick={() => handleDelete()}
 			>
 				Excluir
 			</Button>
@@ -43,6 +57,6 @@ const DocumentsDetail = () => {
 	);
 };
 
-DocumentsDetail.propTypes = {};
+DocumentsDetail.propTypes = { data: PropTypes.instanceOf(Object) };
 
 export default DocumentsDetail;

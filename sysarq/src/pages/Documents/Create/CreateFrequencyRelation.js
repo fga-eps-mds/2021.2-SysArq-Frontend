@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { maskBr } from "js-brasil";
 import PropTypes from "prop-types";
@@ -79,6 +80,9 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(detail);
+	const [data, setData] = useState({});
+
+  const [isEditing, setEditing] = useState(false)
 
 	const handleAlertClose = () => setOpenAlert(false);
 
@@ -265,6 +269,8 @@ const CreateFrequencyRelation = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencyRelation) => {
+							setData(responseFrequencyRelation);
+							console.log(responseFrequencyRelation);
 							setDocumentTypeDetail(
 								responseFrequencyRelation.data.document_name_name
 							);
@@ -312,7 +318,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 	return (
 		<>
 			<CardContainer title="Relação de Frequências" spacing={1}>
-				{detail ? <DocumentsDetail /> : ""}
+				{detail ? <DocumentsDetail data={data} /> : ""}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />
