@@ -18,7 +18,11 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import TimelapseIcon from "@material-ui/icons/Timelapse";
 import CancelIcon from "@material-ui/icons/Cancel";
 
-import { initialPeriod, isDateNotValid, formatDateName } from "../../../support";
+import {
+	initialPeriod,
+	isDateNotValid,
+	formatDateName,
+} from "../../../support";
 
 import SpecialLabels from "../SpecialLabels";
 

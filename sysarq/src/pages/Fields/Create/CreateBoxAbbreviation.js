@@ -32,8 +32,8 @@ export default function CreateBoxAbbreviation() {
 	const [boxAbbreviation, setBoxAbbreviation] = useState("");
 	const [boxName, setBoxName] = useState("");
 
-	
-	const [boxAbbreviationHelperText, setboxAbbreviationHelperText] = useState("");
+	const [boxAbbreviationHelperText, setboxAbbreviationHelperText] =
+		useState("");
 	const [boxAbbreviationError, setboxAbbreviationError] = useState(false);
 
 	const [openAlert, setOpenAlert] = useState(false);
@@ -79,7 +79,7 @@ export default function CreateBoxAbbreviation() {
 						`box-abbreviation/`,
 						{
 							abbreviation: boxAbbreviation,
-							name: boxName
+							name: boxName,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -100,7 +100,6 @@ export default function CreateBoxAbbreviation() {
 	};
 
 	const fields = [
-		
 		{
 			type: "text",
 			placeholder: "Nome completo",
@@ -115,7 +114,7 @@ export default function CreateBoxAbbreviation() {
 				"";
 			},
 		},
-		
+
 		{
 			type: "text",
 			placeholder: "Sigla da caixa*",
@@ -125,7 +124,7 @@ export default function CreateBoxAbbreviation() {
 			error: boxAbbreviationError,
 			setHelperText: setboxAbbreviationHelperText,
 			setError: setboxAbbreviationError,
-		}
+		},
 	];
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";

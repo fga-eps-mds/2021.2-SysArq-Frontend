@@ -79,7 +79,7 @@ export default function CreateDocumentName() {
 					.post(
 						`document-name/`,
 						{
-							document_name: documentName,						
+							document_name: documentName,
 							temporality: temporalityValue,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
@@ -107,7 +107,7 @@ export default function CreateDocumentName() {
 			error: documentNameError,
 			setHelperText: setdocumentNameHelperText,
 			setError: setdocumentNameError,
-		},		
+		},
 		{
 			type: "number",
 			placeholder: "Temporalidade (anos)*",

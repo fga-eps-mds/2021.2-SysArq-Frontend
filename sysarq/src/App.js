@@ -73,154 +73,154 @@ function App() {
 						<SearchList />
 					</PrivateRoute>
 
-						<PrivateRoute exact path="/fields">
-							<Fields />
-						</PrivateRoute>
+					<PrivateRoute exact path="/fields">
+						<Fields />
+					</PrivateRoute>
 
-							<PrivateRoute exact path="/fields/box-abbreviation">
-								<BoxAbbreviation />
-							</PrivateRoute>
+					<PrivateRoute exact path="/fields/box-abbreviation">
+						<BoxAbbreviation />
+					</PrivateRoute>
 
-							<PrivateRoute
-								exact={false}
-								path="/fields/box-abbreviation/create"
-								permission="AL"
-							>
-								<CreateBoxAbbreviation />
-							</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/fields/box-abbreviation/create"
+						permission="AL"
+					>
+						<CreateBoxAbbreviation />
+					</PrivateRoute>
 
-							<PrivateRoute exact path="/fields/unity">
-								<Unity />
-							</PrivateRoute>
-							<PrivateRoute
-								exact={false}
-								path="/fields/unity/create"
-								permission="AL"
-							>
-								<CreateUnity />
-							</PrivateRoute>
+					<PrivateRoute exact path="/fields/unity">
+						<Unity />
+					</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/fields/unity/create"
+						permission="AL"
+					>
+						<CreateUnity />
+					</PrivateRoute>
 
-							<PrivateRoute exact path="/fields/document-name">
-								<DocumentName />
-							</PrivateRoute>
-							<PrivateRoute
-								exact={false}
-								path="/fields/document-name/create"
-								permission="AL"
-							>
-								<CreateDocumentName />
-							</PrivateRoute>
+					<PrivateRoute exact path="/fields/document-name">
+						<DocumentName />
+					</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/fields/document-name/create"
+						permission="AL"
+					>
+						<CreateDocumentName />
+					</PrivateRoute>
 
-							<PrivateRoute exact path="/fields/shelf">
-								<Shelf />
-							</PrivateRoute>
-							<PrivateRoute
-								exact={false}
-								path="/fields/shelf/create"
-								permission="AL"
-							>
-								<CreateShelfOrRack urlType="shelf" />
-							</PrivateRoute>
+					<PrivateRoute exact path="/fields/shelf">
+						<Shelf />
+					</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/fields/shelf/create"
+						permission="AL"
+					>
+						<CreateShelfOrRack urlType="shelf" />
+					</PrivateRoute>
 
-							<PrivateRoute exact path="/fields/rack">
-								<Rack />
-							</PrivateRoute>
-							<PrivateRoute
-								exact={false}
-								path="/fields/rack/create"
-								permission="AL"
-							>
-								<CreateShelfOrRack urlType="rack" />
-							</PrivateRoute>
+					<PrivateRoute exact path="/fields/rack">
+						<Rack />
+					</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/fields/rack/create"
+						permission="AL"
+					>
+						<CreateShelfOrRack urlType="rack" />
+					</PrivateRoute>
 
-                            <PrivateRoute exact path="/fields/file-location">
-								<FileLocation />
-							</PrivateRoute>
-							<PrivateRoute
-								exact={false}
-								path="/fields/file-location/create"
-								permission="AL"
-							>
-								<CreateShelfOrRack urlType="file-location" />
-							</PrivateRoute>
+					<PrivateRoute exact path="/fields/file-location">
+						<FileLocation />
+					</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/fields/file-location/create"
+						permission="AL"
+					>
+						<CreateShelfOrRack urlType="file-location" />
+					</PrivateRoute>
 
-							<PrivateRoute exact path="/fields/public-worker">
-								<PublicWorker />
-							</PrivateRoute>
-							<PrivateRoute
-								exact={false}
-								path="/fields/public-worker/create"
-								permission="AL"
-							>
-								<CreatePublicWorker urlType="public-worker" />
-							</PrivateRoute>
+					<PrivateRoute exact path="/fields/public-worker">
+						<PublicWorker />
+					</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/fields/public-worker/create"
+						permission="AL"
+					>
+						<CreatePublicWorker urlType="public-worker" />
+					</PrivateRoute>
 
-						<PrivateRoute exact path="/documents" permission="AL">
-							<Documents />
-						</PrivateRoute>
+					<PrivateRoute exact path="/documents" permission="AL">
+						<Documents />
+					</PrivateRoute>
 
-							<PrivateRoute exact path="/documents/administrative-process">
-								<AdministrativeProcess />
-							</PrivateRoute>
+					<PrivateRoute exact path="/documents/administrative-process">
+						<AdministrativeProcess />
+					</PrivateRoute>
 
-							<PrivateRoute
-								exact={false}
-								path="/documents/administrative-process/create"
-								permission="AL"
-							>
-								<CreateAdministrativeProcess detail={false} />
-							</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/documents/administrative-process/create"
+						permission="AL"
+					>
+						<CreateAdministrativeProcess detail={false} />
+					</PrivateRoute>
 
-							<PrivateRoute path="/documents/administrative-process/view/:id">
-								<CreateAdministrativeProcess detail />
-							</PrivateRoute>
+					<PrivateRoute path="/documents/administrative-process/view/:id">
+						<CreateAdministrativeProcess detail />
+					</PrivateRoute>
 
-							<PrivateRoute exact path="/documents/frequency-relation">
-								<FrequencyRelation />
-							</PrivateRoute>
+					<PrivateRoute exact path="/documents/frequency-relation">
+						<FrequencyRelation />
+					</PrivateRoute>
 
-							<PrivateRoute
-								exact={false}
-								path="/documents/frequency-relation/create"
-							>
-								<CreateFrequencyRelation detail={false} permission="AL" />
-							</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/documents/frequency-relation/create"
+					>
+						<CreateFrequencyRelation detail={false} permission="AL" />
+					</PrivateRoute>
 
-							<PrivateRoute path="/documents/frequency-relation/view/:id">
-								<CreateFrequencyRelation detail />
-							</PrivateRoute>
+					<PrivateRoute path="/documents/frequency-relation/view/:id">
+						<CreateFrequencyRelation detail />
+					</PrivateRoute>
 
-							<PrivateRoute exact path="/documents/box-archiving">
-								<BoxArchiving />
-							</PrivateRoute>
+					<PrivateRoute exact path="/documents/box-archiving">
+						<BoxArchiving />
+					</PrivateRoute>
 
-							<PrivateRoute
-								exact={false}
-								path="/documents/box-archiving/create"
-								permission="AL"
-							>
-								<CreateBoxArchiving detail={false} />
-							</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/documents/box-archiving/create"
+						permission="AL"
+					>
+						<CreateBoxArchiving detail={false} />
+					</PrivateRoute>
 
-							<PrivateRoute path="/documents/box-archiving/view/:id">
-								<CreateBoxArchiving detail />
-							</PrivateRoute>
+					<PrivateRoute path="/documents/box-archiving/view/:id">
+						<CreateBoxArchiving detail />
+					</PrivateRoute>
 
-							<PrivateRoute exact path="/documents/frequency-sheet">
-								<FrequencySheet />
-							</PrivateRoute>
+					<PrivateRoute exact path="/documents/frequency-sheet">
+						<FrequencySheet />
+					</PrivateRoute>
 
-							<PrivateRoute
-								exact={false}
-								path="/documents/frequency-sheet/create"
-								permission="AL"
-							>
-								<CreateFrequencySheet detail={false} />
-							</PrivateRoute>
+					<PrivateRoute
+						exact={false}
+						path="/documents/frequency-sheet/create"
+						permission="AL"
+					>
+						<CreateFrequencySheet detail={false} />
+					</PrivateRoute>
 
-							<PrivateRoute path="/documents/frequency-sheet/view/:id">
-								<CreateFrequencySheet detail />
-							</PrivateRoute>
+					<PrivateRoute path="/documents/frequency-sheet/view/:id">
+						<CreateFrequencySheet detail />
+					</PrivateRoute>
 					<PrivateRoute exact path="/settings" permission="AD">
 						<Settings />
 					</PrivateRoute>

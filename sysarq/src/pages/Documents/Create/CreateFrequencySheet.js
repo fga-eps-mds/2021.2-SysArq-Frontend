@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-import { 
+import {
 	Grid,
 	CircularProgress,
 	TextField,
@@ -67,7 +67,8 @@ const CreateFrequencySheet = ({ detail }) => {
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 	const [roleHelperText, setRoleHelperText] = useState("");
 	const [districtHelperText, setDistrictHelperText] = useState("");
-	const [workplaceWorkerHelperText, setWorkplaceWorkerHelperText] = useState("");
+	const [workplaceWorkerHelperText, setWorkplaceWorkerHelperText] =
+		useState("");
 
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
 		useState("");
@@ -255,7 +256,6 @@ const CreateFrequencySheet = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencySheet) => {
-							
 							setTypeDetail(responseFrequencySheet.data.document_name_name);
 
 							setPublicWorkerDetail(
@@ -267,7 +267,9 @@ const CreateFrequencySheet = ({ detail }) => {
 							setRole(responseFrequencySheet.data.role);
 							setDistrict(responseFrequencySheet.data.municipal_area);
 							setReferencePeriod(responseFrequencySheet.data.reference_period);
-							setWorkplaceWorkerDetail(responseFrequencySheet.data.workplace_name);
+							setWorkplaceWorkerDetail(
+								responseFrequencySheet.data.workplace_name
+							);
 							setWorkerClass(
 								responseFrequencySheet.data.category
 									? responseFrequencySheet.data.category
@@ -297,13 +299,12 @@ const CreateFrequencySheet = ({ detail }) => {
 					})
 					.then((response) => setWorkplaceWorkers(response.data))
 					.catch(() => connectionError());
-
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
 
-			getUnits(setWorkplaceWorkers, connectionError);
+		getUnits(setWorkplaceWorkers, connectionError);
 	}, []);
 
 	return (
@@ -389,7 +390,10 @@ const CreateFrequencySheet = ({ detail }) => {
 										</MenuItem>
 
 										{workplaceWorkers.map((workplaceWorkerOption) => (
-											<MenuItem key={workplaceWorkerOption.id} value={workplaceWorkerOption}>
+											<MenuItem
+												key={workplaceWorkerOption.id}
+												value={workplaceWorkerOption}
+											>
 												{workplaceWorkerOption.unity_name}
 											</MenuItem>
 										))}

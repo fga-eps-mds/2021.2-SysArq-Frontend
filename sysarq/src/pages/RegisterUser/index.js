@@ -226,15 +226,18 @@ const RegisterUser = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosProfile
-					.post(`users/register/`, {
-						username,
-						user_type: userType,
-						first_name: firstName,
-						last_name: lastName,
-						cpf,
-						password,
-					},
-					{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
+					.post(
+						`users/register/`,
+						{
+							username,
+							user_type: userType,
+							first_name: firstName,
+							last_name: lastName,
+							cpf,
+							password,
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+					)
 					.then(() => {
 						onSuccess();
 						return true;
@@ -245,7 +248,7 @@ const RegisterUser = () => {
 					});
 			})
 			.catch((error) => {
-				axiosProfileError(error)
+				axiosProfileError(error);
 			});
 
 		return "Sucesso";

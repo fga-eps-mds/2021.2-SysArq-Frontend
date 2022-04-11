@@ -40,17 +40,17 @@ export default function CreateShelfOrRack({ urlType }) {
 	const [type, setType] = useState("Estante");
 	const [numberE, setNumberE] = useState("");
 	const [numberP, setNumberP] = useState("");
-	
+
 	const [shelfHelperText, setShelfHelperText] = useState("");
 	const [shelfNumberError, setShelfNumberError] = useState(false);
-	
+
 	const [rackHelperText, setRackHelperText] = useState("");
 	const [rackNumberError, setRackNumberError] = useState(false);
-	
+
 	const [fileLocation, setFileLocation] = useState("");
 	const [fileLocationHelperText, setFileLocationHelperText] = useState("");
 	const [fileLocationNumberError, setFileLocationNumberError] = useState("");
-	
+
 	const [openAlert, setOpenAlert] = useState(false);
 	const [alertHelperText, setAlertHelperText] = useState("");
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -142,7 +142,7 @@ export default function CreateShelfOrRack({ urlType }) {
 						.post(
 							`file-location/`,
 							{
-								file: fileLocation
+								file: fileLocation,
 							},
 							{
 								headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
@@ -154,7 +154,7 @@ export default function CreateShelfOrRack({ urlType }) {
 						.catch(() => {
 							connectionError();
 						});
-				}		
+				}
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
@@ -165,8 +165,8 @@ export default function CreateShelfOrRack({ urlType }) {
 
 		setRackNumberError(false);
 		setRackHelperText("");
-		
-		setFileLocationNumberError(false)
+
+		setFileLocationNumberError(false);
 		setFileLocationHelperText("");
 
 		return null;
@@ -174,7 +174,7 @@ export default function CreateShelfOrRack({ urlType }) {
 
 	function menuDocumentsDropIn() {
 		switch (type) {
-			case 'Estante':
+			case "Estante":
 				return (
 					<Grid item xs={12} sm={12} md={12} key={2}>
 						<TextField
@@ -192,9 +192,9 @@ export default function CreateShelfOrRack({ urlType }) {
 							error={shelfNumberError}
 						/>
 					</Grid>
-				)
+				);
 
-			case 'Prateleira':
+			case "Prateleira":
 				return (
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
@@ -213,9 +213,9 @@ export default function CreateShelfOrRack({ urlType }) {
 							error={rackNumberError}
 						/>
 					</Grid>
-				)
+				);
 
-			case 'Localidade':
+			case "Localidade":
 				return (
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
@@ -233,7 +233,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							error={fileLocationNumberError}
 						/>
 					</Grid>
-				)
+				);
 			default:
 				break;
 		}

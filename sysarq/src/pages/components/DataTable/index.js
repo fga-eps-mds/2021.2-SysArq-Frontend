@@ -432,9 +432,18 @@ const DataTable = ({ url, title }) => {
 					<Typography style={{ marginBottom: "1%" }}>
 						<Link
 							className={classes.link}
-							href={url === "shelf/" || "/fields/rack" || "/fields/shelf" || "/fields/file-location"}
+							href={
+								url === "shelf/" ||
+								"/fields/rack" ||
+								"/fields/shelf" ||
+								"/fields/file-location"
+							}
 						>
-							Ver {url === "shelf/" || "Prateleiras" || "Estantes" || "Localidades dos Arquivos"}
+							Ver{" "}
+							{url === "shelf/" ||
+								"Prateleiras" ||
+								"Estantes" ||
+								"Localidades dos Arquivos"}
 						</Link>
 					</Typography>
 				) : (

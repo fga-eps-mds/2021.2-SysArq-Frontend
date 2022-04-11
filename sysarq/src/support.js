@@ -28,9 +28,7 @@ arrayMes[10] = "nov";
 arrayMes[11] = "dez";
 
 export const formatDateName = (date) =>
-	`${date.getFullYear()}-${
-		arrayMes[date.getMonth()]
-	}`;
+	`${date.getFullYear()}-${arrayMes[date.getMonth()]}`;
 
 export const formatDate = (date) =>
 	`${date.getFullYear()}-${formatDateNumber(
