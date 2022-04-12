@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { maskBr } from "js-brasil";
 import PropTypes from "prop-types";
 
 import { useParams } from "react-router-dom";
@@ -6,11 +7,10 @@ import { useParams } from "react-router-dom";
 import { Grid, CircularProgress } from "@material-ui/core";
 
 import {
-	initialDate,
 	formatDate,
-	initialPeriod,
 	isDateNotValid,
 	axiosProfileError,
+	getPublicWorkers,
 	getUnits,
 } from "../../../support";
 
@@ -34,22 +34,35 @@ const CreateFrequencyRelation = ({ detail }) => {
 
 	const [documentTypeDetail, setDocumentTypeDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
+	const [senderPublicWorkerDetail, setSenderPublicWorkerDetail] = useState("");
+	const [receiverPublicWorkerDetail, setReceiverPublicWorkerDetail] = useState("");
+
+	const [senderPublicWorkerInput, setSenderPublicWorkerInput] = useState("");
+	const [receiverPublicWorkerInput, setReceiverPublicWorkerInput] = useState("");
 
 	const [units, setUnits] = useState([]);
+	const [senderPublicWorkers, setSenderPublicWorkers] = useState([
+		{ id: 1, name: "inexiste", cpf: "55555555555" },
+	]);
+	const [receiverPublicWorkers, setReceiverPublicWorkers] = useState([
+		{ id: 1, name: "inexiste", cpf: "55555555555" },
+	]);
 
+	const [senderPublicWorker, setSenderPublicWorker] = useState(senderPublicWorkers.id);
+	const [receiverPublicWorker, setReceiverPublicWorker] = useState(receiverPublicWorkers.id);
 	const [processNumber, setProcessNumber] = useState("");
-	const [documentDate, setDocumentDate] = useState(detail ? "" : initialDate);
-	const [receivedDate, setReceivedDate] = useState(detail ? "" : initialDate);
+	const [receivedDate, setReceivedDate] = useState(null);
 	const [documentType, setDocumentType] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
 	const [notesLocal, setNotes] = useState("");
 	const [referencePeriod, setReferencePeriod] = useState(
-		detail ? [] : [formatDate(initialPeriod)]
+		detail ? [] : []
 	);
-
+	
+	const [senderPublicWorkerHelperText, setSenderPublicWorkerHelperText] = useState("");
+	const [receiverPublicWorkerHelperText, setReceiverPublicWorkerHelperText] = useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
-	const [documentDateHelperText, setDocumentDateHelperText] = useState("");
 	const [documentTypeHelperText, setDocumentTypeHelperText] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
@@ -62,6 +75,23 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [loading, setLoading] = useState(detail);
 
 	const handleAlertClose = () => setOpenAlert(false);
+	
+	const handleSenderPublicWorkerChange = (value) => {
+		setSenderPublicWorkerHelperText("");
+		if (!value) {
+			setSenderPublicWorker(undefined);
+			return;
+		}
+		setSenderPublicWorker(value);
+	};
+	const handleReceiverPublicWorkerChange = (value) => {
+		setReceiverPublicWorkerHelperText("");
+		if (!value) {
+			setReceiverPublicWorker(undefined);
+			return;
+		}
+		setReceiverPublicWorker(value);
+	};
 
 	const connectionError = (value) => {
 		setLoading(false);
@@ -86,12 +116,15 @@ const CreateFrequencyRelation = ({ detail }) => {
 		setAlertHelperText("Documento cadastrado!");
 
 		setProcessNumber("");
-		setReceivedDate(initialDate);
-		setDocumentDate(initialDate);
+		setReceivedDate(null);
 		setDocumentType("");
 		setSenderUnit("");
+		setSenderPublicWorkerInput("");
+		setSenderPublicWorker(undefined);
+		setReceiverPublicWorkerInput("");
+		setReceiverPublicWorker(undefined);
 		setNotes("");
-		setReferencePeriod([formatDate(initialPeriod)]);
+		setReferencePeriod([]);
 		window.location.reload();
 	};
 
@@ -103,19 +136,16 @@ const CreateFrequencyRelation = ({ detail }) => {
 			setLoading(false);
 			return "processNumber error";
 		}
-
-		if (
-			isDateNotValid(
-				documentDate,
-				setDocumentDateHelperText,
-				"date",
-				"required"
-			)
-		) {
+		if (!senderPublicWorker) {
+			setSenderPublicWorkerHelperText("Selecione um nome");
 			setLoading(false);
-			return "documentDate error";
+			return "workerName error";
 		}
-
+		if (!receiverPublicWorker) {
+			setReceiverPublicWorkerHelperText("Selecione um nome");
+			setLoading(false);
+			return "workerName error";
+		}
 		if (
 			isDateNotValid(
 				receivedDate,
@@ -162,14 +192,17 @@ const CreateFrequencyRelation = ({ detail }) => {
 							process_number: processNumber,
 							notes: notesLocal,
 							filer_user: "filer_user",
-							document_date: formatDate(documentDate),
 							received_date: formatDate(receivedDate),
 							reference_period: referencePeriod,
 							sender_unity: senderUnit.id,
+							sender_id: senderPublicWorker.id,
+							sender_cpf: senderPublicWorker.cpf,
+							receiver_id: receiverPublicWorker.id,
+							receiver_cpf: receiverPublicWorker.cpf,
 							document_name_id: documentType.id,
-							temporality_date:
+							temporality_date: 
 								parseInt(documentType.temporality, 10) +
-								parseInt(documentDate.getFullYear(), 10),
+								parseInt(receivedDate.getFullYear(), 10),
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -189,6 +222,22 @@ const CreateFrequencyRelation = ({ detail }) => {
 
 		return "post done";
 	};
+
+	const senderPublicWorkerOptions = senderPublicWorkers.map((option) => {
+		const firstLetter = option.name[0].toUpperCase();
+		return {
+			firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+			...option,
+		};
+	});
+
+	const receiverPublicWorkerOptions = receiverPublicWorkers.map((option) => {
+		const firstLetter = option.name[0].toUpperCase();
+		return {
+			firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+			...option,
+		};
+	});
 
 	useEffect(() => {
 		if (detail) {
@@ -214,9 +263,18 @@ const CreateFrequencyRelation = ({ detail }) => {
 							setSenderUnitDetail(
 								responseFrequencyRelation.data.sender_unity_name
 							);
+							setSenderPublicWorkerDetail(
+								`${responseFrequencyRelation.data.sender_name}, ${maskBr.cpf(
+									responseFrequencyRelation.data.sender_cpf
+								)}`
+							);
+							setReceiverPublicWorkerDetail(
+								`${responseFrequencyRelation.data.receiver_name}, ${maskBr.cpf(
+									responseFrequencyRelation.data.receiver_cpf
+								)}`
+							);
 
 							setProcessNumber(responseFrequencyRelation.data.process_number);
-							setDocumentDate(responseFrequencyRelation.data.document_date);
 							setReceivedDate(responseFrequencyRelation.data.received_date);
 
 							setNotes(
@@ -239,6 +297,8 @@ const CreateFrequencyRelation = ({ detail }) => {
 		}
 
 		getUnits(setUnits, connectionError);
+		getPublicWorkers(setSenderPublicWorkers, connectionError);
+		getPublicWorkers(setReceiverPublicWorkers, connectionError);
 	}, []);
 
 	return (
@@ -250,7 +310,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 					<CircularProgress style={{ margin: "auto" }} />
 				) : (
 					<>
-						<Grid item xs={12} sm={6} md={4}>
+						<Grid item xs={12} sm={6} md={8}>
 							<NumberProcessInput
 								setHelperText={setProcessNumberHelperText}
 								set={setProcessNumber}
@@ -262,10 +322,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 
 						<CommonSet
 							isDetailPage={detail}
-							setDocumentDateHelperText={setDocumentDateHelperText}
-							setDocumentDate={setDocumentDate}
-							documentDate={documentDate}
-							documentDateHelperText={documentDateHelperText}
 							setReceivedDateHelperText={setReceivedDateHelperText}
 							setReceivedDate={setReceivedDate}
 							receivedDate={receivedDate}
@@ -282,10 +338,24 @@ const CreateFrequencyRelation = ({ detail }) => {
 							senderUnit={senderUnit}
 							units={units}
 							senderUnitHelperText={senderUnitHelperText}
+							senderPublicWorkers={senderPublicWorkers}
+							senderPublicWorkerInput={senderPublicWorkerInput}
+							handleSenderPublicWorkerChange={handleSenderPublicWorkerChange}
+							setSenderPublicWorkerInput={setSenderPublicWorkerInput}
+							senderPublicWorkerOptions={senderPublicWorkerOptions}
+							senderPublicWorkerHelperText={senderPublicWorkerHelperText}
+							senderPublicWorkerDetail={senderPublicWorkerDetail}
+							receiverPublicWorkers={receiverPublicWorkers}
+							receiverPublicWorkerInput={receiverPublicWorkerInput}
+							handleReceiverPublicWorkerChange={handleReceiverPublicWorkerChange}
+							setReceiverPublicWorkerInput={setReceiverPublicWorkerInput}
+							receiverPublicWorkerOptions={receiverPublicWorkerOptions}
+							receiverPublicWorkerHelperText={receiverPublicWorkerHelperText}
+							receiverPublicWorkerDetail={receiverPublicWorkerDetail}
 							setNotes={setNotes}
 							notes={notesLocal}
 						/>
-
+						
 						<ReferencePeriodInput
 							referencePeriod={referencePeriod}
 							setReferencePeriod={setReferencePeriod}

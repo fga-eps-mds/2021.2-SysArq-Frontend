@@ -235,7 +235,6 @@ export const server = setupServer(
 				document_type_name: "document_type_name_test",
 				sender_unity_name: "sender_unity_name_test",
 				process_number: "2",
-				document_date: "2003-04-05",
 				received_date: "2006-07-08",
 				notes: "notes_test",
 				reference_period: ["2009-10-01"],

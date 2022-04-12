@@ -58,8 +58,6 @@ import SpecialLabels from "../../components/SpecialLabels";
 import ChipsContainer from "../../components/Container/ChipsContainer";
 import AddChip from "../../components/AddChip";
 
-import DocumentsTypeInput from "../../components/Inputs/DocumentsTypeInput";
-import BoxInput from "../../components/Inputs/BoxInput";
 import ShelfInput from "../../components/Inputs/ShelfInput";
 import RackInput from "../../components/Inputs/RackInput";
 import NotesInput from "../../components/Inputs/NotesInput";
@@ -73,17 +71,13 @@ const CreateBoxArchiving = ({ detail }) => {
 
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 
-	const [boxAbbreviationDetail, setBoxAbbreviationDetail] = useState("");
-	const [boxYearDetail, setBoxYearDetail] = useState("");
-	const [boxNumberDetail, setBoxNumberDetail] = useState("");
-
 	const [shelfDetail, setShelfDetail] = useState("");
 	const [rackDetail, setRackDetail] = useState("");
 
 	const [units, setUnits] = useState([]);
 
 	const [processNumber, setProcessNumber] = useState("");
-	const [receivedDate, setReceivedDate] = useState(detail ? "" : initialDate);
+	const [receivedDate, setReceivedDate] = useState(detail ? "" : null);
 	const [senderUnit, setSenderUnit] = useState("");
 	const [box, setBox] = useState("");
 	const [shelf, setShelf] = useState("");
@@ -127,11 +121,6 @@ const CreateBoxArchiving = ({ detail }) => {
 		newOriginBoxSubjectDateHelperText,
 		setNewOriginBoxSubjectDateHelperText,
 	] = useState("");
-
-	const [typeList, setTypeList] = useState([]);
-	const [typeListHelperText, setTypeListHelperText] = useState("");
-
-	const [clearBoxFields, setClearBoxFields] = useState(false);
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -321,15 +310,12 @@ const CreateBoxArchiving = ({ detail }) => {
 		setProcessNumber("");
 		setReceivedDate(initialDate);
 		setSenderUnit("");
-		setTypeList([]);
 
 		setOriginBox({});
 		setNewOriginBoxNumber("");
 		setNewOriginBoxYear("");
 		setNewOriginBoxSubject("");
 		setNewOriginBoxSubjectDate(initialDate);
-
-		setClearBoxFields(true);
 
 		setBox("");
 		setShelf("");
@@ -365,14 +351,6 @@ const CreateBoxArchiving = ({ detail }) => {
 			return "senderUnit error";
 		}
 
-		if (!typeList.length) {
-			setTypeListHelperText(
-				"Não é possível criar um Arquivamento de Caixas sem um Tipo do Documento."
-			);
-			setLoading(false);
-			return "typeList error";
-		}
-
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -396,7 +374,7 @@ const CreateBoxArchiving = ({ detail }) => {
 							abbreviation_id: box.id === undefined ? "" : box.id,
 							shelf_id: shelf.id === undefined ? "" : shelf.id,
 							rack_id: rack.id === undefined ? "" : rack.id, //
-							document_types: typeList,
+							document_names: []
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -445,30 +423,6 @@ const CreateBoxArchiving = ({ detail }) => {
 							// 	})
 							// 	.catch(() => connectionError());
 
-							if (responseBoxArchiving.data.abbreviation_id) {
-								axiosArchives
-									.get(
-										`box-abbreviation/${responseBoxArchiving.data.abbreviation_id}/`,
-										{
-											headers: {
-												Authorization: `JWT ${localStorage.getItem("tk")}`,
-											},
-										}
-									)
-									.then((response) => {
-										setBox(response.data);
-
-										setBoxAbbreviationDetail(response.data.abbreviation);
-										setBoxNumberDetail(response.data.number);
-										setBoxYearDetail(response.data.year);
-									})
-									.catch(() => connectionError());
-							} else {
-								setBoxAbbreviationDetail("-");
-								setBoxNumberDetail("-");
-								setBoxYearDetail("-");
-							}
-
 							setSenderUnitDetail(responseBoxArchiving.data.sender_unity_name);
 
 							setShelfDetail(
@@ -484,7 +438,6 @@ const CreateBoxArchiving = ({ detail }) => {
 
 							setProcessNumber(responseBoxArchiving.data.process_number);
 							setReceivedDate(responseBoxArchiving.data.received_date);
-							setTypeList(responseBoxArchiving.data.document_types);
 
 							setNotes(
 								responseBoxArchiving.data.notes
@@ -723,27 +676,6 @@ const CreateBoxArchiving = ({ detail }) => {
 								</ChipsContainer>
 							)}
 						</Grid>
-
-						<DocumentsTypeInput
-							typeList={typeList}
-							setTypeList={setTypeList}
-							typeListHelperText={typeListHelperText}
-							setTypeListHelperText={setTypeListHelperText}
-							isDetailPage={detail}
-							connectionError={connectionError}
-						/>
-
-						<BoxInput
-							set={setBox}
-							connectionError={connectionError}
-							setClearFields={setClearBoxFields}
-							clearFields={clearBoxFields}
-							isDetailPage={detail}
-							boxAbbreviationDetail={boxAbbreviationDetail}
-							boxYearDetail={boxYearDetail}
-							boxNumberDetail={boxNumberDetail}
-							box={box}
-						/>
 
 						<ShelfInput
 							set={setShelf}

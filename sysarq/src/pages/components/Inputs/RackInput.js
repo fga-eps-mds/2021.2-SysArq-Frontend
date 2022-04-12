@@ -47,7 +47,7 @@ const RackInput = ({
 	}, []);
 
 	return (
-		<Grid item xs={12} sm={6} md={4}>
+		<Grid item xs={12} sm={6} md={6}>
 			{isDetailPage ? (
 				<TextField
 					fullWidth

@@ -73,12 +73,10 @@ function App() {
 						<SearchList />
 					</PrivateRoute>
 
-					<Route path="/fields">
 						<PrivateRoute exact path="/fields">
 							<Fields />
 						</PrivateRoute>
 
-						<Route path="/fields/box-abbreviation">
 							<PrivateRoute exact path="/fields/box-abbreviation">
 								<BoxAbbreviation />
 							</PrivateRoute>
@@ -86,72 +84,81 @@ function App() {
 							<PrivateRoute
 								exact={false}
 								path="/fields/box-abbreviation/create"
+								permission="AL"
 							>
 								<CreateBoxAbbreviation />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/unity">
 							<PrivateRoute exact path="/fields/unity">
 								<Unity />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/unity/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/unity/create"
+								permission="AL"
+							>
 								<CreateUnity />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/document-name">
 							<PrivateRoute exact path="/fields/document-name">
 								<DocumentName />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/document-name/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/document-name/create"
+								permission="AL"
+							>
 								<CreateDocumentName />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/shelf">
 							<PrivateRoute exact path="/fields/shelf">
 								<Shelf />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/shelf/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/shelf/create"
+								permission="AL"
+							>
 								<CreateShelfOrRack urlType="shelf" />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/rack">
 							<PrivateRoute exact path="/fields/rack">
 								<Rack />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/rack/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/rack/create"
+								permission="AL"
+							>
 								<CreateShelfOrRack urlType="rack" />
 							</PrivateRoute>
-						</Route>
-						
-						<Route path="/fields/file-location">
-							<PrivateRoute exact path="/fields/file-location">
+
+                            <PrivateRoute exact path="/fields/file-location">
 								<FileLocation />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/file-location/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/file-location/create"
+								permission="AL"
+							>
 								<CreateShelfOrRack urlType="file-location" />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/fields/public-worker">
 							<PrivateRoute exact path="/fields/public-worker">
 								<PublicWorker />
 							</PrivateRoute>
-							<PrivateRoute exact={false} path="/fields/public-worker/create">
+							<PrivateRoute
+								exact={false}
+								path="/fields/public-worker/create"
+								permission="AL"
+							>
 								<CreatePublicWorker urlType="public-worker" />
 							</PrivateRoute>
-						</Route>
-					</Route>
 
-					<Route path="/documents">
-						<PrivateRoute exact path="/documents">
+						<PrivateRoute exact path="/documents" permission="AL">
 							<Documents />
 						</PrivateRoute>
 
-						<Route path="/documents/administrative-process">
 							<PrivateRoute exact path="/documents/administrative-process">
 								<AdministrativeProcess />
 							</PrivateRoute>
@@ -159,6 +166,7 @@ function App() {
 							<PrivateRoute
 								exact={false}
 								path="/documents/administrative-process/create"
+								permission="AL"
 							>
 								<CreateAdministrativeProcess detail={false} />
 							</PrivateRoute>
@@ -166,9 +174,7 @@ function App() {
 							<PrivateRoute path="/documents/administrative-process/view/:id">
 								<CreateAdministrativeProcess detail />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/documents/frequency-relation">
 							<PrivateRoute exact path="/documents/frequency-relation">
 								<FrequencyRelation />
 							</PrivateRoute>
@@ -177,15 +183,13 @@ function App() {
 								exact={false}
 								path="/documents/frequency-relation/create"
 							>
-								<CreateFrequencyRelation detail={false} />
+								<CreateFrequencyRelation detail={false} permission="AL" />
 							</PrivateRoute>
 
 							<PrivateRoute path="/documents/frequency-relation/view/:id">
 								<CreateFrequencyRelation detail />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/documents/box-archiving">
 							<PrivateRoute exact path="/documents/box-archiving">
 								<BoxArchiving />
 							</PrivateRoute>
@@ -193,6 +197,7 @@ function App() {
 							<PrivateRoute
 								exact={false}
 								path="/documents/box-archiving/create"
+								permission="AL"
 							>
 								<CreateBoxArchiving detail={false} />
 							</PrivateRoute>
@@ -200,9 +205,7 @@ function App() {
 							<PrivateRoute path="/documents/box-archiving/view/:id">
 								<CreateBoxArchiving detail />
 							</PrivateRoute>
-						</Route>
 
-						<Route path="/documents/frequency-sheet">
 							<PrivateRoute exact path="/documents/frequency-sheet">
 								<FrequencySheet />
 							</PrivateRoute>
@@ -210,6 +213,7 @@ function App() {
 							<PrivateRoute
 								exact={false}
 								path="/documents/frequency-sheet/create"
+								permission="AL"
 							>
 								<CreateFrequencySheet detail={false} />
 							</PrivateRoute>
@@ -217,13 +221,11 @@ function App() {
 							<PrivateRoute path="/documents/frequency-sheet/view/:id">
 								<CreateFrequencySheet detail />
 							</PrivateRoute>
-						</Route>
-					</Route>
-					<PrivateRoute exact path="/settings">
+					<PrivateRoute exact path="/settings" permission="AD">
 						<Settings />
 					</PrivateRoute>
 
-					<PrivateRoute exact path="/register-user">
+					<PrivateRoute exact path="/register-user" permission="AD">
 						<RegisterUser />
 					</PrivateRoute>
 				</Switch>

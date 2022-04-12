@@ -26,7 +26,6 @@ const isNotOnTheScreen = (text) => {
 };
 
 const RECEIVED_DATE = "Data de Recebimento*";
-const DOCUMENT_DATE = "Data do Documento*";
 
 describe("Create Frequency Relation Screen Test", () => {
 	it("complete test", async () => {
@@ -37,18 +36,6 @@ describe("Create Frequency Relation Screen Test", () => {
 
 		input("Número do Processo*", "28");
 		isNotOnTheScreen("Insira o número do processo");
-
-		input(DOCUMENT_DATE, "");
-		submitClick();
-		isOnTheScreen("Insira uma data");
-
-		input(DOCUMENT_DATE, "29/03/");
-		isNotOnTheScreen("Insira uma data");
-		submitClick();
-		isOnTheScreen("Insira uma data válida");
-
-		input(DOCUMENT_DATE, "31/05/2032");
-		isNotOnTheScreen("Insira uma data válida");
 
 		input(RECEIVED_DATE, "");
 		submitClick();
