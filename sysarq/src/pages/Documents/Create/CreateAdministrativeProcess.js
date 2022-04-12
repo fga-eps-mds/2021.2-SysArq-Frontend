@@ -53,6 +53,9 @@ const useStyles = makeStyles(() => ({
 		fontWeight: "bold",
 		fontFamily: ['"Montserrat"', "sans-serif"],
 	},
+	boxAB: {
+		marginBottom: '16px',
+	}
 }));
 
 const isStatusFiled = (status) => {
@@ -104,6 +107,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [rack, setRack] = useState("");
 	const [fileLocation, setFileLocation] = useState("");
 	const [boxAbbreviation, setBoxAbbreviation] = useState("");
+	const [boxNumber, setBoxNumber] = useState("");
+	const [boxYear, setBoxYear] = useState("");
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
@@ -120,8 +125,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
-	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] =
-		useState("");
+	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] = useState("");
+	const [boxNumberHelperText, setBoxNumberHelperText] = useState("");
+	const [boxYearHelperText, setBoxYearHelperText] = useState("");
 
 	const [shelfHelperText, setShelfHelperText] = useState("");
 	const [rackHelperText, setRackHelperText] = useState("");
@@ -311,6 +317,18 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "box abbreviation error";
 		}
 
+		if (!boxNumber) {
+			setBoxNumberHelperText("Insira o número da caixa");
+			setLoading(false);
+			return "box number error";
+		}
+
+		if (!boxYear || parseInt(boxYear, 10) < 1900) {
+			setBoxYearHelperText("Insira o ano da caixa")
+			setLoading(false);
+			return "box year error";
+		}
+
 		if (status === "") {
 			setStatusHelperText("Selecione um status");
 			setLoading(false);
@@ -348,6 +366,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							shelf_id: shelf.id,
 							rack_id: rack.id,
 							box_abbreviation_id: boxAbbreviation.id,
+							box_number: boxNumber,
+							box_year: parseInt(boxYear, 10),
 							sender_unity: senderUnit.id,
 							sender_user: publicWorker !== undefined ? publicWorker.id : null,
 							is_filed: isStatusFiled(status),
@@ -545,6 +565,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							setNoticeDate(responseAdministrative.data.notice_date);
 							setInterested(responseAdministrative.data.interested);
 							setArchivingDate(responseAdministrative.data.archiving_date);
+
+							setBoxNumber(responseAdministrative.data.box_number);
+							setBoxYear(responseAdministrative.data.box_year);
 
 							setNotes(
 								responseAdministrative.data.notes
@@ -959,7 +982,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							""
 						)}
 
-<Grid item xs={12} sm={12} md={12}>
+						<Grid item xs={12} sm={12} md={12}>
 							<Typography className={classes.sectionTitle}>
 								Localização do Arquivo:
 							</Typography>
@@ -1086,7 +1109,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							</Typography>
 						</Grid>
 
-						<Grid item xs={12} sm={12} md={12}>
+						<Grid className={classes.boxAB} item xs={12} sm={12} md={4}>
 							{detail ? (
 								<TextField
 									fullWidth
@@ -1129,6 +1152,38 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							)}
 						</Grid>
 						
+						<Grid item xs={12} sm={12} md={4}>
+							<TextField 
+								fullWidth
+								label="Número da Caixa*"
+								value={boxNumber}
+								onChange={(event) => {
+									setBoxNumber(event.target.value)
+									setBoxNumberHelperText("");
+								}}
+								type="number"
+								error={boxNumberHelperText !== ""}
+								helperText={boxNumberHelperText}
+								inputProps={{readOnly: detail}}
+							/>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							<TextField
+								fullWidth
+								label="Ano da Caixa*"
+								value={boxYear}
+								onChange={(event) => {
+									setBoxYear(event.target.value);
+									setBoxYearHelperText("");
+								}}
+								type="number"
+								error={boxYearHelperText !== ""}
+								helperText={boxYearHelperText}
+								inputProps={{readOnly: detail}}
+							/>
+						</Grid>
+
 						<NotesInput
 							set={setNotes}
 							notes={notesLocal}
