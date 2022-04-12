@@ -5,9 +5,7 @@ import { axiosProfile } from "../../Api"
 import {Button, Select, MenuItem, TextField, Box, IconButton, Collapse, makeStyles, Container, Paper, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from "@material-ui/core"
 import InputMask from "react-input-mask"
 import {validateBr} from "js-brasil"
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown"
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp"
-import tableHeadCells from "../components/DataTable/tablesHeadCells";
+import PopUpAlert from "../components/PopUpAlert"
 
 const useStyles = makeStyles((theme) => ({
 	title: {
@@ -60,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const UserRow = ({ user }) => {
+const UserRow = ({ user, onSuccess, onError }) => {
     const classes = useStyles()
     const [state, setState] = useState({
         username: user.username,
@@ -123,8 +121,10 @@ const UserRow = ({ user }) => {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem("tk")}`
                 }
-            }).then((res) => {
-                console.log(res)
+            }).then(() => {
+                onSuccess()
+            }).catch(() => {
+                onError()
             })
         })
     }
@@ -141,8 +141,10 @@ const UserRow = ({ user }) => {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem("tk")}`
                 }
-            }).then((res) => {
-                console.log(res)
+            }).then(() => {
+                onSuccess()
+            }).catch(() => {
+                onError()
             })
         })
     }
@@ -181,7 +183,7 @@ const UserRow = ({ user }) => {
 
 }
 
-const UserTable = ({ users }) => {
+const UserTable = ({ users, onSuccess, onError }) => {
     return (
         <TableContainer component={Paper}>
             <Table>
@@ -197,7 +199,7 @@ const UserTable = ({ users }) => {
                 </TableHead>
                 <TableBody>
                     {users.map((u) => (
-                        <UserRow key={u.username} user={u} />
+                        <UserRow key={u.username} user={u} onSuccess={onSuccess} onError={onError}/>
                     ))}
                 </TableBody>
             </Table>
@@ -208,7 +210,27 @@ const UserTable = ({ users }) => {
 
 const ManageUsers = () => {
     const [users, setUsers] = useState([])
+
+    const [openAlert, setOpenAlert] = useState(false)
+    const [alertHelperText, setAlertHelperText] = useState("")
+    const [severityAlert, setSeverityAlert] = useState("error")
+
     const classes = useStyles()
+
+    const onSuccess = () => {
+        setOpenAlert(true)
+        setSeverityAlert("success")
+        setAlertHelperText("Modificações salvas")
+        window.location.reload()
+    }
+
+    const onError = () => {
+        setOpenAlert(false)
+        setSeverityAlert("error")
+        setAlertHelperText("Ocorreu um erro. Tente novamente mais tarde.")
+    }
+
+    const handleAlertClose = () => setOpenAlert(false)
 
     useEffect(() => {
         axiosProfile.post("api/token/refresh/", {
@@ -233,7 +255,14 @@ const ManageUsers = () => {
 
     return (
         <Container maxWidth="lg" className={classes.container}>
-            <UserTable users={users} />
+            <UserTable users={users} onSuccess={onSuccess} onError={onError} />
+
+            <PopUpAlert
+                open={openAlert}
+                handleClose={handleAlertClose}
+                severity={severityAlert}
+                helperText={alertHelperText}
+            />
         </Container>
     )
 }
