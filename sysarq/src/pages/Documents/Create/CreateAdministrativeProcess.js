@@ -315,7 +315,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							process_number: processNumber,
 							cpf_cnpj: personRegistry,
 							interested: interestedPerson,
-							subject_id: subject.id,
+							document_name_id: subject.id,
 							dest_unity_id: destinationUnit.id,
 							sender_unity: senderUnit.id,
 							sender_user: publicWorker !== undefined ? publicWorker.id : null,
@@ -375,7 +375,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						.then((responseAdministrative) => {
 							axiosArchives
 								.get(
-									`document-subject/${responseAdministrative.data.subject_id}/`,
+									`document-name/${responseAdministrative.data.document_name_id}/`,
 									{
 										headers: {
 											Authorization: `JWT ${localStorage.getItem("tk")}`,
@@ -502,7 +502,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 				}
 
 				axiosArchives
-					.get("document-subject/", {
+					.get("document-name/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => {
