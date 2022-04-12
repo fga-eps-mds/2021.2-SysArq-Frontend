@@ -13,6 +13,25 @@ export const initialPeriod = new Date(
 
 const formatDateNumber = (number) => `0${number}`.slice(-2);
 
+const arrayMes = new Array(12);
+arrayMes[0] = "jan";
+arrayMes[1] = "fev";
+arrayMes[2] = "mar";
+arrayMes[3] = "abr";
+arrayMes[4] = "mai";
+arrayMes[5] = "jun";
+arrayMes[6] = "jul";
+arrayMes[7] = "ago";
+arrayMes[8] = "set";
+arrayMes[9] = "out";
+arrayMes[10] = "nov";
+arrayMes[11] = "dez";
+
+export const formatDateName = (date) =>
+	`${date.getFullYear()}-${
+		arrayMes[date.getMonth()]
+	}`;
+
 export const formatDate = (date) =>
 	`${date.getFullYear()}-${formatDateNumber(
 		date.getMonth() + 1
@@ -47,6 +66,7 @@ export function logout() {
 	localStorage.removeItem("tk");
 	localStorage.removeItem("tkr");
 	localStorage.removeItem("isLogged");
+	localStorage.removeItem("user_type");
 	window.location = "/login";
 }
 
@@ -125,6 +145,100 @@ export function autocompl(
 					label="Servidor, CPF*"
 					error={publicWorkerHelperText !== ""}
 					helperText={publicWorkerHelperText}
+				/>
+			)}
+		/>
+	);
+}
+
+export function parseJwt(token) {
+	const base64Payload = token.split(".")[1];
+	const payload = Buffer.from(base64Payload, "base64");
+	return JSON.parse(payload.toString());
+}
+
+export const userTypeMap = {
+	AD: 3,
+	AL: 2,
+	VI: 1,
+};
+
+export function senderWorker(
+	senderPublicWorkers,
+	senderPublicWorkerInput,
+	handleSenderPublicWorkerChange,
+	setSenderPublicWorkerInput,
+	senderPublicWorkerOptions,
+	senderPublicWorkerHelperText
+) {
+	return (
+		<Autocomplete
+			id="workerName"
+			data-testid="autocomplete"
+			value={senderPublicWorkers.name}
+			onChange={(event, newValue) => {
+				handleSenderPublicWorkerChange(newValue);
+			}}
+			inputValue={senderPublicWorkerInput}
+			onInputChange={(event, newInputValue) => {
+				setSenderPublicWorkerInput(newInputValue);
+			}}
+			options={senderPublicWorkerOptions.sort(
+				(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+			)}
+			groupBy={(option) => option.firstLetter}
+			getOptionLabel={(option) => `${option.name}, ${maskBr.cpf(option.cpf)}`}
+			getOptionSelected={(option, value) => option.name === value.name}
+			autoHighlight
+			renderInput={(params) => (
+				<TextField
+					// eslint-disable-next-line
+					{...params}
+					value={params.value}
+					label="Servidor que encaminhou*"
+					error={senderPublicWorkerHelperText !== ""}
+					helperText={senderPublicWorkerHelperText}
+				/>
+			)}
+		/>
+	);
+}
+
+export function receiverWorker(
+	receiverPublicWorkers,
+	receiverPublicWorkerInput,
+	handleReceiverPublicWorkerChange,
+	setReceiverPublicWorkerInput,
+	receiverPublicWorkerOptions,
+	receiverPublicWorkerHelperText
+) {
+	return (
+		<Autocomplete
+			id="workerName"
+			data-testid="autocomplete"
+			value={receiverPublicWorkers.name}
+			onChange={(event, newValue) => {
+				handleReceiverPublicWorkerChange(newValue);
+			}}
+			inputValue={receiverPublicWorkerInput}
+			onInputChange={(event, newInputValue) => {
+				setReceiverPublicWorkerInput(newInputValue);
+			}}
+			options={receiverPublicWorkerOptions.sort(
+				(a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+			)}
+			groupBy={(option) => option.firstLetter}
+			getOptionLabel={(option) => `${option.name}, ${maskBr.cpf(option.cpf)}`}
+			getOptionSelected={(option, value) => option.name === value.name}
+			autoHighlight
+			renderInput={(params) => (
+				<TextField
+					// eslint-disable-next-line
+					{...params}
+					value={params.value}
+					label="Servidor que recebeu*"
+					error={receiverPublicWorkerHelperText !== ""}
+					helperText={receiverPublicWorkerHelperText}
 				/>
 			)}
 		/>
