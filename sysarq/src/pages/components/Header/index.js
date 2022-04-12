@@ -25,16 +25,16 @@ function Header() {
 			<label htmlFor="bt_menu">&#9776;</label>
 
 			<div className="div-media">
-				<ul>
+				<ul>		
+					<li>
+						<a href="/search">Pesquisar</a>
+					</li>
+
 					{(userType === "AD" || userType === "AL") && (
 						<li>
 							<a href="/documents">Cadastro</a>
 						</li>
 					)}
-
-					<li>
-						<a href="/search">Pesquisar</a>
-					</li>
 
 					{(userType === "AD" || userType === "AL") && (
 						<li>
@@ -61,7 +61,12 @@ function Header() {
 				</ul>
 			</div>
 
-			<BottomNavigation showLabels>
+			<BottomNavigation showLabels>				
+				<BottomNavigationAction
+					label="Pesquisar"
+					href="/search"
+					icon={<StarsIcon />}
+				/>
 				{(userType === "AD" || userType === "AL") && (
 					<BottomNavigationAction
 						label="Cadastro"
@@ -69,11 +74,6 @@ function Header() {
 						icon={<StarsIcon />}
 					/>
 				)}
-				<BottomNavigationAction
-					label="Pesquisar"
-					href="/search"
-					icon={<StarsIcon />}
-				/>
 				{(userType === "AD" || userType === "AL") && (
 					<BottomNavigationAction
 						label="Campos Obrigatórios"
