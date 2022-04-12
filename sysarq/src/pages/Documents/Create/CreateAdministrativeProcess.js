@@ -278,7 +278,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							sender_user: publicWorker !== undefined ? publicWorker.id : null,
 							is_filed: isStatusFiled(status),
 							is_eliminated: status === "Eliminado",
-							unity_id:
+							administrative_unity_id:
 								status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
 							send_date:
 								unarchiveDate !== null && status === "Desarquivado"
@@ -370,10 +370,10 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							if (
 								!responseAdministrative.data.is_eliminated &&
 								!responseAdministrative.data.is_filed &&
-								responseAdministrative.data.unity_id
+								responseAdministrative.data.administrative_unity_id
 							) {
 								axiosArchives
-									.get(`unity/${responseAdministrative.data.unity_id}/`, {
+									.get(`unity/${responseAdministrative.data.administrative_unity_id}/`, {
 										headers: {
 											Authorization: `JWT ${localStorage.getItem("tk")}`,
 										},
