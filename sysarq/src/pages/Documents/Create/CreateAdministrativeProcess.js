@@ -15,7 +15,6 @@ import {
 	MenuItem,
 	FormHelperText,
 	Typography,
-	Divider,
 } from "@material-ui/core";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
@@ -50,15 +49,9 @@ const useStyles = makeStyles(() => ({
 	sectionTitle: {
 		width: "100%",
 		textAlign: "left",
-		color: "#5289B5",
+		color: "#1f3541",
 		fontWeight: "bold",
 		fontFamily: ['"Montserrat"', "sans-serif"],
-	},
-	divider: {
-		marginTop: "8px",
-		backgroundColor: "#5289B5",
-		height: "3px",
-		marginBottom: "8px",
 	},
 }));
 
@@ -802,184 +795,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							)}
 						</Grid>
 
-						<Grid item xs={12} sm={12} md={12}>
-							<Typography className={classes.sectionTitle}>
-								Localização do Arquivo:
-							</Typography>
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									id="shelf"
-									label="Estante"
-									value={shelfDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<FormControl fullWidth error={shelfHelperText !== ""}>
-									<InputLabel id="select-shelf-label">Estante*</InputLabel>
-									<Select
-										labelId="select-shelf-label"
-										id="select-shelf"
-										value={shelf}
-										onChange={handleShelfChange}
-										renderValue={(value) => `${value.number}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{shelfs.map((shelfOption) => (
-											<MenuItem key={shelfOption.id} value={shelfOption}>
-												{shelfOption.number}
-											</MenuItem>
-										))}
-									</Select>
-									{shelfHelperText && (
-										<FormHelperText>{shelfHelperText}</FormHelperText>
-									)}
-								</FormControl>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									id="rack"
-									label="Prateleira"
-									value={rackDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<FormControl fullWidth error={rackHelperText !== ""}>
-									<InputLabel id="select-rack-label">Prateleira*</InputLabel>
-
-									<Select
-										labelId="select-rack-label"
-										id="select-rack"
-										value={rack}
-										onChange={handleRackChange}
-										renderValue={(value) => `${value.number}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{racks.map((rackOption) => (
-											<MenuItem key={rackOption.id} value={rackOption}>
-												{rackOption.number}
-											</MenuItem>
-										))}
-									</Select>
-									{rackHelperText && (
-										<FormHelperText>{rackHelperText}</FormHelperText>
-									)}
-								</FormControl>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									id="file-location"
-									label="Localidade"
-									value={fileLocationDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<FormControl fullWidth error={fileLocationHelperText !== ""}>
-									<InputLabel id="select-file_location-label">
-										Localidade*
-									</InputLabel>
-
-									<Select
-										labelId="select-file_location-label"
-										id="select-file_location"
-										value={fileLocation}
-										onChange={handleFileLocationChange}
-										renderValue={(value) => `${value.file}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{fileLocations.map((fileLocationOption) => (
-											<MenuItem
-												key={fileLocationOption.id}
-												value={fileLocationOption}
-											>
-												{fileLocationOption.file}
-											</MenuItem>
-										))}
-									</Select>
-									{fileLocationHelperText && (
-										<FormHelperText>{fileLocationHelperText}</FormHelperText>
-									)}
-								</FormControl>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={12}>
-							<Divider className={classes.divider} />
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={12}>
-							<Typography className={classes.sectionTitle}>
-								Caixa de Arquivamento:
-							</Typography>
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={6}>
-							{detail ? (
-								<TextField
-									fullWidth
-									label="Sigla da Caixa"
-									value={boxAbbreviationDetail}
-								/>
-							) : (
-								<FormControl fullWidth error={boxAbbreviationHelperText !== ""}>
-									<InputLabel id="select-box_abbreviation-label">
-										Sigla da Caixa*
-									</InputLabel>
-									<Select
-										labelId="select-box_abbreviation-label"
-										id="select-box_abbreviation"
-										value={boxAbbreviation}
-										onChange={(event) => {
-											setBoxAbbreviation(event.target.value);
-											setBoxAbbreviationHelperText("");
-										}}
-										renderValue={(value) => `${value.abbreviation}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{boxAbbreviations.map((boxAbbreviationOption) => (
-											<MenuItem
-												key={boxAbbreviationOption.id}
-												value={boxAbbreviationOption}
-											>
-												{boxAbbreviationOption.abbreviation}
-											</MenuItem>
-										))}
-									</Select>
-
-									{boxAbbreviationHelperText !== "" && (
-										<FormHelperText>{boxAbbreviationHelperText}</FormHelperText>
-									)}
-								</FormControl>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={12}>
-							<Divider className={classes.divider} />
-						</Grid>
-
 						<Grid item xs={12} sm={12} md={4}>
 							{detail ? (
 								<TextField
@@ -1144,6 +959,176 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							""
 						)}
 
+<Grid item xs={12} sm={12} md={12}>
+							<Typography className={classes.sectionTitle}>
+								Localização do Arquivo:
+							</Typography>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="shelf"
+									label="Estante"
+									value={shelfDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<FormControl fullWidth error={shelfHelperText !== ""}>
+									<InputLabel id="select-shelf-label">Estante*</InputLabel>
+									<Select
+										labelId="select-shelf-label"
+										id="select-shelf"
+										value={shelf}
+										onChange={handleShelfChange}
+										renderValue={(value) => `${value.number}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{shelfs.map((shelfOption) => (
+											<MenuItem key={shelfOption.id} value={shelfOption}>
+												{shelfOption.number}
+											</MenuItem>
+										))}
+									</Select>
+									{shelfHelperText && (
+										<FormHelperText>{shelfHelperText}</FormHelperText>
+									)}
+								</FormControl>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="rack"
+									label="Prateleira"
+									value={rackDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<FormControl fullWidth error={rackHelperText !== ""}>
+									<InputLabel id="select-rack-label">Prateleira*</InputLabel>
+
+									<Select
+										labelId="select-rack-label"
+										id="select-rack"
+										value={rack}
+										onChange={handleRackChange}
+										renderValue={(value) => `${value.number}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{racks.map((rackOption) => (
+											<MenuItem key={rackOption.id} value={rackOption}>
+												{rackOption.number}
+											</MenuItem>
+										))}
+									</Select>
+									{rackHelperText && (
+										<FormHelperText>{rackHelperText}</FormHelperText>
+									)}
+								</FormControl>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="file-location"
+									label="Localidade"
+									value={fileLocationDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<FormControl fullWidth error={fileLocationHelperText !== ""}>
+									<InputLabel id="select-file_location-label">
+										Localidade*
+									</InputLabel>
+
+									<Select
+										labelId="select-file_location-label"
+										id="select-file_location"
+										value={fileLocation}
+										onChange={handleFileLocationChange}
+										renderValue={(value) => `${value.file}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{fileLocations.map((fileLocationOption) => (
+											<MenuItem
+												key={fileLocationOption.id}
+												value={fileLocationOption}
+											>
+												{fileLocationOption.file}
+											</MenuItem>
+										))}
+									</Select>
+									{fileLocationHelperText && (
+										<FormHelperText>{fileLocationHelperText}</FormHelperText>
+									)}
+								</FormControl>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={12}>
+							<Typography className={classes.sectionTitle}>
+								Caixa de Arquivamento:
+							</Typography>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={12}>
+							{detail ? (
+								<TextField
+									fullWidth
+									label="Sigla da Caixa"
+									value={boxAbbreviationDetail}
+								/>
+							) : (
+								<FormControl fullWidth error={boxAbbreviationHelperText !== ""}>
+									<InputLabel id="select-box_abbreviation-label">
+										Sigla da Caixa*
+									</InputLabel>
+									<Select
+										labelId="select-box_abbreviation-label"
+										id="select-box_abbreviation"
+										value={boxAbbreviation}
+										onChange={(event) => {
+											setBoxAbbreviation(event.target.value);
+											setBoxAbbreviationHelperText("");
+										}}
+										renderValue={(value) => `${value.abbreviation}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{boxAbbreviations.map((boxAbbreviationOption) => (
+											<MenuItem
+												key={boxAbbreviationOption.id}
+												value={boxAbbreviationOption}
+											>
+												{boxAbbreviationOption.abbreviation}
+											</MenuItem>
+										))}
+									</Select>
+
+									{boxAbbreviationHelperText !== "" && (
+										<FormHelperText>{boxAbbreviationHelperText}</FormHelperText>
+									)}
+								</FormControl>
+							)}
+						</Grid>
+						
 						<NotesInput
 							set={setNotes}
 							notes={notesLocal}
