@@ -298,20 +298,12 @@ const CreateBoxArchiving = ({ detail }) => {
 
 	const handleAlertClose = () => setOpenAlert(false);
 
-	const connectionError = () => {
+	const connectionError = (value) => {
 		setLoading(false);
 
 		setOpenAlert(true);
 		setSeverityAlert("error");
 
-		setAlertHelperText(
-			"Verifique sua conexão com a internet e recarregue a página."
-		);
-	};
-
-	const handleRequestError = (value) => {
-		setOpenAlert(true);
-		setSeverityAlert("error");
 		if (value === 400) {
 			setAlertHelperText("O N° do processo já existe");
 		} else {
@@ -414,7 +406,7 @@ const CreateBoxArchiving = ({ detail }) => {
 							axiosProfileError(err);
 							return false;
 						}
-						handleRequestError(err.response.status);
+						connectionError(err.response.status);
 						return false;
 					});
 			})

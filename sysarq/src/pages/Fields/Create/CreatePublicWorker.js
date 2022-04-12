@@ -43,14 +43,6 @@ export default function CreatePublicWorker() {
 		setOpenAlert(true);
 		setSeverityAlert("error");
 
-		setAlertHelperText(
-			"Verifique sua conexão com a internet e recarregue a página."
-		);
-	};
-
-	const handleRequestError = (value) => {
-		setOpenAlert(true);
-		setSeverityAlert("error");
 		if (value === 400) {
 			setAlertHelperText("O CPF já existe");
 		} else {
@@ -106,7 +98,7 @@ export default function CreatePublicWorker() {
 							axiosProfileError(err);
 							return false;
 						}
-						handleRequestError(err.response.status);
+						connectionError(err.response.status);
 						return false;
 					});
 				return res;
