@@ -39,7 +39,7 @@ export default function CreatePublicWorker() {
 		setOpenAlert(false);
 	};
 
-	const connectionError = () => {
+	const connectionError = (value) => {
 		setOpenAlert(true);
 		setSeverityAlert("error");
 
