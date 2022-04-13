@@ -71,6 +71,16 @@ import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 import DataTable from "../../components/DataTable";
 
+const isStatusFiled = (status) => {
+	if (status === "Arquivado") {
+		return true;
+	}
+	if (status === "Desarquivado") {
+		return false;
+	}
+	return null;
+}
+
 const CreateBoxArchiving = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
@@ -142,7 +152,6 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(detail);
-
 	const handleOpenNewOriginBoxDialog = () => setOpenNewOriginBoxDialog(true);
 
 	const handleCloseNewOriginBoxDialog = () => setOpenNewOriginBoxDialog(false);
@@ -418,8 +427,9 @@ const CreateBoxArchiving = ({ detail }) => {
 							document_url: "", //
 							cover_sheet: "", //
 							filer_user: "filer_user", //
+							is_filed: isStatusFiled(status),
 							is_eliminated: status === "Eliminado",
-							unity_id:
+							box_unity_id:
 								status === "Desarquivado" ? unarchiveDestinationUnit.id: "",
 							send_date:
 								unarchiveDate !== null && status === "Desarquivado"
@@ -445,9 +455,6 @@ const CreateBoxArchiving = ({ detail }) => {
 	};
 
 	useEffect(() => {
-		if (detail) {
-			setLoading(true);
-
 			axiosProfile
 				.post(`api/token/refresh/`, {
 					refresh: localStorage.getItem("tkr"),
@@ -456,23 +463,25 @@ const CreateBoxArchiving = ({ detail }) => {
 					localStorage.setItem("tk", res.data.access);
 					localStorage.setItem("tkr", res.data.refresh);
 
-					axiosArchives
+					if (detail) {
+						setLoading(true);
+
+						axiosArchives
 						.get(`box-archiving/${params.id}`, {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseBoxArchiving) => {
-							// axiosArchives
-							// 	.get(`unity/${responseBoxArchiving.data.sender_unity}/`, {
-							// 		headers: {
-							// 			Authorization: `JWT ${localStorage.getItem("tk")}`,
-							// 		},
-							// 	})
-							// 	.then((response) => {
-							// 		setSenderUnit(response.data);
-							// 	})
-							// 	.catch(() => connectionError());
-
-							setSenderUnitDetail(responseBoxArchiving.data.sender_unity_name);
+							axiosArchives
+								.get(`unity/${responseBoxArchiving.data.sender_unity}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setSenderUnit(response.data);
+									setSenderUnitDetail(response.data.unity_name);
+								})
+								.catch(() => connectionError());
 
 							setShelfDetail(
 								responseBoxArchiving.data.shelf_number
@@ -482,15 +491,6 @@ const CreateBoxArchiving = ({ detail }) => {
 							setRackDetail(
 								responseBoxArchiving.data.rack_number
 									? responseBoxArchiving.data.rack_number
-									: "-"
-							);
-
-							setProcessNumber(responseBoxArchiving.data.process_number);
-							setReceivedDate(responseBoxArchiving.data.received_date);
-
-							setNotes(
-								responseBoxArchiving.data.notes
-									? responseBoxArchiving.data.notes
 									: "-"
 							);
 
@@ -519,10 +519,10 @@ const CreateBoxArchiving = ({ detail }) => {
 							if (
 								!responseBoxArchiving.data.is_eliminated &&
 								!responseBoxArchiving.data.is_filed &&
-								responseBoxArchiving.data.unity_id
+								responseBoxArchiving.data.box_unity_id
 							) {
 								axiosArchives
-									.get(`box-archiving/${responseBoxArchiving.data.unity_id}/`,{
+									.get(`unity/${responseBoxArchiving.data.box_unity_id}/`,{
 										headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 									})
 									.then((response) => {
@@ -551,10 +551,11 @@ const CreateBoxArchiving = ({ detail }) => {
 									responseBoxArchiving.data.send_date
 										? responseBoxArchiving.data.send_date
 										: "-"
-								)
+								);
 							}
 
 							setProcessNumber(responseBoxArchiving.data.processNumber);
+							setReceivedDate(responseBoxArchiving.data.received_date);
 							
 							setNotes(
 								responseBoxArchiving.data.notes
@@ -565,11 +566,11 @@ const CreateBoxArchiving = ({ detail }) => {
 							setLoading(false);
 						})
 						.catch(() => connectionError());
+					}
 				})
 				.catch((error) => {
 					axiosProfileError(error, connectionError);
 				});
-		}
 
 		getUnits(setUnits, connectionError);
 	}, []);
