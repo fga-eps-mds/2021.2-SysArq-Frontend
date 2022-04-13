@@ -89,7 +89,6 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [notes, setNotes] = useState("");
 	const [boxnotes, setBoxNotes] = useState("");
 	const [originBox, setOriginBox] = useState({});
-	// const [file, setFile] = useState("");
 
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
@@ -412,16 +411,6 @@ const CreateBoxArchiving = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseBoxArchiving) => {
-							// axiosArchives
-							// 	.get(`unity/${responseBoxArchiving.data.sender_unity}/`, {
-							// 		headers: {
-							// 			Authorization: `JWT ${localStorage.getItem("tk")}`,
-							// 		},
-							// 	})
-							// 	.then((response) => {
-							// 		setSenderUnit(response.data);
-							// 	})
-							// 	.catch(() => connectionError());
 
 							setSenderUnitDetail(responseBoxArchiving.data.sender_unity_name);
 
@@ -871,29 +860,6 @@ const CreateBoxArchiving = ({ detail }) => {
 						</Button>
 					</DialogActions>
 				</Dialog>
-
-				{/* <DropzoneDialog
-				// <Button onClick={() => setOpen(true)}>Abrir</Button>
-				dropzoneClass={{ color: "#fff" }}
-				dropzoneParagraphClass={{ text: { color: "#fff" } }}
-				filesLimit={1}
-				dialogTitle="Anexar Documento Externo"
-				cancelButtonText="CANCELAR"
-				submitButtonText="CONFIRMAR"
-				showFileNamesInPreview
-				dropzoneText="Arraste e Solte seu Arquivo ou Clique"
-				// open={open}
-				// onSave={() => setOpen(false)}
-				acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
-				showPreviews={false}
-				maxFileSize={5000000}
-				// onClose={() => setOpen(false)}
-				// onChange={() => setOpen(false)}
-				getFileLimitExceedMessage={() => "Alo"}
-				getFileAddedMessage={(rejected) => `${rejected}Alo`}
-				getFileRemovedMessage
-				getDropRejectMessage
-			/> */}
 
 				<DocumentsCreate
 					isDetailPage={detail}
