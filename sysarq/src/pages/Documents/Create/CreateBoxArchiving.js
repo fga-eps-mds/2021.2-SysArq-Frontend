@@ -367,11 +367,11 @@ const CreateBoxArchiving = ({ detail }) => {
 					.post(
 						"box-archiving/",
 						{
-							origin_box_id: originBox,
+							origin_boxes: originBox,
 							process_number: processNumber,
 							sender_unity: senderUnit.id,
 							notes,
-							boxnotes,
+							box_notes: boxnotes,
 							received_date: formatDate(receivedDate),
 							document_url: "", //
 							cover_sheet: "", //
