@@ -60,7 +60,9 @@ import AddChip from "../../components/AddChip";
 
 import ShelfInput from "../../components/Inputs/ShelfInput";
 import RackInput from "../../components/Inputs/RackInput";
+import FileLocationInput from "../../components/Inputs/FileLocationInput";
 import NotesInput from "../../components/Inputs/NotesInput";
+import BoxesNotesInput from "../../components/Inputs/BoxNotesInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
@@ -73,6 +75,7 @@ const CreateBoxArchiving = ({ detail }) => {
 
 	const [shelfDetail, setShelfDetail] = useState("");
 	const [rackDetail, setRackDetail] = useState("");
+	const [fileLocationDetail, setFileLocationDetail] = useState("");
 
 	const [units, setUnits] = useState([]);
 
@@ -82,7 +85,9 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [box, setBox] = useState("");
 	const [shelf, setShelf] = useState("");
 	const [rack, setRack] = useState("");
+	const [fileLocation, setFileLocation] = useState("");
 	const [notes, setNotes] = useState("");
+	const [boxnotes, setBoxNotes] = useState("");
 	const [originBox, setOriginBox] = useState({});
 	// const [file, setFile] = useState("");
 
@@ -318,7 +323,9 @@ const CreateBoxArchiving = ({ detail }) => {
 		setBox("");
 		setShelf("");
 		setRack("");
+		setFileLocation("");
 		setNotes("");
+		setBoxNotes("");
 		window.location.reload();
 	};
 
@@ -356,7 +363,7 @@ const CreateBoxArchiving = ({ detail }) => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
-
+				// TO-DO
 				axiosArchives
 					.post(
 						"box-archiving/",
@@ -365,6 +372,7 @@ const CreateBoxArchiving = ({ detail }) => {
 							process_number: processNumber,
 							sender_unity: senderUnit.id,
 							notes,
+							boxnotes,
 							received_date: formatDate(receivedDate),
 							document_url: "", //
 							cover_sheet: "", //
@@ -372,6 +380,7 @@ const CreateBoxArchiving = ({ detail }) => {
 							abbreviation_id: box.id === undefined ? "" : box.id,
 							shelf_id: shelf.id === undefined ? "" : shelf.id,
 							rack_id: rack.id === undefined ? "" : rack.id, //
+							file_location_id: fileLocation.id === undefined ? "" : rack.id,
 							document_names: []
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
@@ -427,12 +436,24 @@ const CreateBoxArchiving = ({ detail }) => {
 									: "-"
 							);
 
+							setFileLocationDetail(
+								responseBoxArchiving.data.file_location_file
+									? responseBoxArchiving.data.file_location_file
+									: "-"
+							);
+
 							setProcessNumber(responseBoxArchiving.data.process_number);
 							setReceivedDate(responseBoxArchiving.data.received_date);
 
 							setNotes(
 								responseBoxArchiving.data.notes
 									? responseBoxArchiving.data.notes
+									: "-"
+							);
+
+							setBoxNotes(
+								responseBoxArchiving.data.box_notes
+									? responseBoxArchiving.data.box_notes
 									: "-"
 							);
 
@@ -530,7 +551,7 @@ const CreateBoxArchiving = ({ detail }) => {
 														<TableRow>
 															<TableCell>Assunto</TableCell>
 															<TableCell>Datas</TableCell>
-															{detail ? "" : <TableCell>{}</TableCell>}
+															{detail ? "" : <TableCell>{ }</TableCell>}
 														</TableRow>
 													</TableHead>
 													<TableBody>
@@ -561,10 +582,10 @@ const CreateBoxArchiving = ({ detail }) => {
 																						detail
 																							? false
 																							: () =>
-																									handleDeleteOriginBoxSubjectDate(
-																										subjectIndex,
-																										addedDate
-																									)
+																								handleDeleteOriginBoxSubjectDate(
+																									subjectIndex,
+																									addedDate
+																								)
 																					}
 																				/>
 																			))}
@@ -611,6 +632,9 @@ const CreateBoxArchiving = ({ detail }) => {
 														)}
 													</TableBody>
 												</Table>
+
+
+
 											</TableContainer>
 
 											{detail ? (
@@ -652,7 +676,58 @@ const CreateBoxArchiving = ({ detail }) => {
 												</div>
 											)}
 										</div>
+
 									</AccordionDetails>
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "space-between",
+											marginBottom: 20,
+											marginLeft: 20,
+											marginRight: 20,
+										}}
+									>
+										<FileLocationInput
+											set={setFileLocation}
+											connectionError={connectionError}
+											isDetailPage={detail}
+											fileLocationDetail={fileLocationDetail}
+											fileLocation={fileLocation}
+										/>
+
+										<ShelfInput
+											set={setShelf}
+											connectionError={connectionError}
+											isDetailPage={detail}
+											shelfDetail={shelfDetail}
+											shelf={shelf}
+										/>
+
+										<RackInput
+											set={setRack}
+											connectionError={connectionError}
+											isDetailPage={detail}
+											rackDetail={rackDetail}
+											rack={rack}
+										/>
+									</div>
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "space-between",
+											marginBottom: 20,
+											marginLeft: 20,
+											marginRight: 20,
+										}}
+									>
+										<BoxesNotesInput
+											set={setBoxNotes}
+											notes={boxnotes}
+											isDetailPage={detail}
+										/>
+
+									</div>
+
 								</Accordion>
 							) : (
 								<ChipsContainer justifyContent="left" marginTop="0%">
@@ -666,23 +741,9 @@ const CreateBoxArchiving = ({ detail }) => {
 									)}
 								</ChipsContainer>
 							)}
+
+
 						</Grid>
-
-						<ShelfInput
-							set={setShelf}
-							connectionError={connectionError}
-							isDetailPage={detail}
-							shelfDetail={shelfDetail}
-							shelf={shelf}
-						/>
-
-						<RackInput
-							set={setRack}
-							connectionError={connectionError}
-							isDetailPage={detail}
-							rackDetail={rackDetail}
-							rack={rack}
-						/>
 
 						<NotesInput set={setNotes} notes={notes} isDetailPage={detail} />
 					</>
