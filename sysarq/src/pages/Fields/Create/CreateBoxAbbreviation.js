@@ -111,6 +111,8 @@ export default function CreateBoxAbbreviation() {
 		setboxAbbreviationError(false);
 
 		setboxAbbreviationHelperText("");
+		setBoxAbbreviation("");
+		setBoxName("");
 		return null;
 	};
 

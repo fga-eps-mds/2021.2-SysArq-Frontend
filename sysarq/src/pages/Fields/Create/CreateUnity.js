@@ -115,6 +115,14 @@ export default function CreateUnity() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
+		
+		setUnityName("");
+		setUnityAbbreviation("");
+		setAdiministrativeBond("");
+		setBondAbbreviation("");
+		setCounty("");
+		setTelephoneNumber("");
+		setNote("");
 		return null;
 	};
 

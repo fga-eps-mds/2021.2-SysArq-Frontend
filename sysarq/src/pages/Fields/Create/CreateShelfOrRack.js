@@ -187,12 +187,15 @@ export default function CreateShelfOrRack({ urlType }) {
 
 		setShelfNumberError(false);
 		setShelfHelperText("");
+		setNumberE("");
 
 		setRackNumberError(false);
 		setRackHelperText("");
+		setNumberP("");
 		
 		setFileLocationNumberError(false)
 		setFileLocationHelperText("");
+		setFileLocation("");
 
 		return null;
 	};
