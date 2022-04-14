@@ -219,6 +219,17 @@ const CreateFrequencyRelation = ({ detail }) => {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
+		
+		setProcessNumber("");
+		setReceivedDate(null);
+		setDocumentType("");
+		setSenderUnit("");
+		setSenderPublicWorkerInput("");
+		setSenderPublicWorker(undefined);
+		setReceiverPublicWorkerInput("");
+		setReceiverPublicWorker(undefined);
+		setNotes("");
+		setReferencePeriod([]);
 
 		return "post done";
 	};
