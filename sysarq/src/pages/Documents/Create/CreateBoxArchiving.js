@@ -429,7 +429,7 @@ const CreateBoxArchiving = ({ detail }) => {
 							filer_user: "filer_user", //
 							is_filed: isStatusFiled(status),
 							is_eliminated: status === "Eliminado",
-							box_unity_id:
+							unity_id:
 								status === "Desarquivado" ? unarchiveDestinationUnit.id: "",
 							send_date:
 								unarchiveDate !== null && status === "Desarquivado"
@@ -519,10 +519,10 @@ const CreateBoxArchiving = ({ detail }) => {
 							if (
 								!responseBoxArchiving.data.is_eliminated &&
 								!responseBoxArchiving.data.is_filed &&
-								responseBoxArchiving.data.box_unity_id
+								responseBoxArchiving.data.unity_id
 							) {
 								axiosArchives
-									.get(`unity/${responseBoxArchiving.data.box_unity_id}/`,{
+									.get(`unity/${responseBoxArchiving.data.unity_id}/`,{
 										headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 									})
 									.then((response) => {
