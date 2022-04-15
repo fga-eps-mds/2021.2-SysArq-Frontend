@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
@@ -82,13 +83,20 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [processNumber, setProcessNumber] = useState("");
 	const [receivedDate, setReceivedDate] = useState(detail ? "" : null);
 	const [senderUnit, setSenderUnit] = useState("");
-	const [box, setBox] = useState("");
-	const [shelf, setShelf] = useState("");
-	const [rack, setRack] = useState("");
-	const [fileLocation, setFileLocation] = useState("");
+	// const [box, setBox] = useState("");
+	// const [shelf, setShelf] = useState("");
+	// const [rack, setRack] = useState("");
+	// const [fileLocation, setFileLocation] = useState("");
 	const [notes, setNotes] = useState("");
-	const [boxnotes, setBoxNotes] = useState("");
-	const [originBox, setOriginBox] = useState({});
+	// const [boxnotes, setBoxNotes] = useState("");
+	const [originBox, setOriginBox] = useState([{}]);
+
+  /*
+*  originbox: {
+*   shelf: ...,
+*   rack: ...
+*  }
+* */
 
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
@@ -168,7 +176,8 @@ const CreateBoxArchiving = ({ detail }) => {
 			subjects_list: [],
 		};
 
-		setOriginBox(newOriginBox);
+		setOriginBox(prev => [...prev, newOriginBox]);
+    console.log(originBox)
 		setOpenNewOriginBoxDialog(false);
 
 		return "added originBox";
@@ -319,12 +328,12 @@ const CreateBoxArchiving = ({ detail }) => {
 		setNewOriginBoxSubject("");
 		setNewOriginBoxSubjectDate(initialDate);
 
-		setBox("");
-		setShelf("");
-		setRack("");
-		setFileLocation("");
-		setNotes("");
-		setBoxNotes("");
+		// setBox("");
+		// setShelf("");
+		// setRack("");
+		// setFileLocation("");
+		// setNotes("");
+		// setBoxNotes("");
 		window.location.reload();
 	};
 
@@ -367,20 +376,28 @@ const CreateBoxArchiving = ({ detail }) => {
 					.post(
 						"box-archiving/",
 						{
-							origin_boxes: originBox,
-							process_number: processNumber,
-							sender_unity: senderUnit.id,
-							notes,
-							box_notes: boxnotes,
-							received_date: formatDate(receivedDate),
-							document_url: "", //
-							cover_sheet: "", //
-							filer_user: "filer_user", //
-							abbreviation_id: box.id === undefined ? "" : box.id,
-							shelf_id: shelf.id === undefined ? "" : shelf.id,
-							rack_id: rack.id === undefined ? "" : rack.id, //
-							file_location_id: fileLocation.id === undefined ? "" : rack.id,
-							document_names: []
+							// origin_boxes: originBox,
+							// process_number: processNumber,
+							// sender_unity: senderUnit.id,
+							// notes,
+							// box_notes: boxnotes,
+							// received_date: formatDate(receivedDate),
+							// document_url: "", //
+							// cover_sheet: "", //
+							// filer_user: "filer_user", //
+							// abbreviation_id: box.id === undefined ? "" : box.id,
+							// shelf_id: shelf.id === undefined ? "" : shelf.id,
+							// rack_id: rack.id === undefined ? "" : rack.id, //
+							// file_location_id: fileLocation.id === undefined ? "" : rack.id,
+							// document_names: []
+              origin_boxes: originBox,
+              process_number: processNumber,
+              sender_unity: senderUnit.id,
+              notes,
+              received_date: formatDate(receivedDate),
+              document_url: "",
+              cover_sheet: "",
+              filer_user: "",
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -440,11 +457,11 @@ const CreateBoxArchiving = ({ detail }) => {
 									: "-"
 							);
 
-							setBoxNotes(
-								responseBoxArchiving.data.box_notes
-									? responseBoxArchiving.data.box_notes
-									: "-"
-							);
+							// setBoxNotes(
+							// 	responseBoxArchiving.data.box_notes
+							// 		? responseBoxArchiving.data.box_notes
+							// 		: "-"
+							// );
 
 							// TO-DO: Coesão nos nomes de variáveis da caixa de origem
 
@@ -465,7 +482,8 @@ const CreateBoxArchiving = ({ detail }) => {
 									subjects_list: subjectsListDetail,
 								};
 
-								setOriginBox(originBoxDetail);
+								setOriginBox(prev => [...prev, originBoxDetail]);
+                
 							}
 
 							setLoading(false);
@@ -522,11 +540,21 @@ const CreateBoxArchiving = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							<SpecialLabels label="Caixa de Origem" />
 
-							{originBox.number !== undefined ? (
+								<ChipsContainer justifyContent="left" marginTop="0%">
+									{detail ? (
+										<Chip label="Não cadastrada" />
+									) : (
+										<AddChip
+											label="Adicionar Caixa de Origem"
+											onClick={handleOpenNewOriginBoxDialog}
+										/>
+									)}
+								</ChipsContainer>
+                {originBox.filter((box) => box.number !== undefined).map((box) => (
 								<Accordion>
 									<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 										<Typography>
-											{originBox.number}/{originBox.year}
+											{box.number}/{box.year}
 										</Typography>
 									</AccordionSummary>
 									<AccordionDetails>
@@ -544,7 +572,7 @@ const CreateBoxArchiving = ({ detail }) => {
 														</TableRow>
 													</TableHead>
 													<TableBody>
-														{originBox.subjects_list.map(
+														{box.subjects_list.map(
 															(subject, subjectIndex) => (
 																<TableRow key={subject.name}>
 																	<TableCell>{subject.name}</TableCell>
@@ -677,27 +705,27 @@ const CreateBoxArchiving = ({ detail }) => {
 										}}
 									>
 										<FileLocationInput
-											set={setFileLocation}
+											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? {...b, file_location: value} : b))}
 											connectionError={connectionError}
 											isDetailPage={detail}
 											fileLocationDetail={fileLocationDetail}
-											fileLocation={fileLocation}
+											fileLocation={box.file_location}
 										/>
 
 										<ShelfInput
-											set={setShelf}
+											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? {...b, shelf: value} : b))}
 											connectionError={connectionError}
 											isDetailPage={detail}
 											shelfDetail={shelfDetail}
-											shelf={shelf}
+											shelf={box.shelf}
 										/>
 
 										<RackInput
-											set={setRack}
+											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? {...b, rack: value} : b))}
 											connectionError={connectionError}
 											isDetailPage={detail}
 											rackDetail={rackDetail}
-											rack={rack}
+											rack={box.rack}
 										/>
 									</div>
 									<div
@@ -710,26 +738,15 @@ const CreateBoxArchiving = ({ detail }) => {
 										}}
 									>
 										<BoxesNotesInput
-											set={setBoxNotes}
-											notes={boxnotes}
+											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? {...b, box_notes: value} : b))}
+											notes={box.box_notes}
 											isDetailPage={detail}
 										/>
 
 									</div>
 
 								</Accordion>
-							) : (
-								<ChipsContainer justifyContent="left" marginTop="0%">
-									{detail ? (
-										<Chip label="Não cadastrada" />
-									) : (
-										<AddChip
-											label="Adicionar Caixa de Origem"
-											onClick={handleOpenNewOriginBoxDialog}
-										/>
-									)}
-								</ChipsContainer>
-							)}
+							))}
 
 
 						</Grid>
