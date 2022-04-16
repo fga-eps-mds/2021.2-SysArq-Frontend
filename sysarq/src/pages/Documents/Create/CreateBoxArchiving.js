@@ -171,22 +171,28 @@ const CreateBoxArchiving = ({ detail }) => {
 		}
 
 		const newOriginBox = {
+      id: getNextId(),
 			number: newOriginBoxNumber,
 			year: newOriginBoxYear,
 			subjects_list: [],
 		};
 
 		setOriginBox(prev => [...prev, newOriginBox]);
-    console.log(originBox)
 		setOpenNewOriginBoxDialog(false);
 
 		return "added originBox";
 	};
 
-	const handleDeleteOriginBox = () => setOriginBox({});
+  useEffect(() => console.log(originBox), [originBox])
 
-	const handleOpenNewOriginBoxSubjectDialog = () =>
+  useEffect(() => originBox.filter((b) => b.number === undefined), [originBox])
+
+  const [currentBox, setCurrentBox] = useState({})
+
+	const handleOpenNewOriginBoxSubjectDialog = (box) => {
 		setOpenNewOriginBoxSubjectDialog(true);
+    setCurrentBox(box)
+  }
 
 	const handleCloseNewOriginBoxSubjectDialog = () =>
 		setOpenNewOriginBoxSubjectDialog(false);
@@ -196,39 +202,50 @@ const CreateBoxArchiving = ({ detail }) => {
 		setNewOriginBoxSubject(event.target.value);
 	};
 
-	const handleAddNewOriginBoxSubject = () => {
+	const handleAddNewOriginBoxSubject = (b) => {
 		if (newOriginBoxSubject === "") {
 			setNewOriginBoxSubjectHelperText("Insira um assunto");
 			return "newOriginBoxSubject error";
 		}
 
-		const newOriginBox = originBox;
+    // b {}
+    // originBox [{}]
 
-		newOriginBox.subjects_list.push({
-			name: newOriginBoxSubject,
-			dates: [],
-		});
+		// const newOriginBox = b;
 
-		setOriginBox(newOriginBox);
+		// b.subjects_list.push({
+		// 	name: newOriginBoxSubject,
+		// 	dates: [],
+		// });
+
+    setOriginBox(prev => prev.map((box) => box.id === b.id ? {...box, subjects_list: [...box.subjects_list ?? [], {name: newOriginBoxSubject, dates: []}]} : box))
+    // setOriginBox(prev => prev.map((box, index) => index === boxIndex ? {...box, subjects_list: [...box.subjects_list ?? [], {name: newOriginBoxSubject, dates: []}]} : box))
 		setOpenNewOriginBoxSubjectDialog(false);
 
 		return "added originBoxSubject";
 	};
 
-	const handleDeleteOriginBoxSubject = (originBoxSubjectIndex) => {
-		originBox.subjects_list.splice(originBoxSubjectIndex, 1);
+	const handleDeleteOriginBoxSubject = (box, originBoxSubjectIndex) => {
+		// originBox.subjects_list.splice(originBoxSubjectIndex, 1);
+		//
+		// const newOriginBox = {
+		// 	number: originBox.number,
+		// 	year: originBox.year,
+		// 	subjects_list: originBox.subjects_list,
+		// };
 
-		const newOriginBox = {
-			number: originBox.number,
-			year: originBox.year,
-			subjects_list: originBox.subjects_list,
-		};
+    const newBox = {...box, subjects_list: box.subjects_list.filter((_, index) => index !== originBoxSubjectIndex)}
+    setOriginBox(prev => prev.map((b) => b.id === box.id ? newBox : b))
 
-		setOriginBox(newOriginBox);
+
+    // setOriginBox(prev => prev.filter((_, index) => index != originBoxSubjectIndex))
+    // setOriginBox(prev => prev.map((b) => box.id === b.id && b.subjects_list.filter((_, index) => index !== originBoxSubjectIndex)))
+		// setOriginBox(newOriginBox);
 	};
 
-	const handleOpenNewOriginBoxSubjectDateDialog = (originBoxSubjectIndex) => {
+	const handleOpenNewOriginBoxSubjectDateDialog = (box, originBoxSubjectIndex) => {
 		setSelectedOriginBoxSubjectIndex(originBoxSubjectIndex);
+    setCurrentBox(box)
 		setOpenNewOriginBoxSubjectDateDialog(true);
 	};
 
@@ -242,7 +259,7 @@ const CreateBoxArchiving = ({ detail }) => {
 		setNewOriginBoxSubjectDate(date);
 	};
 
-	const handleAddNewOriginBoxSubjectDate = () => {
+	const handleAddNewOriginBoxSubjectDate = (box, subjectIndex) => {
 		if (
 			isDateNotValid(
 				newOriginBoxSubjectDate,
@@ -257,45 +274,64 @@ const CreateBoxArchiving = ({ detail }) => {
 		const newOriginBox = originBox;
 		const formattedDate = formatDate(newOriginBoxSubjectDate);
 
-		if (
-			newOriginBox.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(
-				formattedDate
-			) !== -1
-		) {
-			setNewOriginBoxSubjectDateHelperText("Data já adicionada");
-			return "newOriginBoxSubjectDate already added error";
-		}
+    console.log('box')
+    console.log(box)
 
-		newOriginBox.subjects_list[selectedOriginBoxSubjectIndex].dates.push(
-			formattedDate
-		);
+    if (box.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(formattedDate) != -1) {
+        setNewOriginBoxSubjectDateHelperText("Data já adicionada");
+        return "newOriginBoxSubjectDate already added error";
+    }
 
-		setOriginBox(newOriginBox);
+    const newBox = {...box, subjects_list: box.subjects_list.map((s, i) => i === selectedOriginBoxSubjectIndex ? {...s, dates: [...s.dates, formattedDate]} : s)}
+    setOriginBox(prev => prev.map(b => b.id === box.id ? newBox : b))
+
+		// if (
+		// 	newOriginBox.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(
+		// 		formattedDate
+		// 	) !== -1
+		// ) {
+		// 	setNewOriginBoxSubjectDateHelperText("Data já adicionada");
+		// 	return "newOriginBoxSubjectDate already added error";
+		// }
+		//
+		// newOriginBox.subjects_list[selectedOriginBoxSubjectIndex].dates.push(
+		// 	formattedDate
+		// );
+		//
+		// setOriginBox(newOriginBox);
+
 		setOpenNewOriginBoxSubjectDateDialog(false);
 
 		return "added newOriginBoxSubjectDate";
 	};
 
 	const handleDeleteOriginBoxSubjectDate = (
+    box,
 		originBoxSubjectIndex,
 		deletedOriginBoxSubjectDate
 	) => {
-		const originBoxSubjectDates =
-			originBox.subjects_list[originBoxSubjectIndex].dates;
+		// const originBoxSubjectDates =
+		// 	originBox.subjects_list[originBoxSubjectIndex].dates;
+		//
+		// originBox.subjects_list[originBoxSubjectIndex].dates =
+		// 	originBoxSubjectDates.filter(
+		// 		(item) => item !== deletedOriginBoxSubjectDate
+		// 	);
+		//
+		// // Changes the reference for the screen to be updated
+		// const newOriginBox = {
+		// 	number: originBox.number,
+		// 	year: originBox.year,
+		// 	subjects_list: originBox.subjects_list,
+		// };
+		//
+		// s etOriginBox(newOriginBox);
 
-		originBox.subjects_list[originBoxSubjectIndex].dates =
-			originBoxSubjectDates.filter(
-				(item) => item !== deletedOriginBoxSubjectDate
-			);
+    const newDates = box.subjects_list[originBoxSubjectIndex].dates.filter((date) => date !== deletedOriginBoxSubjectDate)
+    const newBox = box
+    newBox.subjects_list[originBoxSubjectIndex].dates = newDates
 
-		// Changes the reference for the screen to be updated
-		const newOriginBox = {
-			number: originBox.number,
-			year: originBox.year,
-			subjects_list: originBox.subjects_list,
-		};
-
-		setOriginBox(newOriginBox);
+    setOriginBox(prev => prev.map((b) => b.id === box.id ? newBox : b))
 	};
 
 	const handleAlertClose = () => setOpenAlert(false);
@@ -364,6 +400,19 @@ const CreateBoxArchiving = ({ detail }) => {
 			return "senderUnit error";
 		}
 
+
+    const payload = {
+      process_number: processNumber,
+      sender_unity: senderUnit.id,
+      notes,
+      received_date: formatDate(receivedDate),
+      document_url: "",
+      cover_sheet: "",
+      filer_user: "",
+      origin_boxes: null
+    }
+
+
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -390,7 +439,7 @@ const CreateBoxArchiving = ({ detail }) => {
 							// rack_id: rack.id === undefined ? "" : rack.id, //
 							// file_location_id: fileLocation.id === undefined ? "" : rack.id,
 							// document_names: []
-              origin_boxes: originBox,
+              origin_boxes: originBox.filter((b) => b.number !== undefined),
               process_number: processNumber,
               sender_unity: senderUnit.id,
               notes,
@@ -410,6 +459,13 @@ const CreateBoxArchiving = ({ detail }) => {
 
 		return "post done";
 	};
+
+  const [id, setId] = useState(1)
+
+  const getNextId = () => {
+    setId(i => i + 1);
+    return id - 1;
+  }
 
 	useEffect(() => {
 		if (detail) {
@@ -477,6 +533,7 @@ const CreateBoxArchiving = ({ detail }) => {
 								);
 
 								const originBoxDetail = {
+                  id: getNextId(),
 									number: responseBoxArchiving.data.origin_box.number,
 									year: responseBoxArchiving.data.origin_box.year,
 									subjects_list: subjectsListDetail,
@@ -550,7 +607,7 @@ const CreateBoxArchiving = ({ detail }) => {
 										/>
 									)}
 								</ChipsContainer>
-                {originBox.filter((box) => box.number !== undefined).map((box) => (
+                {originBox.filter((box) => box.id !== undefined).map((box) => (
 								<Accordion>
 									<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 										<Typography>
@@ -585,9 +642,6 @@ const CreateBoxArchiving = ({ detail }) => {
 																				<Chip
 																					icon={<TimelapseIcon />}
 																					label={`${addedDate.substring(
-																						8,
-																						10
-																					)}/${addedDate.substring(
 																						5,
 																						7
 																					)}/${addedDate.substring(0, 4)}`}
@@ -600,6 +654,7 @@ const CreateBoxArchiving = ({ detail }) => {
 																							? false
 																							: () =>
 																								handleDeleteOriginBoxSubjectDate(
+                                                  box,
 																									subjectIndex,
 																									addedDate
 																								)
@@ -614,6 +669,7 @@ const CreateBoxArchiving = ({ detail }) => {
 																					label="Adicionar Data"
 																					onClick={() =>
 																						handleOpenNewOriginBoxSubjectDateDialog(
+                                              box,
 																							subjectIndex
 																						)
 																					}
@@ -637,6 +693,7 @@ const CreateBoxArchiving = ({ detail }) => {
 																					clickable
 																					onClick={() =>
 																						handleDeleteOriginBoxSubject(
+                                              box,
 																							subjectIndex
 																						)
 																					}
@@ -672,7 +729,7 @@ const CreateBoxArchiving = ({ detail }) => {
 															color="secondary"
 															label="Excluir Caixa de Origem"
 															icon={<DeleteForeverRoundedIcon />}
-															onClick={() => handleDeleteOriginBox()}
+															onClick={() => setOriginBox(prev => prev.filter((b) => b.id !== box.id))}
 															clickable
 														/>
 													</ChipsContainer>
@@ -685,7 +742,7 @@ const CreateBoxArchiving = ({ detail }) => {
 															icon={<AddCircleIcon />}
 															color="primary"
 															onClick={() =>
-																handleOpenNewOriginBoxSubjectDialog()
+																handleOpenNewOriginBoxSubjectDialog(box)
 															}
 															clickable
 														/>
@@ -828,7 +885,7 @@ const CreateBoxArchiving = ({ detail }) => {
 						>
 							Cancelar
 						</Button>
-						<Button onClick={handleAddNewOriginBoxSubject} color="primary">
+						<Button onClick={() => handleAddNewOriginBoxSubject(currentBox)} color="primary">
 							Confirmar
 						</Button>
 					</DialogActions>
@@ -849,10 +906,12 @@ const CreateBoxArchiving = ({ detail }) => {
 							style={{ width: "100%" }}
 							id="newOriginBoxSubject-date-picker-dialog"
 							label="Data*"
-							format="dd/MM/yyyy"
+							format="MM/yyyy"
 							value={newOriginBoxSubjectDate}
 							onChange={handleNewOriginBoxSubjectDateChange}
 							okLabel="Confirmar"
+              openTo="year"
+              views={["year", "month"]}
 							cancelLabel=""
 							clearable
 							clearLabel="Limpar"
@@ -872,7 +931,7 @@ const CreateBoxArchiving = ({ detail }) => {
 						>
 							Cancelar
 						</Button>
-						<Button onClick={handleAddNewOriginBoxSubjectDate} color="primary">
+						<Button onClick={() => handleAddNewOriginBoxSubjectDate(currentBox)} color="primary">
 							Confirmar
 						</Button>
 					</DialogActions>
