@@ -278,6 +278,7 @@ const CreateBoxArchiving = ({ detail }) => {
 
 		console.log('box')
 		console.log(box)
+		console.log(box.subjects_list.document_name_id.document_name)
 
 		if (box.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(formattedDate) != -1) {
 			setNewOriginBoxSubjectDateHelperText("Data já adicionada");
@@ -406,12 +407,13 @@ const CreateBoxArchiving = ({ detail }) => {
 		const payload = {
 			process_number: processNumber,
 			sender_unity: senderUnit.id,
-			notes,
+			notes: notes,
 			received_date: formatDate(receivedDate),
 			document_url: "",
 			cover_sheet: "",
 			filer_user: "",
-			origin_boxes: null
+
+
 		}
 
 
@@ -639,8 +641,8 @@ const CreateBoxArchiving = ({ detail }) => {
 													<TableBody>
 														{box.subjects_list.map(
 															(subject, subjectIndex) => (
-																<TableRow key={subject.name}>
-																	<TableCell>{subject.name}</TableCell>
+																<TableRow key={subject.document_name_id.document_name}>
+																	<TableCell>{subject.document_name_id.document_name}</TableCell>
 																	<TableCell>
 																		<ChipsContainer
 																			justifyContent="left"
@@ -875,11 +877,11 @@ const CreateBoxArchiving = ({ detail }) => {
 					</DialogTitle>
 					<DialogContent>
 						<DocumentInput
-							set={handleNewOriginBoxSubjectChange}
+							set={setNewOriginBoxSubject}
 							connectionError={connectionError}
 							isDetailPage={detail}
 							documentDetail={documentDetail}
-							document={currentBox.subject}
+							document={newOriginBoxSubject}
 						/>
 					</DialogContent>
 					<DialogActions>
