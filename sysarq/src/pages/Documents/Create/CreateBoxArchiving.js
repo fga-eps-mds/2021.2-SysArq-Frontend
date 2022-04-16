@@ -53,6 +53,7 @@ import DocumentsDetail from "../../components/Actions/DocumentsDetail";
 import NumberProcessInput from "../../components/Inputs/NumberProcessInput";
 import ReceivedDateInput from "../../components/Inputs/ReceivedDateInput";
 import SenderUnitInput from "../../components/Inputs/SenderUnitInput";
+import DocumentInput from "../../components/Inputs/DocumentInput";
 
 import SpecialLabels from "../../components/SpecialLabels";
 
@@ -77,6 +78,7 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [shelfDetail, setShelfDetail] = useState("");
 	const [rackDetail, setRackDetail] = useState("");
 	const [fileLocationDetail, setFileLocationDetail] = useState("");
+	const [documentDetail, setDocumentDetail] = useState("");
 
 	const [units, setUnits] = useState([]);
 
@@ -91,12 +93,12 @@ const CreateBoxArchiving = ({ detail }) => {
 	// const [boxnotes, setBoxNotes] = useState("");
 	const [originBox, setOriginBox] = useState([{}]);
 
-  /*
-*  originbox: {
-*   shelf: ...,
-*   rack: ...
-*  }
-* */
+	/*
+  *  originbox: {
+  *   shelf: ...,
+  *   rack: ...
+  *  }
+  * */
 
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
@@ -171,7 +173,7 @@ const CreateBoxArchiving = ({ detail }) => {
 		}
 
 		const newOriginBox = {
-      id: getNextId(),
+			id: getNextId(),
 			number: newOriginBoxNumber,
 			year: newOriginBoxYear,
 			subjects_list: [],
@@ -183,16 +185,16 @@ const CreateBoxArchiving = ({ detail }) => {
 		return "added originBox";
 	};
 
-  useEffect(() => console.log(originBox), [originBox])
+	useEffect(() => console.log(originBox), [originBox])
 
-  useEffect(() => originBox.filter((b) => b.number === undefined), [originBox])
+	useEffect(() => originBox.filter((b) => b.number === undefined), [originBox])
 
-  const [currentBox, setCurrentBox] = useState({})
+	const [currentBox, setCurrentBox] = useState({})
 
 	const handleOpenNewOriginBoxSubjectDialog = (box) => {
 		setOpenNewOriginBoxSubjectDialog(true);
-    setCurrentBox(box)
-  }
+		setCurrentBox(box)
+	}
 
 	const handleCloseNewOriginBoxSubjectDialog = () =>
 		setOpenNewOriginBoxSubjectDialog(false);
@@ -208,8 +210,8 @@ const CreateBoxArchiving = ({ detail }) => {
 			return "newOriginBoxSubject error";
 		}
 
-    // b {}
-    // originBox [{}]
+		// b {}
+		// originBox [{}]
 
 		// const newOriginBox = b;
 
@@ -218,8 +220,8 @@ const CreateBoxArchiving = ({ detail }) => {
 		// 	dates: [],
 		// });
 
-    setOriginBox(prev => prev.map((box) => box.id === b.id ? {...box, subjects_list: [...box.subjects_list ?? [], {name: newOriginBoxSubject, dates: []}]} : box))
-    // setOriginBox(prev => prev.map((box, index) => index === boxIndex ? {...box, subjects_list: [...box.subjects_list ?? [], {name: newOriginBoxSubject, dates: []}]} : box))
+		setOriginBox(prev => prev.map((box) => box.id === b.id ? { ...box, subjects_list: [...box.subjects_list ?? [], { document_name_id: newOriginBoxSubject, dates: [] }] } : box))
+		// setOriginBox(prev => prev.map((box, index) => index === boxIndex ? {...box, subjects_list: [...box.subjects_list ?? [], {name: newOriginBoxSubject, dates: []}]} : box))
 		setOpenNewOriginBoxSubjectDialog(false);
 
 		return "added originBoxSubject";
@@ -234,18 +236,18 @@ const CreateBoxArchiving = ({ detail }) => {
 		// 	subjects_list: originBox.subjects_list,
 		// };
 
-    const newBox = {...box, subjects_list: box.subjects_list.filter((_, index) => index !== originBoxSubjectIndex)}
-    setOriginBox(prev => prev.map((b) => b.id === box.id ? newBox : b))
+		const newBox = { ...box, subjects_list: box.subjects_list.filter((_, index) => index !== originBoxSubjectIndex) }
+		setOriginBox(prev => prev.map((b) => b.id === box.id ? newBox : b))
 
 
-    // setOriginBox(prev => prev.filter((_, index) => index != originBoxSubjectIndex))
-    // setOriginBox(prev => prev.map((b) => box.id === b.id && b.subjects_list.filter((_, index) => index !== originBoxSubjectIndex)))
+		// setOriginBox(prev => prev.filter((_, index) => index != originBoxSubjectIndex))
+		// setOriginBox(prev => prev.map((b) => box.id === b.id && b.subjects_list.filter((_, index) => index !== originBoxSubjectIndex)))
 		// setOriginBox(newOriginBox);
 	};
 
 	const handleOpenNewOriginBoxSubjectDateDialog = (box, originBoxSubjectIndex) => {
 		setSelectedOriginBoxSubjectIndex(originBoxSubjectIndex);
-    setCurrentBox(box)
+		setCurrentBox(box)
 		setOpenNewOriginBoxSubjectDateDialog(true);
 	};
 
@@ -274,16 +276,16 @@ const CreateBoxArchiving = ({ detail }) => {
 		const newOriginBox = originBox;
 		const formattedDate = formatDate(newOriginBoxSubjectDate);
 
-    console.log('box')
-    console.log(box)
+		console.log('box')
+		console.log(box)
 
-    if (box.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(formattedDate) != -1) {
-        setNewOriginBoxSubjectDateHelperText("Data já adicionada");
-        return "newOriginBoxSubjectDate already added error";
-    }
+		if (box.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(formattedDate) != -1) {
+			setNewOriginBoxSubjectDateHelperText("Data já adicionada");
+			return "newOriginBoxSubjectDate already added error";
+		}
 
-    const newBox = {...box, subjects_list: box.subjects_list.map((s, i) => i === selectedOriginBoxSubjectIndex ? {...s, dates: [...s.dates, formattedDate]} : s)}
-    setOriginBox(prev => prev.map(b => b.id === box.id ? newBox : b))
+		const newBox = { ...box, subjects_list: box.subjects_list.map((s, i) => i === selectedOriginBoxSubjectIndex ? { ...s, dates: [...s.dates, formattedDate] } : s) }
+		setOriginBox(prev => prev.map(b => b.id === box.id ? newBox : b))
 
 		// if (
 		// 	newOriginBox.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(
@@ -306,7 +308,7 @@ const CreateBoxArchiving = ({ detail }) => {
 	};
 
 	const handleDeleteOriginBoxSubjectDate = (
-    box,
+		box,
 		originBoxSubjectIndex,
 		deletedOriginBoxSubjectDate
 	) => {
@@ -327,11 +329,11 @@ const CreateBoxArchiving = ({ detail }) => {
 		//
 		// s etOriginBox(newOriginBox);
 
-    const newDates = box.subjects_list[originBoxSubjectIndex].dates.filter((date) => date !== deletedOriginBoxSubjectDate)
-    const newBox = box
-    newBox.subjects_list[originBoxSubjectIndex].dates = newDates
+		const newDates = box.subjects_list[originBoxSubjectIndex].dates.filter((date) => date !== deletedOriginBoxSubjectDate)
+		const newBox = box
+		newBox.subjects_list[originBoxSubjectIndex].dates = newDates
 
-    setOriginBox(prev => prev.map((b) => b.id === box.id ? newBox : b))
+		setOriginBox(prev => prev.map((b) => b.id === box.id ? newBox : b))
 	};
 
 	const handleAlertClose = () => setOpenAlert(false);
@@ -401,16 +403,16 @@ const CreateBoxArchiving = ({ detail }) => {
 		}
 
 
-    const payload = {
-      process_number: processNumber,
-      sender_unity: senderUnit.id,
-      notes,
-      received_date: formatDate(receivedDate),
-      document_url: "",
-      cover_sheet: "",
-      filer_user: "",
-      origin_boxes: null
-    }
+		const payload = {
+			process_number: processNumber,
+			sender_unity: senderUnit.id,
+			notes,
+			received_date: formatDate(receivedDate),
+			document_url: "",
+			cover_sheet: "",
+			filer_user: "",
+			origin_boxes: null
+		}
 
 
 		axiosProfile
@@ -439,14 +441,14 @@ const CreateBoxArchiving = ({ detail }) => {
 							// rack_id: rack.id === undefined ? "" : rack.id, //
 							// file_location_id: fileLocation.id === undefined ? "" : rack.id,
 							// document_names: []
-              origin_boxes: originBox.filter((b) => b.number !== undefined),
-              process_number: processNumber,
-              sender_unity: senderUnit.id,
-              notes,
-              received_date: formatDate(receivedDate),
-              document_url: "",
-              cover_sheet: "",
-              filer_user: "",
+							origin_boxes: originBox.filter((b) => b.number !== undefined),
+							process_number: processNumber,
+							sender_unity: senderUnit.id,
+							notes,
+							received_date: formatDate(receivedDate),
+							document_url: "",
+							cover_sheet: "",
+							filer_user: "",
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -460,12 +462,12 @@ const CreateBoxArchiving = ({ detail }) => {
 		return "post done";
 	};
 
-  const [id, setId] = useState(1)
+	const [id, setId] = useState(1)
 
-  const getNextId = () => {
-    setId(i => i + 1);
-    return id - 1;
-  }
+	const getNextId = () => {
+		setId(i => i + 1);
+		return id - 1;
+	}
 
 	useEffect(() => {
 		if (detail) {
@@ -504,6 +506,12 @@ const CreateBoxArchiving = ({ detail }) => {
 									: "-"
 							);
 
+							setDocumentDetail(
+								responseBoxArchiving.data.document_name
+									? responseBoxArchiving.data.document_name
+									: "-"
+							);
+
 							setProcessNumber(responseBoxArchiving.data.process_number);
 							setReceivedDate(responseBoxArchiving.data.received_date);
 
@@ -527,20 +535,20 @@ const CreateBoxArchiving = ({ detail }) => {
 								responseBoxArchiving.data.origin_box.subject_list.map(
 									(subject) =>
 										subjectsListDetail.push({
-											name: subject.name,
+											name: subject.document_name_id,
 											dates: subject.date,
 										})
 								);
 
 								const originBoxDetail = {
-                  id: getNextId(),
+									id: getNextId(),
 									number: responseBoxArchiving.data.origin_box.number,
 									year: responseBoxArchiving.data.origin_box.year,
 									subjects_list: subjectsListDetail,
 								};
 
 								setOriginBox(prev => [...prev, originBoxDetail]);
-                
+
 							}
 
 							setLoading(false);
@@ -595,19 +603,19 @@ const CreateBoxArchiving = ({ detail }) => {
 						/>
 
 						<Grid item xs={12} sm={12} md={12}>
-							<SpecialLabels label="Caixa de Origem" />
+							<SpecialLabels label="Caixa(s) para Arquivamento" />
 
-								<ChipsContainer justifyContent="left" marginTop="0%">
-									{detail ? (
-										<Chip label="Não cadastrada" />
-									) : (
-										<AddChip
-											label="Adicionar Caixa de Origem"
-											onClick={handleOpenNewOriginBoxDialog}
-										/>
-									)}
-								</ChipsContainer>
-                {originBox.filter((box) => box.id !== undefined).map((box) => (
+							<ChipsContainer justifyContent="left" marginTop="0%">
+								{detail ? (
+									<Chip label="Não cadastrada" />
+								) : (
+									<AddChip
+										label="Adicionar Caixa para Arquivamento"
+										onClick={handleOpenNewOriginBoxDialog}
+									/>
+								)}
+							</ChipsContainer>
+							{originBox.filter((box) => box.id !== undefined).map((box) => (
 								<Accordion>
 									<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 										<Typography>
@@ -623,8 +631,8 @@ const CreateBoxArchiving = ({ detail }) => {
 												<Table size="small">
 													<TableHead>
 														<TableRow>
-															<TableCell>Assunto</TableCell>
-															<TableCell>Datas</TableCell>
+															<TableCell>Nome do Documento</TableCell>
+															<TableCell>Datas do Documento</TableCell>
 															{detail ? "" : <TableCell>{ }</TableCell>}
 														</TableRow>
 													</TableHead>
@@ -654,7 +662,7 @@ const CreateBoxArchiving = ({ detail }) => {
 																							? false
 																							: () =>
 																								handleDeleteOriginBoxSubjectDate(
-                                                  box,
+																									box,
 																									subjectIndex,
 																									addedDate
 																								)
@@ -669,7 +677,7 @@ const CreateBoxArchiving = ({ detail }) => {
 																					label="Adicionar Data"
 																					onClick={() =>
 																						handleOpenNewOriginBoxSubjectDateDialog(
-                                              box,
+																							box,
 																							subjectIndex
 																						)
 																					}
@@ -693,7 +701,7 @@ const CreateBoxArchiving = ({ detail }) => {
 																					clickable
 																					onClick={() =>
 																						handleDeleteOriginBoxSubject(
-                                              box,
+																							box,
 																							subjectIndex
 																						)
 																					}
@@ -762,7 +770,7 @@ const CreateBoxArchiving = ({ detail }) => {
 										}}
 									>
 										<FileLocationInput
-											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? {...b, file_location: value} : b))}
+											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? { ...b, file_location: value } : b))}
 											connectionError={connectionError}
 											isDetailPage={detail}
 											fileLocationDetail={fileLocationDetail}
@@ -770,7 +778,7 @@ const CreateBoxArchiving = ({ detail }) => {
 										/>
 
 										<ShelfInput
-											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? {...b, shelf: value} : b))}
+											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? { ...b, shelf: value } : b))}
 											connectionError={connectionError}
 											isDetailPage={detail}
 											shelfDetail={shelfDetail}
@@ -778,7 +786,7 @@ const CreateBoxArchiving = ({ detail }) => {
 										/>
 
 										<RackInput
-											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? {...b, rack: value} : b))}
+											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? { ...b, rack: value } : b))}
 											connectionError={connectionError}
 											isDetailPage={detail}
 											rackDetail={rackDetail}
@@ -795,7 +803,7 @@ const CreateBoxArchiving = ({ detail }) => {
 										}}
 									>
 										<BoxesNotesInput
-											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? {...b, box_notes: value} : b))}
+											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? { ...b, box_notes: value } : b))}
 											notes={box.box_notes}
 											isDetailPage={detail}
 										/>
@@ -866,16 +874,12 @@ const CreateBoxArchiving = ({ detail }) => {
 						Novo Assunto
 					</DialogTitle>
 					<DialogContent>
-						<TextField
-							fullWidth
-							id="newOriginBoxSubject"
-							label="Assunto*"
-							value={newOriginBoxSubject}
-							onChange={handleNewOriginBoxSubjectChange}
-							error={newOriginBoxSubjectHelperText !== ""}
-							helperText={newOriginBoxSubjectHelperText}
-							inputProps={{ maxLength: 100 }}
-							multiline
+						<DocumentInput
+							set={handleNewOriginBoxSubjectChange}
+							connectionError={connectionError}
+							isDetailPage={detail}
+							documentDetail={documentDetail}
+							document={currentBox.subject}
 						/>
 					</DialogContent>
 					<DialogActions>
@@ -910,8 +914,8 @@ const CreateBoxArchiving = ({ detail }) => {
 							value={newOriginBoxSubjectDate}
 							onChange={handleNewOriginBoxSubjectDateChange}
 							okLabel="Confirmar"
-              openTo="year"
-              views={["year", "month"]}
+							openTo="year"
+							views={["year", "month"]}
 							cancelLabel=""
 							clearable
 							clearLabel="Limpar"
