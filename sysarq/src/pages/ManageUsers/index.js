@@ -153,8 +153,8 @@ const UserRow = ({ user, onSuccess, onError }) => {
         <>
             <TableRow className={classes.root}>
                 <TableCell>
-                    <Button size="small" style={{ color: "#fe0000", marginBottom: "5px" }} onClick={() => onDelete()}>Excluir</Button>
-                   <Button size="small" color="secondary" disabled={invalid || user.id === 1} onClick={() => onSave()}>Salvar</Button>
+                    <Button size="small" style={{ color: "#fe0000", marginBottom: "5px" }} disabled={user.id === 1} onClick={() => onDelete()}>Excluir</Button>
+                    <Button size="small" color="secondary" disabled={invalid} onClick={() => onSave()}>Salvar</Button>
                 </TableCell>
                 <TableCell component="th" scope="root">
                     <TextField value={state.username} name="username" onChange={handleChange}/>
