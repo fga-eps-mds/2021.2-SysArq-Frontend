@@ -1,10 +1,9 @@
-/* eslint-disable */
-
 import { useEffect, useState } from "react"
-import { axiosProfile } from "../../Api"
-import {Button, Select, MenuItem, TextField, Box, IconButton, Collapse, makeStyles, Container, Paper, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from "@material-ui/core"
+import {Button, Select, MenuItem, TextField, makeStyles, Container, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from "@material-ui/core"
 import InputMask from "react-input-mask"
 import {validateBr} from "js-brasil"
+import PropTypes from 'prop-types';
+import { axiosProfile } from "../../Api"
 import PopUpAlert from "../components/PopUpAlert"
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
         "& > *": {
             borderBottom: "unset"
         }
-    }
+    },
 }));
 
 const UserRow = ({ user, onSuccess, onError }) => {
@@ -68,8 +67,6 @@ const UserRow = ({ user, onSuccess, onError }) => {
         cpf: user.cpf
     })
 
-    console.log(user)
-
     const [invalid, setInvalid] = useState(false)
 
     const handleChange = (e) => {
@@ -81,11 +78,8 @@ const UserRow = ({ user, onSuccess, onError }) => {
         }))
     }
 
-    useEffect(() => {
-        setInvalid(checkInvalid())
-    }, [state])
-
     const checkInvalid = () => {
+        /* eslint-disable-next-line no-restricted-syntax */
         for (const val of Object.values(state)) {
             if (val === "" || val === null || val === undefined) {
                 return true 
@@ -102,6 +96,10 @@ const UserRow = ({ user, onSuccess, onError }) => {
 
         return false 
     }
+
+    useEffect(() => {
+        setInvalid(checkInvalid())
+    }, [state])
 
     const onSave = () => {
         axiosProfile.post("api/token/refresh/", {
@@ -130,6 +128,11 @@ const UserRow = ({ user, onSuccess, onError }) => {
     }
 
     const onDelete = () => {
+        if (user.id === 1) {
+          onError()
+          return
+        }
+
         axiosProfile.post("api/token/refresh/", {
             refresh: localStorage.getItem("tkr")
         }).then((res) => {
@@ -153,7 +156,7 @@ const UserRow = ({ user, onSuccess, onError }) => {
         <>
             <TableRow className={classes.root}>
                 <TableCell>
-                    <Button size="small" style={{ color: "#fe0000", marginBottom: "5px" }} disabled={user.id === 1} onClick={() => onDelete()}>Excluir</Button>
+                    <Button size="small" style={{ marginBottom: "5px" }} disabled={user.id === 1} onClick={() => onDelete()}>Excluir</Button>
                     <Button size="small" color="secondary" disabled={invalid} onClick={() => onSave()}>Salvar</Button>
                 </TableCell>
                 <TableCell component="th" scope="root">
@@ -180,25 +183,98 @@ const UserRow = ({ user, onSuccess, onError }) => {
             </TableRow>
         </>
     )
+}
 
+UserRow.propTypes = {
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    user_type: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    cpf: PropTypes.string.isRequired,
+  }).isRequired,
+  onSuccess: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
 }
 
 const UserTable = ({ users, onSuccess, onError }) => {
+    const [state, setState] = useState({
+        usernameFilter: "",
+        firstNameFilter: "",
+        lastNameFilter: "",
+        cpfFilter: "",
+        userTypeFilter: "",
+    });
+
+    const handleChange = (e) => {
+        const {name, value} = e.target
+
+        setState((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    const [filteredUsers, setFilteredUsers] = useState([]);
+
+    useEffect(() => setFilteredUsers([...users]), [users])
+
+    useEffect(() => {
+        setFilteredUsers(users.filter(u =>
+            u.username.toLowerCase().includes(state.usernameFilter.toLowerCase()) &&
+            u.first_name.toLowerCase().includes(state.firstNameFilter.toLowerCase()) &&
+            u.last_name.toLowerCase().includes(state.lastNameFilter.toLowerCase()) &&
+            u.cpf.replace(/\D/g, "").includes(state.cpfFilter.replace(/\D/g, "")) &&
+            u.user_type.toLowerCase().includes(state.userTypeFilter.toLowerCase())
+        ))
+    }, [state])
+
     return (
         <TableContainer component={Paper}>
             <Table>
                 <TableHead>
                     <TableRow>
                         <TableCell />
-                        <TableCell align="center">Nome de usuário</TableCell>
-                        <TableCell align="center">Nome</TableCell>
-                        <TableCell align="center">Sobrenome</TableCell>
-                        <TableCell align="center">CPF</TableCell>
-                        <TableCell align="center">Tipo</TableCell>
+                        <TableCell align="center">
+                          <div>
+                            <span>Nome de usuário</span>
+                            <TextField value={state.usernameFilter} name="usernameFilter" onChange={handleChange} /> 
+                          </div>
+                        </TableCell>
+                        <TableCell align="center">
+                          <div style={{display: "inline-block"}}>
+                            <span>Nome</span>
+                            <TextField value={state.firstNameFilter} name="firstNameFilter" onChange={handleChange} />
+                          </div>
+                        </TableCell>
+                        <TableCell align="center">
+                          <div>
+                            <span>Sobrenome</span>
+                            <TextField value={state.lastNameFilter} name="lastNameFilter" onChange={handleChange} />
+                          </div>
+                        </TableCell>
+                        <TableCell align="center">
+                          <div>
+                            <span>CPF</span>
+                            <TextField value={state.cpfFilter} name="cpfFilter" onChange={handleChange} />
+                          </div>
+                        </TableCell>
+                        <TableCell align="center">
+                          <div>
+                            <span>Tipo de usuário</span>
+                            <Select defaultValue={state.userTypeFilter} displayEmpty name="userTypeFilter" onChange={handleChange}>
+                                <MenuItem value="">Todos</MenuItem>
+                                <MenuItem value="AD">Administrador</MenuItem>
+                                <MenuItem value="AL">Alimentador</MenuItem>
+                                <MenuItem value="VI">Visualizador</MenuItem>
+                            </Select>
+                          </div>
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {users.map((u) => (
+                    {filteredUsers.map((u) => (
                         <UserRow key={u.username} user={u} onSuccess={onSuccess} onError={onError}/>
                     ))}
                 </TableBody>
@@ -207,6 +283,19 @@ const UserTable = ({ users, onSuccess, onError }) => {
     )
 }
 
+UserTable.propTypes = {
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      username: PropTypes.string.isRequired,
+      first_name: PropTypes.string.isRequired,
+      last_name: PropTypes.string.isRequired,
+      user_type: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  onSuccess: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired
+}
 
 const ManageUsers = () => {
     const [users, setUsers] = useState([])
@@ -221,7 +310,6 @@ const ManageUsers = () => {
         setOpenAlert(true)
         setSeverityAlert("success")
         setAlertHelperText("Modificações salvas")
-        window.location.reload()
     }
 
     const onError = () => {
@@ -243,15 +331,11 @@ const ManageUsers = () => {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem("tk")}`
                 }
-            }).then((res) => {
-                setUsers(res.data)
+            }).then((usersRes) => {
+                setUsers(usersRes.data)
             })
         })
     }, [])
-
-    useEffect(() => {
-        console.log(users)
-    }, [users])
 
     return (
         <Container maxWidth="lg" className={classes.container}>
