@@ -245,14 +245,6 @@ const RegisterUser = () => {
 			.catch((error) => {
 				axiosProfileError(error)
 			});
-		
-		setUsername("");
-		setUserType("");
-		setFirstName("");
-		setLastName("");
-		setCpf("");
-		setPassword("");
-		setPasswordConfirmation("");
 
 		return "Sucesso";
 	};

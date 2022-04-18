@@ -109,10 +109,7 @@ export default function CreateBoxAbbreviation() {
 				axiosProfileError(error, connectionError);
 			});
 		setboxAbbreviationError(false);
-
-		setboxAbbreviationHelperText("");
-		setBoxAbbreviation("");
-		setBoxName("");
+		
 		return null;
 	};
 

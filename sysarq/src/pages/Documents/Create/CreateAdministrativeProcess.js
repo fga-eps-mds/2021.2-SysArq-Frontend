@@ -312,16 +312,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-		
-		setNoticeDate("");
-		setArchivingDate("");
-		setReference("");
-		setProcessNumber("");
-		setInterested("");
-		setSubject("");
-		setSenderUnit("");
-		setPublicWorkerInput("");
-		setPublicWorker(undefined);
 
 		return "post done";
 	};

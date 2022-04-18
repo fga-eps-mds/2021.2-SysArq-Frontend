@@ -293,7 +293,7 @@ const CreateBoxArchiving = ({ detail }) => {
 		setOpenAlert(true);
 		setSeverityAlert("error");
 
-		if (value === 500) {
+		if (value === 400) {
 			setAlertHelperText("O N° do processo já existe");
 		} else {
 			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");

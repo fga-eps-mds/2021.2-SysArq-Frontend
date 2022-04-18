@@ -106,8 +106,7 @@ export default function CreatePublicWorker() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-		setCpf("");
-		setName("");
+			
 		return null;
 	};
 

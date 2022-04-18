@@ -109,8 +109,7 @@ export default function CreateDocumentName() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-		setDocumentName("");
-		setTemporality("");
+			
 		return null;
 	};
 
