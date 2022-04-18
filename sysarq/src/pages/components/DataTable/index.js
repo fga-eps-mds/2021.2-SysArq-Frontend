@@ -304,16 +304,16 @@ const DataTable = ({ url, title }) => {
 			}
 			return obj;
 		}
+		if (id === "info") {
+			if (row[id].indexOf("temporality hit") > -1) {
+				return <WarningIcon text="O documento atingiu sua temporalidade"/>;
+			}
+			return " ";
+		}	
 
 		if (typeof row[id] === "undefined" || row[id] === null || row[id] === "")
 			return "-";
 
-		if (id === "info") {
-			if (row[id].indexOf("temporality hit") > -1) {
-				return <WarningIcon text="- A temporalidade desse documento já foi atingida"/>;
-			}
-			return " ";
-		}	
 
 		return row[id];
 	};

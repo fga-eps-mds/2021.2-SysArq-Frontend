@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
     },
     popoverContent: {
         padding: theme.spacing(1),
-        backgroundColor: '#FAF98B',
     }
 }))
 

@@ -180,7 +180,7 @@ const administrativeProcessHeadCells = [
 	{
 		id: "info",
 		numeric: false,
-		label: "Info"
+		label: ""
 	},
 ];
 
@@ -203,7 +203,7 @@ const frequencyRelationHeadCells = [
 	{
 		id: "info",
 		numeric: false,
-		label: "Info"
+		label: ""
 	},
 ];
 
@@ -231,7 +231,7 @@ const frequencySheetHeadCells = [
 	{
 		id: "info",
 		numeric: false,
-		label: "Info"
+		label: ""
 	},
 ];
 
