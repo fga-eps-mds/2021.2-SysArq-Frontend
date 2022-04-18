@@ -554,7 +554,7 @@ const CreateBoxArchiving = ({ detail }) => {
 								);
 							}
 
-							setProcessNumber(responseBoxArchiving.data.processNumber);
+							setProcessNumber(responseBoxArchiving.data.process_number);
 							setReceivedDate(responseBoxArchiving.data.received_date);
 							
 							setNotes(
