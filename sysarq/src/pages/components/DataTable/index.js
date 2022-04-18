@@ -19,6 +19,7 @@ import {
 	TablePagination,
 } from "@material-ui/core";
 
+
 import MuiLink from "@material-ui/core/Link";
 
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -30,6 +31,7 @@ import { axiosProfile, axiosArchives } from "../../../Api";
 import { axiosProfileError } from "../../../support";
 
 import PopUpAlert from "../PopUpAlert";
+import WarningIcon from "../WarningIcon";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -186,7 +188,16 @@ const DataTable = ({ url, title }) => {
 
 								setRows(listTable);
 							} else {
-								setRows(response.data);
+								let data = [ ...response.data ]
+								// if (url !== 'box-archiving/') {
+								// 	data = handleTemporalityStatus(data);
+								// }
+								data =  data.map((item, index) => {
+									const newItem = { ...item }
+									newItem.info = index % 3 === 0 ? "temporality hit" : ""
+									return newItem;
+								})
+								setRows(data);
 							}
 
 							setUpdateTable(false);
@@ -297,6 +308,13 @@ const DataTable = ({ url, title }) => {
 		if (typeof row[id] === "undefined" || row[id] === null || row[id] === "")
 			return "-";
 
+		if (id === "info") {
+			if (row[id].indexOf("temporality hit") > -1) {
+				return <WarningIcon text="- A temporalidade desse documento já foi atingida"/>;
+			}
+			return " ";
+		}	
+
 		return row[id];
 	};
 
@@ -331,20 +349,20 @@ const DataTable = ({ url, title }) => {
 											}
 											padding="normal"
 											sortDirection={orderBy === headCell.id ? order : false}
-										>
+										>	
 											<TableSortLabel
 												active={orderBy === headCell.id}
 												direction={orderBy === headCell.id ? order : "asc"}
 												onClick={createSortHandler(headCell.id)}
 											>
 												{headCell.label}
-												{orderBy === headCell.id ? (
+												{orderBy === headCell.id && (
 													<span className={classes.visuallyHidden}>
 														{order === "desc"
 															? "sorted descending"
 															: "sorted ascending"}
 													</span>
-												) : null}
+												)}
 											</TableSortLabel>
 										</TableCell>
 
@@ -388,8 +406,8 @@ const DataTable = ({ url, title }) => {
 														{cellContent(row, headCells[headCellIndex].id)}
 													</TableCell>
 
-													{headCellIndex === headCells.length - 1 &&
-													fieldUrls.indexOf(url) !== -1 ? (
+													{(headCellIndex === headCells.length - 1 &&
+													fieldUrls.indexOf(url) !== -1) && (
 														<TableCell align="right">
 															<IconButton
 																style={{ color: "#fe0000" }}
@@ -402,8 +420,6 @@ const DataTable = ({ url, title }) => {
 																/>
 															</IconButton>
 														</TableCell>
-													) : (
-														""
 													)}
 												</>
 											)

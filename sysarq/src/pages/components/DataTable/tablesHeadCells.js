@@ -177,6 +177,11 @@ const administrativeProcessHeadCells = [
 		numeric: false,
 		label: "Assunto do Documento",
 	},
+	{
+		id: "info",
+		numeric: false,
+		label: "Info"
+	},
 ];
 
 const frequencyRelationHeadCells = [
@@ -194,6 +199,11 @@ const frequencyRelationHeadCells = [
 		id: "document_name_name",
 		numeric: false,
 		label: "Nome do Documento",
+	},
+	{
+		id: "info",
+		numeric: false,
+		label: "Info"
 	},
 ];
 
@@ -217,6 +227,11 @@ const frequencySheetHeadCells = [
 		id: "reference_period",
 		numeric: false,
 		label: "Período de Frequência",
+	},
+	{
+		id: "info",
+		numeric: false,
+		label: "Info"
 	},
 ];
 
