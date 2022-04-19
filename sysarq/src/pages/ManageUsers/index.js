@@ -13,6 +13,7 @@ import {
 	TableRow,
 	TableCell,
 	TableBody,
+	InputLabel
 } from "@material-ui/core";
 import InputMask from "react-input-mask";
 import { validateBr } from "js-brasil";
@@ -310,52 +311,61 @@ const UserTable = ({ users, onSuccess, onError }) => {
 						<TableCell />
 						<TableCell align="center">
 							<div>
-								<span>Nome de usuário</span>
 								<TextField
 									value={state.usernameFilter}
 									name="usernameFilter"
 									onChange={handleChange}
+									label="Usuário"
+									variant="outlined"
+									inputProps={{ maxLength: 50}}
 								/>
 							</div>
 						</TableCell>
 						<TableCell align="center">
 							<div style={{ display: "inline-block" }}>
-								<span>Nome</span>
 								<TextField
 									value={state.firstNameFilter}
 									name="firstNameFilter"
 									onChange={handleChange}
+									label="Nome"
+									variant="outlined"
 								/>
 							</div>
 						</TableCell>
 						<TableCell align="center">
 							<div>
-								<span>Sobrenome</span>
 								<TextField
 									value={state.lastNameFilter}
 									name="lastNameFilter"
 									onChange={handleChange}
+									label="Sobrenome"
+									variant="outlined"
 								/>
 							</div>
 						</TableCell>
 						<TableCell align="center">
 							<div>
-								<span>CPF</span>
 								<TextField
 									value={state.cpfFilter}
 									name="cpfFilter"
 									onChange={handleChange}
+									label="CPF"
+									variant="outlined"
 								/>
 							</div>
 						</TableCell>
 						<TableCell align="center">
 							<div>
-								<span>Tipo de usuário</span>
+								<InputLabel id="select-user-type-label">
+									Tipo de usuário
+									</InputLabel>
 								<Select
 									defaultValue={state.userTypeFilter}
 									displayEmpty
 									name="userTypeFilter"
 									onChange={handleChange}
+									labelId="select-user-type-label"
+									
 								>
 									<MenuItem value="">Todos</MenuItem>
 									<MenuItem value="AD">Administrador</MenuItem>
