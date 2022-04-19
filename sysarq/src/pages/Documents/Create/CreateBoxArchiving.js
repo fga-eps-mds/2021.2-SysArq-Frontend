@@ -362,7 +362,7 @@ const CreateBoxArchiving = ({ detail }) => {
 		setReceivedDate(initialDate);
 		setSenderUnit("");
 
-		setOriginBox({});
+		setOriginBox([{}]);
 		setNewOriginBoxNumber("");
 		setNewOriginBoxYear("");
 		setNewOriginBoxSubject("");
@@ -405,12 +405,12 @@ const CreateBoxArchiving = ({ detail }) => {
 		}
 
     const formattedOriginBoxes = originBox.filter(b => b.id !== undefined).map((b) => ({
-      box_notes: b.box_notes,
+	  box_notes: b.box_notes ? b.box_notes : "",
       year: b.year,
       number: b.number,
-      shelf_id: b.shelf.id,
-      rack_id: b.rack.id,
-      file_location_id: b.file_location.id,
+      shelf_id: b.shelf ? b.shelf.id : "",
+      rack_id: b.rack ? b.rack.id : "",
+      file_location_id: b.file_location ? b.file_location.id : "",
       subjects_list: b.subjects_list.map((d) => ({
         document_name_id: d.document_name_id.id, 
         year: d.dates.map(date => parseInt(date.split('-')[0], 10)), 
@@ -427,7 +427,7 @@ const CreateBoxArchiving = ({ detail }) => {
 			document_url: "",
 			cover_sheet: "",
 			filer_user: "",
-      origin_boxes: formattedOriginBoxes
+      		origin_boxes: formattedOriginBoxes
 		}
 
 
@@ -598,16 +598,6 @@ const CreateBoxArchiving = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							<SpecialLabels label="Caixa(s) para Arquivamento" />
 
-							<ChipsContainer justifyContent="left" marginTop="0%">
-								{detail ? (
-									<Chip label="Não cadastrada" />
-								) : (
-									<AddChip
-										label="Adicionar Caixa para Arquivamento"
-										onClick={handleOpenNewOriginBoxDialog}
-									/>
-								)}
-							</ChipsContainer>
 							{originBox.filter((box) => box.id !== undefined).map((box) => (
 								<Accordion>
 									<AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -806,6 +796,16 @@ const CreateBoxArchiving = ({ detail }) => {
 								</Accordion>
 							))}
 
+							<ChipsContainer justifyContent="left" marginTop="0%">
+								{detail ? (
+									<Chip label="Não cadastrada" />
+								) : (
+									<AddChip
+										label="Adicionar Caixa para Arquivamento"
+										onClick={handleOpenNewOriginBoxDialog}
+									/>
+								)}
+							</ChipsContainer>
 
 						</Grid>
 
