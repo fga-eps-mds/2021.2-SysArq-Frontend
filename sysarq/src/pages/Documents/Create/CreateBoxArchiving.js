@@ -90,7 +90,7 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [rackDetail, setRackDetail] = useState("");
 	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
-	const [unarchiveDate, setUnarchiveDate] = useState(detail ? "" : initialDate);
+	const [unarchiveDate, setUnarchiveDate] = useState(detail ? "" : null);
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
 
 
