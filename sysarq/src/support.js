@@ -13,19 +13,20 @@ export const initialPeriod = new Date(
 
 const formatDateNumber = (number) => `0${number}`.slice(-2);
 
-const arrayMes = new Array(12);
-arrayMes[0] = "jan";
-arrayMes[1] = "fev";
-arrayMes[2] = "mar";
-arrayMes[3] = "abr";
-arrayMes[4] = "mai";
-arrayMes[5] = "jun";
-arrayMes[6] = "jul";
-arrayMes[7] = "ago";
-arrayMes[8] = "set";
-arrayMes[9] = "out";
-arrayMes[10] = "nov";
-arrayMes[11] = "dez";
+export const arrayMes = [
+    "jan",
+    "fev",
+    "mar",
+    "abr",
+    "mai",
+    "jun",
+    "jul",
+    "ago",
+    "set",
+    "out",
+    "nov",
+    "dez",
+]
 
 export const formatDateName = (date) =>
 	`${date.getFullYear()}-${

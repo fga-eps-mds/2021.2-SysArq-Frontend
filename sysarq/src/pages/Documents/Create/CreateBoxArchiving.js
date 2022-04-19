@@ -43,6 +43,7 @@ import {
 	formatDate,
 	axiosProfileError,
 	getUnits,
+    arrayMes,
 } from "../../../support";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
@@ -276,9 +277,9 @@ const CreateBoxArchiving = ({ detail }) => {
 		const newOriginBox = originBox;
 		const formattedDate = formatDate(newOriginBoxSubjectDate);
 
-		console.log('box')
-		console.log(box)
-		console.log(box.subjects_list.document_name_id.document_name)
+		// console.log('box')
+		// console.log(box)
+		// console.log(box.subjects_list.document_name_id.document_name)
 
 		if (box.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(formattedDate) != -1) {
 			setNewOriginBoxSubjectDateHelperText("Data já adicionada");
@@ -403,6 +404,20 @@ const CreateBoxArchiving = ({ detail }) => {
 			return "senderUnit error";
 		}
 
+    const formattedOriginBoxes = originBox.filter(b => b.id !== undefined).map((b) => ({
+      box_notes: b.box_notes,
+      year: b.year,
+      number: b.number,
+      shelf_id: b.shelf.id,
+      rack_id: b.rack.id,
+      file_location_id: b.file_location.id,
+      subjects_list: b.subjects_list.map((d) => ({
+        document_name_id: d.document_name_id.id, 
+        year: d.dates.map(date => parseInt(date.split('-')[0], 10)), 
+        month: d.dates.map(date => arrayMes[parseInt(date.split('-'), 10) - 1])
+      }
+      ))
+    }))
 
 		const payload = {
 			process_number: processNumber,
@@ -412,8 +427,7 @@ const CreateBoxArchiving = ({ detail }) => {
 			document_url: "",
 			cover_sheet: "",
 			filer_user: "",
-
-
+      origin_boxes: formattedOriginBoxes
 		}
 
 
@@ -428,31 +442,8 @@ const CreateBoxArchiving = ({ detail }) => {
 				axiosArchives
 					.post(
 						"box-archiving/",
-						{
-							// origin_boxes: originBox,
-							// process_number: processNumber,
-							// sender_unity: senderUnit.id,
-							// notes,
-							// box_notes: boxnotes,
-							// received_date: formatDate(receivedDate),
-							// document_url: "", //
-							// cover_sheet: "", //
-							// filer_user: "filer_user", //
-							// abbreviation_id: box.id === undefined ? "" : box.id,
-							// shelf_id: shelf.id === undefined ? "" : shelf.id,
-							// rack_id: rack.id === undefined ? "" : rack.id, //
-							// file_location_id: fileLocation.id === undefined ? "" : rack.id,
-							// document_names: []
-							origin_boxes: originBox.filter((b) => b.number !== undefined),
-							process_number: processNumber,
-							sender_unity: senderUnit.id,
-							notes,
-							received_date: formatDate(receivedDate),
-							document_url: "",
-							cover_sheet: "",
-							filer_user: "",
-						},
-						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+            payload, 
+            { headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => onSuccess())
 					.catch(() => connectionError());
