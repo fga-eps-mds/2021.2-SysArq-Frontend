@@ -8,6 +8,8 @@ import Login from "./pages/Login/index";
 
 import PrivateRoute from "./routes/privateRoute";
 
+import MainPage from "./pages/Main/MainPage";
+
 import Search from "./pages/Search/Search";
 import SearchList from "./pages/Search/SearchList";
 
@@ -64,7 +66,7 @@ function App() {
 					</Route>
 
 					<PrivateRoute exact path="/">
-						<Search />
+						<MainPage />
 					</PrivateRoute>
 					<PrivateRoute exact path="/search">
 						<Search />

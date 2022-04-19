@@ -1,0 +1,17 @@
+#body {
+    text-align: center;
+    align-items: center;
+}
+
+#logo {
+    width: 150px;
+    margin-top: 50px;
+    
+}
+
+#search_title{
+    color: #5289B5;
+    font-weight: bold;
+    margin-top: 40px;
+    text-align: center;
+}
