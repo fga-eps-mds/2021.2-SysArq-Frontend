@@ -51,6 +51,16 @@ export default function CreateBoxAbbreviation() {
 		);
 	};
 
+	const handleRequestError = (value) => {
+		setOpenAlert(true);
+		setSeverityAlert("error");
+		if (value === 400) {
+			setAlertHelperText("Sigla da caixa já cadastrada");
+		} else {
+			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+		}
+	};
+
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
@@ -86,16 +96,20 @@ export default function CreateBoxAbbreviation() {
 					.then(() => {
 						onSuccess();
 					})
-					.catch(() => {
-						connectionError();
+					.catch((err) => {
+						if (err.response.status === 401) {
+							axiosProfileError(err);
+							return false;
+						}
+						handleRequestError(err.response.status);
+						return false;
 					});
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
 		setboxAbbreviationError(false);
-
-		setboxAbbreviationHelperText("");
+		
 		return null;
 	};
 

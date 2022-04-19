@@ -39,13 +39,15 @@ export default function CreatePublicWorker() {
 		setOpenAlert(false);
 	};
 
-	const connectionError = () => {
+	const connectionError = (value) => {
 		setOpenAlert(true);
 		setSeverityAlert("error");
 
-		setAlertHelperText(
-			"Verifique sua conexão com a internet e recarregue a página."
-		);
+		if (value === 400) {
+			setAlertHelperText("O CPF já existe");
+		} else {
+			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+		}
 	};
 
 	const onSuccess = () => {
@@ -91,16 +93,20 @@ export default function CreatePublicWorker() {
 					.then(() => {
 						onSuccess();
 					})
-					.catch(() => {
-						connectionError();
+					.catch((err) => {
+						if (err.response.status === 401) {
+							axiosProfileError(err);
+							return false;
+						}
+						connectionError(err.response.status);
+						return false;
 					});
 				return res;
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-		setCpf("");
-		setName("");
+			
 		return null;
 	};
 

@@ -206,15 +206,20 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 	const handleAlertClose = () => setOpenAlert(false);
 
-	const connectionError = () => {
+	const connectionError = (value) => {
 		setLoading(false);
 
 		setOpenAlert(true);
 		setSeverityAlert("error");
 
-		setAlertHelperText(
-			"Verifique sua conexão com a internet e recarregue a página."
-		);
+		if (value === 400) {
+			setAlertHelperText("N° do Processo já existe")
+		} else{
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página."
+			);
+
+		}
 	};
 
 	const onSuccess = () => {
@@ -389,7 +394,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => onSuccess())
-					.catch(() => connectionError());
+					.catch((err) => {
+						if (err.response.status === 401) {
+							axiosProfileError(err);
+							return false;
+						}
+						connectionError(err.response.status);
+						return false;
+					});
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);

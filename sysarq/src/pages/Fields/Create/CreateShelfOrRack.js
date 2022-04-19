@@ -67,6 +67,16 @@ export default function CreateShelfOrRack({ urlType }) {
 		setSeverityAlert("error");
 	};
 
+	const handleRequestError = (value, valueType) => {
+		setOpenAlert(true);
+		setSeverityAlert("error");
+		if (value === 400) {
+			setAlertHelperText(`${valueType} já cadastrada`);
+		} else {
+			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+		}
+	};
+
 	const handleValueChange = (event) => {
 		setType(event.target.value);
 		setNumberE("");
@@ -117,8 +127,13 @@ export default function CreateShelfOrRack({ urlType }) {
 						.then(() => {
 							onSuccess();
 						})
-						.catch(() => {
-							connectionError();
+						.catch((err) => {
+							if (err.response.status === 401) {
+								axiosProfileError(err);
+								return false;
+							}
+							handleRequestError(err.response.status, type);
+							return false;
 						});
 				} else if (type === "Prateleira") {
 					axiosArchives
@@ -134,8 +149,13 @@ export default function CreateShelfOrRack({ urlType }) {
 						.then(() => {
 							onSuccess();
 						})
-						.catch(() => {
-							connectionError();
+						.catch((err) => {
+							if (err.response.status === 401) {
+								axiosProfileError(err);
+								return false;
+							}
+							handleRequestError(err.response.status, type);
+							return false;
 						});
 				} else {
 					axiosArchives
@@ -151,8 +171,13 @@ export default function CreateShelfOrRack({ urlType }) {
 						.then(() => {
 							onSuccess();
 						})
-						.catch(() => {
-							connectionError();
+						.catch((err) => {
+							if (err.response.status === 401) {
+								axiosProfileError(err);
+								return false;
+							}
+							handleRequestError(err.response.status, type);
+							return false;
 						});
 				}		
 			})
