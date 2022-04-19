@@ -18,7 +18,7 @@ export default function Settings() {
 					<MenuCard
 						icon="Settings"
 						title="Gerenciamento de usuários"
-						url="/settings"
+						url="/manage-users"
 						lg={6}
 					/>
 				</CardContainer>
