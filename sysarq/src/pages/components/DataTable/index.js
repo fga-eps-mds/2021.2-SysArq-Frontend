@@ -282,6 +282,13 @@ const DataTable = ({ url, title }) => {
 			return "Não";
 		}
 
+		if (id === "notice_date" || id === "received_date") {
+			const day = row[id].substring(8,10);
+			const month = row[id].substring(5,7);
+			const year = row[id].substring(0,4);
+			return `${day}/${month}/${year}`;
+		}
+
 		if (id === "temporality_date" || id === "document_type_name") {
 			if (typeof row[id] === "undefined") return "-";
 			if (typeof row[id] !== "object") return row[id];
