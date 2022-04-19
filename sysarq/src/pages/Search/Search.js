@@ -34,7 +34,7 @@ export default function Search() {
 					/>
 					<MenuCard
 						icon="shelf-rack-icon"
-						title="Localidade do Documento"
+						title="Localização do Documento"
 						url="/fields/shelf"
 						lg={2}
 					/>
