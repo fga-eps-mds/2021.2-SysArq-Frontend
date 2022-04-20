@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 
 import {
+	// formatDateName,
 	formatDate,
 	isDateNotValid,
 	axiosProfileError,
@@ -79,6 +80,21 @@ const CreateFrequencySheet = ({ detail }) => {
 	const [alertHelperText, setAlertHelperText] = useState("");
 
 	const [loading, setLoading] = useState(detail);
+
+	const monthMap = {
+		"01": "jan",
+		"02": "fev",
+		"03": "mar",
+		"04": "abr",
+		"05": "mai",
+		"06": "jun",
+		"07": "jul",
+		"08": "ago",
+		"09": "set",
+		"10": "out",
+		"11": "nov",
+		"12": "dez"
+	}
 
 	const handleSenderProcessNumberChange = (event) =>
 		setSenderProcessNumber(event.target.value);
@@ -425,10 +441,10 @@ const CreateFrequencySheet = ({ detail }) => {
 									label="Período de Frequência"
 									value={
 										referencePeriod
-											? `${referencePeriod.substring(
+											? `${monthMap[referencePeriod.substring(
 													5,
 													7
-											  )}/${referencePeriod.substring(0, 4)}`
+											  )]}/${referencePeriod.substring(0, 4)}`
 											: ""
 									}
 									inputProps={{ readOnly: true }}
@@ -438,7 +454,7 @@ const CreateFrequencySheet = ({ detail }) => {
 									style={{ width: "100%" }}
 									id="period-date-picker-dialog"
 									label="Período de Frequência*"
-									format="MM/yyyy"
+									format="MMM/yyyy"
 									value={referencePeriod}
 									onChange={handleReferencePeriodChange}
 									openTo="month"

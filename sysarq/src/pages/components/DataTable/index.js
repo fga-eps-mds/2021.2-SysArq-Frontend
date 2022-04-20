@@ -265,6 +265,21 @@ const DataTable = ({ url, title }) => {
 	};
 
 	const cellContent = (row, id) => {
+		const monthMap = {
+			"01": "jan",
+			"02": "fev",
+			"03": "mar",
+			"04": "abr",
+			"05": "mai",
+			"06": "jun",
+			"07": "jul",
+			"08": "ago",
+			"09": "set",
+			"10": "out",
+			"11": "nov",
+			"12": "dez"
+		}
+
 		if (id === "cpf") {
 			return maskBr.cpf(row[id]);
 		}
@@ -280,6 +295,19 @@ const DataTable = ({ url, title }) => {
 				return "Sim";
 			}
 			return "Não";
+		}
+
+		if (id === "notice_date" || id === "received_date") {
+			const day = row[id].substring(8,10);
+			const month = row[id].substring(5,7);
+			const year = row[id].substring(0,4);
+			return `${day}/${month}/${year}`;
+		}
+
+		if (id === "reference_period") {
+			const month = row[id].substring(5,7);
+			const year = row[id].substring(0,4);
+			return `${monthMap[month]}/${year}`;
 		}
 
 		if (id === "temporality_date" || id === "document_type_name") {
