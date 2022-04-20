@@ -398,11 +398,11 @@ const DataTable = ({ url, title }) => {
 											fieldUrls.indexOf(url) !== -1
 												? null
 												: () => {
-														window.location = `/documents/${
+														window.open(`/documents/${
 															row.docName === undefined
 																? url
 																: `${row.docName}/`
-														}view/${row.id}`;
+														}view/${row.id}`, "_blank", "popup");
 												  }
 										}
 									>
