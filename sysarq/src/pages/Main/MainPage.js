@@ -30,12 +30,12 @@ export default function MainPage() {
                                 url=""
                                 lg={3}
                             />
-                            <h4 style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
+                            <label style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
                                 Campo que dá nome ao documento, tanto quanto ao tipo de documento<br />
                                 (Ex: Oficio , Processo , Despacho), quanto ao assunto do documento<br />
                                 (Ex: Ajuda de Custo, Exoneração, Licença), seguida da temporalidade do<br />
                                 documento, que é o período de validade do documento.
-                            </h4>
+                            </label>
                         </div>
 
                         <div style={{ display: "flex", marginTop: 10, marginBottom: 10, marginLeft: -60 }}>
@@ -45,11 +45,11 @@ export default function MainPage() {
                                 url=""
                                 lg={3}
                             />
-                            <h4 style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
+                            <label style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
                                 Nome da unidade policial e seus vínculos administrativos,<br />
                                 seguido das siglas de cada unidade. Consultar Lista telefônica<br />
                                 do site da <a href="https://www.policiacivil.go.gov.br/wp-content/uploads/2020/02/lista-dp-fevereiro.pdf"> Policia Civil </a>
-                            </h4>
+                            </label>
                         </div>
 
                         <div style={{ display: "flex", marginTop: 10, marginBottom: 10, marginLeft: -60 }}>
@@ -59,10 +59,10 @@ export default function MainPage() {
                                 url=""
                                 lg={3}
                             />
-                            <h4 style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
+                            <label style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
                                 Nome da capa de rosto das caixas box que são arquivados os<br />
                                 processos e documentos.
-                            </h4>
+                            </label>
                         </div>
 
                         <div style={{ display: "flex", marginTop: 10, marginBottom: 10, marginLeft: -60 }}>
@@ -72,10 +72,10 @@ export default function MainPage() {
                                 url=""
                                 lg={3}
                             />
-                            <h4 style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
+                            <label style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
                                 Local onde as caixas box estão arquivadas fisicamente,<br />
                                 tanto na unidade do arquivo, quanto nas estantes e prateleiras.
-                            </h4>
+                            </label>
                         </div>
 
                         <div style={{ display: "flex", marginTop: 10, marginBottom: 10, marginLeft: -60 }}>
@@ -85,10 +85,10 @@ export default function MainPage() {
                                 url=""
                                 lg={3}
                             />
-                            <h4 style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
+                            <label style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
                                 Identificação do servidor da Polícia Civil, o CPF é<br />
                                 obrigatório ( Dica: na folha de frequência localiza o CPF)
-                            </h4>
+                            </label>
                         </div>
                     </Grid>
                 </CardContainer>
@@ -106,11 +106,11 @@ export default function MainPage() {
                                 url=""
                                 lg={3}
                             />
-                            <h4 style={{ marginLeft: 15, textAlign: "justify", marginTop: 85 }}>
+                            <label style={{ marginLeft: 15, textAlign: "justify", marginTop: 85 }}>
                                 Conjunto de documentos anexados em uma capa branca ou amarela,<br />
                                 identificados em etiquetas, através de numeração de geralmente<br />
                                 quinze (15) números, assunto e outras informações.
-                            </h4>
+                            </label>
                         </div>
 
                         <div style={{ display: "flex", marginTop: 10, marginBottom: 10 }}>
@@ -120,11 +120,11 @@ export default function MainPage() {
                                 url=""
                                 lg={3}
                             />
-                            <h4 style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
+                            <label style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
                                 Documento que relaciona os servidores de alguma unidade policial<br />
                                 ou administrativa, que terão as frequências de determinado<br />
                                 período arquivadas.
-                            </h4>
+                            </label>
                         </div>
 
                         <div style={{ display: "flex", marginTop: 10, marginBottom: 10 }}>
@@ -134,11 +134,11 @@ export default function MainPage() {
                                 url=""
                                 lg={3}
                             />
-                            <h4 style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }} >
+                            <label style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }} >
                                 Folha individual do servidor referente a sua assiduidade,<br />
                                 encaminhada por sua unidade policial/administrativa, através<br />
                                 da relação de frequência.
-                            </h4>
+                            </label>
                         </div>
 
                         <div style={{ display: "flex", marginTop: 10, marginBottom: 10 }}>
@@ -148,12 +148,12 @@ export default function MainPage() {
                                 url=""
                                 lg={3}
                             />
-                            <h4 style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
+                            <label style={{ marginLeft: 15, textAlign: "left", marginTop: 85 }}>
                                 Conjunto de documentos acondicionado em uma caixa tipo box,<br />
                                 geralmente de cor azul, constando: numeração seguida do ano de arquivamento,<br />
                                 assunto(s), data(s) de produção do documento e unidade que encaminhou,<br />
                                 que serão arquivadas.
-                            </h4>
+                            </label>
                         </div>
                     </Grid>
                 </CardContainer>
