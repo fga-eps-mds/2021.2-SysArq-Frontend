@@ -931,6 +931,136 @@ const CreateBoxArchiving = ({ detail }) => {
 
 						</Grid>
 
+						<Grid item xs={12} sm={12} md={12}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="status"
+									label="Status"
+									value={status}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<FormControl fullWidth error={statusHelperText !== ""}>
+									<InputLabel id="select-status-label">Status*</InputLabel>
+									<Select
+										style={{ textAlign: "left" }}
+										labelId="select-status-label"
+										id="select-status"
+										value={status}
+										onChange={handleStatusChange}
+										renderValue={(value) => `${value}`}
+									>
+									<MenuItem value="">
+										<em>Nenhum</em>
+									</MenuItem>
+									<MenuItem value="Arquivado">Arquivado</MenuItem>
+									<MenuItem value="Eliminado">Eliminado</MenuItem>
+									<MenuItem value="Desarquivado">Desarquivado</MenuItem>
+									</Select>
+									{statusHelperText ? (
+										<FormHelperText>{statusHelperText}</FormHelperText>
+									) : (
+										""
+									)}
+								</FormControl>
+							)}
+						</Grid>
+									
+						{status === "Desarquivado" ? (
+									<>
+										<Grid item xs={12} sm={12} md={12}>
+											{detail ? (
+												<TextField
+													fullWidth
+													id="unarchiveDestinationUnit"
+													label="Unid. Destino do Desarquivamento"
+													value={unarchiveDestinationUnitDetail}
+													inputProps={{ readOnly: true }}
+												/>
+											) : (
+												<FormControl fullWidth>
+													<InputLabel id="select-unarchiveDestinationUnit-label">
+														Unid. Destino do Desarquivamento
+													</InputLabel>
+													<Select
+														style={{ textAlign: "left" }}
+														labelId="select-unarchiveDestinationUnit-label"
+														id="select-unarchiveDestinationUnit"
+														value={unarchiveDestinationUnit}
+														onChange={handleUnarchiveDestinationUnit}
+														renderValue={(value) => `${value.unity_name}`}
+													>
+														<MenuItem key={0} value="">
+															<em>Nenhuma</em>
+														</MenuItem>
+											
+														{units.map((unarchiveDestinationUnitOption) => (
+															<MenuItem
+																id={unarchiveDestinationUnitOption.id}
+																value={unarchiveDestinationUnitOption}
+															>
+																{unarchiveDestinationUnitOption.unity_name}
+															</MenuItem>
+														))}
+													</Select>
+												</FormControl>
+											)}
+										</Grid>
+														
+										<Grid item xs={12} sm={12} md={6}>
+											<TextField
+												fullWidth
+												id="unarchiveProcessNumber"
+												label="Nº do Processo do Desarquivamento"
+												value={unarchiveProcessNumber}
+												onChange={handleUnarchiveProcessNumberChange}
+												inputProps={{ maxLength: 15, readOnly: detail }}
+											/>
+										</Grid>
+														
+										<Grid item xs={12} sm={12} md={6}>
+											{detail ? (
+												<TextField
+													fullWidth
+													id="unarchiveDate"
+													label="Data de Desarquivamento"
+													value={
+														unarchiveDate !== "-"
+															? `${unarchiveDate.substring(
+																	8,
+																	10
+															  )}/${unarchiveDate.substring(
+																	5,
+																	7
+															  )}/${unarchiveDate.substring(0, 4)}`
+															: unarchiveDate
+													}
+													inputProps={{ readOnly: true }}
+												/>
+											) : (
+												<KeyboardDatePicker
+													okLabel="Confirmar"
+													cancelLabel="Cancelar"
+													style={{ width: "100%" }}
+													id="unarchive-date-picker-dialog"
+													label="Data de Desarquivamento"
+													format="dd/MM/yyyy"
+													value={unarchiveDate}
+													onChange={handleUnarchiveDateChange}
+													KeyboardButtonProps={{
+														"aria-label": "change unarchive date",
+													}}
+													error={unarchiveDateHelperText !== ""}
+													helperText={unarchiveDateHelperText}
+												/>
+											)}
+										</Grid>
+									</>
+								) : (
+									""
+								)}
+
 						<NotesInput set={setNotes} notes={notes} isDetailPage={detail} />
 					</>
 				)}
@@ -1078,136 +1208,6 @@ const CreateBoxArchiving = ({ detail }) => {
 				getFileRemovedMessage
 				getDropRejectMessage
 			/> */}
-						
-				<Grid item xs={12} sm={12} md={12}>
-					{detail ? (
-						<TextField
-							fullWidth
-							id="status"
-							label="Status"
-							value={status}
-							inputProps={{ readOnly: true }}
-						/>
-					) : (
-						<FormControl fullWidth error={statusHelperText !== ""}>
-							<InputLabel id="select-status-label">Status*</InputLabel>
-							<Select
-								style={{ textAlign: "left" }}
-								labelId="select-status-label"
-								id="select-status"
-								value={status}
-								onChange={handleStatusChange}
-								renderValue={(value) => `${value}`}
-							>
-							<MenuItem value="">
-								<em>Nenhum</em>
-							</MenuItem>
-							<MenuItem value="Arquivado">Arquivado</MenuItem>
-							<MenuItem value="Eliminado">Eliminado</MenuItem>
-							<MenuItem value="Desarquivado">Desarquivado</MenuItem>
-							</Select>
-							{statusHelperText ? (
-								<FormHelperText>{statusHelperText}</FormHelperText>
-							) : (
-								""
-							)}
-						</FormControl>
-					)}
-				</Grid>
-
-				{status === "Desarquivado" ? (
-							<>
-								<Grid item xs={12} sm={12} md={12}>
-									{detail ? (
-										<TextField
-											fullWidth
-											id="unarchiveDestinationUnit"
-											label="Unid. Destino do Desarquivamento"
-											value={unarchiveDestinationUnitDetail}
-											inputProps={{ readOnly: true }}
-										/>
-									) : (
-										<FormControl fullWidth>
-											<InputLabel id="select-unarchiveDestinationUnit-label">
-												Unid. Destino do Desarquivamento
-											</InputLabel>
-											<Select
-												style={{ textAlign: "left" }}
-												labelId="select-unarchiveDestinationUnit-label"
-												id="select-unarchiveDestinationUnit"
-												value={unarchiveDestinationUnit}
-												onChange={handleUnarchiveDestinationUnit}
-												renderValue={(value) => `${value.unity_name}`}
-											>
-												<MenuItem key={0} value="">
-													<em>Nenhuma</em>
-												</MenuItem>
-
-												{units.map((unarchiveDestinationUnitOption) => (
-													<MenuItem
-														id={unarchiveDestinationUnitOption.id}
-														value={unarchiveDestinationUnitOption}
-													>
-														{unarchiveDestinationUnitOption.unity_name}
-													</MenuItem>
-												))}
-											</Select>
-										</FormControl>
-									)}
-								</Grid>
-
-								<Grid item xs={12} sm={12} md={6}>
-									<TextField
-										fullWidth
-										id="unarchiveProcessNumber"
-										label="Nº do Processo do Desarquivamento"
-										value={unarchiveProcessNumber}
-										onChange={handleUnarchiveProcessNumberChange}
-										inputProps={{ maxLength: 15, readOnly: detail }}
-									/>
-								</Grid>
-
-								<Grid item xs={12} sm={12} md={6}>
-									{detail ? (
-										<TextField
-											fullWidth
-											id="unarchiveDate"
-											label="Data de Desarquivamento"
-											value={
-												unarchiveDate !== "-"
-													? `${unarchiveDate.substring(
-															8,
-															10
-													  )}/${unarchiveDate.substring(
-															5,
-															7
-													  )}/${unarchiveDate.substring(0, 4)}`
-													: unarchiveDate
-											}
-											inputProps={{ readOnly: true }}
-										/>
-									) : (
-										<KeyboardDatePicker
-											okLabel="Confirmar"
-											cancelLabel="Cancelar"
-											style={{ width: "100%" }}
-											id="unarchive-date-picker-dialog"
-											label="Data de Desarquivamento"
-											format="dd/MM/yyyy"
-											value={unarchiveDate}
-											onChange={handleUnarchiveDateChange}
-											KeyboardButtonProps={{
-												"aria-label": "change unarchive date",
-											}}
-											error={unarchiveDateHelperText !== ""}
-											helperText={unarchiveDateHelperText}
-										/>
-									)}
-								</Grid>
-							</>
-						) : (
-							""
-						)}
 
 				<DocumentsCreate
 					isDetailPage={detail}
