@@ -7,44 +7,13 @@ import imgBox from "../assets/logo.png";
 import "./Search.css";
 
 export default function Search() {
+	const userType = localStorage.getItem("user_type");
+
 	return (
 		<body id="body">
 			<section>
 				<img id="logo" src={imgBox} alt="Logo" />
 				<h1 id="search_title">Arquivo Geral da Polícia Civil de Goiás</h1>
-
-				<CardContainer title="Campos Obrigatórios" spacing={2}>
-					<MenuCard
-						icon="document-name-icon"
-						title="Nome do Documento"
-						url="/fields/document-name"
-						lg={2}
-					/>
-					<MenuCard
-						icon="unit-icon"
-						title="Unidade"
-						url="/fields/unity"
-						lg={2}
-					/>
-					<MenuCard
-						icon="abbreviation-icon"
-						title="Sigla da Caixa"
-						url="/fields/box-abbreviation"
-						lg={2}
-					/>
-					<MenuCard
-						icon="shelf-rack-icon"
-						title="Localidade do Documento"
-						url="/fields/shelf"
-						lg={2}
-					/>
-					<MenuCard
-						icon="public-worker-icon"
-						title="Servidor"
-						url="/fields/public-worker"
-						lg={2}
-					/>
-				</CardContainer>
 
 				<CardContainer title="Documentos" spacing={2}>
 					<MenuCard
@@ -72,6 +41,40 @@ export default function Search() {
 						lg={3}
 					/>
 				</CardContainer>
+				{userType !== "VI" && (
+					<CardContainer title="Campos Obrigatórios" spacing={2}>
+						<MenuCard
+							icon="document-name-icon"
+							title="Nome do Documento"
+							url="/fields/document-name"
+							lg={2}
+						/>
+						<MenuCard
+							icon="unit-icon"
+							title="Unidade"
+							url="/fields/unity"
+							lg={2}
+						/>
+						<MenuCard
+							icon="abbreviation-icon"
+							title="Sigla da Caixa"
+							url="/fields/box-abbreviation"
+							lg={2}
+						/>
+						<MenuCard
+							icon="shelf-rack-icon"
+							title="Localização do Documento"
+							url="/fields/shelf"
+							lg={2}
+						/>
+						<MenuCard
+							icon="public-worker-icon"
+							title="Servidor"
+							url="/fields/public-worker"
+							lg={2}
+						/>
+					</CardContainer>
+				)}
 			</section>
 		</body>
 	);

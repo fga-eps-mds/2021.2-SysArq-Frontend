@@ -52,6 +52,12 @@ const ADD_ORIGIN_BOX_SUBJECT_BUTTON_LABEL = "Adicionar Assunto";
 
 const ADD_ORIGIN_BOX_SUBJECT_DATE_BUTTON_LABEL = "Adicionar Data";
 
+const UNARCHIVE_DESTINATION_UNIT_LABEL = "Unid. Destino do Desarquivamento";
+
+const UNARCHIVE_PROCESS_NUMBER_LABEL = "Nº do Processo do Desarquivamento";
+
+const UNARCHIVE_DATE_LABEL = "Data de Desarquivamento";
+
 const A_SUBJECT_DATE = "12/01/2020";
 
 const B_SUBJECT_DATE = "13/12/1992";
@@ -168,6 +174,51 @@ describe("Create Archiving Relation Screen Test", () => {
 
 		input("Mês", "1");
 		input("Ano*", "2021");
+
+		submitClick();
+
+		expect(screen.getByText("Selecione um status")).toBeInTheDocument();
+
+		fireEvent.mouseDown(screen.getByLabelText("Status*"));
+		const statusOptions = within(screen.getByRole("listbox"));
+		fireEvent.click(statusOptions.getByText(/^Arquivado/i));
+		expect(screen.queryByText("Selecione um status")).not.toBeInTheDocument();
+
+		submitClick();
+
+		errorAlert = await screen.findByRole("alert");
+		expect(errorAlert).toHaveTextContent(
+			/Verifique sua conexão com a internet e recarregue a página./i
+		);
+
+		fireEvent.mouseDown(screen.getByLabelText("Status*"));
+		const statusOptions1 = within(screen.getByRole("listbox"));
+		fireEvent.click(statusOptions1.getByText(/^Desarquivado/i));
+
+		fireEvent.mouseDown(
+			screen.getByLabelText(UNARCHIVE_DESTINATION_UNIT_LABEL)
+		);
+
+		const unarchiveDestinationUnitOptions = within(screen.getByRole("listbox"));
+		await unarchiveDestinationUnitOptions.findByText(
+			"unarchive_unit_name_test"
+		);
+		fireEvent.click(
+			unarchiveDestinationUnitOptions.getByText(/unarchive_unit_name_test/i)
+		);
+
+		input(UNARCHIVE_PROCESS_NUMBER_LABEL, "44");
+
+		input(UNARCHIVE_DATE_LABEL, "09/10/204");
+		submitClick();
+		expect(screen.getByText(INVALID_DATE_ERROR_MESSAGE)).toBeInTheDocument();
+
+		input(UNARCHIVE_DATE_LABEL, "09/10/2047");
+		expect(
+			screen.queryByText(INVALID_DATE_ERROR_MESSAGE)
+		).not.toBeInTheDocument();
+
+		submitClick();
 
 		fireEvent.click(screen.getByRole("button", { name: /Confirmar/ }));
 		isOnTheScreen("documentType_name_test - 1/2021");
