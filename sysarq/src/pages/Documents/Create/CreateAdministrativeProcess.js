@@ -112,7 +112,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
-	const [unarchiveDate, setUnarchiveDate] = useState(detail ? "" : initialDate);
+	const [unarchiveDate, setUnarchiveDate] = useState(detail ? "" : null);
 	const [notesLocal, setNotes] = useState("");
 
 	const [noticeDateHelperText, setNoticeDateHelperText] = useState("");
