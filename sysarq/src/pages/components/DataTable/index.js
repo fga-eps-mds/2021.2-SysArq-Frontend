@@ -140,6 +140,32 @@ const DataTable = ({ url, title }) => {
 		);
 	};
 
+	const calcTemporalityDate = (year, date) => {
+        let d = date.slice();
+        const datePropertyYear = date.slice(0, 4);
+		d = d.replace(datePropertyYear, year.toString());
+		return new Date(d);
+    }
+
+    const handleTemporalityStatus = (data) => {
+        const datePropertyOptions = {
+            'administrative-process/': 'notice_date',
+            'frequency-sheet/': 'reference_period',
+            'frequency-relation/': 'refeence_period'
+        }
+
+        const dateProperty = datePropertyOptions[url];
+        const today = new Date();
+
+        return data.map((item) => {
+			console.log(item.temporality_date)
+            const document = {...item};
+            const temporalityDate = calcTemporalityDate(document.temporality_date, document[dateProperty])
+			document.info = temporalityDate <= today ? 'temporality hit' : '';
+            return document;
+        })
+    }
+
 	useEffect(() => {
 		if (updateTable) {
 			setHeadCells(tableHeadCells(url));
@@ -189,20 +215,28 @@ const DataTable = ({ url, title }) => {
 								setRows(listTable);
 							} else {
 								let data = [ ...response.data ]
-								// if (url !== 'box-archiving/') {
-								// 	data = handleTemporalityStatus(data);
-								// }
-								data =  data.map((item, index) => {
-									const newItem = { ...item }
-									newItem.info = index % 3 === 0 ? "temporality hit" : ""
-									return newItem;
-								})
+                                switch(url) {
+									case 'administrative-process/':
+									case 'frequency-sheet/':
+									case 'frequency-relation/':
+										console.log("a");
+										data = handleTemporalityStatus(data);
+										break;
+									default:
+										break;
+                                }
+								// data =  data.map((item, index) => {
+								// 	const newItem = { ...item }
+								// 	newItem.info = index % 3 === 0 ? "temporality hit" : ""
+								// 	return newItem;
+								// })
 								setRows(data);
 							}
 
 							setUpdateTable(false);
 						})
-						.catch(() => {
+						.catch((err) => {
+							console.log(err);
 							setOpenAlert(true);
 							setSeverityAlert("error");
 
