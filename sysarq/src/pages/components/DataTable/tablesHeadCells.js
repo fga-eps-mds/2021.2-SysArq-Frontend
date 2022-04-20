@@ -173,9 +173,9 @@ const administrativeProcessHeadCells = [
 		label: "Interessado",
 	},
 	{
-		id: "document_subject_name",
+		id: "document_name",
 		numeric: false,
-		label: "Assunto do Documento",
+		label: "Nome do Documento",
 	},
 ];
 

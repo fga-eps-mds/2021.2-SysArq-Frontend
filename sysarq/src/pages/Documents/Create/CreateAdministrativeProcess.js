@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 
 import {
+	makeStyles,
 	Grid,
 	CircularProgress,
 	TextField,
@@ -13,6 +14,7 @@ import {
 	Select,
 	MenuItem,
 	FormHelperText,
+	Typography,
 } from "@material-ui/core";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
@@ -43,6 +45,19 @@ import PopUpAlert from "../../components/PopUpAlert";
 import "date-fns";
 import DataTable from "../../components/DataTable";
 
+const useStyles = makeStyles(() => ({
+	sectionTitle: {
+		width: "100%",
+		textAlign: "left",
+		color: "#1f3541",
+		fontWeight: "bold",
+		fontFamily: ['"Montserrat"', "sans-serif"],
+	},
+	boxAB: {
+		marginBottom: '16px',
+	}
+}));
+
 const isStatusFiled = (status) => {
 	if (status === "Arquivado") {
 		return true;
@@ -54,16 +69,25 @@ const isStatusFiled = (status) => {
 };
 
 const CreateAdministrativeProcess = ({ detail }) => {
+	const classes = useStyles();
 	const params = detail ? useParams() : "";
 
 	const [subjectDetail, setSubjectDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
+	const [shelfDetail, setShelfDetail] = useState("");
+	const [rackDetail, setRackDetail] = useState("");
+	const [fileLocationDetail, setFileLocationDetail] = useState("");
+	const [boxAbbreviationDetail, setBoxAbbreviationDetail] = useState("");
 	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] =
 		useState("");
 
 	const [subjects, setSubjects] = useState([]);
 	const [units, setUnits] = useState([]);
+	const [shelfs, setShelfs] = useState([]);
+	const [racks, setRacks] = useState([]);
+	const [fileLocations, setFileLocations] = useState([]);
+	const [boxAbbreviations, setBoxAbbreviations] = useState([]);
 
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
@@ -79,6 +103,12 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [interestedPerson, setInterested] = useState("");
 	const [subject, setSubject] = useState("");
 	const [senderUnit, setSenderUnit] = useState("");
+	const [shelf, setShelf] = useState("");
+	const [rack, setRack] = useState("");
+	const [fileLocation, setFileLocation] = useState("");
+	const [boxAbbreviation, setBoxAbbreviation] = useState("");
+	const [boxNumber, setBoxNumber] = useState("");
+	const [boxYear, setBoxYear] = useState("");
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
@@ -95,6 +125,13 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
+	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] = useState("");
+	const [boxNumberHelperText, setBoxNumberHelperText] = useState("");
+	const [boxYearHelperText, setBoxYearHelperText] = useState("");
+
+	const [shelfHelperText, setShelfHelperText] = useState("");
+	const [rackHelperText, setRackHelperText] = useState("");
+	const [fileLocationHelperText, setFileLocationHelperText] = useState("");
 
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -109,6 +146,21 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return;
 		}
 		setPublicWorker(value);
+	};
+
+	const handleShelfChange = (event) => {
+		setShelfHelperText("");
+		setShelf(event.target.value);
+	};
+
+	const handleRackChange = (event) => {
+		setRackHelperText("");
+		setRack(event.target.value);
+	};
+
+	const handleFileLocationChange = (event) => {
+		setFileLocationHelperText("");
+		setFileLocation(event.target.value);
 	};
 
 	const handleNoticeDateChange = (date) => {
@@ -154,15 +206,20 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 	const handleAlertClose = () => setOpenAlert(false);
 
-	const connectionError = () => {
+	const connectionError = (value) => {
 		setLoading(false);
 
 		setOpenAlert(true);
 		setSeverityAlert("error");
 
-		setAlertHelperText(
-			"Verifique sua conexão com a internet e recarregue a página."
-		);
+		if (value === 400) {
+			setAlertHelperText("N° do Processo já existe")
+		} else{
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página."
+			);
+
+		}
 	};
 
 	const onSuccess = () => {
@@ -241,6 +298,42 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "senderUnit error";
 		}
 
+		if (!shelf) {
+			setShelfHelperText("Selecione uma estante");
+			setLoading(false);
+			return "shelf error";
+		}
+
+		if (!rack) {
+			setRackHelperText("Selecione uma prateleira");
+			setLoading(false);
+			return "rack error";
+		}
+
+		if (!fileLocation) {
+			setFileLocationHelperText("Selecione uma localidade");
+			setLoading(false);
+			return "file location error";
+		}
+
+		if (!boxAbbreviation) {
+			setBoxAbbreviationHelperText("Selecione uma caixa");
+			setLoading(false);
+			return "box abbreviation error";
+		}
+
+		if (!boxNumber) {
+			setBoxNumberHelperText("Insira o número da caixa");
+			setLoading(false);
+			return "box number error";
+		}
+
+		if (!boxYear || parseInt(boxYear, 10) < 1900) {
+			setBoxYearHelperText("Insira o ano da caixa")
+			setLoading(false);
+			return "box year error";
+		}
+
 		if (status === "") {
 			setStatusHelperText("Selecione um status");
 			setLoading(false);
@@ -274,6 +367,12 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							process_number: processNumber,
 							interested: interestedPerson,
 							document_name_id: subject.id,
+							file_location_id: fileLocation.id,
+							shelf_id: shelf.id,
+							rack_id: rack.id,
+							box_abbreviation_id: boxAbbreviation.id,
+							box_number: boxNumber,
+							box_year: parseInt(boxYear, 10),
 							sender_unity: senderUnit.id,
 							sender_user: publicWorker !== undefined ? publicWorker.id : null,
 							is_filed: isStatusFiled(status),
@@ -295,7 +394,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
 					.then(() => onSuccess())
-					.catch(() => connectionError());
+					.catch((err) => {
+						if (err.response.status === 401) {
+							axiosProfileError(err);
+							return false;
+						}
+						connectionError(err.response.status);
+						return false;
+					});
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
@@ -347,6 +453,60 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								.then((response) => {
 									setSenderUnit(response.data);
 									setSenderUnitDetail(response.data.unity_name);
+								})
+								.catch(() => connectionError());
+
+							axiosArchives
+								.get(`shelf/${responseAdministrative.data.shelf_id}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setShelf(response.data);
+									setShelfDetail(response.data.number);
+								})
+								.catch(() => connectionError());
+
+							axiosArchives
+								.get(`rack/${responseAdministrative.data.rack_id}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setRack(response.data);
+									setRackDetail(response.data.number);
+								})
+								.catch(() => connectionError());
+
+							axiosArchives
+								.get(
+									`file-location/${responseAdministrative.data.file_location_id}/`,
+									{
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
+									}
+								)
+								.then((response) => {
+									setFileLocation(response.data);
+									setFileLocationDetail(response.data.file);
+								})
+								.catch(() => connectionError());
+
+							axiosArchives
+								.get(
+									`box-abbreviation/${responseAdministrative.data.box_abbreviation_id}/`,
+									{
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
+									}
+								)
+								.then((response) => {
+									setBoxAbbreviation(response.data);
+									setBoxAbbreviationDetail(response.data.abbreviation);
 								})
 								.catch(() => connectionError());
 
@@ -418,6 +578,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							setInterested(responseAdministrative.data.interested);
 							setArchivingDate(responseAdministrative.data.archiving_date);
 
+							setBoxNumber(responseAdministrative.data.box_number);
+							setBoxYear(responseAdministrative.data.box_year);
+
 							setNotes(
 								responseAdministrative.data.notes
 									? responseAdministrative.data.notes
@@ -443,6 +606,34 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => setUnits(response.data))
+					.catch(() => connectionError());
+
+				axiosArchives
+					.get("shelf/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => setShelfs(response.data))
+					.catch(() => connectionError());
+
+				axiosArchives
+					.get("rack/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => setRacks(response.data))
+					.catch(() => connectionError());
+
+				axiosArchives
+					.get("file-location/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => setFileLocations(response.data))
+					.catch(() => connectionError());
+
+				axiosArchives
+					.get("box-abbreviation/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => setBoxAbbreviations(response.data))
 					.catch(() => connectionError());
 
 				getPublicWorkers(setPublicWorkers, connectionError);
@@ -534,14 +725,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								<TextField
 									fullWidth
 									id="subject"
-									label="Assunto do Documento"
+									label="Nome do Documento"
 									value={subjectDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
 								<FormControl fullWidth error={subjectHelperText !== ""}>
 									<InputLabel id="select-document_name-label">
-										Assunto do Documento*
+										Nome do Documento*
 									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
@@ -802,6 +993,208 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						) : (
 							""
 						)}
+
+						<Grid item xs={12} sm={12} md={12}>
+							<Typography className={classes.sectionTitle}>
+								Localização do Arquivo:
+							</Typography>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="shelf"
+									label="Estante"
+									value={shelfDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<FormControl fullWidth error={shelfHelperText !== ""}>
+									<InputLabel id="select-shelf-label">Estante*</InputLabel>
+									<Select
+										labelId="select-shelf-label"
+										id="select-shelf"
+										value={shelf}
+										onChange={handleShelfChange}
+										renderValue={(value) => `${value.number}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{shelfs.map((shelfOption) => (
+											<MenuItem key={shelfOption.id} value={shelfOption}>
+												{shelfOption.number}
+											</MenuItem>
+										))}
+									</Select>
+									{shelfHelperText && (
+										<FormHelperText>{shelfHelperText}</FormHelperText>
+									)}
+								</FormControl>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="rack"
+									label="Prateleira"
+									value={rackDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<FormControl fullWidth error={rackHelperText !== ""}>
+									<InputLabel id="select-rack-label">Prateleira*</InputLabel>
+
+									<Select
+										labelId="select-rack-label"
+										id="select-rack"
+										value={rack}
+										onChange={handleRackChange}
+										renderValue={(value) => `${value.number}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{racks.map((rackOption) => (
+											<MenuItem key={rackOption.id} value={rackOption}>
+												{rackOption.number}
+											</MenuItem>
+										))}
+									</Select>
+									{rackHelperText && (
+										<FormHelperText>{rackHelperText}</FormHelperText>
+									)}
+								</FormControl>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									id="file-location"
+									label="Localidade"
+									value={fileLocationDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<FormControl fullWidth error={fileLocationHelperText !== ""}>
+									<InputLabel id="select-file_location-label">
+										Localidade*
+									</InputLabel>
+
+									<Select
+										labelId="select-file_location-label"
+										id="select-file_location"
+										value={fileLocation}
+										onChange={handleFileLocationChange}
+										renderValue={(value) => `${value.file}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{fileLocations.map((fileLocationOption) => (
+											<MenuItem
+												key={fileLocationOption.id}
+												value={fileLocationOption}
+											>
+												{fileLocationOption.file}
+											</MenuItem>
+										))}
+									</Select>
+									{fileLocationHelperText && (
+										<FormHelperText>{fileLocationHelperText}</FormHelperText>
+									)}
+								</FormControl>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={12}>
+							<Typography className={classes.sectionTitle}>
+								Caixa de Arquivamento:
+							</Typography>
+						</Grid>
+
+						<Grid className={classes.boxAB} item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									label="Sigla da Caixa"
+									value={boxAbbreviationDetail}
+								/>
+							) : (
+								<FormControl fullWidth error={boxAbbreviationHelperText !== ""}>
+									<InputLabel id="select-box_abbreviation-label">
+										Sigla da Caixa*
+									</InputLabel>
+									<Select
+										labelId="select-box_abbreviation-label"
+										id="select-box_abbreviation"
+										value={boxAbbreviation}
+										onChange={(event) => {
+											setBoxAbbreviation(event.target.value);
+											setBoxAbbreviationHelperText("");
+										}}
+										renderValue={(value) => `${value.abbreviation}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{boxAbbreviations.map((boxAbbreviationOption) => (
+											<MenuItem
+												key={boxAbbreviationOption.id}
+												value={boxAbbreviationOption}
+											>
+												{boxAbbreviationOption.abbreviation}
+											</MenuItem>
+										))}
+									</Select>
+
+									{boxAbbreviationHelperText !== "" && (
+										<FormHelperText>{boxAbbreviationHelperText}</FormHelperText>
+									)}
+								</FormControl>
+							)}
+						</Grid>
+						
+						<Grid item xs={12} sm={12} md={4}>
+							<TextField 
+								fullWidth
+								label="Número da Caixa*"
+								value={boxNumber}
+								onChange={(event) => {
+									setBoxNumber(event.target.value)
+									setBoxNumberHelperText("");
+								}}
+								type="number"
+								error={boxNumberHelperText !== ""}
+								helperText={boxNumberHelperText}
+								inputProps={{readOnly: detail}}
+							/>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							<TextField
+								fullWidth
+								label="Ano da Caixa*"
+								value={boxYear}
+								onChange={(event) => {
+									setBoxYear(event.target.value);
+									setBoxYearHelperText("");
+								}}
+								type="number"
+								error={boxYearHelperText !== ""}
+								helperText={boxYearHelperText}
+								inputProps={{readOnly: detail}}
+							/>
+						</Grid>
 
 						<NotesInput
 							set={setNotes}

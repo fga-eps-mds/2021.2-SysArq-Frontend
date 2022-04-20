@@ -8,6 +8,8 @@ import Login from "./pages/Login/index";
 
 import PrivateRoute from "./routes/privateRoute";
 
+import MainPage from "./pages/Main/MainPage";
+
 import Search from "./pages/Search/Search";
 import SearchList from "./pages/Search/SearchList";
 
@@ -37,6 +39,7 @@ import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
 
 import Settings from "./pages/Settings/Settings";
 import RegisterUser from "./pages/RegisterUser";
+import ManageUsers from "./pages/ManageUsers";
 
 import "./App.css";
 
@@ -64,7 +67,7 @@ function App() {
 					</Route>
 
 					<PrivateRoute exact path="/">
-						<Search />
+						<MainPage />
 					</PrivateRoute>
 					<PrivateRoute exact path="/search">
 						<Search />
@@ -227,6 +230,10 @@ function App() {
 
 					<PrivateRoute exact path="/register-user" permission="AD">
 						<RegisterUser />
+					</PrivateRoute>
+
+					<PrivateRoute exact path="/manage-users" permission="AD">
+						<ManageUsers />
 					</PrivateRoute>
 				</Switch>
 			</Router>
