@@ -13,6 +13,32 @@ export default function Search() {
 				<img id="logo" src={imgBox} alt="Logo" />
 				<h1 id="search_title">Arquivo Geral da Polícia Civil de Goiás</h1>
 
+				<CardContainer title="Documentos" spacing={2}>
+					<MenuCard
+						icon="administrative-process-icon"
+						title="Processo Administrativo"
+						url="/documents/administrative-process"
+						lg={3}
+					/>
+					<MenuCard
+						icon="frequency-relation-icon"
+						title="Relação de Frequências"
+						url="/documents/frequency-relation"
+						lg={3}
+					/>
+					<MenuCard
+						icon="frequency-sheet-icon"
+						title="Folha de Frequências"
+						url="/documents/frequency-sheet"
+						lg={3}
+					/>
+					<MenuCard
+						icon="box-archiving-icon"
+						title="Arquivamento de Caixas"
+						url="/documents/box-archiving"
+						lg={3}
+					/>
+				</CardContainer>
 				<CardContainer title="Campos Obrigatórios" spacing={2}>
 					<MenuCard
 						icon="document-name-icon"
@@ -43,33 +69,6 @@ export default function Search() {
 						title="Servidor"
 						url="/fields/public-worker"
 						lg={2}
-					/>
-				</CardContainer>
-
-				<CardContainer title="Documentos" spacing={2}>
-					<MenuCard
-						icon="administrative-process-icon"
-						title="Processo Administrativo"
-						url="/documents/administrative-process"
-						lg={3}
-					/>
-					<MenuCard
-						icon="frequency-relation-icon"
-						title="Relação de Frequências"
-						url="/documents/frequency-relation"
-						lg={3}
-					/>
-					<MenuCard
-						icon="frequency-sheet-icon"
-						title="Folha de Frequências"
-						url="/documents/frequency-sheet"
-						lg={3}
-					/>
-					<MenuCard
-						icon="box-archiving-icon"
-						title="Arquivamento de Caixas"
-						url="/documents/box-archiving"
-						lg={3}
 					/>
 				</CardContainer>
 			</section>
