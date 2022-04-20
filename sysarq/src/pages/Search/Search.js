@@ -41,7 +41,7 @@ export default function Search() {
 						lg={3}
 					/>
 				</CardContainer>
-				{userType !== "Vi" && (
+				{userType !== "VI" && (
 					<CardContainer title="Campos Obrigatórios" spacing={2}>
 						<MenuCard
 							icon="document-name-icon"
