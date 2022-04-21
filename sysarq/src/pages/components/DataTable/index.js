@@ -144,14 +144,16 @@ const DataTable = ({ url, title }) => {
         let d = date.slice();
         const datePropertyYear = date.slice(0, 4);
 		d = d.replace(datePropertyYear, year.toString());
+		console.log(d);
 		return new Date(d);
     }
 
     const handleTemporalityStatus = (data) => {
+		console.log(data[0]);
         const datePropertyOptions = {
-            'administrative-process/': 'notice_date',
+            'administrative-process/': 'archiving_date',
             'frequency-sheet/': 'reference_period',
-            'frequency-relation/': 'refeence_period'
+            'frequency-relation/': 'received_date'
         }
 
         const dateProperty = datePropertyOptions[url];
