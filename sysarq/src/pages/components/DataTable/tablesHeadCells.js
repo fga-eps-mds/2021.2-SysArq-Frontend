@@ -90,7 +90,6 @@ const unityHeadCells = [
 ];
 
 const headCellsBoxAbbreviation = [
-
 	{
 		id: "name",
 		numeric: false,
@@ -102,7 +101,6 @@ const headCellsBoxAbbreviation = [
 		numeric: false,
 		label: "Sigla",
 	},
-
 ];
 
 const documentNameHeadCells = [
@@ -180,7 +178,7 @@ const administrativeProcessHeadCells = [
 	{
 		id: "info",
 		numeric: false,
-		label: ""
+		label: "",
 	},
 ];
 
@@ -203,7 +201,7 @@ const frequencyRelationHeadCells = [
 	{
 		id: "info",
 		numeric: false,
-		label: ""
+		label: "",
 	},
 ];
 
@@ -231,7 +229,7 @@ const frequencySheetHeadCells = [
 	{
 		id: "info",
 		numeric: false,
-		label: ""
+		label: "",
 	},
 ];
 

@@ -19,7 +19,6 @@ import {
 	TablePagination,
 } from "@material-ui/core";
 
-
 import MuiLink from "@material-ui/core/Link";
 
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -141,32 +140,35 @@ const DataTable = ({ url, title }) => {
 	};
 
 	const calcTemporalityDate = (year, date) => {
-        let d = date.slice();
-        const datePropertyYear = date.slice(0, 4);
+		let d = date.slice();
+		const datePropertyYear = date.slice(0, 4);
 		d = d.replace(datePropertyYear, year.toString());
 		console.log(d);
 		return new Date(d);
-    }
+	};
 
-    const handleTemporalityStatus = (data) => {
+	const handleTemporalityStatus = (data) => {
 		console.log(data[0]);
-        const datePropertyOptions = {
-            'administrative-process/': 'archiving_date',
-            'frequency-sheet/': 'reference_period',
-            'frequency-relation/': 'received_date'
-        }
+		const datePropertyOptions = {
+			"administrative-process/": "archiving_date",
+			"frequency-sheet/": "reference_period",
+			"frequency-relation/": "received_date",
+		};
 
-        const dateProperty = datePropertyOptions[url];
-        const today = new Date();
+		const dateProperty = datePropertyOptions[url];
+		const today = new Date();
 
-        return data.map((item) => {
-			console.log(item.temporality_date)
-            const document = {...item};
-            const temporalityDate = calcTemporalityDate(document.temporality_date, document[dateProperty])
-			document.info = temporalityDate <= today ? 'temporality hit' : '';
-            return document;
-        })
-    }
+		return data.map((item) => {
+			console.log(item.temporality_date);
+			const document = { ...item };
+			const temporalityDate = calcTemporalityDate(
+				document.temporality_date,
+				document[dateProperty]
+			);
+			document.info = temporalityDate <= today ? "temporality hit" : "";
+			return document;
+		});
+	};
 
 	useEffect(() => {
 		if (updateTable) {
@@ -216,17 +218,17 @@ const DataTable = ({ url, title }) => {
 
 								setRows(listTable);
 							} else {
-								let data = [ ...response.data ]
-                                switch(url) {
-									case 'administrative-process/':
-									case 'frequency-sheet/':
-									case 'frequency-relation/':
+								let data = [...response.data];
+								switch (url) {
+									case "administrative-process/":
+									case "frequency-sheet/":
+									case "frequency-relation/":
 										console.log("a");
 										data = handleTemporalityStatus(data);
 										break;
 									default:
 										break;
-                                }
+								}
 								// data =  data.map((item, index) => {
 								// 	const newItem = { ...item }
 								// 	newItem.info = index % 3 === 0 ? "temporality hit" : ""
@@ -342,14 +344,13 @@ const DataTable = ({ url, title }) => {
 		}
 		if (id === "info") {
 			if (row[id].indexOf("temporality hit") > -1) {
-				return <WarningIcon text="O documento atingiu sua temporalidade"/>;
+				return <WarningIcon text="O documento atingiu sua temporalidade" />;
 			}
 			return " ";
-		}	
+		}
 
 		if (typeof row[id] === "undefined" || row[id] === null || row[id] === "")
 			return "-";
-
 
 		return row[id];
 	};
@@ -385,7 +386,7 @@ const DataTable = ({ url, title }) => {
 											}
 											padding="normal"
 											sortDirection={orderBy === headCell.id ? order : false}
-										>	
+										>
 											<TableSortLabel
 												active={orderBy === headCell.id}
 												direction={orderBy === headCell.id ? order : "asc"}
@@ -442,21 +443,21 @@ const DataTable = ({ url, title }) => {
 														{cellContent(row, headCells[headCellIndex].id)}
 													</TableCell>
 
-													{(headCellIndex === headCells.length - 1 &&
-													fieldUrls.indexOf(url) !== -1) && (
-														<TableCell align="right">
-															<IconButton
-																style={{ color: "#fe0000" }}
-																color="inherit"
-																size="small"
-															>
-																<DeleteIcon
-																	data-testid="delete-field"
-																	onClick={() => deleteRow(row)}
-																/>
-															</IconButton>
-														</TableCell>
-													)}
+													{headCellIndex === headCells.length - 1 &&
+														fieldUrls.indexOf(url) !== -1 && (
+															<TableCell align="right">
+																<IconButton
+																	style={{ color: "#fe0000" }}
+																	color="inherit"
+																	size="small"
+																>
+																	<DeleteIcon
+																		data-testid="delete-field"
+																		onClick={() => deleteRow(row)}
+																	/>
+																</IconButton>
+															</TableCell>
+														)}
 												</>
 											)
 										)}
@@ -484,9 +485,18 @@ const DataTable = ({ url, title }) => {
 					<Typography style={{ marginBottom: "1%" }}>
 						<Link
 							className={classes.link}
-							href={url === "shelf/" || "/fields/rack" || "/fields/shelf" || "/fields/file-location"}
+							href={
+								url === "shelf/" ||
+								"/fields/rack" ||
+								"/fields/shelf" ||
+								"/fields/file-location"
+							}
 						>
-							Ver {url === "shelf/" || "Prateleiras" || "Estantes" || "Localidades dos Arquivos"}
+							Ver{" "}
+							{url === "shelf/" ||
+								"Prateleiras" ||
+								"Estantes" ||
+								"Localidades dos Arquivos"}
 						</Link>
 					</Typography>
 				) : (
