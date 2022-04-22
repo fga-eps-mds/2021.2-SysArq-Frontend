@@ -54,8 +54,8 @@ const useStyles = makeStyles(() => ({
 		fontFamily: ['"Montserrat"', "sans-serif"],
 	},
 	boxAB: {
-		marginBottom: '16px',
-	}
+		marginBottom: "16px",
+	},
 }));
 
 const isStatusFiled = (status) => {
@@ -125,7 +125,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
-	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] = useState("");
+	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] =
+		useState("");
 	const [boxNumberHelperText, setBoxNumberHelperText] = useState("");
 	const [boxYearHelperText, setBoxYearHelperText] = useState("");
 
@@ -213,12 +214,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setSeverityAlert("error");
 
 		if (value === 400) {
-			setAlertHelperText("N° do Processo já existe")
-		} else{
+			setAlertHelperText("N° do Processo já existe");
+		} else {
 			setAlertHelperText(
 				"Verifique sua conexão com a internet e recarregue a página."
 			);
-
 		}
 	};
 
@@ -329,7 +329,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		}
 
 		if (!boxYear || parseInt(boxYear, 10) < 1900) {
-			setBoxYearHelperText("Insira o ano da caixa")
+			setBoxYearHelperText("Insira o ano da caixa");
 			setLoading(false);
 			return "box year error";
 		}
@@ -675,6 +675,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="noticeDate"
 									label="Data de Autuação"
 									value={
@@ -689,6 +690,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									okLabel="Confirmar"
 									cancelLabel="Cancelar"
 									style={{ width: "100%" }}
@@ -709,6 +711,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
+								variant="outlined"
 								id="interested"
 								label={detail ? "Interessado" : "Interessado*"}
 								value={interestedPerson}
@@ -724,17 +727,23 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="subject"
 									label="Nome do Documento"
 									value={subjectDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={subjectHelperText !== ""}>
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={subjectHelperText !== ""}
+								>
 									<InputLabel id="select-document_name-label">
 										Nome do Documento*
 									</InputLabel>
 									<Select
+										label="Nome do Documento*"
 										style={{ textAlign: "left" }}
 										labelId="select-document_name-label"
 										id="select-document_name"
@@ -775,6 +784,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="archivingDate"
 									label="Data de Arquivamento"
 									value={
@@ -792,6 +802,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									okLabel="Confirmar"
 									cancelLabel="Cancelar"
 									style={{ width: "100%" }}
@@ -813,6 +824,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="publicWorker"
 									label="Servidor"
 									value={publicWorkerDetail}
@@ -833,6 +845,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={4}>
 							{detail ? (
 								<TextField
+									variant="outlined"
 									fullWidth
 									id="referenceDate"
 									label="Referência (AC4)"
@@ -848,6 +861,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									okLabel="Confirmar"
 									cancelLabel="Cancelar"
 									style={{ width: "100%" }}
@@ -868,17 +882,23 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="status"
 									label="Status"
 									value={status}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={statusHelperText !== ""}>
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={statusHelperText !== ""}
+								>
 									<InputLabel id="select-status-label">Status*</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-status-label"
+										label="Status*"
 										id="select-status"
 										value={status}
 										onChange={handleStatusChange}
@@ -906,19 +926,21 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									{detail ? (
 										<TextField
 											fullWidth
+											variant="outlined"
 											id="unarchiveDestinationUnit"
 											label="Unid. Destino do Desarquivamento"
 											value={unarchiveDestinationUnitDetail}
 											inputProps={{ readOnly: true }}
 										/>
 									) : (
-										<FormControl fullWidth>
+										<FormControl fullWidth variant="outlined">
 											<InputLabel id="select-unarchiveDestinationUnit-label">
 												Unid. Destino do Desarquivamento
 											</InputLabel>
 											<Select
 												style={{ textAlign: "left" }}
 												labelId="select-unarchiveDestinationUnit-label"
+												label="Unid. Destino do Desarquivamento"
 												id="select-unarchiveDestinationUnit"
 												value={unarchiveDestinationUnit}
 												onChange={handleUnarchiveDestinationUnit}
@@ -944,6 +966,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								<Grid item xs={12} sm={12} md={6}>
 									<TextField
 										fullWidth
+										variant="outlined"
 										id="unarchiveProcessNumber"
 										label="Nº do Processo do Desarquivamento"
 										value={unarchiveProcessNumber}
@@ -956,6 +979,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									{detail ? (
 										<TextField
 											fullWidth
+											variant="outlined"
 											id="unarchiveDate"
 											label="Data de Desarquivamento"
 											value={
@@ -973,6 +997,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 										/>
 									) : (
 										<KeyboardDatePicker
+											inputVariant="outlined"
 											okLabel="Confirmar"
 											cancelLabel="Cancelar"
 											style={{ width: "100%" }}
@@ -1004,16 +1029,22 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="shelf"
 									label="Estante"
 									value={shelfDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={shelfHelperText !== ""}>
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={shelfHelperText !== ""}
+								>
 									<InputLabel id="select-shelf-label">Estante*</InputLabel>
 									<Select
 										labelId="select-shelf-label"
+										label="Estante*"
 										id="select-shelf"
 										value={shelf}
 										onChange={handleShelfChange}
@@ -1040,17 +1071,23 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="rack"
 									label="Prateleira"
 									value={rackDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={rackHelperText !== ""}>
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={rackHelperText !== ""}
+								>
 									<InputLabel id="select-rack-label">Prateleira*</InputLabel>
 
 									<Select
 										labelId="select-rack-label"
+										label="Prateleira*"
 										id="select-rack"
 										value={rack}
 										onChange={handleRackChange}
@@ -1077,19 +1114,25 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="file-location"
 									label="Localidade"
 									value={fileLocationDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={fileLocationHelperText !== ""}>
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={fileLocationHelperText !== ""}
+								>
 									<InputLabel id="select-file_location-label">
 										Localidade*
 									</InputLabel>
 
 									<Select
 										labelId="select-file_location-label"
+										label="Localidade*"
 										id="select-file_location"
 										value={fileLocation}
 										onChange={handleFileLocationChange}
@@ -1125,16 +1168,22 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									label="Sigla da Caixa"
 									value={boxAbbreviationDetail}
 								/>
 							) : (
-								<FormControl fullWidth error={boxAbbreviationHelperText !== ""}>
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={boxAbbreviationHelperText !== ""}
+								>
 									<InputLabel id="select-box_abbreviation-label">
 										Sigla da Caixa*
 									</InputLabel>
 									<Select
 										labelId="select-box_abbreviation-label"
+										label="Sigla da Caixa*"
 										id="select-box_abbreviation"
 										value={boxAbbreviation}
 										onChange={(event) => {
@@ -1163,26 +1212,28 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								</FormControl>
 							)}
 						</Grid>
-						
+
 						<Grid item xs={12} sm={12} md={4}>
-							<TextField 
+							<TextField
 								fullWidth
+								variant="outlined"
 								label="Número da Caixa*"
 								value={boxNumber}
 								onChange={(event) => {
-									setBoxNumber(event.target.value)
+									setBoxNumber(event.target.value);
 									setBoxNumberHelperText("");
 								}}
 								type="number"
 								error={boxNumberHelperText !== ""}
 								helperText={boxNumberHelperText}
-								inputProps={{readOnly: detail}}
+								inputProps={{ readOnly: detail }}
 							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
 							<TextField
 								fullWidth
+								variant="outlined"
 								label="Ano da Caixa*"
 								value={boxYear}
 								onChange={(event) => {
@@ -1192,7 +1243,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								type="number"
 								error={boxYearHelperText !== ""}
 								helperText={boxYearHelperText}
-								inputProps={{readOnly: detail}}
+								inputProps={{ readOnly: detail }}
 							/>
 						</Grid>
 

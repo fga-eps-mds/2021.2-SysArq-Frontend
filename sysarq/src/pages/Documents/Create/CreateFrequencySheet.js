@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-import { 
+import {
 	Grid,
 	CircularProgress,
 	TextField,
@@ -68,7 +68,8 @@ const CreateFrequencySheet = ({ detail }) => {
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
 	const [roleHelperText, setRoleHelperText] = useState("");
 	const [districtHelperText, setDistrictHelperText] = useState("");
-	const [workplaceWorkerHelperText, setWorkplaceWorkerHelperText] = useState("");
+	const [workplaceWorkerHelperText, setWorkplaceWorkerHelperText] =
+		useState("");
 
 	const [referencePeriodHelperText, setReferencePeriodHelperText] =
 		useState("");
@@ -91,10 +92,10 @@ const CreateFrequencySheet = ({ detail }) => {
 		"07": "jul",
 		"08": "ago",
 		"09": "set",
-		"10": "out",
-		"11": "nov",
-		"12": "dez"
-	}
+		10: "out",
+		11: "nov",
+		12: "dez",
+	};
 
 	const handleSenderProcessNumberChange = (event) =>
 		setSenderProcessNumber(event.target.value);
@@ -271,7 +272,6 @@ const CreateFrequencySheet = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencySheet) => {
-							
 							setTypeDetail(responseFrequencySheet.data.document_name_name);
 
 							setPublicWorkerDetail(
@@ -283,7 +283,9 @@ const CreateFrequencySheet = ({ detail }) => {
 							setRole(responseFrequencySheet.data.role);
 							setDistrict(responseFrequencySheet.data.municipal_area);
 							setReferencePeriod(responseFrequencySheet.data.reference_period);
-							setWorkplaceWorkerDetail(responseFrequencySheet.data.workplace_name);
+							setWorkplaceWorkerDetail(
+								responseFrequencySheet.data.workplace_name
+							);
 							setWorkerClass(
 								responseFrequencySheet.data.category
 									? responseFrequencySheet.data.category
@@ -313,13 +315,12 @@ const CreateFrequencySheet = ({ detail }) => {
 					})
 					.then((response) => setWorkplaceWorkers(response.data))
 					.catch(() => connectionError());
-
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
 
-			getUnits(setWorkplaceWorkers, connectionError);
+		getUnits(setWorkplaceWorkers, connectionError);
 	}, []);
 
 	return (
@@ -335,6 +336,7 @@ const CreateFrequencySheet = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="publicWorker"
 									label="Servidor"
 									value={publicWorkerDetail}
@@ -355,6 +357,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
+								variant="outlined"
 								id="role"
 								label={detail ? "Cargo" : "Cargo*"}
 								value={roleWorker}
@@ -369,6 +372,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
+								variant="outlined"
 								id="workerClass"
 								label="Classe"
 								value={workerClass}
@@ -382,19 +386,25 @@ const CreateFrequencySheet = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="workplaceWorker"
 									label="Lotação*"
 									value={workplaceWorkerDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={workplaceWorkerHelperText !== ""}>
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={workplaceWorkerHelperText !== ""}
+								>
 									<InputLabel id="select-workplaceWorker-label">
 										Lotação*
 									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-workplaceWorker-label"
+										label="Lotação*"
 										id="select-workplaceWorker"
 										value={workplaceWorker}
 										onChange={handleWorkplaceWorkerChange}
@@ -405,7 +415,10 @@ const CreateFrequencySheet = ({ detail }) => {
 										</MenuItem>
 
 										{workplaceWorkers.map((workplaceWorkerOption) => (
-											<MenuItem key={workplaceWorkerOption.id} value={workplaceWorkerOption}>
+											<MenuItem
+												key={workplaceWorkerOption.id}
+												value={workplaceWorkerOption}
+											>
 												{workplaceWorkerOption.unity_name}
 											</MenuItem>
 										))}
@@ -422,6 +435,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
+								variant="outlined"
 								id="district"
 								label={detail ? "Município" : "Município*"}
 								value={district}
@@ -437,20 +451,21 @@ const CreateFrequencySheet = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="referencePeriodDate"
 									label="Período de Frequência"
 									value={
 										referencePeriod
-											? `${monthMap[referencePeriod.substring(
-													5,
-													7
-											  )]}/${referencePeriod.substring(0, 4)}`
+											? `${
+													monthMap[referencePeriod.substring(5, 7)]
+											  }/${referencePeriod.substring(0, 4)}`
 											: ""
 									}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									style={{ width: "100%" }}
 									id="period-date-picker-dialog"
 									label="Período de Frequência*"
@@ -470,6 +485,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={6}>
 							<TextField
 								fullWidth
+								variant="outlined"
 								id="sender-process-number"
 								label="Número do Processo Encaminhador"
 								value={senderProcessNumber}

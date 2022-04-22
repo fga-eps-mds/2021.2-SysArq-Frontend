@@ -46,7 +46,9 @@ export default function CreatePublicWorker() {
 		if (value === 400) {
 			setAlertHelperText("O CPF já existe");
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página"
+			);
 		}
 	};
 
@@ -106,7 +108,7 @@ export default function CreatePublicWorker() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-			
+
 		return null;
 	};
 

@@ -90,7 +90,6 @@ const unityHeadCells = [
 ];
 
 const headCellsBoxAbbreviation = [
-
 	{
 		id: "name",
 		numeric: false,
@@ -102,7 +101,6 @@ const headCellsBoxAbbreviation = [
 		numeric: false,
 		label: "Sigla",
 	},
-
 ];
 
 const documentNameHeadCells = [

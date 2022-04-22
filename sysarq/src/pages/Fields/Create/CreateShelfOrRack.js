@@ -40,17 +40,17 @@ export default function CreateShelfOrRack({ urlType }) {
 	const [type, setType] = useState("Estante");
 	const [numberE, setNumberE] = useState("");
 	const [numberP, setNumberP] = useState("");
-	
+
 	const [shelfHelperText, setShelfHelperText] = useState("");
 	const [shelfNumberError, setShelfNumberError] = useState(false);
-	
+
 	const [rackHelperText, setRackHelperText] = useState("");
 	const [rackNumberError, setRackNumberError] = useState(false);
-	
+
 	const [fileLocation, setFileLocation] = useState("");
 	const [fileLocationHelperText, setFileLocationHelperText] = useState("");
 	const [fileLocationNumberError, setFileLocationNumberError] = useState("");
-	
+
 	const [openAlert, setOpenAlert] = useState(false);
 	const [alertHelperText, setAlertHelperText] = useState("");
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -73,7 +73,9 @@ export default function CreateShelfOrRack({ urlType }) {
 		if (value === 400) {
 			setAlertHelperText(`${valueType} já cadastrada`);
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página"
+			);
 		}
 	};
 
@@ -162,7 +164,7 @@ export default function CreateShelfOrRack({ urlType }) {
 						.post(
 							`file-location/`,
 							{
-								file: fileLocation
+								file: fileLocation,
 							},
 							{
 								headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
@@ -179,7 +181,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							handleRequestError(err.response.status, type);
 							return false;
 						});
-				}		
+				}
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
@@ -190,8 +192,8 @@ export default function CreateShelfOrRack({ urlType }) {
 
 		setRackNumberError(false);
 		setRackHelperText("");
-		
-		setFileLocationNumberError(false)
+
+		setFileLocationNumberError(false);
 		setFileLocationHelperText("");
 
 		return null;
@@ -199,10 +201,11 @@ export default function CreateShelfOrRack({ urlType }) {
 
 	function menuDocumentsDropIn() {
 		switch (type) {
-			case 'Estante':
+			case "Estante":
 				return (
 					<Grid item xs={12} sm={12} md={12} key={2}>
 						<TextField
+							variant="outlined"
 							id="Estante"
 							label="Número da estante*"
 							type="number"
@@ -217,12 +220,13 @@ export default function CreateShelfOrRack({ urlType }) {
 							error={shelfNumberError}
 						/>
 					</Grid>
-				)
+				);
 
-			case 'Prateleira':
+			case "Prateleira":
 				return (
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
+							variant="outlined"
 							key={1}
 							id="Prateleira"
 							label="Número da prateleira*"
@@ -238,12 +242,13 @@ export default function CreateShelfOrRack({ urlType }) {
 							error={rackNumberError}
 						/>
 					</Grid>
-				)
+				);
 
-			case 'Localidade':
+			case "Localidade":
 				return (
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
+							variant="outlined"
 							key={1}
 							id="Localidade"
 							label="Localidade do Arquivo*"
@@ -258,7 +263,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							error={fileLocationNumberError}
 						/>
 					</Grid>
-				)
+				);
 			default:
 				break;
 		}
@@ -283,13 +288,14 @@ export default function CreateShelfOrRack({ urlType }) {
 						<Container className="container">
 							<Grid container spacing={2}>
 								<Grid item xs={12} sm={12} md={12} key={1}>
-									<FormControl fullWidth>
+									<FormControl fullWidth variant="outlined">
 										<InputLabel id="select-shelf-rack-label">
 											Selecione
 										</InputLabel>
 										<Select
 											style={{ textAlign: "left" }}
 											labelId="select-shelf-rack-label"
+											label="Selecione"
 											id="select-shelf"
 											value={type}
 											onChange={handleValueChange}
