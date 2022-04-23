@@ -3,6 +3,7 @@ import { Paper, TextField, Grid, Container } from "@material-ui/core";
 import InputMask from "react-input-mask";
 import PopUpAlert from "../components/PopUpAlert";
 import DataTable from "../components/DataTable";
+import FieldsCreate from "../components/Actions/FieldsCreate";
 
 export default function createForm(
 	fields,
@@ -15,7 +16,8 @@ export default function createForm(
 	severityAlert,
 	alertHelperText,
 	listaTitle,
-	listaUrl
+	listaUrl,
+	clear
 ) {
 	return (
 		<>
@@ -76,9 +78,7 @@ export default function createForm(
 							</Grid>
 						</Container>
 					</div>
-					<button data-testid="click" type="button" onClick={onClick}>
-						CADASTRAR
-					</button>
+					<FieldsCreate onSubmit={onClick} clearFunc={clear} />
 				</Paper>
 				<PopUpAlert
 					open={openAlert}

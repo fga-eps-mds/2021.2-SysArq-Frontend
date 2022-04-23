@@ -42,19 +42,6 @@
     margin: auto 0;
 }
 
-.form-cadastro-container button {
-    margin-top: 25px;
-    padding: 1rem;
-    border: 0;
-    outline: 0;
-    color: #F6F6F6;
-    font-weight: 500;
-    background: #5289B5;
-    font-size: 1rem;
-    letter-spacing: 1.25px;
-    border-radius: 4px;
-    transition: filter 0.4s;
-}
 
 .form-cadastro-container button:hover {
     filter: brightness(0.9);
