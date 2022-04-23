@@ -30,6 +30,7 @@ import { axiosProfile, axiosArchives } from "../../../Api";
 import { axiosProfileError } from "../../../support";
 
 import PopUpAlert from "../PopUpAlert";
+import WarningIcon from "../WarningIcon";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -138,6 +139,37 @@ const DataTable = ({ url, title }) => {
 		);
 	};
 
+	const calcTemporalityDate = (year, date) => {
+		let d = date.slice();
+		const datePropertyYear = date.slice(0, 4);
+		d = d.replace(datePropertyYear, year.toString());
+		console.log(d);
+		return new Date(d);
+	};
+
+	const handleTemporalityStatus = (data) => {
+		console.log(data[0]);
+		const datePropertyOptions = {
+			"administrative-process/": "archiving_date",
+			"frequency-sheet/": "reference_period",
+			"frequency-relation/": "received_date",
+		};
+
+		const dateProperty = datePropertyOptions[url];
+		const today = new Date();
+
+		return data.map((item) => {
+			console.log(item.temporality_date);
+			const document = { ...item };
+			const temporalityDate = calcTemporalityDate(
+				document.temporality_date,
+				document[dateProperty]
+			);
+			document.info = temporalityDate <= today ? "temporality hit" : "";
+			return document;
+		});
+	};
+
 	useEffect(() => {
 		if (updateTable) {
 			setHeadCells(tableHeadCells(url));
@@ -186,12 +218,29 @@ const DataTable = ({ url, title }) => {
 
 								setRows(listTable);
 							} else {
-								setRows(response.data);
+								let data = [...response.data];
+								switch (url) {
+									case "administrative-process/":
+									case "frequency-sheet/":
+									case "frequency-relation/":
+										console.log("a");
+										data = handleTemporalityStatus(data);
+										break;
+									default:
+										break;
+								}
+								// data =  data.map((item, index) => {
+								// 	const newItem = { ...item }
+								// 	newItem.info = index % 3 === 0 ? "temporality hit" : ""
+								// 	return newItem;
+								// })
+								setRows(data);
 							}
 
 							setUpdateTable(false);
 						})
-						.catch(() => {
+						.catch((err) => {
+							console.log(err);
 							setOpenAlert(true);
 							setSeverityAlert("error");
 
@@ -321,6 +370,12 @@ const DataTable = ({ url, title }) => {
 			}
 			return obj;
 		}
+		if (id === "info") {
+			if (row[id].indexOf("temporality hit") > -1) {
+				return <WarningIcon text="O documento atingiu sua temporalidade" />;
+			}
+			return " ";
+		}
 
 		if (typeof row[id] === "undefined" || row[id] === null || row[id] === "")
 			return "-";
@@ -366,13 +421,13 @@ const DataTable = ({ url, title }) => {
 												onClick={createSortHandler(headCell.id)}
 											>
 												{headCell.label}
-												{orderBy === headCell.id ? (
+												{orderBy === headCell.id && (
 													<span className={classes.visuallyHidden}>
 														{order === "desc"
 															? "sorted descending"
 															: "sorted ascending"}
 													</span>
-												) : null}
+												)}
 											</TableSortLabel>
 										</TableCell>
 
@@ -417,22 +472,20 @@ const DataTable = ({ url, title }) => {
 													</TableCell>
 
 													{headCellIndex === headCells.length - 1 &&
-													fieldUrls.indexOf(url) !== -1 ? (
-														<TableCell align="right">
-															<IconButton
-																style={{ color: "#fe0000" }}
-																color="inherit"
-																size="small"
-															>
-																<DeleteIcon
-																	data-testid="delete-field"
-																	onClick={() => deleteRow(row)}
-																/>
-															</IconButton>
-														</TableCell>
-													) : (
-														""
-													)}
+														fieldUrls.indexOf(url) !== -1 && (
+															<TableCell align="right">
+																<IconButton
+																	style={{ color: "#fe0000" }}
+																	color="inherit"
+																	size="small"
+																>
+																	<DeleteIcon
+																		data-testid="delete-field"
+																		onClick={() => deleteRow(row)}
+																	/>
+																</IconButton>
+															</TableCell>
+														)}
 												</>
 											)
 										)}
@@ -460,9 +513,18 @@ const DataTable = ({ url, title }) => {
 					<Typography style={{ marginBottom: "1%" }}>
 						<Link
 							className={classes.link}
-							href={url === "shelf/" || "/fields/rack" || "/fields/shelf" || "/fields/file-location"}
+							href={
+								url === "shelf/" ||
+								"/fields/rack" ||
+								"/fields/shelf" ||
+								"/fields/file-location"
+							}
 						>
-							Ver {url === "shelf/" || "Prateleiras" || "Estantes" || "Localidades dos Arquivos"}
+							Ver{" "}
+							{url === "shelf/" ||
+								"Prateleiras" ||
+								"Estantes" ||
+								"Localidades dos Arquivos"}
 						</Link>
 					</Typography>
 				) : (
