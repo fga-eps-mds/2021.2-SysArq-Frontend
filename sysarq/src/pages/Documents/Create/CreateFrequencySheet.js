@@ -339,6 +339,7 @@ const CreateFrequencySheet = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="publicWorker"
 									label="Servidor"
 									value={publicWorkerDetail}
@@ -359,6 +360,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
+								variant="outlined"
 								id="role"
 								label={detail ? "Cargo" : "Cargo*"}
 								value={roleWorker}
@@ -373,6 +375,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
+								variant="outlined"
 								id="workerClass"
 								label="Classe"
 								value={workerClass}
@@ -386,19 +389,25 @@ const CreateFrequencySheet = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="workplaceWorker"
 									label="Lotação*"
 									value={workplaceWorkerDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={workplaceWorkerHelperText !== ""}>
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={workplaceWorkerHelperText !== ""}
+								>
 									<InputLabel id="select-workplaceWorker-label">
 										Lotação*
 									</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-workplaceWorker-label"
+										label="Lotação*"
 										id="select-workplaceWorker"
 										value={workplaceWorker}
 										onChange={handleWorkplaceWorkerChange}
@@ -429,6 +438,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							<TextField
 								fullWidth
+								variant="outlined"
 								id="district"
 								label={detail ? "Município" : "Município*"}
 								value={district}
@@ -444,6 +454,7 @@ const CreateFrequencySheet = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="referencePeriodDate"
 									label="Período de Frequência"
 									value={
@@ -457,6 +468,7 @@ const CreateFrequencySheet = ({ detail }) => {
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									style={{ width: "100%" }}
 									id="period-date-picker-dialog"
 									label="Período de Frequência*"
@@ -476,6 +488,7 @@ const CreateFrequencySheet = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={6}>
 							<TextField
 								fullWidth
+								variant="outlined"
 								id="sender-process-number"
 								label="Número do Processo Encaminhador"
 								value={senderProcessNumber}

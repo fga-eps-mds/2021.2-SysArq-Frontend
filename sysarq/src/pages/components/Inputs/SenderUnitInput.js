@@ -30,19 +30,25 @@ const SenderUnitInput = ({
 			{isDetailPage ? (
 				<TextField
 					fullWidth
+					variant="outlined"
 					id="senderUnit"
 					label="Unidade que Encaminhou"
 					value={senderUnitDetail}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
-				<FormControl fullWidth error={senderUnitHelperText !== ""}>
+				<FormControl
+					fullWidth
+					variant="outlined"
+					error={senderUnitHelperText !== ""}
+				>
 					<InputLabel id="select-senderUnit-label">
 						Unidade que Encaminhou*
 					</InputLabel>
 					<Select
 						style={{ textAlign: "left" }}
 						labelId="select-senderUnit-label"
+						label="Unidade que Encaminhou*"
 						id="select-senderUnit"
 						value={senderUnit}
 						onChange={handleChange}

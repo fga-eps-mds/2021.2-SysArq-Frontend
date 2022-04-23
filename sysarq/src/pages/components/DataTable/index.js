@@ -324,10 +324,10 @@ const DataTable = ({ url, title }) => {
 			"07": "jul",
 			"08": "ago",
 			"09": "set",
-			"10": "out",
-			"11": "nov",
-			"12": "dez"
-		}
+			10: "out",
+			11: "nov",
+			12: "dez",
+		};
 
 		if (id === "cpf") {
 			return maskBr.cpf(row[id]);
@@ -347,15 +347,15 @@ const DataTable = ({ url, title }) => {
 		}
 
 		if (id === "notice_date" || id === "received_date") {
-			const day = row[id].substring(8,10);
-			const month = row[id].substring(5,7);
-			const year = row[id].substring(0,4);
+			const day = row[id].substring(8, 10);
+			const month = row[id].substring(5, 7);
+			const year = row[id].substring(0, 4);
 			return `${day}/${month}/${year}`;
 		}
 
 		if (id === "reference_period") {
-			const month = row[id].substring(5,7);
-			const year = row[id].substring(0,4);
+			const month = row[id].substring(5, 7);
+			const year = row[id].substring(0, 4);
 			return `${monthMap[month]}/${year}`;
 		}
 
@@ -453,11 +453,15 @@ const DataTable = ({ url, title }) => {
 											fieldUrls.indexOf(url) !== -1
 												? null
 												: () => {
-														window.open(`/documents/${
-															row.docName === undefined
-																? url
-																: `${row.docName}/`
-														}view/${row.id}`, "_blank", "popup");
+														window.open(
+															`/documents/${
+																row.docName === undefined
+																	? url
+																	: `${row.docName}/`
+															}view/${row.id}`,
+															"_blank",
+															"popup"
+														);
 												  }
 										}
 									>

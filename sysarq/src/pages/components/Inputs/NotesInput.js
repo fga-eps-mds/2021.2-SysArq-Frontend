@@ -10,6 +10,7 @@ const NotesInput = ({ set, notes, isDetailPage }) => {
 		<Grid item xs={12} sm={12} md={12}>
 			<TextField
 				fullWidth
+				variant="outlined"
 				id="notes"
 				label="Observação"
 				value={notes}

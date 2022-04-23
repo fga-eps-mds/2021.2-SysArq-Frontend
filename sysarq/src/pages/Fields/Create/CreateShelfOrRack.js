@@ -215,6 +215,7 @@ export default function CreateShelfOrRack({ urlType }) {
 				return (
 					<Grid item xs={12} sm={12} md={12} key={2}>
 						<TextField
+							variant="outlined"
 							id="Estante"
 							label="Número da estante*"
 							type="number"
@@ -235,6 +236,7 @@ export default function CreateShelfOrRack({ urlType }) {
 				return (
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
+							variant="outlined"
 							key={1}
 							id="Prateleira"
 							label="Número da prateleira*"
@@ -256,6 +258,7 @@ export default function CreateShelfOrRack({ urlType }) {
 				return (
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
+							variant="outlined"
 							key={1}
 							id="Localidade"
 							label="Localidade do Arquivo*"
@@ -296,13 +299,14 @@ export default function CreateShelfOrRack({ urlType }) {
 						<Container className="container">
 							<Grid container spacing={2}>
 								<Grid item xs={12} sm={12} md={12} key={1}>
-									<FormControl fullWidth>
+									<FormControl fullWidth variant="outlined">
 										<InputLabel id="select-shelf-rack-label">
 											Selecione
 										</InputLabel>
 										<Select
 											style={{ textAlign: "left" }}
 											labelId="select-shelf-rack-label"
+											label="Selecione"
 											id="select-shelf"
 											value={type}
 											onChange={handleValueChange}

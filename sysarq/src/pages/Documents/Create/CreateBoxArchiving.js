@@ -995,17 +995,23 @@ const CreateBoxArchiving = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="status"
 									label="Status"
 									value={status}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={statusHelperText !== ""}>
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={statusHelperText !== ""}
+								>
 									<InputLabel id="select-status-label">Status*</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-status-label"
+										label="Status*"
 										id="select-status"
 										value={status}
 										onChange={handleStatusChange}
@@ -1138,6 +1144,7 @@ const CreateBoxArchiving = ({ detail }) => {
 					<DialogContent>
 						<TextField
 							fullWidth
+							variant="outlined"
 							id="newOriginBoxNumber"
 							label="Número da Caixa*"
 							value={newOriginBoxNumber}
@@ -1148,6 +1155,7 @@ const CreateBoxArchiving = ({ detail }) => {
 						/>
 						<TextField
 							fullWidth
+							variant="outlined"
 							margin="normal"
 							id="newOriginBoxYear"
 							label="Ano*"

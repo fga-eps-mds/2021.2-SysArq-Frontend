@@ -60,19 +60,25 @@ const DocumentTypeInput = ({
 			{isDetailPage ? (
 				<TextField
 					fullWidth
+					variant="outlined"
 					id="documentType"
 					label="Nome do Documento"
 					value={documentTypeDetail}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
-				<FormControl fullWidth error={documentTypeHelperText !== ""}>
+				<FormControl
+					fullWidth
+					variant="outlined"
+					error={documentTypeHelperText !== ""}
+				>
 					<InputLabel id="select-documentType-label">
 						Nome do Documento*
 					</InputLabel>
 					<Select
 						style={{ textAlign: "left" }}
 						labelId="select-documentType-label"
+						label="Nome do Documento*"
 						id="select-documentType"
 						value={documentType}
 						onChange={handleChange}
