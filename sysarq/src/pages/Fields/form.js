@@ -46,7 +46,7 @@ export default function createForm(
 													helperText={item.helperText}
 													error={item.error}
 												>
-													<TextField />
+													<TextField variant="outlined" />
 												</InputMask>
 											</Grid>
 										);
@@ -55,6 +55,7 @@ export default function createForm(
 									const input = (
 										<Grid item xs={12} sm={12} md={12} key={key.toString()}>
 											<TextField
+												variant="outlined"
 												id={item.placeholder}
 												label={item.placeholder}
 												type={item.type}
