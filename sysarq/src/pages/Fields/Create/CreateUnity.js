@@ -55,14 +55,13 @@ export default function CreateUnity() {
 		if (value === 400) {
 			setAlertHelperText("Nome da unidade já existe");
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página"
+			);
 		}
 	};
 
-	const onSuccess = () => {
-		setOpenAlert(true);
-		setSeverityAlert("success");
-		setAlertHelperText("Unidade cadastrada!");
+	const clear = () => {
 		setUnityName("");
 		setUnityAbbreviation("");
 		setAdiministrativeBond("");
@@ -70,6 +69,13 @@ export default function CreateUnity() {
 		setCounty("");
 		setTelephoneNumber("");
 		setNote("");
+	};
+
+	const onSuccess = () => {
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Unidade cadastrada!");
+		clear();
 		window.location.reload();
 	};
 
@@ -115,7 +121,7 @@ export default function CreateUnity() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-			
+
 		return null;
 	};
 
@@ -230,6 +236,7 @@ export default function CreateUnity() {
 		severityAlert,
 		alertHelperText,
 		"Unidade",
-		"unity/"
+		"unity/",
+		clear
 	);
 }

@@ -54,16 +54,22 @@ export default function CreateDocumentName() {
 		if (value === 400) {
 			setAlertHelperText("Nome do documento já existe");
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página"
+			);
 		}
+	};
+
+	const clear = () => {
+		setDocumentName("");
+		setTemporality("");
 	};
 
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText("Nome do documento cadastrado!");
-		setDocumentName("");
-		setTemporality("");
+		clear();
 		window.location.reload();
 	};
 
@@ -89,7 +95,7 @@ export default function CreateDocumentName() {
 					.post(
 						`document-name/`,
 						{
-							document_name: documentName,						
+							document_name: documentName,
 							temporality: temporalityValue,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
@@ -109,7 +115,7 @@ export default function CreateDocumentName() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-			
+
 		return null;
 	};
 
@@ -123,7 +129,7 @@ export default function CreateDocumentName() {
 			error: documentNameError,
 			setHelperText: setdocumentNameHelperText,
 			setError: setdocumentNameError,
-		},		
+		},
 		{
 			type: "number",
 			placeholder: "Temporalidade (anos)*",
@@ -150,6 +156,7 @@ export default function CreateDocumentName() {
 		severityAlert,
 		alertHelperText,
 		"Nome do Documento",
-		"document-name/"
+		"document-name/",
+		clear
 	);
 }

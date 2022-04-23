@@ -16,6 +16,7 @@ import { axiosArchives, axiosProfile } from "../../../Api";
 import { axiosProfileError } from "../../../support";
 import PopUpAlert from "../../components/PopUpAlert";
 import DataTable from "../../components/DataTable";
+import FieldsCreate from "../../components/Actions/FieldsCreate";
 
 const useStyles = makeStyles({
 	input: {
@@ -40,17 +41,17 @@ export default function CreateShelfOrRack({ urlType }) {
 	const [type, setType] = useState("Estante");
 	const [numberE, setNumberE] = useState("");
 	const [numberP, setNumberP] = useState("");
-	
+
 	const [shelfHelperText, setShelfHelperText] = useState("");
 	const [shelfNumberError, setShelfNumberError] = useState(false);
-	
+
 	const [rackHelperText, setRackHelperText] = useState("");
 	const [rackNumberError, setRackNumberError] = useState(false);
-	
+
 	const [fileLocation, setFileLocation] = useState("");
 	const [fileLocationHelperText, setFileLocationHelperText] = useState("");
 	const [fileLocationNumberError, setFileLocationNumberError] = useState("");
-	
+
 	const [openAlert, setOpenAlert] = useState(false);
 	const [alertHelperText, setAlertHelperText] = useState("");
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -73,7 +74,9 @@ export default function CreateShelfOrRack({ urlType }) {
 		if (value === 400) {
 			setAlertHelperText(`${valueType} já cadastrada`);
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página"
+			);
 		}
 	};
 
@@ -84,13 +87,17 @@ export default function CreateShelfOrRack({ urlType }) {
 		setFileLocation("");
 	};
 
+	const clear = () => {
+		setNumberE("");
+		setNumberP("");
+		setFileLocation("");
+	};
+
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText(`${type} cadastrada!`);
-		setNumberE("");
-		setNumberP("");
-		setFileLocation("");
+		clear();
 		window.location.reload();
 	};
 
@@ -103,6 +110,11 @@ export default function CreateShelfOrRack({ urlType }) {
 		if (numberP === "" && type === "Prateleira") {
 			setRackNumberError(true);
 			setRackHelperText("Prateleira não pode ser vazia");
+			return "Erro";
+		}
+		if (fileLocation === "" && type === "Localidade") {
+			setFileLocationNumberError(true);
+			setFileLocationHelperText("Localidade não pode ser vazia");
 			return "Erro";
 		}
 		axiosProfile
@@ -162,7 +174,7 @@ export default function CreateShelfOrRack({ urlType }) {
 						.post(
 							`file-location/`,
 							{
-								file: fileLocation
+								file: fileLocation,
 							},
 							{
 								headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
@@ -179,7 +191,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							handleRequestError(err.response.status, type);
 							return false;
 						});
-				}		
+				}
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
@@ -190,8 +202,8 @@ export default function CreateShelfOrRack({ urlType }) {
 
 		setRackNumberError(false);
 		setRackHelperText("");
-		
-		setFileLocationNumberError(false)
+
+		setFileLocationNumberError(false);
 		setFileLocationHelperText("");
 
 		return null;
@@ -199,7 +211,7 @@ export default function CreateShelfOrRack({ urlType }) {
 
 	function menuDocumentsDropIn() {
 		switch (type) {
-			case 'Estante':
+			case "Estante":
 				return (
 					<Grid item xs={12} sm={12} md={12} key={2}>
 						<TextField
@@ -217,9 +229,9 @@ export default function CreateShelfOrRack({ urlType }) {
 							error={shelfNumberError}
 						/>
 					</Grid>
-				)
+				);
 
-			case 'Prateleira':
+			case "Prateleira":
 				return (
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
@@ -238,9 +250,9 @@ export default function CreateShelfOrRack({ urlType }) {
 							error={rackNumberError}
 						/>
 					</Grid>
-				)
+				);
 
-			case 'Localidade':
+			case "Localidade":
 				return (
 					<Grid item xs={12} sm={12} md={12}>
 						<TextField
@@ -248,6 +260,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							id="Localidade"
 							label="Localidade do Arquivo*"
 							type="text"
+							value={fileLocation}
 							onChange={(event) => {
 								setFileLocation(event.target.value);
 								setFileLocationNumberError(false);
@@ -258,7 +271,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							error={fileLocationNumberError}
 						/>
 					</Grid>
-				)
+				);
 			default:
 				break;
 		}
@@ -314,9 +327,7 @@ export default function CreateShelfOrRack({ urlType }) {
 							</Grid>
 						</Container>
 					</div>
-					<button data-testid="click" type="button" onClick={onClick}>
-						CADASTRAR
-					</button>
+					<FieldsCreate onSubmit={onClick} clearFunc={clear} />
 				</Paper>
 				<PopUpAlert
 					open={openAlert}

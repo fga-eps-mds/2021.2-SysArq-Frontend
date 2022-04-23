@@ -29,7 +29,7 @@ import {
 	TableCell,
 	TableBody,
 	Button,
-	FormHelperText
+	FormHelperText,
 } from "@material-ui/core";
 
 import AddCircleIcon from "@material-ui/icons/AddCircle";
@@ -48,7 +48,7 @@ import {
 	formatDate,
 	axiosProfileError,
 	getUnits,
-    arrayMes,
+	arrayMes,
 } from "../../../support";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
@@ -84,7 +84,7 @@ const isStatusFiled = (status) => {
 		return false;
 	}
 	return null;
-}
+};
 
 const CreateBoxArchiving = ({ detail }) => {
 	const params = detail ? useParams() : "";
@@ -95,7 +95,8 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [rackDetail, setRackDetail] = useState("");
 	const [fileLocationDetail, setFileLocationDetail] = useState("");
 	const [documentDetail, setDocumentDetail] = useState("");
-	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] = useState("");
+	const [unarchiveDestinationUnitDetail, setUnarchiveDestinationUnitDetail] =
+		useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveDate, setUnarchiveDate] = useState(detail ? "" : null);
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
@@ -115,19 +116,17 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [originBox, setOriginBox] = useState([{}]);
 
 	/*
-  *  originbox: {
-  *   shelf: ...,
-  *   rack: ...
-  *  }
-  * */
+	 *  originbox: {
+	 *   shelf: ...,
+	 *   rack: ...
+	 *  }
+	 * */
 
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [status, setStatus] = useState("");
-
-
 
 	const [openNewOriginBoxDialog, setOpenNewOriginBoxDialog] = useState(false);
 
@@ -211,22 +210,22 @@ const CreateBoxArchiving = ({ detail }) => {
 			subjects_list: [],
 		};
 
-		setOriginBox(prev => [...prev, newOriginBox]);
+		setOriginBox((prev) => [...prev, newOriginBox]);
 		setOpenNewOriginBoxDialog(false);
 
 		return "added originBox";
 	};
 
-	useEffect(() => console.log(originBox), [originBox])
+	useEffect(() => console.log(originBox), [originBox]);
 
-	useEffect(() => originBox.filter((b) => b.number === undefined), [originBox])
+	useEffect(() => originBox.filter((b) => b.number === undefined), [originBox]);
 
-	const [currentBox, setCurrentBox] = useState({})
+	const [currentBox, setCurrentBox] = useState({});
 
 	const handleOpenNewOriginBoxSubjectDialog = (box) => {
 		setOpenNewOriginBoxSubjectDialog(true);
-		setCurrentBox(box)
-	}
+		setCurrentBox(box);
+	};
 
 	const handleCloseNewOriginBoxSubjectDialog = () =>
 		setOpenNewOriginBoxSubjectDialog(false);
@@ -252,7 +251,19 @@ const CreateBoxArchiving = ({ detail }) => {
 		// 	dates: [],
 		// });
 
-		setOriginBox(prev => prev.map((box) => box.id === b.id ? { ...box, subjects_list: [...box.subjects_list ?? [], { document_name_id: newOriginBoxSubject, dates: [] }] } : box))
+		setOriginBox((prev) =>
+			prev.map((box) =>
+				box.id === b.id
+					? {
+							...box,
+							subjects_list: [
+								...(box.subjects_list ?? []),
+								{ document_name_id: newOriginBoxSubject, dates: [] },
+							],
+					  }
+					: box
+			)
+		);
 		// setOriginBox(prev => prev.map((box, index) => index === boxIndex ? {...box, subjects_list: [...box.subjects_list ?? [], {name: newOriginBoxSubject, dates: []}]} : box))
 		setOpenNewOriginBoxSubjectDialog(false);
 
@@ -268,18 +279,25 @@ const CreateBoxArchiving = ({ detail }) => {
 		// 	subjects_list: originBox.subjects_list,
 		// };
 
-		const newBox = { ...box, subjects_list: box.subjects_list.filter((_, index) => index !== originBoxSubjectIndex) }
-		setOriginBox(prev => prev.map((b) => b.id === box.id ? newBox : b))
-
+		const newBox = {
+			...box,
+			subjects_list: box.subjects_list.filter(
+				(_, index) => index !== originBoxSubjectIndex
+			),
+		};
+		setOriginBox((prev) => prev.map((b) => (b.id === box.id ? newBox : b)));
 
 		// setOriginBox(prev => prev.filter((_, index) => index != originBoxSubjectIndex))
 		// setOriginBox(prev => prev.map((b) => box.id === b.id && b.subjects_list.filter((_, index) => index !== originBoxSubjectIndex)))
 		// setOriginBox(newOriginBox);
 	};
 
-	const handleOpenNewOriginBoxSubjectDateDialog = (box, originBoxSubjectIndex) => {
+	const handleOpenNewOriginBoxSubjectDateDialog = (
+		box,
+		originBoxSubjectIndex
+	) => {
 		setSelectedOriginBoxSubjectIndex(originBoxSubjectIndex);
-		setCurrentBox(box)
+		setCurrentBox(box);
 		setOpenNewOriginBoxSubjectDateDialog(true);
 	};
 
@@ -320,13 +338,24 @@ const CreateBoxArchiving = ({ detail }) => {
 		// console.log(box)
 		// console.log(box.subjects_list.document_name_id.document_name)
 
-		if (box.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(formattedDate) != -1) {
+		if (
+			box.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(
+				formattedDate
+			) != -1
+		) {
 			setNewOriginBoxSubjectDateHelperText("Data já adicionada");
 			return "newOriginBoxSubjectDate already added error";
 		}
 
-		const newBox = { ...box, subjects_list: box.subjects_list.map((s, i) => i === selectedOriginBoxSubjectIndex ? { ...s, dates: [...s.dates, formattedDate] } : s) }
-		setOriginBox(prev => prev.map(b => b.id === box.id ? newBox : b))
+		const newBox = {
+			...box,
+			subjects_list: box.subjects_list.map((s, i) =>
+				i === selectedOriginBoxSubjectIndex
+					? { ...s, dates: [...s.dates, formattedDate] }
+					: s
+			),
+		};
+		setOriginBox((prev) => prev.map((b) => (b.id === box.id ? newBox : b)));
 
 		// if (
 		// 	newOriginBox.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(
@@ -370,11 +399,13 @@ const CreateBoxArchiving = ({ detail }) => {
 		//
 		// s etOriginBox(newOriginBox);
 
-		const newDates = box.subjects_list[originBoxSubjectIndex].dates.filter((date) => date !== deletedOriginBoxSubjectDate)
-		const newBox = box
-		newBox.subjects_list[originBoxSubjectIndex].dates = newDates
+		const newDates = box.subjects_list[originBoxSubjectIndex].dates.filter(
+			(date) => date !== deletedOriginBoxSubjectDate
+		);
+		const newBox = box;
+		newBox.subjects_list[originBoxSubjectIndex].dates = newDates;
 
-		setOriginBox(prev => prev.map((b) => b.id === box.id ? newBox : b))
+		setOriginBox((prev) => prev.map((b) => (b.id === box.id ? newBox : b)));
 	};
 
 	const handleAlertClose = () => setOpenAlert(false);
@@ -388,19 +419,15 @@ const CreateBoxArchiving = ({ detail }) => {
 		if (value === 400) {
 			setAlertHelperText("O N° do processo já existe");
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página"
+			);
 		}
 	};
 
-	const onSuccess = () => {
-		setLoading(false);
-
-		setOpenAlert(true);
-		setSeverityAlert("success");
-		setAlertHelperText("Documento cadastrado!");
-
+	const clear = () => {
 		setProcessNumber("");
-		setReceivedDate(initialDate);
+		setReceivedDate(null);
 		setSenderUnit("");
 
 		setOriginBox([{}]);
@@ -413,12 +440,16 @@ const CreateBoxArchiving = ({ detail }) => {
 		setUnarchiveProcessNumber("");
 		setUnarchiveDate(initialDate);
 		setStatus("");
-		// setBox("");
-		// setShelf("");
-		// setRack("");
-		// setFileLocation("");
-		// setNotes("");
-		// setBoxNotes("");
+		setNotes("");
+	};
+
+	const onSuccess = () => {
+		setLoading(false);
+
+		setOpenAlert(true);
+		setSeverityAlert("success");
+		setAlertHelperText("Documento cadastrado!");
+		clear();
 		window.location.reload();
 	};
 
@@ -448,8 +479,8 @@ const CreateBoxArchiving = ({ detail }) => {
 			setLoading(false);
 			return "senderUnit error";
 		}
-    
-    if (status === "") {
+
+		if (status === "") {
 			setStatusHelperText("Selecione um status");
 			setLoading(false);
 			return "status error";
@@ -463,20 +494,23 @@ const CreateBoxArchiving = ({ detail }) => {
 			return "unarchiveDate error";
 		}
 
-    const formattedOriginBoxes = originBox.filter(b => b.id !== undefined).map((b) => ({
-	    box_notes: b.box_notes ? b.box_notes : "",
-      year: b.year,
-      number: b.number,
-      shelf_id: b.shelf ? b.shelf.id : "",
-      rack_id: b.rack ? b.rack.id : "",
-      file_location_id: b.file_location ? b.file_location.id : "",
-      subjects_list: b.subjects_list.map((d) => ({
-        document_name_id: d.document_name_id.id, 
-        year: d.dates.map(date => parseInt(date.split('-')[0], 10)), 
-        month: d.dates.map(date => arrayMes[parseInt(date.split('-'), 10) - 1])
-      }
-      ))
-    }))
+		const formattedOriginBoxes = originBox
+			.filter((b) => b.id !== undefined)
+			.map((b) => ({
+				box_notes: b.box_notes ? b.box_notes : "",
+				year: b.year,
+				number: b.number,
+				shelf_id: b.shelf ? b.shelf.id : "",
+				rack_id: b.rack ? b.rack.id : "",
+				file_location_id: b.file_location ? b.file_location.id : "",
+				subjects_list: b.subjects_list.map((d) => ({
+					document_name_id: d.document_name_id.id,
+					year: d.dates.map((date) => parseInt(date.split("-")[0], 10)),
+					month: d.dates.map(
+						(date) => arrayMes[parseInt(date.split("-"), 10) - 1]
+					),
+				})),
+			}));
 
 		const payload = {
 			process_number: processNumber,
@@ -486,18 +520,17 @@ const CreateBoxArchiving = ({ detail }) => {
 			document_url: "",
 			cover_sheet: "",
 			filer_user: "",
-      origin_boxes: formattedOriginBoxes,
-      is_filed: isStatusFiled(status),
+			origin_boxes: formattedOriginBoxes,
+			is_filed: isStatusFiled(status),
 			is_eliminated: status === "Eliminado",
-			unity_id:
-				status === "Desarquivado" ? unarchiveDestinationUnit.id: "",
+			unity_id: status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
 			send_date:
 				unarchiveDate !== null && status === "Desarquivado"
-						? formatDate(unarchiveDate)
-						: null,
+					? formatDate(unarchiveDate)
+					: null,
 			box_process_number:
-				status === "Desarquivado" ? unarchiveProcessNumber : ""
-		}
+				status === "Desarquivado" ? unarchiveProcessNumber : "",
+		};
 
 		axiosProfile
 			.post(`api/token/refresh/`, {
@@ -508,11 +541,9 @@ const CreateBoxArchiving = ({ detail }) => {
 				localStorage.setItem("tkr", res.data.refresh);
 				// TO-DO
 				axiosArchives
-					.post(
-						"box-archiving/",
-            payload, 
-            { headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
-					)
+					.post("box-archiving/", payload, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
 					.then(() => onSuccess())
 					.catch((err) => {
 						if (err.response.status === 401) {
@@ -530,31 +561,30 @@ const CreateBoxArchiving = ({ detail }) => {
 		return "post done";
 	};
 
-	const [id, setId] = useState(1)
+	const [id, setId] = useState(1);
 
 	const getNextId = () => {
-		setId(i => i + 1);
+		setId((i) => i + 1);
 		return id - 1;
-	}
+	};
 
 	useEffect(() => {
-			axiosProfile
-				.post(`api/token/refresh/`, {
-					refresh: localStorage.getItem("tkr"),
-				})
-				.then((res) => {
-					localStorage.setItem("tk", res.data.access);
-					localStorage.setItem("tkr", res.data.refresh);
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
 
-					if (detail) {
-						setLoading(true);
+				if (detail) {
+					setLoading(true);
 
-						axiosArchives
+					axiosArchives
 						.get(`box-archiving/${params.id}`, {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseBoxArchiving) => {
-
 							setSenderUnitDetail(responseBoxArchiving.data.sender_unity_name);
 
 							setShelfDetail(
@@ -615,8 +645,7 @@ const CreateBoxArchiving = ({ detail }) => {
 									subjects_list: subjectsListDetail,
 								};
 
-								setOriginBox(prev => [...prev, originBoxDetail]);
-
+								setOriginBox((prev) => [...prev, originBoxDetail]);
 							}
 
 							if (
@@ -625,12 +654,14 @@ const CreateBoxArchiving = ({ detail }) => {
 								responseBoxArchiving.data.unity_id
 							) {
 								axiosArchives
-									.get(`unity/${responseBoxArchiving.data.unity_id}/`,{
-										headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+									.get(`unity/${responseBoxArchiving.data.unity_id}/`, {
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
 									})
 									.then((response) => {
 										setUnarchiveDestinationUnit(response.data);
-										setUnarchiveDestinationUnitDetail(response.data.unity_name)
+										setUnarchiveDestinationUnitDetail(response.data.unity_name);
 									})
 									.catch(() => connectionError());
 							} else {
@@ -640,7 +671,7 @@ const CreateBoxArchiving = ({ detail }) => {
 							if (responseBoxArchiving.data.is_eliminated) {
 								setStatus("Eliminado");
 							} else if (responseBoxArchiving.data.is_filed) {
-								setStatus("Arquivado")
+								setStatus("Arquivado");
 							} else {
 								setStatus("Desarquivado");
 
@@ -659,7 +690,7 @@ const CreateBoxArchiving = ({ detail }) => {
 
 							setProcessNumber(responseBoxArchiving.data.process_number);
 							setReceivedDate(responseBoxArchiving.data.received_date);
-							
+
 							setNotes(
 								responseBoxArchiving.data.notes
 									? responseBoxArchiving.data.notes
@@ -669,11 +700,11 @@ const CreateBoxArchiving = ({ detail }) => {
 							setLoading(false);
 						})
 						.catch(() => connectionError());
-					}
-				})
-				.catch((error) => {
-					axiosProfileError(error, connectionError);
-				});
+				}
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
 
 		getUnits(setUnits, connectionError);
 	}, []);
@@ -720,203 +751,233 @@ const CreateBoxArchiving = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={12}>
 							<SpecialLabels label="Caixa(s) para Arquivamento" />
 
-							{originBox.filter((box) => box.id !== undefined).map((box) => (
-								<Accordion>
-									<AccordionSummary expandIcon={<ExpandMoreIcon />}>
-										<Typography>
-											{box.number}/{box.year}
-										</Typography>
-									</AccordionSummary>
-									<AccordionDetails>
-										<div style={{ width: "100%" }}>
-											<TableContainer
-												style={{ width: "100%" }}
-												component={Paper}
-											>
-												<Table size="small">
-													<TableHead>
-														<TableRow>
-															<TableCell>Nome do Documento</TableCell>
-															<TableCell>Datas do Documento</TableCell>
-															{detail ? "" : <TableCell>{ }</TableCell>}
-														</TableRow>
-													</TableHead>
-													<TableBody>
-														{box.subjects_list.map(
-															(subject, subjectIndex) => (
-																<TableRow key={subject.document_name_id.document_name}>
-																	<TableCell>{subject.document_name_id.document_name}</TableCell>
-																	<TableCell>
-																		<ChipsContainer
-																			justifyContent="left"
-																			marginTop="0%"
-																		>
-																			{subject.dates.map((addedDate) => (
-																				<Chip
-																					icon={<TimelapseIcon />}
-																					label={`${addedDate.substring(
-																						5,
-																						7
-																					)}/${addedDate.substring(0, 4)}`}
-																					color="secondary"
-																					deleteIcon={
-																						<CancelIcon data-testid="delete" />
-																					}
-																					onDelete={
-																						detail
-																							? false
-																							: () =>
-																								handleDeleteOriginBoxSubjectDate(
-																									box,
-																									subjectIndex,
-																									addedDate
-																								)
-																					}
-																				/>
-																			))}
-
-																			{detail ? (
-																				""
-																			) : (
-																				<AddChip
-																					label="Adicionar Data"
-																					onClick={() =>
-																						handleOpenNewOriginBoxSubjectDateDialog(
-																							box,
-																							subjectIndex
-																						)
-																					}
-																				/>
-																			)}
-																		</ChipsContainer>
-																	</TableCell>
-																	{detail ? (
-																		""
-																	) : (
+							{originBox
+								.filter((box) => box.id !== undefined)
+								.map((box) => (
+									<Accordion>
+										<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+											<Typography>
+												{box.number}/{box.year}
+											</Typography>
+										</AccordionSummary>
+										<AccordionDetails>
+											<div style={{ width: "100%" }}>
+												<TableContainer
+													style={{ width: "100%" }}
+													component={Paper}
+												>
+													<Table size="small">
+														<TableHead>
+															<TableRow>
+																<TableCell>Nome do Documento</TableCell>
+																<TableCell>Datas do Documento</TableCell>
+																{detail ? "" : <TableCell>{}</TableCell>}
+															</TableRow>
+														</TableHead>
+														<TableBody>
+															{box.subjects_list.map(
+																(subject, subjectIndex) => (
+																	<TableRow
+																		key={subject.document_name_id.document_name}
+																	>
+																		<TableCell>
+																			{subject.document_name_id.document_name}
+																		</TableCell>
 																		<TableCell>
 																			<ChipsContainer
-																				justifyContent="right"
+																				justifyContent="left"
 																				marginTop="0%"
 																			>
-																				<Chip
-																					variant="outlined"
-																					label="Excluir"
-																					icon={<CloseIcon />}
-																					color="secondary"
-																					clickable
-																					onClick={() =>
-																						handleDeleteOriginBoxSubject(
-																							box,
-																							subjectIndex
-																						)
-																					}
-																				/>
+																				{subject.dates.map((addedDate) => (
+																					<Chip
+																						icon={<TimelapseIcon />}
+																						label={`${addedDate.substring(
+																							5,
+																							7
+																						)}/${addedDate.substring(0, 4)}`}
+																						color="secondary"
+																						deleteIcon={
+																							<CancelIcon data-testid="delete" />
+																						}
+																						onDelete={
+																							detail
+																								? false
+																								: () =>
+																										handleDeleteOriginBoxSubjectDate(
+																											box,
+																											subjectIndex,
+																											addedDate
+																										)
+																						}
+																					/>
+																				))}
+
+																				{detail ? (
+																					""
+																				) : (
+																					<AddChip
+																						label="Adicionar Data"
+																						onClick={() =>
+																							handleOpenNewOriginBoxSubjectDateDialog(
+																								box,
+																								subjectIndex
+																							)
+																						}
+																					/>
+																				)}
 																			</ChipsContainer>
 																		</TableCell>
-																	)}
-																</TableRow>
-															)
-														)}
-													</TableBody>
-												</Table>
+																		{detail ? (
+																			""
+																		) : (
+																			<TableCell>
+																				<ChipsContainer
+																					justifyContent="right"
+																					marginTop="0%"
+																				>
+																					<Chip
+																						variant="outlined"
+																						label="Excluir"
+																						icon={<CloseIcon />}
+																						color="secondary"
+																						clickable
+																						onClick={() =>
+																							handleDeleteOriginBoxSubject(
+																								box,
+																								subjectIndex
+																							)
+																						}
+																					/>
+																				</ChipsContainer>
+																			</TableCell>
+																		)}
+																	</TableRow>
+																)
+															)}
+														</TableBody>
+													</Table>
+												</TableContainer>
 
-
-
-											</TableContainer>
-
-											{detail ? (
-												""
-											) : (
-												<div
-													style={{
-														display: "flex",
-														justifyContent: "space-between",
-													}}
-												>
-													<ChipsContainer
-														justifyContent="left"
-														marginTop="0.5%"
+												{detail ? (
+													""
+												) : (
+													<div
+														style={{
+															display: "flex",
+															justifyContent: "space-between",
+														}}
 													>
-														<Chip
-															variant="outlined"
-															color="secondary"
-															label="Excluir Caixa de Origem"
-															icon={<DeleteForeverRoundedIcon />}
-															onClick={() => setOriginBox(prev => prev.filter((b) => b.id !== box.id))}
-															clickable
-														/>
-													</ChipsContainer>
-													<ChipsContainer
-														justifyContent="right"
-														marginTop="0.5%"
-													>
-														<Chip
-															label="Adicionar Assunto"
-															icon={<AddCircleIcon />}
-															color="primary"
-															onClick={() =>
-																handleOpenNewOriginBoxSubjectDialog(box)
-															}
-															clickable
-														/>
-													</ChipsContainer>
-												</div>
-											)}
+														<ChipsContainer
+															justifyContent="left"
+															marginTop="0.5%"
+														>
+															<Chip
+																variant="outlined"
+																color="secondary"
+																label="Excluir Caixa de Origem"
+																icon={<DeleteForeverRoundedIcon />}
+																onClick={() =>
+																	setOriginBox((prev) =>
+																		prev.filter((b) => b.id !== box.id)
+																	)
+																}
+																clickable
+															/>
+														</ChipsContainer>
+														<ChipsContainer
+															justifyContent="right"
+															marginTop="0.5%"
+														>
+															<Chip
+																label="Adicionar Assunto"
+																icon={<AddCircleIcon />}
+																color="primary"
+																onClick={() =>
+																	handleOpenNewOriginBoxSubjectDialog(box)
+																}
+																clickable
+															/>
+														</ChipsContainer>
+													</div>
+												)}
+											</div>
+										</AccordionDetails>
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "space-between",
+												marginBottom: 20,
+												marginLeft: 20,
+												marginRight: 20,
+											}}
+										>
+											<FileLocationInput
+												set={(value) =>
+													setOriginBox(
+														originBox.map((b) =>
+															b.id === box.id
+																? { ...b, file_location: value }
+																: b
+														)
+													)
+												}
+												connectionError={connectionError}
+												isDetailPage={detail}
+												fileLocationDetail={fileLocationDetail}
+												fileLocation={box.file_location}
+											/>
+
+											<ShelfInput
+												set={(value) =>
+													setOriginBox(
+														originBox.map((b) =>
+															b.id === box.id ? { ...b, shelf: value } : b
+														)
+													)
+												}
+												connectionError={connectionError}
+												isDetailPage={detail}
+												shelfDetail={shelfDetail}
+												shelf={box.shelf}
+											/>
+
+											<RackInput
+												set={(value) =>
+													setOriginBox(
+														originBox.map((b) =>
+															b.id === box.id ? { ...b, rack: value } : b
+														)
+													)
+												}
+												connectionError={connectionError}
+												isDetailPage={detail}
+												rackDetail={rackDetail}
+												rack={box.rack}
+											/>
 										</div>
-
-									</AccordionDetails>
-									<div
-										style={{
-											display: "flex",
-											justifyContent: "space-between",
-											marginBottom: 20,
-											marginLeft: 20,
-											marginRight: 20,
-										}}
-									>
-										<FileLocationInput
-											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? { ...b, file_location: value } : b))}
-											connectionError={connectionError}
-											isDetailPage={detail}
-											fileLocationDetail={fileLocationDetail}
-											fileLocation={box.file_location}
-										/>
-
-										<ShelfInput
-											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? { ...b, shelf: value } : b))}
-											connectionError={connectionError}
-											isDetailPage={detail}
-											shelfDetail={shelfDetail}
-											shelf={box.shelf}
-										/>
-
-										<RackInput
-											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? { ...b, rack: value } : b))}
-											connectionError={connectionError}
-											isDetailPage={detail}
-											rackDetail={rackDetail}
-											rack={box.rack}
-										/>
-									</div>
-									<div
-										style={{
-											display: "flex",
-											justifyContent: "space-between",
-											marginBottom: 20,
-											marginLeft: 20,
-											marginRight: 20,
-										}}
-									>
-										<BoxesNotesInput
-											set={(value) => setOriginBox(originBox.map((b) => b.id === box.id ? { ...b, box_notes: value } : b))}
-											notes={box.box_notes}
-											isDetailPage={detail}
-										/>
-
-									</div>
-
-								</Accordion>
-							))}
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "space-between",
+												marginBottom: 20,
+												marginLeft: 20,
+												marginRight: 20,
+											}}
+										>
+											<BoxesNotesInput
+												set={(value) =>
+													setOriginBox(
+														originBox.map((b) =>
+															b.id === box.id ? { ...b, box_notes: value } : b
+														)
+													)
+												}
+												notes={box.box_notes}
+												isDetailPage={detail}
+											/>
+										</div>
+									</Accordion>
+								))}
 
 							<ChipsContainer justifyContent="left" marginTop="0%">
 								{detail ? (
@@ -928,7 +989,6 @@ const CreateBoxArchiving = ({ detail }) => {
 									/>
 								)}
 							</ChipsContainer>
-
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
@@ -951,12 +1011,12 @@ const CreateBoxArchiving = ({ detail }) => {
 										onChange={handleStatusChange}
 										renderValue={(value) => `${value}`}
 									>
-									<MenuItem value="">
-										<em>Nenhum</em>
-									</MenuItem>
-									<MenuItem value="Arquivado">Arquivado</MenuItem>
-									<MenuItem value="Eliminado">Eliminado</MenuItem>
-									<MenuItem value="Desarquivado">Desarquivado</MenuItem>
+										<MenuItem value="">
+											<em>Nenhum</em>
+										</MenuItem>
+										<MenuItem value="Arquivado">Arquivado</MenuItem>
+										<MenuItem value="Eliminado">Eliminado</MenuItem>
+										<MenuItem value="Desarquivado">Desarquivado</MenuItem>
 									</Select>
 									{statusHelperText ? (
 										<FormHelperText>{statusHelperText}</FormHelperText>
@@ -966,100 +1026,100 @@ const CreateBoxArchiving = ({ detail }) => {
 								</FormControl>
 							)}
 						</Grid>
-									
+
 						{status === "Desarquivado" ? (
-									<>
-										<Grid item xs={12} sm={12} md={12}>
-											{detail ? (
-												<TextField
-													fullWidth
-													id="unarchiveDestinationUnit"
-													label="Unid. Destino do Desarquivamento"
-													value={unarchiveDestinationUnitDetail}
-													inputProps={{ readOnly: true }}
-												/>
-											) : (
-												<FormControl fullWidth>
-													<InputLabel id="select-unarchiveDestinationUnit-label">
-														Unid. Destino do Desarquivamento
-													</InputLabel>
-													<Select
-														style={{ textAlign: "left" }}
-														labelId="select-unarchiveDestinationUnit-label"
-														id="select-unarchiveDestinationUnit"
-														value={unarchiveDestinationUnit}
-														onChange={handleUnarchiveDestinationUnit}
-														renderValue={(value) => `${value.unity_name}`}
+							<>
+								<Grid item xs={12} sm={12} md={12}>
+									{detail ? (
+										<TextField
+											fullWidth
+											id="unarchiveDestinationUnit"
+											label="Unid. Destino do Desarquivamento"
+											value={unarchiveDestinationUnitDetail}
+											inputProps={{ readOnly: true }}
+										/>
+									) : (
+										<FormControl fullWidth>
+											<InputLabel id="select-unarchiveDestinationUnit-label">
+												Unid. Destino do Desarquivamento
+											</InputLabel>
+											<Select
+												style={{ textAlign: "left" }}
+												labelId="select-unarchiveDestinationUnit-label"
+												id="select-unarchiveDestinationUnit"
+												value={unarchiveDestinationUnit}
+												onChange={handleUnarchiveDestinationUnit}
+												renderValue={(value) => `${value.unity_name}`}
+											>
+												<MenuItem key={0} value="">
+													<em>Nenhuma</em>
+												</MenuItem>
+
+												{units.map((unarchiveDestinationUnitOption) => (
+													<MenuItem
+														id={unarchiveDestinationUnitOption.id}
+														value={unarchiveDestinationUnitOption}
 													>
-														<MenuItem key={0} value="">
-															<em>Nenhuma</em>
-														</MenuItem>
-											
-														{units.map((unarchiveDestinationUnitOption) => (
-															<MenuItem
-																id={unarchiveDestinationUnitOption.id}
-																value={unarchiveDestinationUnitOption}
-															>
-																{unarchiveDestinationUnitOption.unity_name}
-															</MenuItem>
-														))}
-													</Select>
-												</FormControl>
-											)}
-										</Grid>
-														
-										<Grid item xs={12} sm={12} md={6}>
-											<TextField
-												fullWidth
-												id="unarchiveProcessNumber"
-												label="Nº do Processo do Desarquivamento"
-												value={unarchiveProcessNumber}
-												onChange={handleUnarchiveProcessNumberChange}
-												inputProps={{ maxLength: 15, readOnly: detail }}
-											/>
-										</Grid>
-														
-										<Grid item xs={12} sm={12} md={6}>
-											{detail ? (
-												<TextField
-													fullWidth
-													id="unarchiveDate"
-													label="Data de Desarquivamento"
-													value={
-														unarchiveDate !== "-"
-															? `${unarchiveDate.substring(
-																	8,
-																	10
-															  )}/${unarchiveDate.substring(
-																	5,
-																	7
-															  )}/${unarchiveDate.substring(0, 4)}`
-															: unarchiveDate
-													}
-													inputProps={{ readOnly: true }}
-												/>
-											) : (
-												<KeyboardDatePicker
-													okLabel="Confirmar"
-													cancelLabel="Cancelar"
-													style={{ width: "100%" }}
-													id="unarchive-date-picker-dialog"
-													label="Data de Desarquivamento"
-													format="dd/MM/yyyy"
-													value={unarchiveDate}
-													onChange={handleUnarchiveDateChange}
-													KeyboardButtonProps={{
-														"aria-label": "change unarchive date",
-													}}
-													error={unarchiveDateHelperText !== ""}
-													helperText={unarchiveDateHelperText}
-												/>
-											)}
-										</Grid>
-									</>
-								) : (
-									""
-								)}
+														{unarchiveDestinationUnitOption.unity_name}
+													</MenuItem>
+												))}
+											</Select>
+										</FormControl>
+									)}
+								</Grid>
+
+								<Grid item xs={12} sm={12} md={6}>
+									<TextField
+										fullWidth
+										id="unarchiveProcessNumber"
+										label="Nº do Processo do Desarquivamento"
+										value={unarchiveProcessNumber}
+										onChange={handleUnarchiveProcessNumberChange}
+										inputProps={{ maxLength: 15, readOnly: detail }}
+									/>
+								</Grid>
+
+								<Grid item xs={12} sm={12} md={6}>
+									{detail ? (
+										<TextField
+											fullWidth
+											id="unarchiveDate"
+											label="Data de Desarquivamento"
+											value={
+												unarchiveDate !== "-"
+													? `${unarchiveDate.substring(
+															8,
+															10
+													  )}/${unarchiveDate.substring(
+															5,
+															7
+													  )}/${unarchiveDate.substring(0, 4)}`
+													: unarchiveDate
+											}
+											inputProps={{ readOnly: true }}
+										/>
+									) : (
+										<KeyboardDatePicker
+											okLabel="Confirmar"
+											cancelLabel="Cancelar"
+											style={{ width: "100%" }}
+											id="unarchive-date-picker-dialog"
+											label="Data de Desarquivamento"
+											format="dd/MM/yyyy"
+											value={unarchiveDate}
+											onChange={handleUnarchiveDateChange}
+											KeyboardButtonProps={{
+												"aria-label": "change unarchive date",
+											}}
+											error={unarchiveDateHelperText !== ""}
+											helperText={unarchiveDateHelperText}
+										/>
+									)}
+								</Grid>
+							</>
+						) : (
+							""
+						)}
 
 						<NotesInput set={setNotes} notes={notes} isDetailPage={detail} />
 					</>
@@ -1107,7 +1167,7 @@ const CreateBoxArchiving = ({ detail }) => {
 						</Button>
 					</DialogActions>
 				</Dialog>
-				
+
 				<Dialog
 					fullWidth
 					maxWidth="xs"
@@ -1134,12 +1194,15 @@ const CreateBoxArchiving = ({ detail }) => {
 						>
 							Cancelar
 						</Button>
-						<Button onClick={() => handleAddNewOriginBoxSubject(currentBox)} color="primary">
+						<Button
+							onClick={() => handleAddNewOriginBoxSubject(currentBox)}
+							color="primary"
+						>
 							Confirmar
 						</Button>
 					</DialogActions>
 				</Dialog>
-										
+
 				<Dialog
 					fullWidth
 					maxWidth="xs"
@@ -1180,7 +1243,10 @@ const CreateBoxArchiving = ({ detail }) => {
 						>
 							Cancelar
 						</Button>
-						<Button onClick={() => handleAddNewOriginBoxSubjectDate(currentBox)} color="primary">
+						<Button
+							onClick={() => handleAddNewOriginBoxSubjectDate(currentBox)}
+							color="primary"
+						>
 							Confirmar
 						</Button>
 					</DialogActions>
@@ -1213,6 +1279,7 @@ const CreateBoxArchiving = ({ detail }) => {
 					isDetailPage={detail}
 					loading={loading}
 					onSubmit={onSubmit}
+					clearFunc={clear}
 				/>
 
 				<PopUpAlert

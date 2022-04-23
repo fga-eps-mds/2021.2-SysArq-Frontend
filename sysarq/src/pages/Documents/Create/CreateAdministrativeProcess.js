@@ -54,8 +54,8 @@ const useStyles = makeStyles(() => ({
 		fontFamily: ['"Montserrat"', "sans-serif"],
 	},
 	boxAB: {
-		marginBottom: '16px',
-	}
+		marginBottom: "16px",
+	},
 }));
 
 const isStatusFiled = (status) => {
@@ -125,7 +125,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
-	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] = useState("");
+	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] =
+		useState("");
 	const [boxNumberHelperText, setBoxNumberHelperText] = useState("");
 	const [boxYearHelperText, setBoxYearHelperText] = useState("");
 
@@ -213,13 +214,38 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setSeverityAlert("error");
 
 		if (value === 400) {
-			setAlertHelperText("N° do Processo já existe")
-		} else{
+			setAlertHelperText("N° do Processo já existe");
+		} else {
 			setAlertHelperText(
 				"Verifique sua conexão com a internet e recarregue a página."
 			);
-
 		}
+	};
+
+	const clear = () => {
+		setNoticeDate(null);
+		setArchivingDate(null);
+		setReference(null);
+		setProcessNumber("");
+		setInterested("");
+		setSubject("");
+		setSenderUnit("");
+		setPublicWorkerInput("");
+		setPublicWorker(undefined);
+
+		setShelf("");
+		setRack("");
+		setFileLocation("");
+
+		setBoxAbbreviation("");
+		setBoxYear("");
+		setBoxNumber("");
+
+		setStatus("");
+		setUnarchiveDestinationUnit("");
+		setUnarchiveProcessNumber("");
+		setUnarchiveDate(initialDate);
+		setNotes("");
 	};
 
 	const onSuccess = () => {
@@ -228,22 +254,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText("Documento cadastrado!");
-
-		setNoticeDate(initialDate);
-		setArchivingDate(initialDate);
-		setReference(initialDate);
-		setProcessNumber("");
-		setInterested("");
-		setSubject("");
-		setSenderUnit("");
-		setPublicWorkerInput("");
-		setPublicWorker(undefined);
-
-		setStatus("");
-		setUnarchiveDestinationUnit("");
-		setUnarchiveProcessNumber("");
-		setUnarchiveDate(initialDate);
-		setNotes("");
+		clear();
 		window.location.reload();
 	};
 
@@ -329,7 +340,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		}
 
 		if (!boxYear || parseInt(boxYear, 10) < 1900) {
-			setBoxYearHelperText("Insira o ano da caixa")
+			setBoxYearHelperText("Insira o ano da caixa");
 			setLoading(false);
 			return "box year error";
 		}
@@ -1163,20 +1174,20 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								</FormControl>
 							)}
 						</Grid>
-						
+
 						<Grid item xs={12} sm={12} md={4}>
-							<TextField 
+							<TextField
 								fullWidth
 								label="Número da Caixa*"
 								value={boxNumber}
 								onChange={(event) => {
-									setBoxNumber(event.target.value)
+									setBoxNumber(event.target.value);
 									setBoxNumberHelperText("");
 								}}
 								type="number"
 								error={boxNumberHelperText !== ""}
 								helperText={boxNumberHelperText}
-								inputProps={{readOnly: detail}}
+								inputProps={{ readOnly: detail }}
 							/>
 						</Grid>
 
@@ -1192,7 +1203,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								type="number"
 								error={boxYearHelperText !== ""}
 								helperText={boxYearHelperText}
-								inputProps={{readOnly: detail}}
+								inputProps={{ readOnly: detail }}
 							/>
 						</Grid>
 
@@ -1208,6 +1219,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 					isDetailPage={detail}
 					loading={loading}
 					onSubmit={onSubmit}
+					clearFunc={clear}
 				/>
 
 				<PopUpAlert
