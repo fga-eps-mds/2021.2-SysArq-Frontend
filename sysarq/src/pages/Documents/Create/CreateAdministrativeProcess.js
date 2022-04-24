@@ -808,7 +808,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 													7
 											  )}/${archivingDate.substring(0, 4)}`
 											: ""
-									}
+								}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
