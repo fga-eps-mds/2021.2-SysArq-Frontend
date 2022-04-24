@@ -243,6 +243,35 @@ const boxArchivingHeadCells = [
 	},
 ];
 
+
+const reportHeadCells = [
+	{
+		id: "document_name",
+		numeric: false,
+		label: "Nome do Documento",
+	},
+	{
+		id: "temporality",
+		numeric: false,
+		label: "Temporalidade",
+	},
+	{
+		id: "document_date",
+		numeric: false,
+		label: "Data do Documento",
+	},
+	{
+		id: "temporality_date",
+		numeric: false,
+		label: "Prazo de guarda",
+	},
+	{
+		id: "process_number",
+		numeric: false,
+		label: "Número do Processo",
+	},
+];
+
 const tableHeadCells = (url) => {
 	let headCells = [];
 	if (url === "unity/") {
@@ -269,6 +298,8 @@ const tableHeadCells = (url) => {
 		headCells = boxArchivingHeadCells;
 	} else if (url && url.includes("search")) {
 		headCells = headCellsSearch();
+	} else if(url && url.includes("report/")) {
+		headCells = reportHeadCells;
 	}
 
 	return headCells;

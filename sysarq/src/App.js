@@ -38,6 +38,7 @@ import BoxArchiving from "./pages/Documents/List/BoxArchiving";
 import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
 
 import Settings from "./pages/Settings/Settings";
+import Report from "./pages/Report/Report";
 import RegisterUser from "./pages/RegisterUser";
 import ManageUsers from "./pages/ManageUsers";
 
@@ -226,6 +227,10 @@ function App() {
 							</PrivateRoute>
 					<PrivateRoute exact path="/settings" permission="AD">
 						<Settings />
+					</PrivateRoute>
+
+					<PrivateRoute exact path="/report" permission="AD">
+						<Report />
 					</PrivateRoute>
 
 					<PrivateRoute exact path="/register-user" permission="AD">

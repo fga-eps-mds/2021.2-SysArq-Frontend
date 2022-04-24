@@ -84,7 +84,7 @@ function Header() {
 				{userType === "AD" && (
 					<BottomNavigationAction
 						label="Relatório"
-						href="#"
+						href="/report"
 						icon={<StarsIcon />}
 					/>
 				)}
