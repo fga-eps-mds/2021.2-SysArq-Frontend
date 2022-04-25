@@ -41,6 +41,7 @@ import NotesInput from "../../components/Inputs/NotesInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
+import AutoComplete from "../../components/AutoComplete";
 
 import "date-fns";
 import DataTable from "../../components/DataTable";
@@ -71,7 +72,7 @@ const isStatusFiled = (status) => {
 const CreateAdministrativeProcess = ({ detail }) => {
 	const classes = useStyles();
 	const params = detail ? useParams() : "";
-
+	
 	const [subjectDetail, setSubjectDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
@@ -101,7 +102,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [reference, setReference] = useState(detail ? "" : null);
 	const [processNumber, setProcessNumber] = useState("");
 	const [interestedPerson, setInterested] = useState("");
-	const [subject, setSubject] = useState("");
+	const [subject, setSubject] = useState(null);
 	const [senderUnit, setSenderUnit] = useState("");
 	const [shelf, setShelf] = useState("");
 	const [rack, setRack] = useState("");
@@ -184,9 +185,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setInterested(event.target.value);
 	};
 
-	const handleSubjectChange = (event) => {
+	const handleSubjectChange = (event, newValue) => {
 		setSubjectHelperText("");
-		setSubject(event.target.value);
+		setSubject(newValue);
 	};
 
 	const handleStatusChange = (event) => {
@@ -228,7 +229,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setReference(null);
 		setProcessNumber("");
 		setInterested("");
-		setSubject("");
+		setSubject(null);
 		setSenderUnit("");
 		setPublicWorkerInput("");
 		setPublicWorker(undefined);
@@ -280,8 +281,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "interested error";
 		}
 
-		if (subject === "") {
-			setSubjectHelperText("Selecione um assunto");
+		if (!subject) {
+			setSubjectHelperText("Selecione um nome de documento");
 			setLoading(false);
 			return "subject error";
 		}
@@ -744,40 +745,17 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									value={subjectDetail}
 									inputProps={{ readOnly: true }}
 								/>
-							) : (
-								<FormControl
-									fullWidth
-									variant="outlined"
-									error={subjectHelperText !== ""}
-								>
-									<InputLabel id="select-document_name-label">
-										Nome do Documento*
-									</InputLabel>
-									<Select
-										label="Nome do Documento*"
-										style={{ textAlign: "left" }}
-										labelId="select-document_name-label"
-										id="select-document_name"
-										value={subject}
-										onChange={handleSubjectChange}
-										renderValue={(value) => `${value.document_name}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{subjects.map((subjectOption) => (
-											<MenuItem key={subjectOption.id} value={subjectOption}>
-												{subjectOption.document_name}
-											</MenuItem>
-										))}
-									</Select>
-									{subjectHelperText ? (
-										<FormHelperText>{subjectHelperText}</FormHelperText>
-									) : (
-										""
-									)}
-								</FormControl>
+							) : ( 
+								<AutoComplete
+									value={subject}
+									handleValueChange={handleSubjectChange}
+									options={subjects}
+									optionsLabel={(option) => `${option.document_name}`}
+									propertyCheck='document_name'
+									sortProperty='document_name'
+									label="Nome do Documento*"
+									helperText={subjectHelperText}
+								/>
 							)}
 						</Grid>
 

@@ -235,7 +235,7 @@ const DataTable = ({ url, title }) => {
 
 							setUpdateTable(false);
 						})
-						.catch((err) => {
+						.catch(() => {
 							setOpenAlert(true);
 							setSeverityAlert("error");
 
