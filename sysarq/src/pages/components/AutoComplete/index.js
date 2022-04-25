@@ -31,7 +31,6 @@ const AutoComplete = ({
 			getOptionLabel={(option) => optionsLabel(option)}
 			getOptionSelected={(option, newValue) => propertyCheck ? option[propertyCheck] === newValue[propertyCheck] : option === newValue}
 			disableClearable
-			autoHighlight
 			freeSolo={freeField}
 			autoSelect
 			renderInput={(params) => (
