@@ -12,14 +12,15 @@ const AutoComplete = ({
 	sortProperty,
 	label,
 	helperText,
+	freeField
 }) => {
 	const [inputValue, setInputValue] = useState("");
 	return (
 		<Autocomplete
-			inputValue={inputValue}
 			onChange={(event, newValue) => handleValueChange(event, newValue)}
 			value={value}
 			onInputChange={(event, newValue) => setInputValue(newValue)}
+			inputValue={inputValue}
 			options={options.sort((a, b) => {
 				const ca = sortProperty ? a[sortProperty].toLowerCase() : a.toLowerCase();
 				const cb = sortProperty ? b[sortProperty].toLowerCase() : b.toLowerCase();
@@ -28,9 +29,11 @@ const AutoComplete = ({
 				return 0;
 			})}
 			getOptionLabel={(option) => optionsLabel(option)}
-			getOptionSelected={(option, newValue) => option[propertyCheck] === newValue[propertyCheck]}
+			getOptionSelected={(option, newValue) => propertyCheck ? option[propertyCheck] === newValue[propertyCheck] : option === newValue}
 			disableClearable
 			autoHighlight
+			freeSolo={freeField}
+			autoSelect
 			renderInput={(params) => (
 				<TextField
 					// eslint-disable-next-line
@@ -63,6 +66,7 @@ AutoComplete.propTypes = {
 	sortProperty: PropTypes.string,
 	label: PropTypes.string.isRequired,
 	helperText: PropTypes.string.isRequired,
+	freeField: PropTypes.bool.isRequired,
 }
 
 AutoComplete.defaultProps = {
