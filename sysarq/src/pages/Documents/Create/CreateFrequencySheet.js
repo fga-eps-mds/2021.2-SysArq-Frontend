@@ -10,11 +10,6 @@ import {
 	Grid,
 	CircularProgress,
 	TextField,
-	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
-	FormHelperText,
 } from "@material-ui/core";
 
 import {
@@ -22,6 +17,7 @@ import {
 	formatDate,
 	isDateNotValid,
 	axiosProfileError,
+	getUniqueFieldValues,
 	getPublicWorkers,
 	autocompl,
 	getUnits,
@@ -38,6 +34,7 @@ import NotesInput from "../../components/Inputs/NotesInput";
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 import DataTable from "../../components/DataTable";
+import AutoComplete from '../../components/AutoComplete'
 
 const CreateFrequencySheet = ({ detail }) => {
 	const params = detail ? useParams() : "";
@@ -50,19 +47,22 @@ const CreateFrequencySheet = ({ detail }) => {
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
 	]);
 	const [workplaceWorkers, setWorkplaceWorkers] = useState([]);
+	const [roles, setRoles] = useState([]);
+	const [workerClasses, setWorkerClasses] = useState([]);
+	const [districts, setDistricts] = useState([]);
 
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 
 	const [publicWorker, setPublicWorker] = useState(publicWorkers.id);
-	const [workplaceWorker, setWorkplaceWorker] = useState("");
-	const [roleWorker, setRole] = useState("");
-	const [workerClass, setWorkerClass] = useState("");
-	const [district, setDistrict] = useState("");
+	const [workplaceWorker, setWorkplaceWorker] = useState(null);
+	const [roleWorker, setRole] = useState(null);
+	const [workerClass, setWorkerClass] = useState(null);
+	const [district, setDistrict] = useState(null);
 
 	const [referencePeriod, setReferencePeriod] = useState(null);
 
 	const [senderProcessNumber, setSenderProcessNumber] = useState("");
-	const [type, setType] = useState("");
+	const [type, setType] = useState(null);
 	const [notesLocal, setNotes] = useState("");
 
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
@@ -109,21 +109,21 @@ const CreateFrequencySheet = ({ detail }) => {
 		setPublicWorker(value);
 	};
 
-	const handleWorkplaceWorkerChange = (event) => {
+	const handleWorkplaceWorkerChange = (event, newValue) => {
 		setWorkplaceWorkerHelperText("");
-		setWorkplaceWorker(event.target.value);
+		setWorkplaceWorker(newValue);
 	};
 
-	const handleRoleChange = (event) => {
+	const handleRoleChange = (event, newValue) => {
 		setRoleHelperText("");
-		setRole(event.target.value);
+		setRole(newValue);
 	};
 
-	const handleWorkerClassChange = (event) => setWorkerClass(event.target.value);
+	const handleWorkerClassChange = (event, newValue) => setWorkerClass(newValue);
 
-	const handleDistrictChange = (event) => {
+	const handleDistrictChange = (event, newValue) => {
 		setDistrictHelperText("");
-		setDistrict(event.target.value);
+		setDistrict(newValue);
 	};
 
 	const handleReferencePeriodChange = (date) => {
@@ -148,13 +148,13 @@ const CreateFrequencySheet = ({ detail }) => {
 		setPublicWorkerInput("");
 		setPublicWorker(undefined);
 		setSenderProcessNumber("");
-		setRole("");
-		setWorkerClass("");
-		setWorkplaceWorker("");
-		setDistrict("");
+		setRole(null);
+		setWorkerClass(null);
+		setWorkplaceWorker(null);
+		setDistrict(null);
 		setNotes("");
 		setReferencePeriod(null);
-		setType("");
+		setType(null);
 	};
 
 	const onSuccess = () => {
@@ -175,13 +175,13 @@ const CreateFrequencySheet = ({ detail }) => {
 			return "workerName error";
 		}
 
-		if (roleWorker === "") {
+		if (!roleWorker) {
 			setRoleHelperText("Insira um cargo");
 			setLoading(false);
 			return "role error";
 		}
 
-		if (district === "") {
+		if (!district) {
 			setDistrictHelperText("Insira um município");
 			setLoading(false);
 			return "district error";
@@ -199,13 +199,13 @@ const CreateFrequencySheet = ({ detail }) => {
 			return "reference error";
 		}
 
-		if (workplaceWorker === "") {
+		if (!workplaceWorker) {
 			setWorkplaceWorkerHelperText("Selecione uma unidade");
 			setLoading(false);
 			return "senderUnit error";
 		}
 
-		if (type === "") {
+		if (!type) {
 			setTypeHelperText("Selecione um tipo");
 			setLoading(false);
 			return "type error";
@@ -313,6 +313,17 @@ const CreateFrequencySheet = ({ detail }) => {
 				}
 
 				axiosArchives
+					.get('frequency-sheet/', {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => {
+						getUniqueFieldValues(response.data, 'role', setRoles);
+						getUniqueFieldValues(response.data, 'category', setWorkerClasses);
+						getUniqueFieldValues(response.data, 'municipal_area', setDistricts);
+					})
+					.catch(() => connectionError());
+
+				axiosArchives
 					.get("unity/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
@@ -358,31 +369,51 @@ const CreateFrequencySheet = ({ detail }) => {
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							<TextField
-								fullWidth
-								variant="outlined"
-								id="role"
-								label={detail ? "Cargo" : "Cargo*"}
-								value={roleWorker}
-								onChange={handleRoleChange}
-								error={roleHelperText !== ""}
-								helperText={roleHelperText}
-								inputProps={{ maxLength: 100, readOnly: detail }}
-								multiline
-							/>
+							{detail ? (
+								<TextField
+									fullWidth
+									variant="outlined"
+									label="Cargo"
+									value={roleWorker}
+									inputProps={{ maxLength: 100, readOnly: true}}
+									multiline
+								/>
+								) : (
+								<AutoComplete 
+									value={roleWorker}
+									handleValueChange={handleRoleChange}
+									options={roles}
+									optionsLabel={(option) => `${option}`}
+									label="Cargo*"
+									helperText={roleHelperText}
+									freeField
+								/>
+								)
+							}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							<TextField
-								fullWidth
-								variant="outlined"
-								id="workerClass"
-								label="Classe"
-								value={workerClass}
-								onChange={handleWorkerClassChange}
-								inputProps={{ maxLength: 100, readOnly: detail }}
-								multiline
-							/>
+							{detail ? (
+								<TextField
+									fullWidth
+									variant="outlined"
+									id="workerClass"
+									label="Classe"
+									value={workerClass}
+									inputProps={{ maxLength: 100, readOnly: true}}
+									multiline
+								/>
+							) : (
+								<AutoComplete
+									value={workerClass}
+									handleValueChange={handleWorkerClassChange}
+									options={workerClasses}
+									optionsLabel={(option) => `${option}`}
+									label="Classe"
+									helperText=""
+									freeField
+								/>
+							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
@@ -396,58 +427,41 @@ const CreateFrequencySheet = ({ detail }) => {
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl
-									fullWidth
-									variant="outlined"
-									error={workplaceWorkerHelperText !== ""}
-								>
-									<InputLabel id="select-workplaceWorker-label">
-										Lotação*
-									</InputLabel>
-									<Select
-										style={{ textAlign: "left" }}
-										labelId="select-workplaceWorker-label"
-										label="Lotação*"
-										id="select-workplaceWorker"
-										value={workplaceWorker}
-										onChange={handleWorkplaceWorkerChange}
-										renderValue={(value) => `${value.unity_name}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhuma</em>
-										</MenuItem>
-
-										{workplaceWorkers.map((workplaceWorkerOption) => (
-											<MenuItem
-												key={workplaceWorkerOption.id}
-												value={workplaceWorkerOption}
-											>
-												{workplaceWorkerOption.unity_name}
-											</MenuItem>
-										))}
-									</Select>
-									{workplaceWorkerHelperText ? (
-										<FormHelperText>{workplaceWorkerHelperText}</FormHelperText>
-									) : (
-										""
-									)}
-								</FormControl>
+								<AutoComplete
+									value={workplaceWorker}
+									handleValueChange={handleWorkplaceWorkerChange}
+									options={workplaceWorkers}
+									optionsLabel={(option) => `${option.unity_name}`}
+									propertyCheck='unity_name'
+									sortProperty='unity_name'
+									label="Lotação*"
+									helperText={workplaceWorkerHelperText}	
+								/>
 							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							<TextField
-								fullWidth
-								variant="outlined"
-								id="district"
-								label={detail ? "Município" : "Município*"}
-								value={district}
-								onChange={handleDistrictChange}
-								error={districtHelperText !== ""}
-								helperText={districtHelperText}
-								inputProps={{ maxLength: 100, readOnly: detail }}
-								multiline
-							/>
+							{detail ? (
+								<TextField
+									fullWidth
+									variant="outlined"
+									id="district"
+									label="Município"
+									value={district}
+									inputProps={{ maxLength: 100, readOnly: true}}
+									multiline
+								/>
+							) : (
+								<AutoComplete
+									value={district}
+									handleValueChange={handleDistrictChange}
+									options={districts}
+									optionsLabel={(option) => `${option}`}
+									label="Município*"
+									helperText={districtHelperText}
+									freeField
+								/>
+							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={6}>

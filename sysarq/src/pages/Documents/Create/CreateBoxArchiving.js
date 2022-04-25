@@ -106,7 +106,7 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [processNumber, setProcessNumber] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
 	const [receivedDate, setReceivedDate] = useState(detail ? "" : null);
-	const [senderUnit, setSenderUnit] = useState("");
+	const [senderUnit, setSenderUnit] = useState(null);
 	// const [box, setBox] = useState("");
 	// const [shelf, setShelf] = useState("");
 	// const [rack, setRack] = useState("");
@@ -428,7 +428,7 @@ const CreateBoxArchiving = ({ detail }) => {
 	const clear = () => {
 		setProcessNumber("");
 		setReceivedDate(null);
-		setSenderUnit("");
+		setSenderUnit(null);
 
 		setOriginBox([{}]);
 		setNewOriginBoxNumber("");
@@ -474,7 +474,7 @@ const CreateBoxArchiving = ({ detail }) => {
 			return "noticeDate error";
 		}
 
-		if (senderUnit === "") {
+		if (!senderUnit) {
 			setSenderUnitHelperText("Selecione uma unidade");
 			setLoading(false);
 			return "senderUnit error";
