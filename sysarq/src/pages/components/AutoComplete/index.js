@@ -17,6 +17,9 @@ const AutoComplete = ({
 	freeField,
 }) => {
 	const [inputValue, setInputValue] = useState("");
+
+	options = options.filter((el) => el);
+
 	return (
 		<Autocomplete
 			onChange={(event, newValue) => handleValueChange(event, newValue)}
