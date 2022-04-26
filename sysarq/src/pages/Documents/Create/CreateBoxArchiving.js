@@ -334,6 +334,7 @@ const CreateBoxArchiving = ({ detail }) => {
 		const newOriginBox = originBox;
 		const formattedDate = formatDate(newOriginBoxSubjectDate);
 
+
 		// console.log('box')
 		// console.log(box)
 		// console.log(box.subjects_list.document_name_id.document_name)
@@ -791,10 +792,7 @@ const CreateBoxArchiving = ({ detail }) => {
 																				{subject.dates.map((addedDate) => (
 																					<Chip
 																						icon={<TimelapseIcon />}
-																						label={`${addedDate.substring(
-																							5,
-																							7
-																						)}/${addedDate.substring(0, 4)}`}
+																						label={`${addedDate.substring(0, 4)}`}
 																						color="secondary"
 																						deleteIcon={
 																							<CancelIcon data-testid="delete" />
@@ -1226,12 +1224,12 @@ const CreateBoxArchiving = ({ detail }) => {
 							style={{ width: "100%" }}
 							id="newOriginBoxSubject-date-picker-dialog"
 							label="Data*"
-							format="MM/yyyy"
+							format="yyyy"
 							value={newOriginBoxSubjectDate}
 							onChange={handleNewOriginBoxSubjectDateChange}
 							okLabel="Confirmar"
 							openTo="year"
-							views={["year", "month"]}
+							views={["year"]}
 							cancelLabel=""
 							clearable
 							clearLabel="Limpar"
