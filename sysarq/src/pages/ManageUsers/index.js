@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const UserRow = ({ user, onSuccess, onError }) => {
+const UserRow = ({ user, onSuccess, onError, removeUserFromState }) => {
 	const classes = useStyles();
 	const [state, setState] = useState({
 		username: user.username,
@@ -171,6 +171,7 @@ const UserRow = ({ user, onSuccess, onError }) => {
 						},
 					})
 					.then(() => {
+            removeUserFromState(user);
 						onSuccess();
 					})
 					.catch(() => {
@@ -258,6 +259,7 @@ UserRow.propTypes = {
 	}).isRequired,
 	onSuccess: PropTypes.func.isRequired,
 	onError: PropTypes.func.isRequired,
+  removeUserFromState: PropTypes.func.isRequired,
 };
 
 const UserTable = ({ users, onSuccess, onError }) => {
@@ -269,6 +271,8 @@ const UserTable = ({ users, onSuccess, onError }) => {
 		userTypeFilter: "",
 	});
 
+	const [filteredUsers, setFilteredUsers] = useState([]);
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 
@@ -278,9 +282,10 @@ const UserTable = ({ users, onSuccess, onError }) => {
 		}));
 	};
 
-	const [filteredUsers, setFilteredUsers] = useState([]);
-
 	useEffect(() => setFilteredUsers([...users]), [users]);
+
+  const removeUserFromState = ({ id }) =>
+    setFilteredUsers(prev => prev.filter(u => u.id !== id))
 
 	useEffect(() => {
 		setFilteredUsers(
@@ -383,6 +388,7 @@ const UserTable = ({ users, onSuccess, onError }) => {
 							user={u}
 							onSuccess={onSuccess}
 							onError={onError}
+              removeUserFromState={removeUserFromState}
 						/>
 					))}
 				</TableBody>
