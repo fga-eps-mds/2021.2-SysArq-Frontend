@@ -530,9 +530,11 @@ const CreateFrequencySheet = ({ detail }) => {
 				/>
 			</CardContainer>
 
+			{!detail ? (
 			<div style={{ marginBottom: "100px" }}>
 				<DataTable title="Folhas de Frequência" url="frequency-sheet/" />
 			</div>
+			) : ("")}
 		</>
 	);
 };

@@ -309,42 +309,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "senderUnit error";
 		}
 
-		if (!shelf) {
-			setShelfHelperText("Selecione uma estante");
-			setLoading(false);
-			return "shelf error";
-		}
-
-		if (!rack) {
-			setRackHelperText("Selecione uma prateleira");
-			setLoading(false);
-			return "rack error";
-		}
-
-		if (!fileLocation) {
-			setFileLocationHelperText("Selecione uma localidade");
-			setLoading(false);
-			return "file location error";
-		}
-
-		if (!boxAbbreviation) {
-			setBoxAbbreviationHelperText("Selecione uma caixa");
-			setLoading(false);
-			return "box abbreviation error";
-		}
-
-		if (!boxNumber) {
-			setBoxNumberHelperText("Insira o número da caixa");
-			setLoading(false);
-			return "box number error";
-		}
-
-		if (!boxYear || parseInt(boxYear, 10) < 1900) {
-			setBoxYearHelperText("Insira o ano da caixa");
-			setLoading(false);
-			return "box year error";
-		}
-
 		if (status === "") {
 			setStatusHelperText("Selecione um status");
 			setLoading(false);
@@ -455,6 +419,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								})
 								.catch(() => connectionError());
 
+
 							axiosArchives
 								.get(`unity/${responseAdministrative.data.sender_unity}/`, {
 									headers: {
@@ -466,60 +431,76 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									setSenderUnitDetail(response.data.unity_name);
 								})
 								.catch(() => connectionError());
-
-							axiosArchives
-								.get(`shelf/${responseAdministrative.data.shelf_id}/`, {
-									headers: {
-										Authorization: `JWT ${localStorage.getItem("tk")}`,
-									},
-								})
-								.then((response) => {
-									setShelf(response.data);
-									setShelfDetail(response.data.number);
-								})
-								.catch(() => connectionError());
-
-							axiosArchives
-								.get(`rack/${responseAdministrative.data.rack_id}/`, {
-									headers: {
-										Authorization: `JWT ${localStorage.getItem("tk")}`,
-									},
-								})
-								.then((response) => {
-									setRack(response.data);
-									setRackDetail(response.data.number);
-								})
-								.catch(() => connectionError());
-
-							axiosArchives
-								.get(
-									`file-location/${responseAdministrative.data.file_location_id}/`,
-									{
+							
+							if (responseAdministrative.data.shelf_id) {
+								axiosArchives
+									.get(`shelf/${responseAdministrative.data.shelf_id}/`, {
 										headers: {
 											Authorization: `JWT ${localStorage.getItem("tk")}`,
 										},
-									}
-								)
-								.then((response) => {
-									setFileLocation(response.data);
-									setFileLocationDetail(response.data.file);
-								})
-								.catch(() => connectionError());
+									})
+									.then((response) => {
+										setShelf(response.data);
+										setShelfDetail(response.data.number);
+									})
+									.catch(() => connectionError());
+							} else {
+								setShelfDetail("-");
+							}
 
-							axiosArchives
-								.get(
-									`box-abbreviation/${responseAdministrative.data.box_abbreviation_id}/`,
-									{
+							if (responseAdministrative.data.rack_id) {
+								axiosArchives
+									.get(`rack/${responseAdministrative.data.rack_id}/`, {
 										headers: {
 											Authorization: `JWT ${localStorage.getItem("tk")}`,
 										},
-									}
-								)
-								.then((response) => {
-									setBoxAbbreviation(response.data);
-									setBoxAbbreviationDetail(response.data.abbreviation);
-								})
-								.catch(() => connectionError());
+									})
+									.then((response) => {
+										setRack(response.data);
+										setRackDetail(response.data.number);
+									})
+									.catch(() => connectionError());
+							} else {
+								setRackDetail("-");
+							}
+
+							if (responseAdministrative.data.file_location_id) {
+								axiosArchives
+									.get(
+										`file-location/${responseAdministrative.data.file_location_id}/`,
+										{
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										}
+									)
+									.then((response) => {
+										setFileLocation(response.data);
+										setFileLocationDetail(response.data.file);
+									})
+									.catch(() => connectionError());
+							} else {
+								setFileLocationDetail("-");
+							}
+
+							if (responseAdministrative.data.box_abbreviation_id) {
+								axiosArchives
+									.get(
+										`box-abbreviation/${responseAdministrative.data.box_abbreviation_id}/`,
+										{
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										}
+									)
+									.then((response) => {
+										setBoxAbbreviation(response.data);
+										setBoxAbbreviationDetail(response.data.abbreviation);
+									})
+									.catch(() => connectionError());
+							} else {
+								setBoxAbbreviationDetail("-");
+							}
 
 							axiosArchives
 								.get(
@@ -583,6 +564,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									? responseAdministrative.data.reference_month_year
 									: "-"
 							);
+
 
 							setProcessNumber(responseAdministrative.data.process_number);
 							setNoticeDate(responseAdministrative.data.notice_date);
@@ -1032,6 +1014,95 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 						<Grid item xs={12} sm={12} md={12}>
 							<Typography className={classes.sectionTitle}>
+								Caixa de Arquivamento:
+							</Typography>
+						</Grid>
+
+						<Grid className={classes.boxAB} item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									variant="outlined"
+									label="Sigla da Caixa"
+									value={boxAbbreviationDetail}
+								/>
+							) : (
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={boxAbbreviationHelperText !== ""}
+								>
+									<InputLabel id="select-box_abbreviation-label">
+										Sigla da Caixa
+									</InputLabel>
+									<Select
+										labelId="select-box_abbreviation-label"
+										label="Sigla da Caixa"
+										id="select-box_abbreviation"
+										value={boxAbbreviation}
+										onChange={(event) => {
+											setBoxAbbreviation(event.target.value);
+											setBoxAbbreviationHelperText("");
+										}}
+										renderValue={(value) => `${value.abbreviation}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+
+										{boxAbbreviations.map((boxAbbreviationOption) => (
+											<MenuItem
+												key={boxAbbreviationOption.id}
+												value={boxAbbreviationOption}
+											>
+												{boxAbbreviationOption.abbreviation}
+											</MenuItem>
+										))}
+									</Select>
+
+									{boxAbbreviationHelperText !== "" && (
+										<FormHelperText>{boxAbbreviationHelperText}</FormHelperText>
+									)}
+								</FormControl>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							<TextField
+								fullWidth
+								variant="outlined"
+								label="Número da Caixa"
+								value={boxNumber}
+								onChange={(event) => {
+									setBoxNumber(event.target.value);
+									setBoxNumberHelperText("");
+								}}
+								type="number"
+								error={boxNumberHelperText !== ""}
+								helperText={boxNumberHelperText}
+								inputProps={{ readOnly: detail }}
+							/>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							<TextField
+								fullWidth
+								variant="outlined"
+								label="Ano da Caixa"
+								value={boxYear}
+								onChange={(event) => {
+									setBoxYear(event.target.value);
+									setBoxYearHelperText("");
+								}}
+								type="number"
+								error={boxYearHelperText !== ""}
+								helperText={boxYearHelperText}
+								inputProps={{ readOnly: detail }}
+							/>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={12}>
+							<Typography className={classes.sectionTitle}>
 								Localização do Arquivo:
 							</Typography>
 						</Grid>
@@ -1052,10 +1123,10 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									variant="outlined"
 									error={shelfHelperText !== ""}
 								>
-									<InputLabel id="select-shelf-label">Estante*</InputLabel>
+									<InputLabel id="select-shelf-label">Estante</InputLabel>
 									<Select
 										labelId="select-shelf-label"
-										label="Estante*"
+										label="Estante"
 										id="select-shelf"
 										value={shelf}
 										onChange={handleShelfChange}
@@ -1094,7 +1165,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									variant="outlined"
 									error={rackHelperText !== ""}
 								>
-									<InputLabel id="select-rack-label">Prateleira*</InputLabel>
+									<InputLabel id="select-rack-label">Prateleira</InputLabel>
 
 									<Select
 										labelId="select-rack-label"
@@ -1138,7 +1209,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									error={fileLocationHelperText !== ""}
 								>
 									<InputLabel id="select-file_location-label">
-										Localidade*
+										Localidade
 									</InputLabel>
 
 									<Select
@@ -1169,95 +1240,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							)}
 						</Grid>
 
-						<Grid item xs={12} sm={12} md={12}>
-							<Typography className={classes.sectionTitle}>
-								Caixa de Arquivamento:
-							</Typography>
-						</Grid>
-
-						<Grid className={classes.boxAB} item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									label="Sigla da Caixa"
-									value={boxAbbreviationDetail}
-								/>
-							) : (
-								<FormControl
-									fullWidth
-									variant="outlined"
-									error={boxAbbreviationHelperText !== ""}
-								>
-									<InputLabel id="select-box_abbreviation-label">
-										Sigla da Caixa*
-									</InputLabel>
-									<Select
-										labelId="select-box_abbreviation-label"
-										label="Sigla da Caixa*"
-										id="select-box_abbreviation"
-										value={boxAbbreviation}
-										onChange={(event) => {
-											setBoxAbbreviation(event.target.value);
-											setBoxAbbreviationHelperText("");
-										}}
-										renderValue={(value) => `${value.abbreviation}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{boxAbbreviations.map((boxAbbreviationOption) => (
-											<MenuItem
-												key={boxAbbreviationOption.id}
-												value={boxAbbreviationOption}
-											>
-												{boxAbbreviationOption.abbreviation}
-											</MenuItem>
-										))}
-									</Select>
-
-									{boxAbbreviationHelperText !== "" && (
-										<FormHelperText>{boxAbbreviationHelperText}</FormHelperText>
-									)}
-								</FormControl>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
-							<TextField
-								fullWidth
-								variant="outlined"
-								label="Número da Caixa*"
-								value={boxNumber}
-								onChange={(event) => {
-									setBoxNumber(event.target.value);
-									setBoxNumberHelperText("");
-								}}
-								type="number"
-								error={boxNumberHelperText !== ""}
-								helperText={boxNumberHelperText}
-								inputProps={{ readOnly: detail }}
-							/>
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
-							<TextField
-								fullWidth
-								variant="outlined"
-								label="Ano da Caixa*"
-								value={boxYear}
-								onChange={(event) => {
-									setBoxYear(event.target.value);
-									setBoxYearHelperText("");
-								}}
-								type="number"
-								error={boxYearHelperText !== ""}
-								helperText={boxYearHelperText}
-								inputProps={{ readOnly: detail }}
-							/>
-						</Grid>
-
 						<NotesInput
 							set={setNotes}
 							notes={notesLocal}
@@ -1281,12 +1263,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 				/>
 			</CardContainer>
 
+			{!detail ? (
 			<div style={{ marginBottom: "100px" }}>
 				<DataTable
 					title="Processo Administrativo"
 					url="administrative-process/"
 				/>
 			</div>
+			) : ("")}
 		</>
 	);
 };

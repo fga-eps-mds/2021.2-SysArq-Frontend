@@ -889,7 +889,7 @@ const CreateBoxArchiving = ({ detail }) => {
 															marginTop="0.5%"
 														>
 															<Chip
-																label="Adicionar Assunto"
+																label="Adicionar Documento"
 																icon={<AddCircleIcon />}
 																color="primary"
 																onClick={() =>
@@ -1184,7 +1184,7 @@ const CreateBoxArchiving = ({ detail }) => {
 					aria-labelledby="newOriginBoxSubject-dialog-title"
 				>
 					<DialogTitle id="newOriginBoxSubject-dialog-title">
-						Novo Assunto
+						Novo Documento
 					</DialogTitle>
 					<DialogContent>
 						<DocumentInput
@@ -1298,9 +1298,11 @@ const CreateBoxArchiving = ({ detail }) => {
 				/>
 			</CardContainer>
 
+			{!detail ? (
 			<div style={{ marginBottom: "100px" }}>
 				<DataTable title="Arquivamento de Caixas" url="box-archiving/" />
 			</div>
+			) : ("")}
 		</>
 	);
 };
