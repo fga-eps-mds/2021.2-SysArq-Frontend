@@ -12,6 +12,8 @@ const AutoComplete = ({
 	sortProperty,
 	label,
 	helperText,
+	type,
+	className,
 	freeField
 }) => {
 	const [inputValue, setInputValue] = useState("");
@@ -37,6 +39,8 @@ const AutoComplete = ({
 					// eslint-disable-next-line
 					{...params}
 					value={params.value}
+					type={type}
+					className={className}
 					label={label}
 					variant="outlined"
 					error={helperText !== ""}
@@ -64,12 +68,16 @@ AutoComplete.propTypes = {
 	sortProperty: PropTypes.string,
 	label: PropTypes.string.isRequired,
 	helperText: PropTypes.string.isRequired,
+	type: PropTypes.string,
+	className: PropTypes.string,
 	freeField: PropTypes.bool.isRequired,
 }
 
 AutoComplete.defaultProps = {
 	propertyCheck: "",
-	sortProperty: null
+	sortProperty: null,
+	type: 'text',
+	className: '',
 }
 
 export default AutoComplete;
