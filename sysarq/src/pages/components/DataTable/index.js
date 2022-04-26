@@ -143,12 +143,10 @@ const DataTable = ({ url, title }) => {
 		let d = date.slice();
 		const datePropertyYear = date.slice(0, 4);
 		d = d.replace(datePropertyYear, year.toString());
-		console.log(d);
 		return new Date(d);
 	};
 
 	const handleTemporalityStatus = (data) => {
-		console.log(data[0]);
 		const datePropertyOptions = {
 			"administrative-process/": "archiving_date",
 			"frequency-sheet/": "reference_period",
@@ -159,7 +157,6 @@ const DataTable = ({ url, title }) => {
 		const today = new Date();
 
 		return data.map((item) => {
-			console.log(item.temporality_date);
 			const document = { ...item };
 			const temporalityDate = calcTemporalityDate(
 				document.temporality_date,
@@ -223,7 +220,6 @@ const DataTable = ({ url, title }) => {
 									case "administrative-process/":
 									case "frequency-sheet/":
 									case "frequency-relation/":
-										console.log("a");
 										data = handleTemporalityStatus(data);
 										break;
 									default:
@@ -239,8 +235,7 @@ const DataTable = ({ url, title }) => {
 
 							setUpdateTable(false);
 						})
-						.catch((err) => {
-							console.log(err);
+						.catch(() => {
 							setOpenAlert(true);
 							setSeverityAlert("error");
 

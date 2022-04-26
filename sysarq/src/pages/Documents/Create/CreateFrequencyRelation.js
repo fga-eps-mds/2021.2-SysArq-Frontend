@@ -58,8 +58,8 @@ const CreateFrequencyRelation = ({ detail }) => {
 	);
 	const [processNumber, setProcessNumber] = useState("");
 	const [receivedDate, setReceivedDate] = useState(null);
-	const [documentType, setDocumentType] = useState("");
-	const [senderUnit, setSenderUnit] = useState("");
+	const [documentType, setDocumentType] = useState(null);
+	const [senderUnit, setSenderUnit] = useState(null);
 	const [notesLocal, setNotes] = useState("");
 	const [referencePeriod, setReferencePeriod] = useState(detail ? [] : []);
 
@@ -117,8 +117,8 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const clear = () => {
 		setProcessNumber("");
 		setReceivedDate(null);
-		setDocumentType("");
-		setSenderUnit("");
+		setDocumentType(null);
+		setSenderUnit(null);
 		setSenderPublicWorkerInput("");
 		setSenderPublicWorker(undefined);
 		setReceiverPublicWorkerInput("");
@@ -167,13 +167,13 @@ const CreateFrequencyRelation = ({ detail }) => {
 			return "noticeDate error";
 		}
 
-		if (documentType === "") {
+		if (!documentType) {
 			setDocumentTypeHelperText("Selecione um nome do documento");
 			setLoading(false);
 			return "documentType error";
 		}
 
-		if (senderUnit === "") {
+		if (!senderUnit) {
 			setSenderUnitHelperText("Selecione uma unidade");
 			setLoading(false);
 			return "senderUnit error";
