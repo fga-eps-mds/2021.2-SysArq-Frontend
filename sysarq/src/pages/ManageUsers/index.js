@@ -182,24 +182,6 @@ const UserRow = ({ user, onSuccess, onError }) => {
 	return (
 		<>
 			<TableRow className={classes.root}>
-				<TableCell>
-					<Button
-						size="small"
-						style={{ marginBottom: "5px" }}
-						disabled={user.id === 1}
-						onClick={() => onDelete()}
-					>
-						Excluir
-					</Button>
-					<Button
-						size="small"
-						color="secondary"
-						disabled={invalid}
-						onClick={() => onSave()}
-					>
-						Salvar
-					</Button>
-				</TableCell>
 				<TableCell component="th" scope="root">
 					<TextField
 						value={state.username}
@@ -241,6 +223,24 @@ const UserRow = ({ user, onSuccess, onError }) => {
 						<MenuItem value="AL">Alimentador</MenuItem>
 						<MenuItem value="VI">Visualizador</MenuItem>
 					</Select>
+				</TableCell>
+				<TableCell>
+					<Button
+						size="small"
+						style={{ marginBottom: "5px" }}
+						disabled={user.id === 1}
+						onClick={() => onDelete()}
+					>
+						Excluir
+					</Button>
+					<Button
+						size="small"
+						color="secondary"
+						disabled={invalid}
+						onClick={() => onSave()}
+					>
+						Salvar
+					</Button>
 				</TableCell>
 			</TableRow>
 		</>
@@ -308,7 +308,6 @@ const UserTable = ({ users, onSuccess, onError }) => {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell />
 						<TableCell align="center">
 							<div>
 								<TextField
@@ -374,6 +373,7 @@ const UserTable = ({ users, onSuccess, onError }) => {
 								</Select>
 							</div>
 						</TableCell>
+						<TableCell />
 					</TableRow>
 				</TableHead>
 				<TableBody>
