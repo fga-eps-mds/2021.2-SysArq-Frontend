@@ -27,7 +27,7 @@ function Header() {
 			<div className="div-media">
 				<ul>		
 					<li>
-						<a href="/search">Pesquisar</a>
+						<a href="/">Pesquisar</a>
 					</li>
 
 					{(userType === "AD" || userType === "AL") && (
@@ -53,6 +53,9 @@ function Header() {
 							<a href="/settings">Configurações</a>
 						</li>
 					)}
+          <li>
+            <a href="/manual">Manual</a>
+          </li>
 					<li>
 						<a onClick={logout} href="/login">
 							Sair
@@ -64,7 +67,7 @@ function Header() {
 			<BottomNavigation showLabels>				
 				<BottomNavigationAction
 					label="Pesquisar"
-					href="/search"
+					href="/"
 					icon={<StarsIcon />}
 				/>
 				{(userType === "AD" || userType === "AL") && (
@@ -95,6 +98,11 @@ function Header() {
 						icon={<StarsIcon />}
 					/>
 				)}
+				<BottomNavigationAction
+					label="Manual"
+					href="/manual"
+					icon={<StarsIcon />}
+				/>
 			</BottomNavigation>
 			<button type="submit" onClick={logout}>
 				Sair
