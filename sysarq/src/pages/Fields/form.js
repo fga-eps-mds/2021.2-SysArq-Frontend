@@ -60,7 +60,9 @@ export default function createForm(
 											<Grid item xs={12} sm={12} md={12} key={key.toString()}>
 												<AutoComplete
 													value={item.value}
-													handleValueChange={(event, newValue) => item.setValue(newValue)}
+													handleValueChange={(event, newValue) =>
+														item.setValue(newValue)
+													}
 													options={item.options}
 													optionsLabel={(option) => `${option}`}
 													label={item.placeholder}
@@ -70,7 +72,7 @@ export default function createForm(
 													className={classes.input}
 												/>
 											</Grid>
-										)
+										);
 										return input;
 									}
 									const input = (

@@ -31,9 +31,9 @@ export default function CreateUnity() {
 	const [note, setNote] = useState("");
 
 	const [administrativeBonds, setAdministrativeBonds] = useState([]);
-	const [bondAbbreviations, setBondAbbreviations] = useState([])
-	const [counties, setCounties] = useState([])
-	const [telephoneNumbers, setTelephoneNumbers] = useState([])
+	const [bondAbbreviations, setBondAbbreviations] = useState([]);
+	const [counties, setCounties] = useState([]);
+	const [telephoneNumbers, setTelephoneNumbers] = useState([]);
 
 	const [unityNameHelperText, setunityNameHelperText] = useState("");
 	const [unityNameError, setunityNameError] = useState(false);
@@ -240,20 +240,32 @@ export default function CreateUnity() {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosArchives
-					.get('unity/', {
-						headers : { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					.get("unity/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => {
-						getUniqueFieldValues(response.data, 'administrative_bond', setAdministrativeBonds)
-						getUniqueFieldValues(response.data, 'bond_abbreviation', setBondAbbreviations)
-						getUniqueFieldValues(response.data, 'municipality', setCounties)
-						getUniqueFieldValues(response.data, 'telephone_number', setTelephoneNumbers)
-					})
-			})	
-			.catch((error) => {
-				handleRequestError(error.response.status)
+						getUniqueFieldValues(
+							response.data,
+							"administrative_bond",
+							setAdministrativeBonds
+						);
+						getUniqueFieldValues(
+							response.data,
+							"bond_abbreviation",
+							setBondAbbreviations
+						);
+						getUniqueFieldValues(response.data, "municipality", setCounties);
+						getUniqueFieldValues(
+							response.data,
+							"telephone_number",
+							setTelephoneNumbers
+						);
+					});
 			})
-	}, [])
+			.catch((error) => {
+				handleRequestError(error.response.status);
+			});
+	}, []);
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar unidade";

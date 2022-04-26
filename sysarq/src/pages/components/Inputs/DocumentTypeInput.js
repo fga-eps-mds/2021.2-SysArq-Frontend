@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import {
-	Grid,
-	TextField,
-} from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 
-import AutoComplete from '../AutoComplete'
+import AutoComplete from "../AutoComplete";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import { logout } from "../../../support";
 
@@ -68,8 +65,8 @@ const DocumentTypeInput = ({
 					handleValueChange={handleChange}
 					options={documentTypes}
 					optionsLabel={(option) => `${option.document_name}`}
-					propertyCheck='document_name'
-					sortProperty='document_name'
+					propertyCheck="document_name"
+					sortProperty="document_name"
 					label="Nome do Documento*"
 					helperText={documentTypeHelperText}
 				/>

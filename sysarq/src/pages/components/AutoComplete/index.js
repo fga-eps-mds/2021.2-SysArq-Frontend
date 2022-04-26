@@ -1,7 +1,7 @@
-import {useState} from 'react'
-import {TextField} from '@material-ui/core'
-import {Autocomplete} from '@material-ui/lab';
-import PropTypes from 'prop-types'
+import { useState } from "react";
+import { TextField } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
+import PropTypes from "prop-types";
 
 const AutoComplete = ({
 	value,
@@ -14,7 +14,7 @@ const AutoComplete = ({
 	helperText,
 	type,
 	className,
-	freeField
+	freeField,
 }) => {
 	const [inputValue, setInputValue] = useState("");
 	return (
@@ -24,14 +24,22 @@ const AutoComplete = ({
 			onInputChange={(event, newValue) => setInputValue(newValue)}
 			inputValue={inputValue}
 			options={options.sort((a, b) => {
-				const ca = sortProperty ? a[sortProperty].toLowerCase() : a.toLowerCase();
-				const cb = sortProperty ? b[sortProperty].toLowerCase() : b.toLowerCase();
+				const ca = sortProperty
+					? a[sortProperty].toLowerCase()
+					: a.toLowerCase();
+				const cb = sortProperty
+					? b[sortProperty].toLowerCase()
+					: b.toLowerCase();
 				if (ca < cb) return -1;
 				if (ca > cb) return 1;
 				return 0;
 			})}
 			getOptionLabel={(option) => optionsLabel(option)}
-			getOptionSelected={(option, newValue) => propertyCheck ? option[propertyCheck] === newValue[propertyCheck] : option === newValue}
+			getOptionSelected={(option, newValue) =>
+				propertyCheck
+					? option[propertyCheck] === newValue[propertyCheck]
+					: option === newValue
+			}
 			freeSolo={freeField}
 			autoSelect
 			renderInput={(params) => (
@@ -48,20 +56,17 @@ const AutoComplete = ({
 				/>
 			)}
 		/>
-	)
-}
+	);
+};
 
 AutoComplete.propTypes = {
-	value: PropTypes.oneOfType([
-		PropTypes.string, 
-		PropTypes.object
-	]).isRequired,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 	handleValueChange: PropTypes.func.isRequired,
 	inputValue: PropTypes.string.isRequired,
 	setInputValue: PropTypes.func.isRequired,
 	options: PropTypes.oneOfType([
-		PropTypes.arrayOf(PropTypes.object), 
-		PropTypes.arrayOf(PropTypes.string)
+		PropTypes.arrayOf(PropTypes.object),
+		PropTypes.arrayOf(PropTypes.string),
 	]).isRequired,
 	optionsLabel: PropTypes.func.isRequired,
 	propertyCheck: PropTypes.string,
@@ -71,13 +76,13 @@ AutoComplete.propTypes = {
 	type: PropTypes.string,
 	className: PropTypes.string,
 	freeField: PropTypes.bool.isRequired,
-}
+};
 
 AutoComplete.defaultProps = {
 	propertyCheck: "",
 	sortProperty: null,
-	type: 'text',
-	className: '',
-}
+	type: "text",
+	className: "",
+};
 
 export default AutoComplete;

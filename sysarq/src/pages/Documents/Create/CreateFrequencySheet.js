@@ -6,11 +6,7 @@ import { useParams } from "react-router-dom";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-import {
-	Grid,
-	CircularProgress,
-	TextField,
-} from "@material-ui/core";
+import { Grid, CircularProgress, TextField } from "@material-ui/core";
 
 import {
 	// formatDateName,
@@ -34,7 +30,7 @@ import NotesInput from "../../components/Inputs/NotesInput";
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
 import DataTable from "../../components/DataTable";
-import AutoComplete from '../../components/AutoComplete'
+import AutoComplete from "../../components/AutoComplete";
 
 const CreateFrequencySheet = ({ detail }) => {
 	const params = detail ? useParams() : "";
@@ -313,13 +309,13 @@ const CreateFrequencySheet = ({ detail }) => {
 				}
 
 				axiosArchives
-					.get('frequency-sheet/', {
+					.get("frequency-sheet/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => {
-						getUniqueFieldValues(response.data, 'role', setRoles);
-						getUniqueFieldValues(response.data, 'category', setWorkerClasses);
-						getUniqueFieldValues(response.data, 'municipal_area', setDistricts);
+						getUniqueFieldValues(response.data, "role", setRoles);
+						getUniqueFieldValues(response.data, "category", setWorkerClasses);
+						getUniqueFieldValues(response.data, "municipal_area", setDistricts);
 					})
 					.catch(() => connectionError());
 
@@ -375,11 +371,11 @@ const CreateFrequencySheet = ({ detail }) => {
 									variant="outlined"
 									label="Cargo"
 									value={roleWorker}
-									inputProps={{ maxLength: 100, readOnly: true}}
+									inputProps={{ maxLength: 100, readOnly: true }}
 									multiline
 								/>
-								) : (
-								<AutoComplete 
+							) : (
+								<AutoComplete
 									value={roleWorker}
 									handleValueChange={handleRoleChange}
 									options={roles}
@@ -388,8 +384,7 @@ const CreateFrequencySheet = ({ detail }) => {
 									helperText={roleHelperText}
 									freeField
 								/>
-								)
-							}
+							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
@@ -400,7 +395,7 @@ const CreateFrequencySheet = ({ detail }) => {
 									id="workerClass"
 									label="Classe"
 									value={workerClass}
-									inputProps={{ maxLength: 100, readOnly: true}}
+									inputProps={{ maxLength: 100, readOnly: true }}
 									multiline
 								/>
 							) : (
@@ -432,10 +427,10 @@ const CreateFrequencySheet = ({ detail }) => {
 									handleValueChange={handleWorkplaceWorkerChange}
 									options={workplaceWorkers}
 									optionsLabel={(option) => `${option.unity_name}`}
-									propertyCheck='unity_name'
-									sortProperty='unity_name'
+									propertyCheck="unity_name"
+									sortProperty="unity_name"
 									label="Lotação*"
-									helperText={workplaceWorkerHelperText}	
+									helperText={workplaceWorkerHelperText}
 								/>
 							)}
 						</Grid>
@@ -448,7 +443,7 @@ const CreateFrequencySheet = ({ detail }) => {
 									id="district"
 									label="Município"
 									value={district}
-									inputProps={{ maxLength: 100, readOnly: true}}
+									inputProps={{ maxLength: 100, readOnly: true }}
 									multiline
 								/>
 							) : (

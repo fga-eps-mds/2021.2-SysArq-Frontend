@@ -606,11 +606,15 @@ const CreateAdministrativeProcess = ({ detail }) => {
 				}
 
 				axiosArchives
-					.get('administrative-process/', {
+					.get("administrative-process/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => {
-						getUniqueFieldValues(response.data, 'interested', setInterestedPersonOptions);
+						getUniqueFieldValues(
+							response.data,
+							"interested",
+							setInterestedPersonOptions
+						);
 					})
 					.catch(() => connectionError());
 
@@ -737,20 +741,19 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									variant="outlined"
 									label="Interessado"
 									value={interestedPerson}
-									inputProps={{readOnly: true}}
+									inputProps={{ readOnly: true }}
 								/>
 							) : (
 								<AutoComplete
 									value={interestedPerson}
 									handleValueChange={handleInterestedChange}
 									options={interestedPersonOptions}
-									optionsLabel={option => option}
+									optionsLabel={(option) => option}
 									label="Interessado*"
 									helperText={interestedHelperText}
 									freeField
 								/>
-								)
-							}
+							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
@@ -763,14 +766,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									value={subjectDetail}
 									inputProps={{ readOnly: true }}
 								/>
-							) : ( 
+							) : (
 								<AutoComplete
 									value={subject}
 									handleValueChange={handleSubjectChange}
 									options={subjects}
 									optionsLabel={(option) => `${option.document_name}`}
-									propertyCheck='document_name'
-									sortProperty='document_name'
+									propertyCheck="document_name"
+									sortProperty="document_name"
 									label="Nome do Documento*"
 									helperText={subjectHelperText}
 								/>
@@ -804,7 +807,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 													7
 											  )}/${archivingDate.substring(0, 4)}`
 											: ""
-								}
+									}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
@@ -1048,9 +1051,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									handleValueChange={handleShelfChange}
 									options={shelfs}
 									optionsLabel={(option) => `${option.number}`}
-									propertyCheck='number'
-									sortProperty='number'
-									label='Estante*'
+									propertyCheck="number"
+									sortProperty="number"
+									label="Estante*"
 									helperText={shelfHelperText}
 								/>
 							)}
@@ -1072,9 +1075,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									handleValueChange={handleRackChange}
 									options={racks}
 									optionsLabel={(option) => `${option.number}`}
-									propertyCheck='number'
-									sortProperty='number'
-									label='Prateleira*'
+									propertyCheck="number"
+									sortProperty="number"
+									label="Prateleira*"
 									helperText={rackHelperText}
 								/>
 							)}
@@ -1096,8 +1099,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									handleValueChange={handleFileLocationChange}
 									options={fileLocations}
 									optionsLabel={(option) => `${option.file}`}
-									propertyCheck='file'
-									sortProperty='file'
+									propertyCheck="file"
+									sortProperty="file"
 									label="Localidade*"
 									helperText={fileLocationHelperText}
 								/>
@@ -1127,8 +1130,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									}}
 									options={boxAbbreviations}
 									optionsLabel={(option) => `${option.abbreviation}`}
-									propertyCheck='abbreviation'
-									sortProperty='abbreviation'
+									propertyCheck="abbreviation"
+									sortProperty="abbreviation"
 									label="Sigla da Caixa*"
 									helperText={boxAbbreviationHelperText}
 								/>

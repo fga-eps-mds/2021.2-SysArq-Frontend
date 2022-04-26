@@ -1,12 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {
-	Grid,
-	TextField,
-} from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 
-import AutoComplete from '../AutoComplete';
+import AutoComplete from "../AutoComplete";
 
 const SenderUnitInput = ({
 	isDetailPage,
@@ -39,8 +36,8 @@ const SenderUnitInput = ({
 					handleValueChange={handleChange}
 					options={units}
 					optionsLabel={(option) => `${option.unity_name}`}
-					propertyCheck='unity_name'
-					sortProperty='unity_name'
+					propertyCheck="unity_name"
+					sortProperty="unity_name"
 					label="Unidade que Encaminhou*"
 					helperText={senderUnitHelperText}
 				/>
