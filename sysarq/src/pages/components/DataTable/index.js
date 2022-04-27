@@ -263,6 +263,16 @@ const DataTable = ({ url, title }) => {
 		setPage(newPage);
 	};
 
+	const getDocumentDate = (row) => {
+		if (row.archiving_date) {
+			return row.archiving_date;
+		}
+		if (row.received_date) {
+			return row.received_date;
+		}
+		return row.reference_period;
+	}
+
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -341,10 +351,11 @@ const DataTable = ({ url, title }) => {
 			return "Não";
 		}
 
-		if (id === "notice_date" || id === "received_date") {
-			const day = row[id].substring(8, 10);
-			const month = row[id].substring(5, 7);
-			const year = row[id].substring(0, 4);
+		if (id === "notice_date" || id === "received_date" || id === "document_date") {
+			const date = id === "document_date" ? getDocumentDate(row) : row[id];
+			const day = date.substring(8,10);
+			const month = date.substring(5,7);
+			const year = date.substring(0,4);
 			return `${day}/${month}/${year}`;
 		}
 
@@ -352,6 +363,23 @@ const DataTable = ({ url, title }) => {
 			const month = row[id].substring(5, 7);
 			const year = row[id].substring(0, 4);
 			return `${monthMap[month]}/${year}`;
+		}
+
+		if (id === "temporality_date") {
+			let date = getDocumentDate(row);
+			date = `${row[id]}${date.substring(4)}`;
+			const day = date.substring(8,10);
+			const month = date.substring(5,7);
+			const year = date.substring(0,4);
+			return `${day}/${month}/${year}`;
+		}
+
+		if (id === "temporality_year") {
+			const date = getDocumentDate(row)
+			let temporality = parseInt(row.temporality_date, 10);
+			const year = parseInt(date.substring(0,4), 10);
+			temporality -= year;
+			return temporality;
 		}
 
 		if (id === "temporality_date" || id === "document_type_name") {
