@@ -311,42 +311,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "senderUnit error";
 		}
 
-		if (!shelf) {
-			setShelfHelperText("Selecione uma estante");
-			setLoading(false);
-			return "shelf error";
-		}
-
-		if (!rack) {
-			setRackHelperText("Selecione uma prateleira");
-			setLoading(false);
-			return "rack error";
-		}
-
-		if (!fileLocation) {
-			setFileLocationHelperText("Selecione uma localidade");
-			setLoading(false);
-			return "file location error";
-		}
-
-		if (!boxAbbreviation) {
-			setBoxAbbreviationHelperText("Selecione uma caixa");
-			setLoading(false);
-			return "box abbreviation error";
-		}
-
-		if (!boxNumber) {
-			setBoxNumberHelperText("Insira o número da caixa");
-			setLoading(false);
-			return "box number error";
-		}
-
-		if (!boxYear || parseInt(boxYear, 10) < 1900) {
-			setBoxYearHelperText("Insira o ano da caixa");
-			setLoading(false);
-			return "box year error";
-		}
-
 		if (status === "") {
 			setStatusHelperText("Selecione um status");
 			setLoading(false);
@@ -457,6 +421,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								})
 								.catch(() => connectionError());
 
+
 							axiosArchives
 								.get(`unity/${responseAdministrative.data.sender_unity}/`, {
 									headers: {
@@ -468,60 +433,76 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									setSenderUnitDetail(response.data.unity_name);
 								})
 								.catch(() => connectionError());
-
-							axiosArchives
-								.get(`shelf/${responseAdministrative.data.shelf_id}/`, {
-									headers: {
-										Authorization: `JWT ${localStorage.getItem("tk")}`,
-									},
-								})
-								.then((response) => {
-									setShelf(response.data);
-									setShelfDetail(response.data.number);
-								})
-								.catch(() => connectionError());
-
-							axiosArchives
-								.get(`rack/${responseAdministrative.data.rack_id}/`, {
-									headers: {
-										Authorization: `JWT ${localStorage.getItem("tk")}`,
-									},
-								})
-								.then((response) => {
-									setRack(response.data);
-									setRackDetail(response.data.number);
-								})
-								.catch(() => connectionError());
-
-							axiosArchives
-								.get(
-									`file-location/${responseAdministrative.data.file_location_id}/`,
-									{
+							
+							if (responseAdministrative.data.shelf_id) {
+								axiosArchives
+									.get(`shelf/${responseAdministrative.data.shelf_id}/`, {
 										headers: {
 											Authorization: `JWT ${localStorage.getItem("tk")}`,
 										},
-									}
-								)
-								.then((response) => {
-									setFileLocation(response.data);
-									setFileLocationDetail(response.data.file);
-								})
-								.catch(() => connectionError());
+									})
+									.then((response) => {
+										setShelf(response.data);
+										setShelfDetail(response.data.number);
+									})
+									.catch(() => connectionError());
+							} else {
+								setShelfDetail("-");
+							}
 
-							axiosArchives
-								.get(
-									`box-abbreviation/${responseAdministrative.data.box_abbreviation_id}/`,
-									{
+							if (responseAdministrative.data.rack_id) {
+								axiosArchives
+									.get(`rack/${responseAdministrative.data.rack_id}/`, {
 										headers: {
 											Authorization: `JWT ${localStorage.getItem("tk")}`,
 										},
-									}
-								)
-								.then((response) => {
-									setBoxAbbreviation(response.data);
-									setBoxAbbreviationDetail(response.data.abbreviation);
-								})
-								.catch(() => connectionError());
+									})
+									.then((response) => {
+										setRack(response.data);
+										setRackDetail(response.data.number);
+									})
+									.catch(() => connectionError());
+							} else {
+								setRackDetail("-");
+							}
+
+							if (responseAdministrative.data.file_location_id) {
+								axiosArchives
+									.get(
+										`file-location/${responseAdministrative.data.file_location_id}/`,
+										{
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										}
+									)
+									.then((response) => {
+										setFileLocation(response.data);
+										setFileLocationDetail(response.data.file);
+									})
+									.catch(() => connectionError());
+							} else {
+								setFileLocationDetail("-");
+							}
+
+							if (responseAdministrative.data.box_abbreviation_id) {
+								axiosArchives
+									.get(
+										`box-abbreviation/${responseAdministrative.data.box_abbreviation_id}/`,
+										{
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										}
+									)
+									.then((response) => {
+										setBoxAbbreviation(response.data);
+										setBoxAbbreviationDetail(response.data.abbreviation);
+									})
+									.catch(() => connectionError());
+							} else {
+								setBoxAbbreviationDetail("-");
+							}
 
 							axiosArchives
 								.get(
@@ -585,6 +566,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									? responseAdministrative.data.reference_month_year
 									: "-"
 							);
+
 
 							setProcessNumber(responseAdministrative.data.process_number);
 							setNoticeDate(responseAdministrative.data.notice_date);
@@ -1028,86 +1010,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						) : (
 							""
 						)}
-
-						<Grid item xs={12} sm={12} md={12}>
-							<Typography className={classes.sectionTitle}>
-								Localização do Arquivo:
-							</Typography>
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="shelf"
-									label="Estante"
-									value={shelfDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<AutoComplete
-									value={shelf}
-									handleValueChange={handleShelfChange}
-									options={shelfs}
-									optionsLabel={(option) => `${option.number}`}
-									propertyCheck="number"
-									sortProperty="number"
-									label="Estante*"
-									helperText={shelfHelperText}
-								/>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="rack"
-									label="Prateleira"
-									value={rackDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<AutoComplete
-									value={rack}
-									handleValueChange={handleRackChange}
-									options={racks}
-									optionsLabel={(option) => `${option.number}`}
-									propertyCheck="number"
-									sortProperty="number"
-									label="Prateleira*"
-									helperText={rackHelperText}
-								/>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="file-location"
-									label="Localidade"
-									value={fileLocationDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<AutoComplete
-									value={fileLocation}
-									handleValueChange={handleFileLocationChange}
-									options={fileLocations}
-									optionsLabel={(option) => `${option.file}`}
-									propertyCheck="file"
-									sortProperty="file"
-									label="Localidade*"
-									helperText={fileLocationHelperText}
-								/>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={12}>
+            
+            <Grid item xs={12} sm={12} md={12}>
 							<Typography className={classes.sectionTitle}>
 								Caixa de Arquivamento:
 							</Typography>
@@ -1172,6 +1076,85 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							/>
 						</Grid>
 
+						<Grid item xs={12} sm={12} md={12}>
+							<Typography className={classes.sectionTitle}>
+								Localização do Arquivo:
+							</Typography>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									variant="outlined"
+									id="shelf"
+									label="Estante"
+									value={shelfDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+                
+								<AutoComplete
+									value={shelf}
+									handleValueChange={handleShelfChange}
+									options={shelfs}
+									optionsLabel={(option) => `${option.number}`}
+									propertyCheck="number"
+									sortProperty="number"
+									label="Estante*"
+									helperText={shelfHelperText}
+								/>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									variant="outlined"
+									id="rack"
+									label="Prateleira"
+									value={rackDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<AutoComplete
+									value={rack}
+									handleValueChange={handleRackChange}
+									options={racks}
+									optionsLabel={(option) => `${option.number}`}
+									propertyCheck="number"
+									sortProperty="number"
+									label="Prateleira*"
+									helperText={rackHelperText}
+								/>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									variant="outlined"
+									id="file-location"
+									label="Localidade"
+									value={fileLocationDetail}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<AutoComplete
+									value={fileLocation}
+									handleValueChange={handleFileLocationChange}
+									options={fileLocations}
+									optionsLabel={(option) => `${option.file}`}
+									propertyCheck="file"
+									sortProperty="file"
+									label="Localidade*"
+									helperText={fileLocationHelperText}
+								/>
+							)}
+						</Grid>
+
 						<NotesInput
 							set={setNotes}
 							notes={notesLocal}
@@ -1195,12 +1178,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 				/>
 			</CardContainer>
 
+			{!detail ? (
 			<div style={{ marginBottom: "100px" }}>
 				<DataTable
 					title="Processo Administrativo"
 					url="administrative-process/"
 				/>
 			</div>
+			) : ("")}
 		</>
 	);
 };

@@ -391,9 +391,11 @@ const CreateFrequencyRelation = ({ detail }) => {
 				/>
 			</CardContainer>
 
+			{!detail ? (
 			<div style={{ marginBottom: "100px" }}>
 				<DataTable title="Relação de Frequências" url="frequency-relation/" />
 			</div>
+			) : ("")}
 		</>
 	);
 };

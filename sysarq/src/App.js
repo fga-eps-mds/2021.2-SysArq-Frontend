@@ -67,10 +67,10 @@ function App() {
 					</Route>
 
 					<PrivateRoute exact path="/">
-						<MainPage />
-					</PrivateRoute>
-					<PrivateRoute exact path="/search">
 						<Search />
+					</PrivateRoute>
+					<PrivateRoute exact path="/manual">
+						<MainPage />
 					</PrivateRoute>
 					<PrivateRoute exact={false} path="/search/list/:field/:content">
 						<SearchList />
