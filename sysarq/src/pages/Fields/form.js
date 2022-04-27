@@ -4,6 +4,7 @@ import InputMask from "react-input-mask";
 import PopUpAlert from "../components/PopUpAlert";
 import DataTable from "../components/DataTable";
 import FieldsCreate from "../components/Actions/FieldsCreate";
+import AutoComplete from "../components/AutoComplete";
 
 export default function createForm(
 	fields,
@@ -50,6 +51,26 @@ export default function createForm(
 												>
 													<TextField variant="outlined" />
 												</InputMask>
+											</Grid>
+										);
+										return input;
+									}
+									if (item.options) {
+										const input = (
+											<Grid item xs={12} sm={12} md={12} key={key.toString()}>
+												<AutoComplete
+													value={item.value}
+													handleValueChange={(event, newValue) =>
+														item.setValue(newValue)
+													}
+													options={item.options}
+													optionsLabel={(option) => `${option}`}
+													label={item.placeholder}
+													helperText={item.helperText}
+													type={item.type}
+													freeField
+													className={classes.input}
+												/>
 											</Grid>
 										);
 										return input;

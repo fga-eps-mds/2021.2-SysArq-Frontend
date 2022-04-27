@@ -77,6 +77,13 @@ export function axiosProfileError(error, connectionError = null) {
 	}
 }
 
+export function getUniqueFieldValues(data, property, setFieldOptions) {
+	const arr = data.map((item) => item[property]);
+	setFieldOptions(
+		arr.filter((item, index, array) => array.indexOf(item) === index)
+	);
+}
+
 export function getUnits(setUnits, connectionError) {
 	axiosProfile
 		.post(`api/token/refresh/`, {
