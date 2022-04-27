@@ -1,15 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {
-	Grid,
-	TextField,
-	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
-	FormHelperText,
-} from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
+
+import AutoComplete from "../AutoComplete";
 
 const SenderUnitInput = ({
 	isDetailPage,
@@ -20,9 +14,9 @@ const SenderUnitInput = ({
 	units,
 	senderUnitHelperText,
 }) => {
-	const handleChange = (event) => {
+	const handleChange = (event, newValue) => {
 		setHelperText("");
-		set(event.target.value);
+		set(newValue);
 	};
 
 	return (
@@ -30,40 +24,23 @@ const SenderUnitInput = ({
 			{isDetailPage ? (
 				<TextField
 					fullWidth
+					variant="outlined"
 					id="senderUnit"
 					label="Unidade que Encaminhou"
 					value={senderUnitDetail}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
-				<FormControl fullWidth error={senderUnitHelperText !== ""}>
-					<InputLabel id="select-senderUnit-label">
-						Unidade que Encaminhou*
-					</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-senderUnit-label"
-						id="select-senderUnit"
-						value={senderUnit}
-						onChange={handleChange}
-						renderValue={(value) => `${value.unity_name}`}
-					>
-						<MenuItem key={0} value="">
-							<em>Nenhuma</em>
-						</MenuItem>
-
-						{units.map((senderUnitOption) => (
-							<MenuItem key={senderUnitOption.id} value={senderUnitOption}>
-								{senderUnitOption.unity_name}
-							</MenuItem>
-						))}
-					</Select>
-					{senderUnitHelperText ? (
-						<FormHelperText>{senderUnitHelperText}</FormHelperText>
-					) : (
-						""
-					)}
-				</FormControl>
+				<AutoComplete
+					value={senderUnit}
+					handleValueChange={handleChange}
+					options={units}
+					optionsLabel={(option) => `${option.unity_name}`}
+					propertyCheck="unity_name"
+					sortProperty="unity_name"
+					label="Unidade que Encaminhou*"
+					helperText={senderUnitHelperText}
+				/>
 			)}
 		</Grid>
 	);

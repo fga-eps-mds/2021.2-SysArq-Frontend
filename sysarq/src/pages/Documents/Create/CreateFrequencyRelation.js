@@ -35,10 +35,12 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [documentTypeDetail, setDocumentTypeDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 	const [senderPublicWorkerDetail, setSenderPublicWorkerDetail] = useState("");
-	const [receiverPublicWorkerDetail, setReceiverPublicWorkerDetail] = useState("");
+	const [receiverPublicWorkerDetail, setReceiverPublicWorkerDetail] =
+		useState("");
 
 	const [senderPublicWorkerInput, setSenderPublicWorkerInput] = useState("");
-	const [receiverPublicWorkerInput, setReceiverPublicWorkerInput] = useState("");
+	const [receiverPublicWorkerInput, setReceiverPublicWorkerInput] =
+		useState("");
 
 	const [units, setUnits] = useState([]);
 	const [senderPublicWorkers, setSenderPublicWorkers] = useState([
@@ -48,19 +50,23 @@ const CreateFrequencyRelation = ({ detail }) => {
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
 	]);
 
-	const [senderPublicWorker, setSenderPublicWorker] = useState(senderPublicWorkers.id);
-	const [receiverPublicWorker, setReceiverPublicWorker] = useState(receiverPublicWorkers.id);
+	const [senderPublicWorker, setSenderPublicWorker] = useState(
+		senderPublicWorkers.id
+	);
+	const [receiverPublicWorker, setReceiverPublicWorker] = useState(
+		receiverPublicWorkers.id
+	);
 	const [processNumber, setProcessNumber] = useState("");
 	const [receivedDate, setReceivedDate] = useState(null);
-	const [documentType, setDocumentType] = useState("");
-	const [senderUnit, setSenderUnit] = useState("");
+	const [documentType, setDocumentType] = useState(null);
+	const [senderUnit, setSenderUnit] = useState(null);
 	const [notesLocal, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState(
-		detail ? [] : []
-	);
-	
-	const [senderPublicWorkerHelperText, setSenderPublicWorkerHelperText] = useState("");
-	const [receiverPublicWorkerHelperText, setReceiverPublicWorkerHelperText] = useState("");
+	const [referencePeriod, setReferencePeriod] = useState(detail ? [] : []);
+
+	const [senderPublicWorkerHelperText, setSenderPublicWorkerHelperText] =
+		useState("");
+	const [receiverPublicWorkerHelperText, setReceiverPublicWorkerHelperText] =
+		useState("");
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
 	const [documentTypeHelperText, setDocumentTypeHelperText] = useState("");
@@ -75,7 +81,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [loading, setLoading] = useState(detail);
 
 	const handleAlertClose = () => setOpenAlert(false);
-	
+
 	const handleSenderPublicWorkerChange = (value) => {
 		setSenderPublicWorkerHelperText("");
 		if (!value) {
@@ -100,12 +106,25 @@ const CreateFrequencyRelation = ({ detail }) => {
 		setSeverityAlert("error");
 
 		if (value === 400) {
-			setAlertHelperText("O N° de processo já existe")
+			setAlertHelperText("O N° de processo já existe");
 		} else {
 			setAlertHelperText(
 				"Verifique sua conexão com a internet e recarregue a página."
 			);
 		}
+	};
+
+	const clear = () => {
+		setProcessNumber("");
+		setReceivedDate(null);
+		setDocumentType(null);
+		setSenderUnit(null);
+		setSenderPublicWorkerInput("");
+		setSenderPublicWorker(undefined);
+		setReceiverPublicWorkerInput("");
+		setReceiverPublicWorker(undefined);
+		setNotes("");
+		setReferencePeriod([]);
 	};
 
 	const onSuccess = () => {
@@ -114,17 +133,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText("Documento cadastrado!");
-
-		setProcessNumber("");
-		setReceivedDate(null);
-		setDocumentType("");
-		setSenderUnit("");
-		setSenderPublicWorkerInput("");
-		setSenderPublicWorker(undefined);
-		setReceiverPublicWorkerInput("");
-		setReceiverPublicWorker(undefined);
-		setNotes("");
-		setReferencePeriod([]);
+		clear();
 		window.location.reload();
 	};
 
@@ -158,13 +167,13 @@ const CreateFrequencyRelation = ({ detail }) => {
 			return "noticeDate error";
 		}
 
-		if (documentType === "") {
+		if (!documentType) {
 			setDocumentTypeHelperText("Selecione um nome do documento");
 			setLoading(false);
 			return "documentType error";
 		}
 
-		if (senderUnit === "") {
+		if (!senderUnit) {
 			setSenderUnitHelperText("Selecione uma unidade");
 			setLoading(false);
 			return "senderUnit error";
@@ -200,7 +209,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 							receiver_id: receiverPublicWorker.id,
 							receiver_cpf: receiverPublicWorker.cpf,
 							document_name_id: documentType.id,
-							temporality_date: 
+							temporality_date:
 								parseInt(documentType.temporality, 10) +
 								parseInt(receivedDate.getFullYear(), 10),
 						},
@@ -256,7 +265,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencyRelation) => {
-
 							setDocumentTypeDetail(
 								responseFrequencyRelation.data.document_name_name
 							);
@@ -347,7 +355,9 @@ const CreateFrequencyRelation = ({ detail }) => {
 							senderPublicWorkerDetail={senderPublicWorkerDetail}
 							receiverPublicWorkers={receiverPublicWorkers}
 							receiverPublicWorkerInput={receiverPublicWorkerInput}
-							handleReceiverPublicWorkerChange={handleReceiverPublicWorkerChange}
+							handleReceiverPublicWorkerChange={
+								handleReceiverPublicWorkerChange
+							}
 							setReceiverPublicWorkerInput={setReceiverPublicWorkerInput}
 							receiverPublicWorkerOptions={receiverPublicWorkerOptions}
 							receiverPublicWorkerHelperText={receiverPublicWorkerHelperText}
@@ -355,7 +365,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 							setNotes={setNotes}
 							notes={notesLocal}
 						/>
-						
+
 						<ReferencePeriodInput
 							referencePeriod={referencePeriod}
 							setReferencePeriod={setReferencePeriod}
@@ -370,6 +380,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 					isDetailPage={detail}
 					loading={loading}
 					onSubmit={onSubmit}
+					clearFunc={clear}
 				/>
 
 				<PopUpAlert
@@ -380,9 +391,11 @@ const CreateFrequencyRelation = ({ detail }) => {
 				/>
 			</CardContainer>
 
+			{!detail ? (
 			<div style={{ marginBottom: "100px" }}>
 				<DataTable title="Relação de Frequências" url="frequency-relation/" />
 			</div>
+			) : ("")}
 		</>
 	);
 };

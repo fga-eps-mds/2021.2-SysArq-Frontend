@@ -40,7 +40,7 @@ const Link = withStyles({
 	},
 })(MuiLink);
 
-const DocumentsCreate = ({ isDetailPage, loading, onSubmit }) => {
+const DocumentsCreate = ({ isDetailPage, loading, onSubmit, clearFunc }) => {
 	const classes = useStyles();
 
 	return (
@@ -54,6 +54,9 @@ const DocumentsCreate = ({ isDetailPage, loading, onSubmit }) => {
 							Cancelar
 						</Link>
 					</Typography>
+					<Button variant="outlined" onClick={clearFunc}>
+						LIMPAR
+					</Button>
 					{loading ? (
 						<CircularProgress />
 					) : (
@@ -76,6 +79,7 @@ DocumentsCreate.propTypes = {
 	isDetailPage: PropTypes.bool.isRequired,
 	loading: PropTypes.bool.isRequired,
 	onSubmit: PropTypes.func.isRequired,
+	clearFunc: PropTypes.func.isRequired,
 };
 
 export default DocumentsCreate;

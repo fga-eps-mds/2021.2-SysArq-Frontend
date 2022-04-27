@@ -8,10 +8,7 @@ import DocumentTypeInput from "../Inputs/DocumentTypeInput";
 import SenderUnitInput from "../Inputs/SenderUnitInput";
 import NotesInput from "../Inputs/NotesInput";
 
-import {
-	receiverWorker,
-	senderWorker,
-} from "../../../support";
+import { receiverWorker, senderWorker } from "../../../support";
 
 const CommonSet = ({
 	isDetailPage,
@@ -80,45 +77,47 @@ const CommonSet = ({
 		/>
 
 		<Grid item xs={12} sm={12} md={12}>
-							{isDetailPage ? (
-								<TextField
-									fullWidth
-									id="senderPublicWorker"
-									label="Servidor que encaminhou"
-									value={senderPublicWorkerDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								senderWorker(
-									senderPublicWorkers,
-									senderPublicWorkerInput,
-									handleSenderPublicWorkerChange,
-									setSenderPublicWorkerInput,
-									senderPublicWorkerOptions,
-									senderPublicWorkerHelperText
-								)
-							)}
+			{isDetailPage ? (
+				<TextField
+					fullWidth
+					variant="outlined"
+					id="senderPublicWorker"
+					label="Servidor que encaminhou"
+					value={senderPublicWorkerDetail}
+					inputProps={{ readOnly: true }}
+				/>
+			) : (
+				senderWorker(
+					senderPublicWorkers,
+					senderPublicWorkerInput,
+					handleSenderPublicWorkerChange,
+					setSenderPublicWorkerInput,
+					senderPublicWorkerOptions,
+					senderPublicWorkerHelperText
+				)
+			)}
 		</Grid>
 
 		<Grid item xs={12} sm={12} md={12}>
-							{isDetailPage ? (
-								<TextField
-									fullWidth
-									id="receiverPublicWorker"
-									label="Servidor que recebeu"
-									value={receiverPublicWorkerDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								receiverWorker(
-									receiverPublicWorkers,
-									receiverPublicWorkerInput,
-									handleReceiverPublicWorkerChange,
-									setReceiverPublicWorkerInput,
-									receiverPublicWorkerOptions,
-									receiverPublicWorkerHelperText
-								)
-							)}
+			{isDetailPage ? (
+				<TextField
+					variant="outlined"
+					fullWidth
+					id="receiverPublicWorker"
+					label="Servidor que recebeu"
+					value={receiverPublicWorkerDetail}
+					inputProps={{ readOnly: true }}
+				/>
+			) : (
+				receiverWorker(
+					receiverPublicWorkers,
+					receiverPublicWorkerInput,
+					handleReceiverPublicWorkerChange,
+					setReceiverPublicWorkerInput,
+					receiverPublicWorkerOptions,
+					receiverPublicWorkerHelperText
+				)
+			)}
 		</Grid>
 
 		<NotesInput set={setNotes} notes={notes} isDetailPage={isDetailPage} />
@@ -144,19 +143,19 @@ CommonSet.propTypes = {
 	units: PropTypes.arrayOf(PropTypes.string).isRequired,
 	senderUnitHelperText: PropTypes.string.isRequired,
 	senderPublicWorkers: PropTypes.arrayOf(PropTypes.string).isRequired,
-	senderPublicWorkerInput:  PropTypes.string.isRequired,
-	handleSenderPublicWorkerChange:  PropTypes.string.isRequired,
+	senderPublicWorkerInput: PropTypes.string.isRequired,
+	handleSenderPublicWorkerChange: PropTypes.string.isRequired,
 	setSenderPublicWorkerInput: PropTypes.func.isRequired,
-	senderPublicWorkerOptions:  PropTypes.string.isRequired,
+	senderPublicWorkerOptions: PropTypes.string.isRequired,
 	senderPublicWorkerHelperText: PropTypes.func.isRequired,
-	senderPublicWorkerDetail:  PropTypes.string.isRequired,
+	senderPublicWorkerDetail: PropTypes.string.isRequired,
 	receiverPublicWorkers: PropTypes.arrayOf(PropTypes.string).isRequired,
-	receiverPublicWorkerInput:  PropTypes.string.isRequired,
-	handleReceiverPublicWorkerChange:  PropTypes.string.isRequired,
+	receiverPublicWorkerInput: PropTypes.string.isRequired,
+	handleReceiverPublicWorkerChange: PropTypes.string.isRequired,
 	setReceiverPublicWorkerInput: PropTypes.func.isRequired,
-	receiverPublicWorkerOptions:  PropTypes.string.isRequired,
+	receiverPublicWorkerOptions: PropTypes.string.isRequired,
 	receiverPublicWorkerHelperText: PropTypes.func.isRequired,
-	receiverPublicWorkerDetail:  PropTypes.string.isRequired,
+	receiverPublicWorkerDetail: PropTypes.string.isRequired,
 	setNotes: PropTypes.func.isRequired,
 	notes: PropTypes.string.isRequired,
 };

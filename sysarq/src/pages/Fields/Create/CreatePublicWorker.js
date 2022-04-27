@@ -46,16 +46,22 @@ export default function CreatePublicWorker() {
 		if (value === 400) {
 			setAlertHelperText("O CPF já existe");
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página"
+			);
 		}
+	};
+
+	const clear = () => {
+		setName("");
+		setCpf("");
 	};
 
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText("Servidor cadastrado!");
-		setName("");
-		setCpf("");
+		clear();
 		window.location.reload();
 	};
 
@@ -106,7 +112,7 @@ export default function CreatePublicWorker() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-			
+
 		return null;
 	};
 
@@ -148,6 +154,7 @@ export default function CreatePublicWorker() {
 		severityAlert,
 		alertHelperText,
 		"Servidor",
-		"public-worker/"
+		"public-worker/",
+		clear
 	);
 }

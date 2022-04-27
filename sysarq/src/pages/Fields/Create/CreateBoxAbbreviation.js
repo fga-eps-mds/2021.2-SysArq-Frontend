@@ -32,8 +32,8 @@ export default function CreateBoxAbbreviation() {
 	const [boxAbbreviation, setBoxAbbreviation] = useState("");
 	const [boxName, setBoxName] = useState("");
 
-	
-	const [boxAbbreviationHelperText, setboxAbbreviationHelperText] = useState("");
+	const [boxAbbreviationHelperText, setboxAbbreviationHelperText] =
+		useState("");
 	const [boxAbbreviationError, setboxAbbreviationError] = useState(false);
 
 	const [openAlert, setOpenAlert] = useState(false);
@@ -57,16 +57,22 @@ export default function CreateBoxAbbreviation() {
 		if (value === 400) {
 			setAlertHelperText("Sigla da caixa já cadastrada");
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página"
+			);
 		}
+	};
+
+	const clear = () => {
+		setBoxName("");
+		setBoxAbbreviation("");
 	};
 
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText("Caixa cadastrada!");
-		setBoxName("");
-		setBoxAbbreviation("");
+		clear();
 		window.location.reload();
 	};
 
@@ -89,7 +95,7 @@ export default function CreateBoxAbbreviation() {
 						`box-abbreviation/`,
 						{
 							abbreviation: boxAbbreviation,
-							name: boxName
+							name: boxName,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -109,12 +115,11 @@ export default function CreateBoxAbbreviation() {
 				axiosProfileError(error, connectionError);
 			});
 		setboxAbbreviationError(false);
-		
+
 		return null;
 	};
 
 	const fields = [
-		
 		{
 			type: "text",
 			placeholder: "Nome completo",
@@ -129,7 +134,7 @@ export default function CreateBoxAbbreviation() {
 				"";
 			},
 		},
-		
+
 		{
 			type: "text",
 			placeholder: "Sigla da caixa*",
@@ -139,7 +144,7 @@ export default function CreateBoxAbbreviation() {
 			error: boxAbbreviationError,
 			setHelperText: setboxAbbreviationHelperText,
 			setError: setboxAbbreviationError,
-		}
+		},
 	];
 
 	const title = "Arquivo Geral da Policia Civil de Goiás";
@@ -156,6 +161,7 @@ export default function CreateBoxAbbreviation() {
 		severityAlert,
 		alertHelperText,
 		"Sigla da Caixa",
-		"box-abbreviation/"
+		"box-abbreviation/",
+		clear
 	);
 }

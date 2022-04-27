@@ -51,17 +51,19 @@ const ShelfInput = ({
 			{isDetailPage ? (
 				<TextField
 					fullWidth
+					variant="outlined"
 					id="shelf"
 					label="Estante"
 					value={shelfDetail}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
-				<FormControl fullWidth>
+				<FormControl fullWidth variant="outlined">
 					<InputLabel id="select-shelf-label">Estante</InputLabel>
 					<Select
 						style={{ textAlign: "left" }}
 						labelId="select-shelf-label"
+						label="Estante"
 						id="select-shelf"
 						value={shelf}
 						onChange={handleChange}

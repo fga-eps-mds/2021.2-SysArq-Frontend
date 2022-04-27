@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import createForm from "../form";
-import { axiosProfileError } from "../../../support";
+import { axiosProfileError, getUniqueFieldValues } from "../../../support";
 
 export default function CreateUnity() {
 	const useStyles = makeStyles({
@@ -24,11 +24,16 @@ export default function CreateUnity() {
 
 	const [unityName, setUnityName] = useState("");
 	const [unityAbbreviation, setUnityAbbreviation] = useState("");
-	const [administrativeBond, setAdiministrativeBond] = useState("");
-	const [bondAbbreviation, setBondAbbreviation] = useState("");
-	const [county, setCounty] = useState("");
-	const [telephoneNumber, setTelephoneNumber] = useState("");
+	const [administrativeBond, setAdiministrativeBond] = useState(null);
+	const [bondAbbreviation, setBondAbbreviation] = useState(null);
+	const [county, setCounty] = useState(null);
+	const [telephoneNumber, setTelephoneNumber] = useState(null);
 	const [note, setNote] = useState("");
+
+	const [administrativeBonds, setAdministrativeBonds] = useState([]);
+	const [bondAbbreviations, setBondAbbreviations] = useState([]);
+	const [counties, setCounties] = useState([]);
+	const [telephoneNumbers, setTelephoneNumbers] = useState([]);
 
 	const [unityNameHelperText, setunityNameHelperText] = useState("");
 	const [unityNameError, setunityNameError] = useState(false);
@@ -55,21 +60,27 @@ export default function CreateUnity() {
 		if (value === 400) {
 			setAlertHelperText("Nome da unidade já existe");
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página"
+			);
 		}
+	};
+
+	const clear = () => {
+		setUnityName("");
+		setUnityAbbreviation("");
+		setAdiministrativeBond(null);
+		setBondAbbreviation(null);
+		setCounty(null);
+		setTelephoneNumber(null);
+		setNote("");
 	};
 
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText("Unidade cadastrada!");
-		setUnityName("");
-		setUnityAbbreviation("");
-		setAdiministrativeBond("");
-		setBondAbbreviation("");
-		setCounty("");
-		setTelephoneNumber("");
-		setNote("");
+		clear();
 		window.location.reload();
 	};
 
@@ -115,7 +126,7 @@ export default function CreateUnity() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-			
+
 		return null;
 	};
 
@@ -149,6 +160,7 @@ export default function CreateUnity() {
 			placeholder: "Vínculo administrativo",
 			setValue: setAdiministrativeBond,
 			value: administrativeBond,
+			options: administrativeBonds,
 			helperText: "",
 			error: false,
 			setHelperText: () => {
@@ -163,6 +175,7 @@ export default function CreateUnity() {
 			placeholder: "Sigla do vínculo",
 			setValue: setBondAbbreviation,
 			value: bondAbbreviation,
+			options: bondAbbreviations,
 			helperText: "",
 			error: false,
 			setHelperText: () => {
@@ -177,6 +190,7 @@ export default function CreateUnity() {
 			placeholder: "Município",
 			setValue: setCounty,
 			value: county,
+			options: counties,
 			helperText: "",
 			error: false,
 			setHelperText: () => {
@@ -187,10 +201,11 @@ export default function CreateUnity() {
 			},
 		},
 		{
-			type: "phone",
+			type: "number",
 			placeholder: "Telefone",
 			setValue: setTelephoneNumber,
 			value: telephoneNumber,
+			options: telephoneNumbers,
 			helperText: "",
 			error: false,
 			setHelperText: () => {
@@ -216,6 +231,42 @@ export default function CreateUnity() {
 		},
 	];
 
+	useEffect(() => {
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+				axiosArchives
+					.get("unity/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => {
+						getUniqueFieldValues(
+							response.data,
+							"administrative_bond",
+							setAdministrativeBonds
+						);
+						getUniqueFieldValues(
+							response.data,
+							"bond_abbreviation",
+							setBondAbbreviations
+						);
+						getUniqueFieldValues(response.data, "municipality", setCounties);
+						getUniqueFieldValues(
+							response.data,
+							"telephone_number",
+							setTelephoneNumbers
+						);
+					});
+			})
+			.catch((error) => {
+				handleRequestError(error.response.status);
+			});
+	}, []);
+
 	const title = "Arquivo Geral da Policia Civil de Goiás";
 	const subtitle = "Cadastrar unidade";
 
@@ -230,6 +281,7 @@ export default function CreateUnity() {
 		severityAlert,
 		alertHelperText,
 		"Unidade",
-		"unity/"
+		"unity/",
+		clear
 	);
 }

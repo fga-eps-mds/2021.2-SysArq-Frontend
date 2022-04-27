@@ -19,7 +19,7 @@
 		"jsx-a11y/label-has-associated-control": "off",
 		// Desabilitar a necessidade de import React em todo arquivo do projeto
 		"react/react-in-jsx-scope": "off",
-		"react/jsx-props-no-spreading": "off"
-
+		"react/jsx-props-no-spreading": "off",
+		"no-param-reassign": "off"
 	}
 }

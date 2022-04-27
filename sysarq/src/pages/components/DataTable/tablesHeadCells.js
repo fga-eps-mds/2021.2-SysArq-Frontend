@@ -90,7 +90,6 @@ const unityHeadCells = [
 ];
 
 const headCellsBoxAbbreviation = [
-
 	{
 		id: "name",
 		numeric: false,
@@ -102,7 +101,6 @@ const headCellsBoxAbbreviation = [
 		numeric: false,
 		label: "Sigla",
 	},
-
 ];
 
 const documentNameHeadCells = [
@@ -177,6 +175,11 @@ const administrativeProcessHeadCells = [
 		numeric: false,
 		label: "Nome do Documento",
 	},
+	{
+		id: "info",
+		numeric: false,
+		label: "",
+	},
 ];
 
 const frequencyRelationHeadCells = [
@@ -194,6 +197,11 @@ const frequencyRelationHeadCells = [
 		id: "document_name_name",
 		numeric: false,
 		label: "Nome do Documento",
+	},
+	{
+		id: "info",
+		numeric: false,
+		label: "",
 	},
 ];
 
@@ -217,6 +225,11 @@ const frequencySheetHeadCells = [
 		id: "reference_period",
 		numeric: false,
 		label: "Período de Frequência",
+	},
+	{
+		id: "info",
+		numeric: false,
+		label: "",
 	},
 ];
 
