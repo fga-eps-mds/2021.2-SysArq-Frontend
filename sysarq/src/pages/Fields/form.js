@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React from "react";
 import { Paper, TextField, Grid, Container, Checkbox, FormControlLabel } from "@material-ui/core";
 import InputMask from "react-input-mask";
 import PopUpAlert from "../components/PopUpAlert";
@@ -9,9 +9,11 @@ export default function createForm(
 	title,
 	subtitle,
 	classes,
+	checked,
 	onClick,
 	openAlert,
 	handleAlertClose,
+	handleChange,
 	severityAlert,
 	alertHelperText,
 	listaTitle,
@@ -52,17 +54,12 @@ export default function createForm(
 										);
 										return input;
 									}
-									if(item.placeholder === "Temporalidade (anos)*"){
-										const [checked, setChecked] = useState(false)
-										const HandleCheckedChange = event => {
-											setChecked(event.target.checked)
-											item.setValue("")
-										}
+									if(item.placeholder === "Temporalidade (anos)*"){									
 										const input = (
 											<Grid item xs={12} sm={12} md={12} key={key.toString()}>
 												<FormControlLabel
 													label='Permanente'
-													control={<Checkbox checked={checked} onChange={HandleCheckedChange} />}
+													control={<Checkbox checked={checked} onChange={handleChange} />}
 												/>													
 												<TextField
 												id={item.placeholder}
