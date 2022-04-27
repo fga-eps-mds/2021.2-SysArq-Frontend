@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import {
-	Grid,
-	TextField,
-	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
-	FormHelperText,
-} from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 
+import AutoComplete from "../AutoComplete";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import { logout } from "../../../support";
 
@@ -25,9 +18,9 @@ const DocumentTypeInput = ({
 }) => {
 	const [documentTypes, setDocumentTypes] = useState([]);
 
-	const handleChange = (event) => {
+	const handleChange = (event, newValue) => {
 		setHelperText("");
-		set(event.target.value);
+		set(newValue);
 	};
 
 	useEffect(() => {
@@ -60,40 +53,23 @@ const DocumentTypeInput = ({
 			{isDetailPage ? (
 				<TextField
 					fullWidth
+					variant="outlined"
 					id="documentType"
 					label="Nome do Documento"
 					value={documentTypeDetail}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
-				<FormControl fullWidth error={documentTypeHelperText !== ""}>
-					<InputLabel id="select-documentType-label">
-						Nome do Documento*
-					</InputLabel>
-					<Select
-						style={{ textAlign: "left" }}
-						labelId="select-documentType-label"
-						id="select-documentType"
-						value={documentType}
-						onChange={handleChange}
-						renderValue={(value) => `${value.document_name}`}
-					>
-						<MenuItem key={0} value="">
-							<em>Nenhum</em>
-						</MenuItem>
-
-						{documentTypes.map((documentTypeOption) => (
-							<MenuItem key={documentTypeOption.id} value={documentTypeOption}>
-								{documentTypeOption.document_name}
-							</MenuItem>
-						))}
-					</Select>
-					{documentTypeHelperText ? (
-						<FormHelperText>{documentTypeHelperText}</FormHelperText>
-					) : (
-						""
-					)}
-				</FormControl>
+				<AutoComplete
+					value={documentType}
+					handleValueChange={handleChange}
+					options={documentTypes}
+					optionsLabel={(option) => `${option.document_name}`}
+					propertyCheck="document_name"
+					sortProperty="document_name"
+					label="Nome do Documento*"
+					helperText={documentTypeHelperText}
+				/>
 			)}
 		</Grid>
 	);

@@ -24,8 +24,8 @@ import {
 	isDateNotValid,
 	formatDate,
 	axiosProfileError,
+	getUniqueFieldValues,
 	getPublicWorkers,
-	// autocompl,
 	senderWorker,
 } from "../../../support";
 
@@ -41,6 +41,7 @@ import NotesInput from "../../components/Inputs/NotesInput";
 
 import DocumentsCreate from "../../components/Actions/DocumentsCreate";
 import PopUpAlert from "../../components/PopUpAlert";
+import AutoComplete from "../../components/AutoComplete";
 
 import "date-fns";
 import DataTable from "../../components/DataTable";
@@ -54,8 +55,8 @@ const useStyles = makeStyles(() => ({
 		fontFamily: ['"Montserrat"', "sans-serif"],
 	},
 	boxAB: {
-		marginBottom: '16px',
-	}
+		marginBottom: "16px",
+	},
 }));
 
 const isStatusFiled = (status) => {
@@ -88,6 +89,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [racks, setRacks] = useState([]);
 	const [fileLocations, setFileLocations] = useState([]);
 	const [boxAbbreviations, setBoxAbbreviations] = useState([]);
+	const [interestedPersonOptions, setInterestedPersonOptions] = useState([]);
 
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
@@ -101,12 +103,12 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [reference, setReference] = useState(detail ? "" : null);
 	const [processNumber, setProcessNumber] = useState("");
 	const [interestedPerson, setInterested] = useState("");
-	const [subject, setSubject] = useState("");
-	const [senderUnit, setSenderUnit] = useState("");
-	const [shelf, setShelf] = useState("");
-	const [rack, setRack] = useState("");
-	const [fileLocation, setFileLocation] = useState("");
-	const [boxAbbreviation, setBoxAbbreviation] = useState("");
+	const [subject, setSubject] = useState(null);
+	const [senderUnit, setSenderUnit] = useState(null);
+	const [shelf, setShelf] = useState(null);
+	const [rack, setRack] = useState(null);
+	const [fileLocation, setFileLocation] = useState(null);
+	const [boxAbbreviation, setBoxAbbreviation] = useState(null);
 	const [boxNumber, setBoxNumber] = useState("");
 	const [boxYear, setBoxYear] = useState("");
 	const [status, setStatus] = useState("");
@@ -125,7 +127,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [statusHelperText, setStatusHelperText] = useState("");
 	const [unarchiveDateHelperText, setUnarchiveDateHelperText] = useState("");
 	const [publicWorkerHelperText, setPublicWorkerHelperText] = useState("");
-	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] = useState("");
+	const [boxAbbreviationHelperText, setBoxAbbreviationHelperText] =
+		useState("");
 	const [boxNumberHelperText, setBoxNumberHelperText] = useState("");
 	const [boxYearHelperText, setBoxYearHelperText] = useState("");
 
@@ -148,19 +151,19 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setPublicWorker(value);
 	};
 
-	const handleShelfChange = (event) => {
+	const handleShelfChange = (event, newValue) => {
 		setShelfHelperText("");
-		setShelf(event.target.value);
+		setShelf(newValue);
 	};
 
-	const handleRackChange = (event) => {
+	const handleRackChange = (event, newValue) => {
 		setRackHelperText("");
-		setRack(event.target.value);
+		setRack(newValue);
 	};
 
-	const handleFileLocationChange = (event) => {
+	const handleFileLocationChange = (event, newValue) => {
 		setFileLocationHelperText("");
-		setFileLocation(event.target.value);
+		setFileLocation(newValue);
 	};
 
 	const handleNoticeDateChange = (date) => {
@@ -178,14 +181,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setReference(date);
 	};
 
-	const handleInterestedChange = (event) => {
+	const handleInterestedChange = (event, newValue) => {
 		setInterestedHelperText("");
-		setInterested(event.target.value);
+		setInterested(newValue);
 	};
 
-	const handleSubjectChange = (event) => {
+	const handleSubjectChange = (event, newValue) => {
 		setSubjectHelperText("");
-		setSubject(event.target.value);
+		setSubject(newValue);
 	};
 
 	const handleStatusChange = (event) => {
@@ -213,13 +216,38 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setSeverityAlert("error");
 
 		if (value === 400) {
-			setAlertHelperText("N° do Processo já existe")
-		} else{
+			setAlertHelperText("N° do Processo já existe");
+		} else {
 			setAlertHelperText(
 				"Verifique sua conexão com a internet e recarregue a página."
 			);
-
 		}
+	};
+
+	const clear = () => {
+		setNoticeDate(null);
+		setArchivingDate(null);
+		setReference(null);
+		setProcessNumber("");
+		setInterested("");
+		setSubject(null);
+		setSenderUnit(null);
+		setPublicWorkerInput("");
+		setPublicWorker(undefined);
+
+		setShelf(null);
+		setRack(null);
+		setFileLocation(null);
+
+		setBoxAbbreviation(null);
+		setBoxYear("");
+		setBoxNumber("");
+
+		setStatus("");
+		setUnarchiveDestinationUnit("");
+		setUnarchiveProcessNumber("");
+		setUnarchiveDate(initialDate);
+		setNotes("");
 	};
 
 	const onSuccess = () => {
@@ -228,22 +256,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText("Documento cadastrado!");
-
-		setNoticeDate(initialDate);
-		setArchivingDate(initialDate);
-		setReference(initialDate);
-		setProcessNumber("");
-		setInterested("");
-		setSubject("");
-		setSenderUnit("");
-		setPublicWorkerInput("");
-		setPublicWorker(undefined);
-
-		setStatus("");
-		setUnarchiveDestinationUnit("");
-		setUnarchiveProcessNumber("");
-		setUnarchiveDate(initialDate);
-		setNotes("");
+		clear();
 		window.location.reload();
 	};
 
@@ -269,8 +282,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "interested error";
 		}
 
-		if (subject === "") {
-			setSubjectHelperText("Selecione um assunto");
+		if (!subject) {
+			setSubjectHelperText("Selecione um nome de documento");
 			setLoading(false);
 			return "subject error";
 		}
@@ -292,46 +305,10 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "reference error";
 		}
 
-		if (senderUnit === "") {
+		if (!senderUnit) {
 			setSenderUnitHelperText("Selecione uma unidade");
 			setLoading(false);
 			return "senderUnit error";
-		}
-
-		if (!shelf) {
-			setShelfHelperText("Selecione uma estante");
-			setLoading(false);
-			return "shelf error";
-		}
-
-		if (!rack) {
-			setRackHelperText("Selecione uma prateleira");
-			setLoading(false);
-			return "rack error";
-		}
-
-		if (!fileLocation) {
-			setFileLocationHelperText("Selecione uma localidade");
-			setLoading(false);
-			return "file location error";
-		}
-
-		if (!boxAbbreviation) {
-			setBoxAbbreviationHelperText("Selecione uma caixa");
-			setLoading(false);
-			return "box abbreviation error";
-		}
-
-		if (!boxNumber) {
-			setBoxNumberHelperText("Insira o número da caixa");
-			setLoading(false);
-			return "box number error";
-		}
-
-		if (!boxYear || parseInt(boxYear, 10) < 1900) {
-			setBoxYearHelperText("Insira o ano da caixa")
-			setLoading(false);
-			return "box year error";
 		}
 
 		if (status === "") {
@@ -444,6 +421,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								})
 								.catch(() => connectionError());
 
+
 							axiosArchives
 								.get(`unity/${responseAdministrative.data.sender_unity}/`, {
 									headers: {
@@ -455,60 +433,76 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									setSenderUnitDetail(response.data.unity_name);
 								})
 								.catch(() => connectionError());
-
-							axiosArchives
-								.get(`shelf/${responseAdministrative.data.shelf_id}/`, {
-									headers: {
-										Authorization: `JWT ${localStorage.getItem("tk")}`,
-									},
-								})
-								.then((response) => {
-									setShelf(response.data);
-									setShelfDetail(response.data.number);
-								})
-								.catch(() => connectionError());
-
-							axiosArchives
-								.get(`rack/${responseAdministrative.data.rack_id}/`, {
-									headers: {
-										Authorization: `JWT ${localStorage.getItem("tk")}`,
-									},
-								})
-								.then((response) => {
-									setRack(response.data);
-									setRackDetail(response.data.number);
-								})
-								.catch(() => connectionError());
-
-							axiosArchives
-								.get(
-									`file-location/${responseAdministrative.data.file_location_id}/`,
-									{
+							
+							if (responseAdministrative.data.shelf_id) {
+								axiosArchives
+									.get(`shelf/${responseAdministrative.data.shelf_id}/`, {
 										headers: {
 											Authorization: `JWT ${localStorage.getItem("tk")}`,
 										},
-									}
-								)
-								.then((response) => {
-									setFileLocation(response.data);
-									setFileLocationDetail(response.data.file);
-								})
-								.catch(() => connectionError());
+									})
+									.then((response) => {
+										setShelf(response.data);
+										setShelfDetail(response.data.number);
+									})
+									.catch(() => connectionError());
+							} else {
+								setShelfDetail("-");
+							}
 
-							axiosArchives
-								.get(
-									`box-abbreviation/${responseAdministrative.data.box_abbreviation_id}/`,
-									{
+							if (responseAdministrative.data.rack_id) {
+								axiosArchives
+									.get(`rack/${responseAdministrative.data.rack_id}/`, {
 										headers: {
 											Authorization: `JWT ${localStorage.getItem("tk")}`,
 										},
-									}
-								)
-								.then((response) => {
-									setBoxAbbreviation(response.data);
-									setBoxAbbreviationDetail(response.data.abbreviation);
-								})
-								.catch(() => connectionError());
+									})
+									.then((response) => {
+										setRack(response.data);
+										setRackDetail(response.data.number);
+									})
+									.catch(() => connectionError());
+							} else {
+								setRackDetail("-");
+							}
+
+							if (responseAdministrative.data.file_location_id) {
+								axiosArchives
+									.get(
+										`file-location/${responseAdministrative.data.file_location_id}/`,
+										{
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										}
+									)
+									.then((response) => {
+										setFileLocation(response.data);
+										setFileLocationDetail(response.data.file);
+									})
+									.catch(() => connectionError());
+							} else {
+								setFileLocationDetail("-");
+							}
+
+							if (responseAdministrative.data.box_abbreviation_id) {
+								axiosArchives
+									.get(
+										`box-abbreviation/${responseAdministrative.data.box_abbreviation_id}/`,
+										{
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										}
+									)
+									.then((response) => {
+										setBoxAbbreviation(response.data);
+										setBoxAbbreviationDetail(response.data.abbreviation);
+									})
+									.catch(() => connectionError());
+							} else {
+								setBoxAbbreviationDetail("-");
+							}
 
 							axiosArchives
 								.get(
@@ -573,6 +567,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									: "-"
 							);
 
+
 							setProcessNumber(responseAdministrative.data.process_number);
 							setNoticeDate(responseAdministrative.data.notice_date);
 							setInterested(responseAdministrative.data.interested);
@@ -591,6 +586,19 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						})
 						.catch(() => connectionError());
 				}
+
+				axiosArchives
+					.get("administrative-process/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => {
+						getUniqueFieldValues(
+							response.data,
+							"interested",
+							setInterestedPersonOptions
+						);
+					})
+					.catch(() => connectionError());
 
 				axiosArchives
 					.get("document-name/", {
@@ -675,6 +683,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="noticeDate"
 									label="Data de Autuação"
 									value={
@@ -689,6 +698,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									okLabel="Confirmar"
 									cancelLabel="Cancelar"
 									style={{ width: "100%" }}
@@ -707,57 +717,48 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							<TextField
-								fullWidth
-								id="interested"
-								label={detail ? "Interessado" : "Interessado*"}
-								value={interestedPerson}
-								onChange={handleInterestedChange}
-								error={interestedHelperText !== ""}
-								helperText={interestedHelperText}
-								multiline
-								inputProps={{ maxLength: 150, readOnly: detail }}
-							/>
+							{detail ? (
+								<TextField
+									fullWidth
+									variant="outlined"
+									label="Interessado"
+									value={interestedPerson}
+									inputProps={{ readOnly: true }}
+								/>
+							) : (
+								<AutoComplete
+									value={interestedPerson}
+									handleValueChange={handleInterestedChange}
+									options={interestedPersonOptions}
+									optionsLabel={(option) => option}
+									label="Interessado*"
+									helperText={interestedHelperText}
+									freeField
+								/>
+							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="subject"
 									label="Nome do Documento"
 									value={subjectDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={subjectHelperText !== ""}>
-									<InputLabel id="select-document_name-label">
-										Nome do Documento*
-									</InputLabel>
-									<Select
-										style={{ textAlign: "left" }}
-										labelId="select-document_name-label"
-										id="select-document_name"
-										value={subject}
-										onChange={handleSubjectChange}
-										renderValue={(value) => `${value.document_name}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{subjects.map((subjectOption) => (
-											<MenuItem key={subjectOption.id} value={subjectOption}>
-												{subjectOption.document_name}
-											</MenuItem>
-										))}
-									</Select>
-									{subjectHelperText ? (
-										<FormHelperText>{subjectHelperText}</FormHelperText>
-									) : (
-										""
-									)}
-								</FormControl>
+								<AutoComplete
+									value={subject}
+									handleValueChange={handleSubjectChange}
+									options={subjects}
+									optionsLabel={(option) => `${option.document_name}`}
+									propertyCheck="document_name"
+									sortProperty="document_name"
+									label="Nome do Documento*"
+									helperText={subjectHelperText}
+								/>
 							)}
 						</Grid>
 
@@ -775,6 +776,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="archivingDate"
 									label="Data de Arquivamento"
 									value={
@@ -792,6 +794,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									okLabel="Confirmar"
 									cancelLabel="Cancelar"
 									style={{ width: "100%" }}
@@ -813,6 +816,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="publicWorker"
 									label="Servidor"
 									value={publicWorkerDetail}
@@ -833,6 +837,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						<Grid item xs={12} sm={12} md={4}>
 							{detail ? (
 								<TextField
+									variant="outlined"
 									fullWidth
 									id="referenceDate"
 									label="Referência (AC4)"
@@ -848,6 +853,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								/>
 							) : (
 								<KeyboardDatePicker
+									inputVariant="outlined"
 									okLabel="Confirmar"
 									cancelLabel="Cancelar"
 									style={{ width: "100%" }}
@@ -868,17 +874,23 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="status"
 									label="Status"
 									value={status}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={statusHelperText !== ""}>
+								<FormControl
+									fullWidth
+									variant="outlined"
+									error={statusHelperText !== ""}
+								>
 									<InputLabel id="select-status-label">Status*</InputLabel>
 									<Select
 										style={{ textAlign: "left" }}
 										labelId="select-status-label"
+										label="Status*"
 										id="select-status"
 										value={status}
 										onChange={handleStatusChange}
@@ -906,19 +918,21 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									{detail ? (
 										<TextField
 											fullWidth
+											variant="outlined"
 											id="unarchiveDestinationUnit"
 											label="Unid. Destino do Desarquivamento"
 											value={unarchiveDestinationUnitDetail}
 											inputProps={{ readOnly: true }}
 										/>
 									) : (
-										<FormControl fullWidth>
+										<FormControl fullWidth variant="outlined">
 											<InputLabel id="select-unarchiveDestinationUnit-label">
 												Unid. Destino do Desarquivamento
 											</InputLabel>
 											<Select
 												style={{ textAlign: "left" }}
 												labelId="select-unarchiveDestinationUnit-label"
+												label="Unid. Destino do Desarquivamento"
 												id="select-unarchiveDestinationUnit"
 												value={unarchiveDestinationUnit}
 												onChange={handleUnarchiveDestinationUnit}
@@ -944,6 +958,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								<Grid item xs={12} sm={12} md={6}>
 									<TextField
 										fullWidth
+										variant="outlined"
 										id="unarchiveProcessNumber"
 										label="Nº do Processo do Desarquivamento"
 										value={unarchiveProcessNumber}
@@ -956,6 +971,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									{detail ? (
 										<TextField
 											fullWidth
+											variant="outlined"
 											id="unarchiveDate"
 											label="Data de Desarquivamento"
 											value={
@@ -973,6 +989,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 										/>
 									) : (
 										<KeyboardDatePicker
+											inputVariant="outlined"
 											okLabel="Confirmar"
 											cancelLabel="Cancelar"
 											style={{ width: "100%" }}
@@ -993,6 +1010,71 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						) : (
 							""
 						)}
+            
+            <Grid item xs={12} sm={12} md={12}>
+							<Typography className={classes.sectionTitle}>
+								Caixa de Arquivamento:
+							</Typography>
+						</Grid>
+
+						<Grid className={classes.boxAB} item xs={12} sm={12} md={4}>
+							{detail ? (
+								<TextField
+									fullWidth
+									variant="outlined"
+									label="Sigla da Caixa"
+									value={boxAbbreviationDetail}
+								/>
+							) : (
+								<AutoComplete
+									value={boxAbbreviation}
+									handleValueChange={(event, newValue) => {
+										setBoxAbbreviationHelperText("");
+										setBoxAbbreviation(newValue);
+									}}
+									options={boxAbbreviations}
+									optionsLabel={(option) => `${option.abbreviation}`}
+									propertyCheck="abbreviation"
+									sortProperty="abbreviation"
+									label="Sigla da Caixa*"
+									helperText={boxAbbreviationHelperText}
+								/>
+							)}
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							<TextField
+								fullWidth
+								variant="outlined"
+								label="Número da Caixa*"
+								value={boxNumber}
+								onChange={(event) => {
+									setBoxNumber(event.target.value);
+									setBoxNumberHelperText("");
+								}}
+								type="number"
+								error={boxNumberHelperText !== ""}
+								helperText={boxNumberHelperText}
+								inputProps={{ readOnly: detail }}
+							/>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={4}>
+							<TextField
+								fullWidth
+								variant="outlined"
+								label="Ano da Caixa*"
+								value={boxYear}
+								onChange={(event) => {
+									setBoxYear(event.target.value);
+									setBoxYearHelperText("");
+								}}
+								type="number"
+								error={boxYearHelperText !== ""}
+								helperText={boxYearHelperText}
+								inputProps={{ readOnly: detail }}
+							/>
+						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
 							<Typography className={classes.sectionTitle}>
@@ -1004,35 +1086,24 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="shelf"
 									label="Estante"
 									value={shelfDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={shelfHelperText !== ""}>
-									<InputLabel id="select-shelf-label">Estante*</InputLabel>
-									<Select
-										labelId="select-shelf-label"
-										id="select-shelf"
-										value={shelf}
-										onChange={handleShelfChange}
-										renderValue={(value) => `${value.number}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{shelfs.map((shelfOption) => (
-											<MenuItem key={shelfOption.id} value={shelfOption}>
-												{shelfOption.number}
-											</MenuItem>
-										))}
-									</Select>
-									{shelfHelperText && (
-										<FormHelperText>{shelfHelperText}</FormHelperText>
-									)}
-								</FormControl>
+                
+								<AutoComplete
+									value={shelf}
+									handleValueChange={handleShelfChange}
+									options={shelfs}
+									optionsLabel={(option) => `${option.number}`}
+									propertyCheck="number"
+									sortProperty="number"
+									label="Estante*"
+									helperText={shelfHelperText}
+								/>
 							)}
 						</Grid>
 
@@ -1040,36 +1111,23 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="rack"
 									label="Prateleira"
 									value={rackDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={rackHelperText !== ""}>
-									<InputLabel id="select-rack-label">Prateleira*</InputLabel>
-
-									<Select
-										labelId="select-rack-label"
-										id="select-rack"
-										value={rack}
-										onChange={handleRackChange}
-										renderValue={(value) => `${value.number}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{racks.map((rackOption) => (
-											<MenuItem key={rackOption.id} value={rackOption}>
-												{rackOption.number}
-											</MenuItem>
-										))}
-									</Select>
-									{rackHelperText && (
-										<FormHelperText>{rackHelperText}</FormHelperText>
-									)}
-								</FormControl>
+								<AutoComplete
+									value={rack}
+									handleValueChange={handleRackChange}
+									options={racks}
+									optionsLabel={(option) => `${option.number}`}
+									propertyCheck="number"
+									sortProperty="number"
+									label="Prateleira*"
+									helperText={rackHelperText}
+								/>
 							)}
 						</Grid>
 
@@ -1077,123 +1135,24 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							{detail ? (
 								<TextField
 									fullWidth
+									variant="outlined"
 									id="file-location"
 									label="Localidade"
 									value={fileLocationDetail}
 									inputProps={{ readOnly: true }}
 								/>
 							) : (
-								<FormControl fullWidth error={fileLocationHelperText !== ""}>
-									<InputLabel id="select-file_location-label">
-										Localidade*
-									</InputLabel>
-
-									<Select
-										labelId="select-file_location-label"
-										id="select-file_location"
-										value={fileLocation}
-										onChange={handleFileLocationChange}
-										renderValue={(value) => `${value.file}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{fileLocations.map((fileLocationOption) => (
-											<MenuItem
-												key={fileLocationOption.id}
-												value={fileLocationOption}
-											>
-												{fileLocationOption.file}
-											</MenuItem>
-										))}
-									</Select>
-									{fileLocationHelperText && (
-										<FormHelperText>{fileLocationHelperText}</FormHelperText>
-									)}
-								</FormControl>
-							)}
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={12}>
-							<Typography className={classes.sectionTitle}>
-								Caixa de Arquivamento:
-							</Typography>
-						</Grid>
-
-						<Grid className={classes.boxAB} item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									label="Sigla da Caixa"
-									value={boxAbbreviationDetail}
+								<AutoComplete
+									value={fileLocation}
+									handleValueChange={handleFileLocationChange}
+									options={fileLocations}
+									optionsLabel={(option) => `${option.file}`}
+									propertyCheck="file"
+									sortProperty="file"
+									label="Localidade*"
+									helperText={fileLocationHelperText}
 								/>
-							) : (
-								<FormControl fullWidth error={boxAbbreviationHelperText !== ""}>
-									<InputLabel id="select-box_abbreviation-label">
-										Sigla da Caixa*
-									</InputLabel>
-									<Select
-										labelId="select-box_abbreviation-label"
-										id="select-box_abbreviation"
-										value={boxAbbreviation}
-										onChange={(event) => {
-											setBoxAbbreviation(event.target.value);
-											setBoxAbbreviationHelperText("");
-										}}
-										renderValue={(value) => `${value.abbreviation}`}
-									>
-										<MenuItem key={0} value="">
-											<em>Nenhum</em>
-										</MenuItem>
-
-										{boxAbbreviations.map((boxAbbreviationOption) => (
-											<MenuItem
-												key={boxAbbreviationOption.id}
-												value={boxAbbreviationOption}
-											>
-												{boxAbbreviationOption.abbreviation}
-											</MenuItem>
-										))}
-									</Select>
-
-									{boxAbbreviationHelperText !== "" && (
-										<FormHelperText>{boxAbbreviationHelperText}</FormHelperText>
-									)}
-								</FormControl>
 							)}
-						</Grid>
-						
-						<Grid item xs={12} sm={12} md={4}>
-							<TextField 
-								fullWidth
-								label="Número da Caixa*"
-								value={boxNumber}
-								onChange={(event) => {
-									setBoxNumber(event.target.value)
-									setBoxNumberHelperText("");
-								}}
-								type="number"
-								error={boxNumberHelperText !== ""}
-								helperText={boxNumberHelperText}
-								inputProps={{readOnly: detail}}
-							/>
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={4}>
-							<TextField
-								fullWidth
-								label="Ano da Caixa*"
-								value={boxYear}
-								onChange={(event) => {
-									setBoxYear(event.target.value);
-									setBoxYearHelperText("");
-								}}
-								type="number"
-								error={boxYearHelperText !== ""}
-								helperText={boxYearHelperText}
-								inputProps={{readOnly: detail}}
-							/>
 						</Grid>
 
 						<NotesInput
@@ -1208,6 +1167,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 					isDetailPage={detail}
 					loading={loading}
 					onSubmit={onSubmit}
+					clearFunc={clear}
 				/>
 
 				<PopUpAlert
@@ -1218,12 +1178,14 @@ const CreateAdministrativeProcess = ({ detail }) => {
 				/>
 			</CardContainer>
 
+			{!detail ? (
 			<div style={{ marginBottom: "100px" }}>
 				<DataTable
 					title="Processo Administrativo"
 					url="administrative-process/"
 				/>
 			</div>
+			) : ("")}
 		</>
 	);
 };

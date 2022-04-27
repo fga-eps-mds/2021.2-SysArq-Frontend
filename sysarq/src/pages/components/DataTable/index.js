@@ -30,6 +30,7 @@ import { axiosProfile, axiosArchives } from "../../../Api";
 import { axiosProfileError } from "../../../support";
 
 import PopUpAlert from "../PopUpAlert";
+import WarningIcon from "../WarningIcon";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -138,6 +139,34 @@ const DataTable = ({ url, title }) => {
 		);
 	};
 
+	const calcTemporalityDate = (year, date) => {
+		let d = date.slice();
+		const datePropertyYear = date.slice(0, 4);
+		d = d.replace(datePropertyYear, year.toString());
+		return new Date(d);
+	};
+
+	const handleTemporalityStatus = (data) => {
+		const datePropertyOptions = {
+			"administrative-process/": "archiving_date",
+			"frequency-sheet/": "reference_period",
+			"frequency-relation/": "received_date",
+		};
+
+		const dateProperty = datePropertyOptions[url];
+		const today = new Date();
+
+		return data.map((item) => {
+			const document = { ...item };
+			const temporalityDate = calcTemporalityDate(
+				document.temporality_date,
+				document[dateProperty]
+			);
+			document.info = temporalityDate <= today ? "temporality hit" : "";
+			return document;
+		});
+	};
+
 	useEffect(() => {
 		if (updateTable) {
 			setHeadCells(tableHeadCells(url));
@@ -186,7 +215,22 @@ const DataTable = ({ url, title }) => {
 
 								setRows(listTable);
 							} else {
-								setRows(response.data);
+								let data = [...response.data];
+								switch (url) {
+									case "administrative-process/":
+									case "frequency-sheet/":
+									case "frequency-relation/":
+										data = handleTemporalityStatus(data);
+										break;
+									default:
+										break;
+								}
+								// data =  data.map((item, index) => {
+								// 	const newItem = { ...item }
+								// 	newItem.info = index % 3 === 0 ? "temporality hit" : ""
+								// 	return newItem;
+								// })
+								setRows(data);
 							}
 
 							setUpdateTable(false);
@@ -218,6 +262,16 @@ const DataTable = ({ url, title }) => {
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
 	};
+
+	const getDocumentDate = (row) => {
+		if (row.archiving_date) {
+			return row.archiving_date;
+		}
+		if (row.received_date) {
+			return row.received_date;
+		}
+		return row.reference_period;
+	}
 
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -275,10 +329,10 @@ const DataTable = ({ url, title }) => {
 			"07": "jul",
 			"08": "ago",
 			"09": "set",
-			"10": "out",
-			"11": "nov",
-			"12": "dez"
-		}
+			10: "out",
+			11: "nov",
+			12: "dez",
+		};
 
 		if (id === "cpf") {
 			return maskBr.cpf(row[id]);
@@ -297,17 +351,35 @@ const DataTable = ({ url, title }) => {
 			return "Não";
 		}
 
-		if (id === "notice_date" || id === "received_date") {
-			const day = row[id].substring(8,10);
-			const month = row[id].substring(5,7);
-			const year = row[id].substring(0,4);
+		if (id === "notice_date" || id === "received_date" || id === "document_date") {
+			const date = id === "document_date" ? getDocumentDate(row) : row[id];
+			const day = date.substring(8,10);
+			const month = date.substring(5,7);
+			const year = date.substring(0,4);
 			return `${day}/${month}/${year}`;
 		}
 
 		if (id === "reference_period") {
-			const month = row[id].substring(5,7);
-			const year = row[id].substring(0,4);
+			const month = row[id].substring(5, 7);
+			const year = row[id].substring(0, 4);
 			return `${monthMap[month]}/${year}`;
+		}
+
+		if (id === "temporality_date") {
+			let date = getDocumentDate(row);
+			date = `${row[id]}${date.substring(4)}`;
+			const day = date.substring(8,10);
+			const month = date.substring(5,7);
+			const year = date.substring(0,4);
+			return `${day}/${month}/${year}`;
+		}
+
+		if (id === "temporality_year") {
+			const date = getDocumentDate(row)
+			let temporality = parseInt(row.temporality_date, 10);
+			const year = parseInt(date.substring(0,4), 10);
+			temporality -= year;
+			return temporality;
 		}
 
 		if (id === "temporality_date" || id === "document_type_name") {
@@ -320,6 +392,12 @@ const DataTable = ({ url, title }) => {
 				}
 			}
 			return obj;
+		}
+		if (id === "info") {
+			if (row[id].indexOf("temporality hit") > -1) {
+				return <WarningIcon text="O documento atingiu sua temporalidade" />;
+			}
+			return " ";
 		}
 
 		if (typeof row[id] === "undefined" || row[id] === null || row[id] === "")
@@ -366,13 +444,13 @@ const DataTable = ({ url, title }) => {
 												onClick={createSortHandler(headCell.id)}
 											>
 												{headCell.label}
-												{orderBy === headCell.id ? (
+												{orderBy === headCell.id && (
 													<span className={classes.visuallyHidden}>
 														{order === "desc"
 															? "sorted descending"
 															: "sorted ascending"}
 													</span>
-												) : null}
+												)}
 											</TableSortLabel>
 										</TableCell>
 
@@ -398,11 +476,15 @@ const DataTable = ({ url, title }) => {
 											fieldUrls.indexOf(url) !== -1
 												? null
 												: () => {
-														window.open(`/documents/${
-															row.docName === undefined
-																? url
-																: `${row.docName}/`
-														}view/${row.id}`, "_blank", "popup");
+														window.open(
+															`/documents/${
+																row.docName === undefined
+																	? url
+																	: `${row.docName}/`
+															}view/${row.id}`,
+															"_blank",
+															"popup"
+														);
 												  }
 										}
 									>
@@ -417,22 +499,20 @@ const DataTable = ({ url, title }) => {
 													</TableCell>
 
 													{headCellIndex === headCells.length - 1 &&
-													fieldUrls.indexOf(url) !== -1 ? (
-														<TableCell align="right">
-															<IconButton
-																style={{ color: "#fe0000" }}
-																color="inherit"
-																size="small"
-															>
-																<DeleteIcon
-																	data-testid="delete-field"
-																	onClick={() => deleteRow(row)}
-																/>
-															</IconButton>
-														</TableCell>
-													) : (
-														""
-													)}
+														fieldUrls.indexOf(url) !== -1 && (
+															<TableCell align="right">
+																<IconButton
+																	style={{ color: "#fe0000" }}
+																	color="inherit"
+																	size="small"
+																>
+																	<DeleteIcon
+																		data-testid="delete-field"
+																		onClick={() => deleteRow(row)}
+																	/>
+																</IconButton>
+															</TableCell>
+														)}
 												</>
 											)
 										)}
@@ -460,9 +540,18 @@ const DataTable = ({ url, title }) => {
 					<Typography style={{ marginBottom: "1%" }}>
 						<Link
 							className={classes.link}
-							href={url === "shelf/" || "/fields/rack" || "/fields/shelf" || "/fields/file-location"}
+							href={
+								url === "shelf/" ||
+								"/fields/rack" ||
+								"/fields/shelf" ||
+								"/fields/file-location"
+							}
 						>
-							Ver {url === "shelf/" || "Prateleiras" || "Estantes" || "Localidades dos Arquivos"}
+							Ver{" "}
+							{url === "shelf/" ||
+								"Prateleiras" ||
+								"Estantes" ||
+								"Localidades dos Arquivos"}
 						</Link>
 					</Typography>
 				) : (

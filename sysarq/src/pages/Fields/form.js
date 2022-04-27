@@ -3,6 +3,8 @@ import { Paper, TextField, Grid, Container } from "@material-ui/core";
 import InputMask from "react-input-mask";
 import PopUpAlert from "../components/PopUpAlert";
 import DataTable from "../components/DataTable";
+import FieldsCreate from "../components/Actions/FieldsCreate";
+import AutoComplete from "../components/AutoComplete";
 
 export default function createForm(
 	fields,
@@ -15,7 +17,8 @@ export default function createForm(
 	severityAlert,
 	alertHelperText,
 	listaTitle,
-	listaUrl
+	listaUrl,
+	clear
 ) {
 	return (
 		<>
@@ -46,8 +49,28 @@ export default function createForm(
 													helperText={item.helperText}
 													error={item.error}
 												>
-													<TextField />
+													<TextField variant="outlined" />
 												</InputMask>
+											</Grid>
+										);
+										return input;
+									}
+									if (item.options) {
+										const input = (
+											<Grid item xs={12} sm={12} md={12} key={key.toString()}>
+												<AutoComplete
+													value={item.value}
+													handleValueChange={(event, newValue) =>
+														item.setValue(newValue)
+													}
+													options={item.options}
+													optionsLabel={(option) => `${option}`}
+													label={item.placeholder}
+													helperText={item.helperText}
+													type={item.type}
+													freeField
+													className={classes.input}
+												/>
 											</Grid>
 										);
 										return input;
@@ -55,6 +78,7 @@ export default function createForm(
 									const input = (
 										<Grid item xs={12} sm={12} md={12} key={key.toString()}>
 											<TextField
+												variant="outlined"
 												id={item.placeholder}
 												label={item.placeholder}
 												type={item.type}
@@ -76,9 +100,7 @@ export default function createForm(
 							</Grid>
 						</Container>
 					</div>
-					<button data-testid="click" type="button" onClick={onClick}>
-						CADASTRAR
-					</button>
+					<FieldsCreate onSubmit={onClick} clearFunc={clear} />
 				</Paper>
 				<PopUpAlert
 					open={openAlert}

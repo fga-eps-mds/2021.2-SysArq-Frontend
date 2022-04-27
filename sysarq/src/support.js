@@ -14,24 +14,22 @@ export const initialPeriod = new Date(
 const formatDateNumber = (number) => `0${number}`.slice(-2);
 
 export const arrayMes = [
-    "jan",
-    "fev",
-    "mar",
-    "abr",
-    "mai",
-    "jun",
-    "jul",
-    "ago",
-    "set",
-    "out",
-    "nov",
-    "dez",
-]
+	"jan",
+	"fev",
+	"mar",
+	"abr",
+	"mai",
+	"jun",
+	"jul",
+	"ago",
+	"set",
+	"out",
+	"nov",
+	"dez",
+];
 
 export const formatDateName = (date) =>
-	`${date.getFullYear()}-${
-		arrayMes[date.getMonth()]
-	}`;
+	`${date.getFullYear()}-${arrayMes[date.getMonth()]}`;
 
 export const formatDate = (date) =>
 	`${date.getFullYear()}-${formatDateNumber(
@@ -79,6 +77,13 @@ export function axiosProfileError(error, connectionError = null) {
 	}
 }
 
+export function getUniqueFieldValues(data, property, setFieldOptions) {
+	const arr = data.map((item) => item[property]);
+	setFieldOptions(
+		arr.filter((item, index, array) => array.indexOf(item) === index)
+	);
+}
+
 export function getUnits(setUnits, connectionError) {
 	axiosProfile
 		.post(`api/token/refresh/`, {
@@ -121,6 +126,7 @@ export function autocompl(
 ) {
 	return (
 		<Autocomplete
+			variant="outlined"
 			id="workerName"
 			data-testid="autocomplete"
 			value={publicWorkers.name}
@@ -142,6 +148,7 @@ export function autocompl(
 				<TextField
 					// eslint-disable-next-line
 					{...params}
+					variant="outlined"
 					value={params.value}
 					label="Servidor, CPF*"
 					error={publicWorkerHelperText !== ""}
@@ -174,6 +181,7 @@ export function senderWorker(
 ) {
 	return (
 		<Autocomplete
+			variant="oulined"
 			id="workerName"
 			data-testid="autocomplete"
 			value={senderPublicWorkers.name}
@@ -195,6 +203,7 @@ export function senderWorker(
 				<TextField
 					// eslint-disable-next-line
 					{...params}
+					variant="outlined"
 					value={params.value}
 					label="Servidor que encaminhou*"
 					error={senderPublicWorkerHelperText !== ""}
@@ -215,6 +224,7 @@ export function receiverWorker(
 ) {
 	return (
 		<Autocomplete
+			variant="outlined"
 			id="workerName"
 			data-testid="autocomplete"
 			value={receiverPublicWorkers.name}
@@ -236,6 +246,7 @@ export function receiverWorker(
 				<TextField
 					// eslint-disable-next-line
 					{...params}
+					variant="outlined"
 					value={params.value}
 					label="Servidor que recebeu*"
 					error={receiverPublicWorkerHelperText !== ""}

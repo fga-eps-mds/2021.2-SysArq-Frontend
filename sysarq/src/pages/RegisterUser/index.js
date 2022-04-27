@@ -150,7 +150,9 @@ const RegisterUser = () => {
 		if (status === 400) {
 			setAlertHelperText("O nome de usuário ou CPF já está em uso");
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página.");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página."
+			);
 		}
 	};
 
@@ -224,15 +226,18 @@ const RegisterUser = () => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				axiosProfile
-					.post(`users/register/`, {
-						username,
-						user_type: userType,
-						first_name: firstName,
-						last_name: lastName,
-						cpf,
-						password,
-					},
-					{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } })
+					.post(
+						`users/register/`,
+						{
+							username,
+							user_type: userType,
+							first_name: firstName,
+							last_name: lastName,
+							cpf,
+							password,
+						},
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+					)
 					.then(() => {
 						onSuccess();
 						return true;
@@ -243,7 +248,7 @@ const RegisterUser = () => {
 					});
 			})
 			.catch((error) => {
-				axiosProfileError(error)
+				axiosProfileError(error);
 			});
 
 		return "Sucesso";
@@ -255,6 +260,7 @@ const RegisterUser = () => {
 				<Typography className={classes.title}>Registrar usuário</Typography>
 
 				<TextField
+					variant="outlined"
 					className={classes.input}
 					margin="normal"
 					id="username"
@@ -266,6 +272,7 @@ const RegisterUser = () => {
 				/>
 
 				<FormControl
+					variant="outlined"
 					fullwidth
 					error={userTypeError}
 					className={classes.input}
@@ -273,6 +280,7 @@ const RegisterUser = () => {
 				>
 					<InputLabel id="user-type-label">Tipo de usuário</InputLabel>
 					<Select
+						label="Tipo de usuário"
 						labelId="user-type-label"
 						id="user-type"
 						value={userType}
@@ -288,6 +296,7 @@ const RegisterUser = () => {
 				</FormControl>
 
 				<TextField
+					variant="outlined"
 					className={classes.input}
 					margin="normal"
 					id="firstName"
@@ -298,6 +307,7 @@ const RegisterUser = () => {
 					helperText={firstNameHelperText}
 				/>
 				<TextField
+					variant="outlined"
 					className={classes.input}
 					margin="normal"
 					id="lastName"
@@ -314,6 +324,7 @@ const RegisterUser = () => {
 					alwaysShowMask
 				>
 					<TextField
+						variant="outlined"
 						className={classes.input}
 						margin="normal"
 						id="cpf"
@@ -324,6 +335,7 @@ const RegisterUser = () => {
 					/>
 				</InputMask>
 				<TextField
+					variant="outlined"
 					className={classes.input}
 					margin="normal"
 					id="password"
@@ -349,6 +361,7 @@ const RegisterUser = () => {
 					}}
 				/>
 				<TextField
+					variant="outlined"
 					className={classes.input}
 					margin="normal"
 					id="passwordConfirmation"

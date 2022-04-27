@@ -18,7 +18,11 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import TimelapseIcon from "@material-ui/icons/Timelapse";
 import CancelIcon from "@material-ui/icons/Cancel";
 
-import { initialPeriod, isDateNotValid, formatDateName } from "../../../support";
+import {
+	initialPeriod,
+	isDateNotValid,
+	formatDateName,
+} from "../../../support";
 
 import SpecialLabels from "../SpecialLabels";
 
@@ -125,6 +129,7 @@ const ReferencePeriodInput = ({
 				<DialogTitle id="newPeriod-dialog-title">Novo</DialogTitle>
 				<DialogContent>
 					<KeyboardDatePicker
+						inputVariant="outlined"
 						style={{ width: "100%" }}
 						id="period-date-picker-dialog"
 						label="Período"
