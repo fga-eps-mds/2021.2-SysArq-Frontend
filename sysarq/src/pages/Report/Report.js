@@ -15,12 +15,15 @@ import {
 	FormHelperText,
 	Grid,
 	Checkbox,
-	FormControlLabel
+	FormControlLabel,
 } from "@material-ui/core";
 
-import DateFnsUtils from '@date-io/date-fns';
+import DateFnsUtils from "@date-io/date-fns";
 
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import {
+	KeyboardDatePicker,
+	MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 
 import { useHistory } from "react-router-dom";
 
@@ -143,14 +146,15 @@ const Report = () => {
 		handleChange(setStatusHelperText, setStatusError, setStatus, event);
 
 	const [referencePeriod, setReferencePeriod] = useState([]);
-	const [referencePeriodHelperText, setReferencePeriodHelperText] = useState("");
+	const [referencePeriodHelperText, setReferencePeriodHelperText] =
+		useState("");
 
 	const [documentNames, setDocumentNames] = useState([]);
 	const [documentName, setDocumentName] = useState("");
 	const [documentNameHelperText, setDocumentNameHelperText] = useState("");
 	const handleDocumentNameChange = (name) => {
 		setDocumentName(name);
-		setDocumentNameHelperText("")
+		setDocumentNameHelperText("");
 	};
 
 	const [openAlert, setOpenAlert] = useState(false);
@@ -173,7 +177,9 @@ const Report = () => {
 	const handleRequestError = () => {
 		setOpenAlert(true);
 		setSeverityAlert("error");
-		setAlertHelperText("Verifique sua conexão com a internet e recarregue a página.");
+		setAlertHelperText(
+			"Verifique sua conexão com a internet e recarregue a página."
+		);
 	};
 
 	const publicWorkerOptions = publicWorkers.map((option) => {
@@ -183,7 +189,6 @@ const Report = () => {
 			...option,
 		};
 	});
-
 
 	const clear = () => {
 		setPublicWorkerHelperText("");
@@ -200,17 +205,22 @@ const Report = () => {
 		setReferencePeriodHelperText("");
 		setDocumentName("");
 		setDocumentNameHelperText("");
-	}
+	};
 
 	const handleReportTypeChange = (event) => {
 		clear();
-		handleChange(setReportTypeHelperText, setReportTypeError, setReportType, event);
-	}
+		handleChange(
+			setReportTypeHelperText,
+			setReportTypeError,
+			setReportType,
+			event
+		);
+	};
 
 	const onClick = () => {
-		localStorage.setItem("url","report/");
-		return history.push('/report/result');
-	}
+		localStorage.setItem("url", "report/");
+		return history.push("/report/result");
+	};
 
 	useEffect(() => {
 		axiosProfile
@@ -270,9 +280,15 @@ const Report = () => {
 						<MenuItem value="Unidades">Unidades cadastradas</MenuItem>
 						<MenuItem value="Assuntos">Assuntos cadastradas</MenuItem>
 						<MenuItem value="Caixas">Caixas cadastradas</MenuItem>
-						<MenuItem value="Processos Administrativos">Processos Administrativos</MenuItem>
-						<MenuItem value="Relações de Frequências">Relações de Frequências</MenuItem>
-						<MenuItem value="Folha de Frequências">Folha de Frequências</MenuItem>
+						<MenuItem value="Processos Administrativos">
+							Processos Administrativos
+						</MenuItem>
+						<MenuItem value="Relações de Frequências">
+							Relações de Frequências
+						</MenuItem>
+						<MenuItem value="Folha de Frequências">
+							Folha de Frequências
+						</MenuItem>
 						<MenuItem value="Status">Status</MenuItem>
 					</Select>
 					{reportTypeHelperText && (
@@ -296,18 +312,27 @@ const Report = () => {
 							<MenuItem value="AD">Arquivado</MenuItem>
 							<MenuItem value="AL">Desarquivado</MenuItem>
 							<MenuItem value="VI">Eliminado</MenuItem>
-
 						</Select>
 						{statusHelperText && (
 							<FormHelperText>Defina o o status dos documentos</FormHelperText>
 						)}
 					</FormControl>
-				) : ("")}
-				{reportType === "Processos Administrativos" || reportType === "Relações de Frequências" ? (
-					<Grid container style={{ display: "flex", justifyContent: "center", marginTop: "-5px", marginBottom: "15px" }}>
+				) : (
+					""
+				)}
+				{reportType === "Processos Administrativos" ||
+				reportType === "Relações de Frequências" ? (
+					<Grid
+						container
+						style={{
+							display: "flex",
+							justifyContent: "center",
+							marginTop: "-5px",
+							marginBottom: "15px",
+						}}
+					>
 						<Grid item xs={12} sm={6}>
 							<SenderUnitInput
-
 								isDetailPage={false}
 								senderUnitDetail={null}
 								setHelperText={setSenderUnitHelperText}
@@ -315,24 +340,22 @@ const Report = () => {
 								senderUnit={senderUnit}
 								units={units}
 								senderUnitHelperText={senderUnitHelperText}
-
 							/>
 						</Grid>
 					</Grid>
-
-				) : ("")}
+				) : (
+					""
+				)}
 				{reportType === "Processos Administrativos" ? (
 					<>
 						<div style={{ marginRight: "284px", fontWeight: "bold" }}>
 							<Typography className={classes.sectionTitle}>
 								Data de Arquivamento:
 							</Typography>
-							
 						</div>
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-
-							<Grid container spacing={2} >
-								<Grid item xs={6} sm={4} >
+							<Grid container spacing={2}>
+								<Grid item xs={6} sm={4}>
 									<KeyboardDatePicker
 										okLabel="Confirmar"
 										cancelLabel="Cancelar"
@@ -349,7 +372,9 @@ const Report = () => {
 										helperText={initialDateHelperText}
 									/>
 								</Grid>
-								<div style={{ marginTop: "25px", marginLeft: "144px" }}>até</div>
+								<div style={{ marginTop: "25px", marginLeft: "144px" }}>
+									até
+								</div>
 								<Grid item xs={6} sm={4}>
 									<KeyboardDatePicker
 										okLabel="Confirmar"
@@ -370,7 +395,9 @@ const Report = () => {
 							</Grid>
 						</MuiPickersUtilsProvider>
 					</>
-				) : ("")}
+				) : (
+					""
+				)}
 
 				{reportType === "Relações de Frequências" ? (
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -382,13 +409,17 @@ const Report = () => {
 							isDetailPage={false}
 						/>
 					</MuiPickersUtilsProvider>
-				) : ("")}
+				) : (
+					""
+				)}
 
 				{reportType === "Temporalidade" ? (
 					<>
 						<FormControl fullWidth error={documentNameHelperText !== ""}>
-
-							<InputLabel id="select-document_name-label" style={{ marginLeft: "25%" }}>
+							<InputLabel
+								id="select-document_name-label"
+								style={{ marginLeft: "25%" }}
+							>
 								Nome do Documento
 							</InputLabel>
 							<Select
@@ -452,12 +483,17 @@ const Report = () => {
 								</Grid>
 							</Grid>
 						</MuiPickersUtilsProvider>
-						<FormControlLabel style={{ marginTop: "2%" }} control={<Checkbox {...onlyPermanents} />} label="Mostrar apenas com temporalidade permanente" />
+						<FormControlLabel
+							style={{ marginTop: "2%" }}
+							control={<Checkbox {...onlyPermanents} />}
+							label="Mostrar apenas com temporalidade permanente"
+						/>
 					</>
-				) : ("")}
+				) : (
+					""
+				)}
 				{reportType === "Folha de Frequências" ? (
-
-					<Grid container style={{display: "flex", justifyContent: "center"}}>
+					<Grid container style={{ display: "flex", justifyContent: "center" }}>
 						<Grid item xs={12} sm={6}>
 							{autocompl(
 								publicWorkers,
@@ -465,12 +501,13 @@ const Report = () => {
 								handlePublicWorkerChange,
 								setPublicWorkerInput,
 								publicWorkerOptions,
-								publicWorkerHelperText,
+								publicWorkerHelperText
 							)}
 						</Grid>
 					</Grid>
-
-				) : ("")}
+				) : (
+					""
+				)}
 
 				<button
 					type="button"
@@ -480,7 +517,6 @@ const Report = () => {
 				>
 					GERAR RELATÓRIO
 				</button>
-
 			</Paper>
 
 			<PopUpAlert
@@ -489,9 +525,8 @@ const Report = () => {
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-		</Container >
-
+		</Container>
 	);
-}
+};
 
 export default Report;
