@@ -87,7 +87,7 @@ const Report = () => {
 
 		main(event.target.value);
 	};
-	
+
 	const [reportType, setReportType] = useState("");
 	const [reportTypeError, setReportTypeError] = useState("");
 	const [reportTypeHelperText, setReportTypeHelperText] = useState("");
@@ -112,7 +112,7 @@ const Report = () => {
 	const [units, setUnits] = useState([]);
 	const [senderUnit, setSenderUnit] = useState("");
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
-	
+
 	const [initialDate, setInitialDate] = useState(null);
 	const [initialDateHelperText, setInitialDateHelperText] = useState("");
 	const handleInitialDateChange = (date) => {
@@ -143,7 +143,7 @@ const Report = () => {
 		setDocumentName(name);
 		setDocumentNameHelperText("")
 	};
-		
+
 	const [openAlert, setOpenAlert] = useState(false);
 	const [alertHelperText, setAlertHelperText] = useState("");
 	const [severityAlert, setSeverityAlert] = useState("error");
@@ -174,7 +174,7 @@ const Report = () => {
 			...option,
 		};
 	});
-	
+
 	useEffect(() => {
 		axiosProfile
 			.post(`api/token/refresh/`, {
@@ -183,7 +183,7 @@ const Report = () => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
-			
+
 				axiosArchives
 					.get("document-name/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
@@ -192,18 +192,18 @@ const Report = () => {
 						setDocumentNames(response.data);
 					})
 					.catch(() => handleRequestError());
-				
+
 				axiosArchives
 					.get("unity/", {
 						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 					})
 					.then((response) => setUnits(response.data))
 					.catch(() => connectionError());
-				
+
 				getPublicWorkers(setPublicWorkers, connectionError);
 			})
 			.catch((error) => axiosProfileError(error, connectionError));
-		}, []);
+	}, []);
 
 	const onlyPermanents = false;
 
@@ -267,26 +267,34 @@ const Report = () => {
 					</FormControl>
 				) : ("")}
 				{reportType === "Processos Administrativos" || reportType === "Relações de Frequências" ? (
-					<SenderUnitInput
-						isDetailPage={false}
-						senderUnitDetail={null}
-						setHelperText={setSenderUnitHelperText}
-						set={setSenderUnit}
-						senderUnit={senderUnit}
-						units={units}
-						senderUnitHelperText={senderUnitHelperText}
-					/>
+					<Grid container style={{ display: "flex", justifyContent: "center", marginTop: "-5px", marginBottom: "15px" }}>
+						<Grid item xs={12} sm={6}>
+							<SenderUnitInput
+
+								isDetailPage={false}
+								senderUnitDetail={null}
+								setHelperText={setSenderUnitHelperText}
+								set={setSenderUnit}
+								senderUnit={senderUnit}
+								units={units}
+								senderUnitHelperText={senderUnitHelperText}
+
+							/>
+						</Grid>
+					</Grid>
+
 				) : ("")}
 				{reportType === "Processos Administrativos" ? (
 					<>
-					Data de Arquivamento:
+						<div style={{ marginRight: "284px", fontWeight: "bold" }}>Data de Arquivamento:</div>
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							<Grid container spacing={2}>
-								<Grid item xs={6} sm={4}>
+
+							<Grid container spacing={2} >
+								<Grid item xs={6} sm={4} >
 									<KeyboardDatePicker
 										okLabel="Confirmar"
 										cancelLabel="Cancelar"
-										style={{ width: "100%" }}
+										style={{ width: "69%", marginLeft: "77%" }}
 										id="initial-date-picker-dialog"
 										label=""
 										format="dd/MM/yyyy"
@@ -299,12 +307,12 @@ const Report = () => {
 										helperText={initialDateHelperText}
 									/>
 								</Grid>
-								até
+								<div style={{ marginTop: "25px", marginLeft: "144px" }}>até</div>
 								<Grid item xs={6} sm={4}>
 									<KeyboardDatePicker
 										okLabel="Confirmar"
 										cancelLabel="Cancelar"
-										style={{ width: "100%" }}
+										style={{ width: "69%", marginRight: "73px" }}
 										id="final-date-picker-dialog"
 										label=""
 										format="dd/MM/yyyy"
@@ -325,11 +333,11 @@ const Report = () => {
 				{reportType === "Relações de Frequências" ? (
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<ReferencePeriodInput
-								referencePeriod={referencePeriod}
-								setReferencePeriod={setReferencePeriod}
-								setReferencePeriodHelperText={setReferencePeriodHelperText}
-								referencePeriodHelperText={referencePeriodHelperText}
-								isDetailPage={false}
+							referencePeriod={referencePeriod}
+							setReferencePeriod={setReferencePeriod}
+							setReferencePeriodHelperText={setReferencePeriodHelperText}
+							referencePeriodHelperText={referencePeriodHelperText}
+							isDetailPage={false}
 						/>
 					</MuiPickersUtilsProvider>
 				) : ("")}
@@ -337,11 +345,12 @@ const Report = () => {
 				{reportType === "Temporalidade" ? (
 					<>
 						<FormControl fullWidth error={documentNameHelperText !== ""}>
-							<InputLabel id="select-document_name-label">
+
+							<InputLabel id="select-document_name-label" style={{ marginLeft: "25%" }}>
 								Nome do Documento
 							</InputLabel>
 							<Select
-								style={{ textAlign: "left" }}
+								style={{ textAlign: "center", width: "50%", marginLeft: "25%" }}
 								labelId="select-document-name-label"
 								id="select-document-name"
 								value={documentName}
@@ -369,7 +378,7 @@ const Report = () => {
 									<KeyboardDatePicker
 										okLabel="Confirmar"
 										cancelLabel="Cancelar"
-										style={{ width: "100%" }}
+										style={{ width: "75%", marginLeft: "77%" }}
 										id="initial-date-picker-dialog"
 										label="Data inicial"
 										format="dd/MM/yyyy"
@@ -386,7 +395,7 @@ const Report = () => {
 									<KeyboardDatePicker
 										okLabel="Confirmar"
 										cancelLabel="Cancelar"
-										style={{ width: "100%" }}
+										style={{ width: "75%", marginLeft: "53%" }}
 										id="final-date-picker-dialog"
 										label="Data final"
 										format="dd/MM/yyyy"
@@ -401,36 +410,45 @@ const Report = () => {
 								</Grid>
 							</Grid>
 						</MuiPickersUtilsProvider>
-						<FormControlLabel control={<Checkbox {...onlyPermanents} />} label="Mostrar apenas com temporalidade permanente"/>
+						<FormControlLabel style={{ marginTop: "2%" }} control={<Checkbox {...onlyPermanents} />} label="Mostrar apenas com temporalidade permanente" />
 					</>
 				) : ("")}
 				{reportType === "Folha de Frequências" ? (
-					autocompl(
-						publicWorkers,
-						publicWorkerInput,
-						handlePublicWorkerChange,
-						setPublicWorkerInput,
-						publicWorkerOptions,
-						publicWorkerHelperText
-					)
+
+					<Grid container style={{display: "flex", justifyContent: "center"}}>
+						<Grid item xs={12} sm={6}>
+							{autocompl(
+								publicWorkers,
+								publicWorkerInput,
+								handlePublicWorkerChange,
+								setPublicWorkerInput,
+								publicWorkerOptions,
+								publicWorkerHelperText,
+							)}
+						</Grid>
+					</Grid>
+
 				) : ("")}
 
 				<button
 					type="button"
 					variant="contained"
-					onClick={() => {}}
+					onClick={() => { }}
 					className={classes.button}
 				>
 					GERAR RELATÓRIO
 				</button>
+
 			</Paper>
+
 			<PopUpAlert
 				open={openAlert}
 				handleClose={handleAlertClose}
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-		</Container>
+		</Container >
+
 	);
 }
 
