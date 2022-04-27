@@ -22,6 +22,8 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
+import { useHistory } from "react-router-dom";
+
 import SenderUnitInput from "../components/Inputs/SenderUnitInput";
 
 import ReferencePeriodInput from "../components/Inputs/ReferencePeriodInput";
@@ -58,6 +60,13 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: "column",
 		alignItems: "center",
 	},
+	sectionTitle: {
+		width: "100%",
+		textAlign: "left",
+		color: "#1f3541",
+		fontWeight: "bold",
+		fontFamily: ['"Montserrat"', "sans-serif"],
+	},
 	button: {
 		marginTop: "25px",
 		marginBottom: "25px",
@@ -80,7 +89,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Report = () => {
+	const history = useHistory();
 	const classes = useStyles();
+
 	const handleChange = (helper, error, main, event) => {
 		helper("");
 		error(false);
@@ -91,8 +102,6 @@ const Report = () => {
 	const [reportType, setReportType] = useState("");
 	const [reportTypeError, setReportTypeError] = useState("");
 	const [reportTypeHelperText, setReportTypeHelperText] = useState("");
-	const handleReportTypeChange = (event) =>
-		handleChange(setReportTypeHelperText, setReportTypeError, setReportType, event);
 
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
@@ -174,6 +183,34 @@ const Report = () => {
 			...option,
 		};
 	});
+
+
+	const clear = () => {
+		setPublicWorkerHelperText("");
+		setSenderUnit("");
+		setSenderUnitHelperText("");
+		setInitialDate(null);
+		setInitialDateHelperText("");
+		setFinalDate(null);
+		setFinalDateHelperText("");
+		setStatus("");
+		setStatusError("");
+		setStatusHelperText("");
+		setReferencePeriod([]);
+		setReferencePeriodHelperText("");
+		setDocumentName("");
+		setDocumentNameHelperText("");
+	}
+
+	const handleReportTypeChange = (event) => {
+		clear();
+		handleChange(setReportTypeHelperText, setReportTypeError, setReportType, event);
+	}
+
+	const onClick = () => {
+		localStorage.setItem("url","report/");
+		return history.push('/report/result');
+	}
 
 	useEffect(() => {
 		axiosProfile
@@ -286,7 +323,12 @@ const Report = () => {
 				) : ("")}
 				{reportType === "Processos Administrativos" ? (
 					<>
-						<div style={{ marginRight: "284px", fontWeight: "bold" }}>Data de Arquivamento:</div>
+						<div style={{ marginRight: "284px", fontWeight: "bold" }}>
+							<Typography className={classes.sectionTitle}>
+								Data de Arquivamento:
+							</Typography>
+							
+						</div>
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
 
 							<Grid container spacing={2} >
@@ -433,7 +475,7 @@ const Report = () => {
 				<button
 					type="button"
 					variant="contained"
-					onClick={() => { }}
+					onClick={onClick}
 					className={classes.button}
 				>
 					GERAR RELATÓRIO

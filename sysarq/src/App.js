@@ -39,6 +39,7 @@ import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
 
 import Settings from "./pages/Settings/Settings";
 import Report from "./pages/Report/Report";
+import ReportResult from "./pages/Report/ReportResult";
 import RegisterUser from "./pages/RegisterUser";
 import ManageUsers from "./pages/ManageUsers";
 
@@ -231,6 +232,10 @@ function App() {
 
 					<PrivateRoute exact path="/report" permission="AD">
 						<Report />
+					</PrivateRoute>
+
+					<PrivateRoute exact path="/report/result" permission="AD">
+						<ReportResult />
 					</PrivateRoute>
 
 					<PrivateRoute exact path="/register-user" permission="AD">
