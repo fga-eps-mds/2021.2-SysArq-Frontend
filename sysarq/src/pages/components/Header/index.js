@@ -25,7 +25,7 @@ function Header() {
 			<label htmlFor="bt_menu">&#9776;</label>
 
 			<div className="div-media">
-				<ul>		
+				<ul>
 					<li>
 						<a href="/search">Pesquisar</a>
 					</li>
@@ -44,7 +44,7 @@ function Header() {
 
 					{userType === "AD" && (
 						<li>
-							<a href="/">Relatório</a>
+							<a href="/report">Relatório</a>
 						</li>
 					)}
 
@@ -61,7 +61,7 @@ function Header() {
 				</ul>
 			</div>
 
-			<BottomNavigation showLabels>				
+			<BottomNavigation showLabels>
 				<BottomNavigationAction
 					label="Pesquisar"
 					href="/search"
