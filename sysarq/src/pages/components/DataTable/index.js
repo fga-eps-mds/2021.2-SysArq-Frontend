@@ -330,7 +330,7 @@ const DataTable = ({ url, title }) => {
 			return `${day}/${month}/${year}`;
 		}
 
-		if (id === "temporality") {
+		if (id === "temporality_year") {
 			const date = getDocumentDate(row)
 			let temporality = parseInt(row.temporality_date, 10);
 			const year = parseInt(date.substring(0,4), 10);

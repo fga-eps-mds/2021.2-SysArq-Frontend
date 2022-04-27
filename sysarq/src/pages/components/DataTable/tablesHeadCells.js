@@ -251,7 +251,7 @@ const reportHeadCells = [
 		label: "Nome do Documento",
 	},
 	{
-		id: "temporality",
+		id: "temporality_year",
 		numeric: false,
 		label: "Temporalidade",
 	},
