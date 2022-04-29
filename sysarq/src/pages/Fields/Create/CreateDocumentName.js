@@ -25,7 +25,7 @@ export default function CreateDocumentName() {
 
 	const [documentName, setDocumentName] = useState("");
 	const [temporalityValue, setTemporality] = useState("");
-	const [checked, setChecked] = useState(false)
+	const [checked, setChecked] = useState(false);
 
 	const [documentNameHelperText, setdocumentNameHelperText] = useState("");
 	const [documentNameError, setdocumentNameError] = useState(false);
@@ -40,10 +40,10 @@ export default function CreateDocumentName() {
 		setOpenAlert(false);
 	};
 
-	const HandleCheckedChange = event => {
-		setChecked(event.target.checked)
-		setTemporality("")
-	}
+	const HandleCheckedChange = (event) => {
+		setChecked(event.target.checked);
+		setTemporality("");
+	};
 
 	const connectionError = () => {
 		setOpenAlert(true);
@@ -60,7 +60,9 @@ export default function CreateDocumentName() {
 		if (value === 400) {
 			setAlertHelperText("Nome do documento já existe");
 		} else {
-			setAlertHelperText("Verifique sua conexão com a internet e recarregue a página");
+			setAlertHelperText(
+				"Verifique sua conexão com a internet e recarregue a página"
+			);
 		}
 	};
 
@@ -83,7 +85,7 @@ export default function CreateDocumentName() {
 			settemporalityError(true);
 			settemporalityHelperText("Temporalidade inválida");
 			return "Erro";
-		}	
+		}
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -95,7 +97,7 @@ export default function CreateDocumentName() {
 					.post(
 						`document-name/`,
 						{
-							document_name: documentName,						
+							document_name: documentName,
 							temporality: checked ? 9999 : temporalityValue,
 							isPerma: checked,
 						},
@@ -116,7 +118,7 @@ export default function CreateDocumentName() {
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
 			});
-			
+
 		return null;
 	};
 
@@ -130,7 +132,7 @@ export default function CreateDocumentName() {
 			error: documentNameError,
 			setHelperText: setdocumentNameHelperText,
 			setError: setdocumentNameError,
-		},		
+		},
 		{
 			type: "number",
 			placeholder: "Temporalidade (anos)*",

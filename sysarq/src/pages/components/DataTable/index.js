@@ -88,9 +88,9 @@ function stableSort(array, comparator) {
 function descendingComparator(a, b, orderBy) {
 	return b[orderBy] && a[orderBy]
 		? b[orderBy].toString().localeCompare(a[orderBy].toString(), undefined, {
-				numeric: true,
-				sensitivity: "base",
-		  })
+			numeric: true,
+			sensitivity: "base",
+		})
 		: null;
 }
 
@@ -277,8 +277,8 @@ const DataTable = ({ url, title }) => {
 			"09": "set",
 			"10": "out",
 			"11": "nov",
-			"12": "dez"
-		}
+			"12": "dez",
+		};
 
 		if (id === "cpf") {
 			return maskBr.cpf(row[id]);
@@ -298,25 +298,25 @@ const DataTable = ({ url, title }) => {
 		}
 
 		if (id === "notice_date" || id === "received_date") {
-			const day = row[id].substring(8,10);
-			const month = row[id].substring(5,7);
-			const year = row[id].substring(0,4);
+			const day = row[id].substring(8, 10);
+			const month = row[id].substring(5, 7);
+			const year = row[id].substring(0, 4);
 			return `${day}/${month}/${year}`;
 		}
 
 		if (id === "reference_period") {
-			const month = row[id].substring(5,7);
-			const year = row[id].substring(0,4);
+			const month = row[id].substring(5, 7);
+			const year = row[id].substring(0, 4);
 			return `${monthMap[month]}/${year}`;
 		}
-		
+
 		if (id === "temporality") {
 			if (row[id] === 9999) {
-				  return "Permanente";
+				return "Permanente";
 			}
-	   
-		   return row[id];
-	    }
+
+			return row[id];
+		}
 
 		if (id === "temporality_date" || id === "document_type_name") {
 			if (typeof row[id] === "undefined") return "-";
@@ -385,8 +385,8 @@ const DataTable = ({ url, title }) => {
 										</TableCell>
 
 										{headCells.indexOf(headCell) === headCells.length - 1 &&
-										fieldUrls.indexOf(url) !== -1 ? (
-											<TableCell aling="right">{}</TableCell>
+											fieldUrls.indexOf(url) !== -1 ? (
+											<TableCell aling="right">{ }</TableCell>
 										) : (
 											""
 										)}
@@ -406,12 +406,11 @@ const DataTable = ({ url, title }) => {
 											fieldUrls.indexOf(url) !== -1
 												? null
 												: () => {
-														window.location = `/documents/${
-															row.docName === undefined
-																? url
-																: `${row.docName}/`
+													window.location = `/documents/${row.docName === undefined
+															? url
+															: `${row.docName}/`
 														}view/${row.id}`;
-												  }
+												}
 										}
 									>
 										{Array.from(Array(headCells.length).keys()).map(
@@ -425,7 +424,7 @@ const DataTable = ({ url, title }) => {
 													</TableCell>
 
 													{headCellIndex === headCells.length - 1 &&
-													fieldUrls.indexOf(url) !== -1 ? (
+														fieldUrls.indexOf(url) !== -1 ? (
 														<TableCell align="right">
 															<IconButton
 																style={{ color: "#fe0000" }}
@@ -468,9 +467,18 @@ const DataTable = ({ url, title }) => {
 					<Typography style={{ marginBottom: "1%" }}>
 						<Link
 							className={classes.link}
-							href={url === "shelf/" || "/fields/rack" || "/fields/shelf" || "/fields/file-location"}
+							href={
+								url === "shelf/" ||
+								"/fields/rack" ||
+								"/fields/shelf" ||
+								"/fields/file-location"
+							}
 						>
-							Ver {url === "shelf/" || "Prateleiras" || "Estantes" || "Localidades dos Arquivos"}
+							Ver{" "}
+							{url === "shelf/" ||
+								"Prateleiras" ||
+								"Estantes" ||
+								"Localidades dos Arquivos"}
 						</Link>
 					</Typography>
 				) : (
