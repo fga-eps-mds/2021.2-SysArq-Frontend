@@ -35,7 +35,7 @@ import PopUpAlert from "../components/PopUpAlert";
 
 import { axiosProfile, axiosArchives } from "../../Api";
 
-import { axiosProfileError, getPublicWorkers, autocompl } from "../../support";
+import { axiosProfileError, getPublicWorkers, autocompl, formatDate } from "../../support";
 // import DataTable from "../components/DataTable";
 
 const useStyles = makeStyles((theme) => ({
@@ -122,7 +122,7 @@ const Report = () => {
 	};
 
 	const [units, setUnits] = useState([]);
-	const [senderUnit, setSenderUnit] = useState("");
+	const [senderUnit, setSenderUnit] = useState(null);
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 
 	const [initialDate, setInitialDate] = useState(null);
@@ -152,8 +152,8 @@ const Report = () => {
 	const [documentNames, setDocumentNames] = useState([]);
 	const [documentName, setDocumentName] = useState("");
 	const [documentNameHelperText, setDocumentNameHelperText] = useState("");
-	const handleDocumentNameChange = (name) => {
-		setDocumentName(name);
+	const handleDocumentNameChange = (event) => {
+		setDocumentName(event.target.value);
 		setDocumentNameHelperText("");
 	};
 
@@ -190,9 +190,11 @@ const Report = () => {
 		};
 	});
 
+	const onlyPermanents = false;
+
 	const clear = () => {
 		setPublicWorkerHelperText("");
-		setSenderUnit("");
+		setSenderUnit(null);
 		setSenderUnitHelperText("");
 		setInitialDate(null);
 		setInitialDateHelperText("");
@@ -218,7 +220,97 @@ const Report = () => {
 	};
 
 	const onClick = () => {
-		localStorage.setItem("url", "report/");
+		let url;
+		let char = "?";
+		let docNameParam = "";
+		let initialDateParam = "";
+		let finalDateParam = "";
+		let onlyPermanentsParam = "";
+		let senderUnitParam = "";
+		let publicWorkerParam = "";
+		let referencePeriodParam = "";
+
+		switch (reportType) {
+			case "Temporalidade":
+
+				if (documentName) {
+					docNameParam = `${char}document_name_id=${documentName.id}`
+					char = char === "?" ? "&" : char;
+				}
+
+				if (initialDate) {
+					initialDateParam = `${char}initial_date=${formatDate(initialDate)}`;
+					char = char === "?" ? "&" : char;
+				}
+
+				if (finalDate) {
+					finalDateParam = `${char}final_date=${formatDate(finalDate)}`;
+					char = char === "?" ? "&" : char;
+				}
+
+				if (onlyPermanents) {
+					onlyPermanentsParam = `${char}only_permanents=${onlyPermanents}`;
+				}
+
+				url = `report/${docNameParam}${initialDateParam}${finalDateParam}${onlyPermanentsParam}`;
+				break;
+			case "Assuntos":
+				url = "document-name/"
+				break;
+			case "Servidores":
+				url = "public-worker/";
+				break;
+			case "Unidades":
+				url = "unity/";
+				break;
+			case "Caixas":
+				url = `report/`;
+				break;
+			case "Processos Administrativos":
+				if (senderUnit) {
+					senderUnitParam = `${char}sender_unit=${senderUnit.id}`;
+					char = char === "?" ? "&" : char;
+				}
+
+				if (initialDate) {
+					initialDateParam = `${char}initial_date=${formatDate(initialDate)}`;
+					char = char === "?" ? "&" : char;
+				}
+
+				if (finalDate) {
+					finalDateParam = `${char}final_date=${formatDate(finalDate)}`;
+				}
+
+				url = `administrative-process-report/${senderUnitParam}${initialDateParam}${finalDateParam}`;
+				break;
+			case "Relações de Frequências":
+				if (senderUnit) {
+					senderUnitParam = `${char}sender_unit=${senderUnit.id}`;
+					char = char === "?" ? "&" : char;
+				}
+
+				if (referencePeriod.length) {
+					referencePeriodParam = `${char}reference_period=${referencePeriod}`;
+					console.log(referencePeriod);
+				}
+
+				url = `frequency-relation-report/${senderUnitParam}${referencePeriodParam}`;
+				break;
+			case "Folha de Frequências":
+				if (publicWorker) {
+					publicWorkerParam = `${char}public_worker=${publicWorker.cpf}`;
+				}
+				url = `frequency-sheet-report/${publicWorkerParam}`;
+				break;
+			case "Status":
+				url = `report/`;
+				break;
+			default:
+				url = `report/`;
+
+		}
+		console.log(url);
+		localStorage.setItem("url", url);
 		return history.push("/report/result");
 	};
 
@@ -252,9 +344,8 @@ const Report = () => {
 			.catch((error) => axiosProfileError(error, connectionError));
 	}, []);
 
-	const onlyPermanents = false;
 
-	console.log(publicWorker);
+	// console.log(publicWorker);
 
 	return (
 		<Container maxWidth="md" className={classes.container}>
@@ -278,7 +369,6 @@ const Report = () => {
 						<MenuItem value="Assuntos">Assuntos cadastrados</MenuItem>
 						<MenuItem value="Servidores">Servidores cadastrados</MenuItem>
 						<MenuItem value="Unidades">Unidades cadastradas</MenuItem>
-						<MenuItem value="Assuntos">Assuntos cadastradas</MenuItem>
 						<MenuItem value="Caixas">Caixas cadastradas</MenuItem>
 						<MenuItem value="Processos Administrativos">
 							Processos Administrativos
