@@ -309,6 +309,14 @@ const DataTable = ({ url, title }) => {
 			const year = row[id].substring(0,4);
 			return `${monthMap[month]}/${year}`;
 		}
+		
+		if (id === "temporality") {
+			if (row[id] === 9999) {
+				  return "Permanente";
+			}
+	   
+		   return row[id];
+	    }
 
 		if (id === "temporality_date" || id === "document_type_name") {
 			if (typeof row[id] === "undefined") return "-";
