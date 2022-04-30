@@ -371,6 +371,7 @@ const DataTable = ({ url, title }) => {
 			}
 
 			return row[id];
+		}
 
 		if (id === "temporality_date") {
 			let date = getDocumentDate(row);
