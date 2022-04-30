@@ -229,6 +229,7 @@ const Report = () => {
 		let senderUnitParam = "";
 		let publicWorkerParam = "";
 		let referencePeriodParam = "";
+		let statusParam = "";
 
 		switch (reportType) {
 			case "Temporalidade":
@@ -291,7 +292,6 @@ const Report = () => {
 
 				if (referencePeriod.length) {
 					referencePeriodParam = `${char}reference_period=${referencePeriod}`;
-					console.log(referencePeriod);
 				}
 
 				url = `frequency-relation-report/${senderUnitParam}${referencePeriodParam}`;
@@ -303,13 +303,15 @@ const Report = () => {
 				url = `frequency-sheet-report/${publicWorkerParam}`;
 				break;
 			case "Status":
-				url = `report/`;
+				if (status) {
+					statusParam = `${char}status=${status}`;
+				}
+				url = `status-report/${statusParam}`;
 				break;
 			default:
 				url = `report/`;
 
 		}
-		console.log(url);
 		localStorage.setItem("url", url);
 		return history.push("/report/result");
 	};
@@ -399,9 +401,9 @@ const Report = () => {
 							value={status}
 							onChange={handleStatusChange}
 						>
-							<MenuItem value="AD">Arquivado</MenuItem>
-							<MenuItem value="AL">Desarquivado</MenuItem>
-							<MenuItem value="VI">Eliminado</MenuItem>
+							<MenuItem value="arquivado">Arquivado</MenuItem>
+							<MenuItem value="desarquivado">Desarquivado</MenuItem>
+							<MenuItem value="eliminado">Eliminado</MenuItem>
 						</Select>
 						{statusHelperText && (
 							<FormHelperText>Defina o o status dos documentos</FormHelperText>
