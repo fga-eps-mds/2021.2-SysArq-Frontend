@@ -190,7 +190,10 @@ const Report = () => {
 		};
 	});
 
-	const onlyPermanents = false;
+	const [onlyPermanents, setOnlyPermanents] = useState(false);
+	const handleOnlyPermanentsChange = (event) => {
+		setOnlyPermanents(event.target.checked);
+	};
 
 	const clear = () => {
 		setPublicWorkerHelperText("");
@@ -265,11 +268,14 @@ const Report = () => {
 				url = "unity/";
 				break;
 			case "Caixas":
-				url = `report/`;
+				if (senderUnit) {
+					senderUnitParam = `${char}sender_unity=${senderUnit.id}`;
+				}
+				url = `box-archiving-report/${senderUnitParam}`;
 				break;
 			case "Processos Administrativos":
 				if (senderUnit) {
-					senderUnitParam = `${char}sender_unit=${senderUnit.id}`;
+					senderUnitParam = `${char}sender_unity=${senderUnit.id}`;
 					char = char === "?" ? "&" : char;
 				}
 
@@ -286,7 +292,7 @@ const Report = () => {
 				break;
 			case "Relações de Frequências":
 				if (senderUnit) {
-					senderUnitParam = `${char}sender_unit=${senderUnit.id}`;
+					senderUnitParam = `${char}sender_unity=${senderUnit.id}`;
 					char = char === "?" ? "&" : char;
 				}
 
@@ -413,7 +419,8 @@ const Report = () => {
 					""
 				)}
 				{reportType === "Processos Administrativos" ||
-				reportType === "Relações de Frequências" ? (
+				reportType === "Relações de Frequências" ||
+				reportType === "Caixas" ? (
 					<Grid
 						container
 						style={{
@@ -576,9 +583,13 @@ const Report = () => {
 							</Grid>
 						</MuiPickersUtilsProvider>
 						<FormControlLabel
-							style={{ marginTop: "2%" }}
-							control={<Checkbox {...onlyPermanents} />}
 							label="Mostrar apenas com temporalidade permanente"
+							control={
+								<Checkbox
+									checked={onlyPermanents}
+									onChange={handleOnlyPermanentsChange}
+								/>
+							}
 						/>
 					</>
 				) : (

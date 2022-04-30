@@ -374,6 +374,14 @@ const DataTable = ({ url, title }) => {
 		}
 
 		if (id === "temporality_date") {
+			if (row[id] >= 9999) {
+				return "Permanente";
+			}
+
+			if (!row[id]) {
+				return "Indefinido";
+			}
+
 			let date = getDocumentDate(row);
 			date = `${row[id]}${date.substring(4)}`;
 			const day = date.substring(8,10);
@@ -383,8 +391,14 @@ const DataTable = ({ url, title }) => {
 		}
 
 		if (id === "temporality_year") {
+			if (!row[id]) {
+				return "Indefinida";
+			}
 			const date = getDocumentDate(row)
 			let temporality = parseInt(row.temporality_date, 10);
+			if (temporality >= 9999) {
+				return "Permanente";
+			}
 			const year = parseInt(date.substring(0,4), 10);
 			temporality -= year;
 			return temporality;
