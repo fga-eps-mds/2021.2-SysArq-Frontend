@@ -90,7 +90,6 @@ const unityHeadCells = [
 ];
 
 const headCellsBoxAbbreviation = [
-
 	{
 		id: "name",
 		numeric: false,
@@ -102,7 +101,6 @@ const headCellsBoxAbbreviation = [
 		numeric: false,
 		label: "Sigla",
 	},
-
 ];
 
 const documentNameHeadCells = [
@@ -177,6 +175,11 @@ const administrativeProcessHeadCells = [
 		numeric: false,
 		label: "Nome do Documento",
 	},
+	{
+		id: "info",
+		numeric: false,
+		label: "",
+	},
 ];
 
 const frequencyRelationHeadCells = [
@@ -194,6 +197,11 @@ const frequencyRelationHeadCells = [
 		id: "document_name_name",
 		numeric: false,
 		label: "Nome do Documento",
+	},
+	{
+		id: "info",
+		numeric: false,
+		label: "",
 	},
 ];
 
@@ -218,6 +226,11 @@ const frequencySheetHeadCells = [
 		numeric: false,
 		label: "Período de Frequência",
 	},
+	{
+		id: "info",
+		numeric: false,
+		label: "",
+	},
 ];
 
 const boxArchivingHeadCells = [
@@ -240,6 +253,35 @@ const boxArchivingHeadCells = [
 		id: "document_name_name",
 		numeric: false,
 		label: "Nome do Documento",
+	},
+];
+
+
+const reportHeadCells = [
+	{
+		id: "document_name",
+		numeric: false,
+		label: "Nome do Documento",
+	},
+	{
+		id: "temporality_year",
+		numeric: false,
+		label: "Temporalidade",
+	},
+	{
+		id: "document_date",
+		numeric: false,
+		label: "Data do Documento",
+	},
+	{
+		id: "temporality_date",
+		numeric: false,
+		label: "Prazo de guarda",
+	},
+	{
+		id: "process_number",
+		numeric: false,
+		label: "Número do Processo",
 	},
 ];
 
@@ -269,6 +311,8 @@ const tableHeadCells = (url) => {
 		headCells = boxArchivingHeadCells;
 	} else if (url && url.includes("search")) {
 		headCells = headCellsSearch();
+	} else if(url && url.includes("report/")) {
+		headCells = reportHeadCells;
 	}
 
 	return headCells;

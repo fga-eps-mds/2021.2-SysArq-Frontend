@@ -66,12 +66,16 @@ export default function CreateDocumentName() {
 		}
 	};
 
+	const clear = () => {
+		setDocumentName("");
+		setTemporality("");
+	};
+
 	const onSuccess = () => {
 		setOpenAlert(true);
 		setSeverityAlert("success");
 		setAlertHelperText("Nome do documento cadastrado!");
-		setDocumentName("");
-		setTemporality("");
+		clear();
 		window.location.reload();
 	};
 
@@ -161,6 +165,7 @@ export default function CreateDocumentName() {
 		severityAlert,
 		alertHelperText,
 		"Nome do Documento",
-		"document-name/"
+		"document-name/",
+		clear
 	);
 }

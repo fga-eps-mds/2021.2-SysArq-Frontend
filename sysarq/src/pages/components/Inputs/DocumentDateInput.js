@@ -22,6 +22,7 @@ const DocumentDateInput = ({
 			{isDetailPage ? (
 				<TextField
 					fullWidth
+					variant="outlined"
 					id="documentDate"
 					label="Data do Documento"
 					value={
@@ -36,6 +37,7 @@ const DocumentDateInput = ({
 				/>
 			) : (
 				<KeyboardDatePicker
+					inputVariant="outlined"
 					style={{ width: "100%" }}
 					id="document-date-picker-dialog"
 					label="Data do Documento*"

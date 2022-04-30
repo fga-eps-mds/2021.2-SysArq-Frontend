@@ -18,6 +18,7 @@ const NumberProcessInput = ({
 	return (
 		<TextField
 			fullWidth
+			variant="outlined"
 			id="processNumber"
 			label={isDetailPage ? "Número do Processo" : "Número do Processo*"}
 			value={number}

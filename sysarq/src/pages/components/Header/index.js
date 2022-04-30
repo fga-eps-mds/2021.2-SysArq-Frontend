@@ -17,17 +17,15 @@ function Header() {
 
 	return (
 		<div className="header">
-			<a href="/">
-				<img src={imgFolders} alt="Logo" height="40" width="40" />
-			</a>
+      <img src={imgFolders} alt="Logo" height="40" width="40" />
 
 			<input type="checkbox" id="bt_menu" />
 			<label htmlFor="bt_menu">&#9776;</label>
 
 			<div className="div-media">
-				<ul>		
+				<ul>
 					<li>
-						<a href="/search">Pesquisar</a>
+						<a href="/">Pesquisar</a>
 					</li>
 
 					{(userType === "AD" || userType === "AL") && (
@@ -44,7 +42,7 @@ function Header() {
 
 					{userType === "AD" && (
 						<li>
-							<a href="/">Relatório</a>
+							<a href="/report">Relatório</a>
 						</li>
 					)}
 
@@ -53,6 +51,9 @@ function Header() {
 							<a href="/settings">Configurações</a>
 						</li>
 					)}
+          <li>
+            <a href="/manual">Manual</a>
+          </li>
 					<li>
 						<a onClick={logout} href="/login">
 							Sair
@@ -61,10 +62,10 @@ function Header() {
 				</ul>
 			</div>
 
-			<BottomNavigation showLabels>				
+			<BottomNavigation showLabels>
 				<BottomNavigationAction
 					label="Pesquisar"
-					href="/search"
+					href="/"
 					icon={<StarsIcon />}
 				/>
 				{(userType === "AD" || userType === "AL") && (
@@ -84,7 +85,7 @@ function Header() {
 				{userType === "AD" && (
 					<BottomNavigationAction
 						label="Relatório"
-						href="#"
+						href="/report"
 						icon={<StarsIcon />}
 					/>
 				)}
@@ -95,6 +96,11 @@ function Header() {
 						icon={<StarsIcon />}
 					/>
 				)}
+				<BottomNavigationAction
+					label="Manual"
+					href="/manual"
+					icon={<StarsIcon />}
+				/>
 			</BottomNavigation>
 			<button type="submit" onClick={logout}>
 				Sair

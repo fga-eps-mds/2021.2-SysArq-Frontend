@@ -154,6 +154,7 @@ const DocumentsTypeInput = ({
 					/>
 					<TextField
 						fullWidth
+						variant="outlined"
 						id="month"
 						label="Mês"
 						margin="normal"
@@ -166,6 +167,7 @@ const DocumentsTypeInput = ({
 					/>
 					<TextField
 						fullWidth
+						variant="outlined"
 						id="year"
 						label="Ano*"
 						margin="normal"

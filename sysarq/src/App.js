@@ -38,6 +38,8 @@ import BoxArchiving from "./pages/Documents/List/BoxArchiving";
 import CreateBoxArchiving from "./pages/Documents/Create/CreateBoxArchiving";
 
 import Settings from "./pages/Settings/Settings";
+import Report from "./pages/Report/Report";
+import ReportResult from "./pages/Report/ReportResult";
 import RegisterUser from "./pages/RegisterUser";
 import ManageUsers from "./pages/ManageUsers";
 
@@ -67,10 +69,10 @@ function App() {
 					</Route>
 
 					<PrivateRoute exact path="/">
-						<MainPage />
-					</PrivateRoute>
-					<PrivateRoute exact path="/search">
 						<Search />
+					</PrivateRoute>
+					<PrivateRoute exact path="/manual">
+						<MainPage />
 					</PrivateRoute>
 					<PrivateRoute exact={false} path="/search/list/:field/:content">
 						<SearchList />
@@ -226,6 +228,14 @@ function App() {
 							</PrivateRoute>
 					<PrivateRoute exact path="/settings" permission="AD">
 						<Settings />
+					</PrivateRoute>
+
+					<PrivateRoute exact path="/report" permission="AD">
+						<Report />
+					</PrivateRoute>
+
+					<PrivateRoute exact path="/report/result" permission="AD">
+						<ReportResult />
 					</PrivateRoute>
 
 					<PrivateRoute exact path="/register-user" permission="AD">

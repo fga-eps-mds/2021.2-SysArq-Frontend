@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const UserRow = ({ user, onSuccess, onError }) => {
+const UserRow = ({ user, onSuccess, onError, removeUserFromState }) => {
 	const classes = useStyles();
 	const [state, setState] = useState({
 		username: user.username,
@@ -171,6 +171,7 @@ const UserRow = ({ user, onSuccess, onError }) => {
 						},
 					})
 					.then(() => {
+            removeUserFromState(user);
 						onSuccess();
 					})
 					.catch(() => {
@@ -182,24 +183,6 @@ const UserRow = ({ user, onSuccess, onError }) => {
 	return (
 		<>
 			<TableRow className={classes.root}>
-				<TableCell>
-					<Button
-						size="small"
-						style={{ marginBottom: "5px" }}
-						disabled={user.id === 1}
-						onClick={() => onDelete()}
-					>
-						Excluir
-					</Button>
-					<Button
-						size="small"
-						color="secondary"
-						disabled={invalid}
-						onClick={() => onSave()}
-					>
-						Salvar
-					</Button>
-				</TableCell>
 				<TableCell component="th" scope="root">
 					<TextField
 						value={state.username}
@@ -242,6 +225,24 @@ const UserRow = ({ user, onSuccess, onError }) => {
 						<MenuItem value="VI">Visualizador</MenuItem>
 					</Select>
 				</TableCell>
+				<TableCell>
+					<Button
+						size="small"
+						style={{ marginBottom: "5px" }}
+						disabled={user.id === 1}
+						onClick={() => onDelete()}
+					>
+						Excluir
+					</Button>
+					<Button
+						size="small"
+						color="secondary"
+						disabled={invalid}
+						onClick={() => onSave()}
+					>
+						Salvar
+					</Button>
+				</TableCell>
 			</TableRow>
 		</>
 	);
@@ -258,6 +259,7 @@ UserRow.propTypes = {
 	}).isRequired,
 	onSuccess: PropTypes.func.isRequired,
 	onError: PropTypes.func.isRequired,
+  removeUserFromState: PropTypes.func.isRequired,
 };
 
 const UserTable = ({ users, onSuccess, onError }) => {
@@ -269,6 +271,8 @@ const UserTable = ({ users, onSuccess, onError }) => {
 		userTypeFilter: "",
 	});
 
+	const [filteredUsers, setFilteredUsers] = useState([]);
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 
@@ -278,9 +282,10 @@ const UserTable = ({ users, onSuccess, onError }) => {
 		}));
 	};
 
-	const [filteredUsers, setFilteredUsers] = useState([]);
-
 	useEffect(() => setFilteredUsers([...users]), [users]);
+
+  const removeUserFromState = ({ id }) =>
+    setFilteredUsers(prev => prev.filter(u => u.id !== id))
 
 	useEffect(() => {
 		setFilteredUsers(
@@ -308,7 +313,6 @@ const UserTable = ({ users, onSuccess, onError }) => {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableCell />
 						<TableCell align="center">
 							<div>
 								<TextField
@@ -374,6 +378,7 @@ const UserTable = ({ users, onSuccess, onError }) => {
 								</Select>
 							</div>
 						</TableCell>
+						<TableCell />
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -383,6 +388,7 @@ const UserTable = ({ users, onSuccess, onError }) => {
 							user={u}
 							onSuccess={onSuccess}
 							onError={onError}
+              removeUserFromState={removeUserFromState}
 						/>
 					))}
 				</TableBody>
