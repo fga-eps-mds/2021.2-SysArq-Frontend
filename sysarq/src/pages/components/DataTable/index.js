@@ -89,9 +89,9 @@ function stableSort(array, comparator) {
 function descendingComparator(a, b, orderBy) {
 	return b[orderBy] && a[orderBy]
 		? b[orderBy].toString().localeCompare(a[orderBy].toString(), undefined, {
-				numeric: true,
-				sensitivity: "base",
-		  })
+			numeric: true,
+			sensitivity: "base",
+		})
 		: null;
 }
 
@@ -329,9 +329,9 @@ const DataTable = ({ url, title }) => {
 			"07": "jul",
 			"08": "ago",
 			"09": "set",
-			10: "out",
-			11: "nov",
-			12: "dez",
+			"10": "out",
+			"11": "nov",
+			"12": "dez",
 		};
 
 		if (id === "cpf") {
@@ -353,9 +353,9 @@ const DataTable = ({ url, title }) => {
 
 		if (id === "notice_date" || id === "received_date" || id === "document_date") {
 			const date = id === "document_date" ? getDocumentDate(row) : row[id];
-			const day = date.substring(8,10);
-			const month = date.substring(5,7);
-			const year = date.substring(0,4);
+			const day = date.substring(8, 10);
+			const month = date.substring(5, 7);
+			const year = date.substring(0, 4);
 			return `${day}/${month}/${year}`;
 		}
 
@@ -363,6 +363,14 @@ const DataTable = ({ url, title }) => {
 			const month = row[id].substring(5, 7);
 			const year = row[id].substring(0, 4);
 			return `${monthMap[month]}/${year}`;
+		}
+
+		if (id === "temporality") {
+			if (row[id] === 9999) {
+				return "Permanente";
+			}
+
+			return row[id];
 		}
 
 		if (id === "temporality_date") {
@@ -455,8 +463,8 @@ const DataTable = ({ url, title }) => {
 										</TableCell>
 
 										{headCells.indexOf(headCell) === headCells.length - 1 &&
-										fieldUrls.indexOf(url) !== -1 ? (
-											<TableCell aling="right">{}</TableCell>
+											fieldUrls.indexOf(url) !== -1 ? (
+											<TableCell aling="right">{ }</TableCell>
 										) : (
 											""
 										)}

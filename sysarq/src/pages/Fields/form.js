@@ -1,5 +1,12 @@
 import React from "react";
-import { Paper, TextField, Grid, Container } from "@material-ui/core";
+import {
+	Paper,
+	TextField,
+	Grid,
+	Container,
+	Checkbox,
+	FormControlLabel,
+} from "@material-ui/core";
 import InputMask from "react-input-mask";
 import PopUpAlert from "../components/PopUpAlert";
 import DataTable from "../components/DataTable";
@@ -11,9 +18,11 @@ export default function createForm(
 	title,
 	subtitle,
 	classes,
+	checked,
 	onClick,
 	openAlert,
 	handleAlertClose,
+	handleChange,
 	severityAlert,
 	alertHelperText,
 	listaTitle,
@@ -51,6 +60,39 @@ export default function createForm(
 												>
 													<TextField variant="outlined" />
 												</InputMask>
+											</Grid>
+										);
+										return input;
+									}
+									if (item.placeholder === "Temporalidade (anos)*") {
+										const input = (
+											<Grid item xs={12} sm={12} md={12} key={key.toString()}>
+												<FormControlLabel
+													label="Permanente"
+													control={
+														<Checkbox
+															checked={checked}
+															onChange={handleChange}
+														/>
+													}
+												/>
+												<TextField
+													id={item.placeholder}
+													label={item.placeholder}
+													type={item.type}
+													value={item.value}
+													onChange={(event) => {
+														item.setValue(event.target.value);
+														item.setHelperText("");
+														item.setError(false);
+													}}
+													className={classes.input}
+													inputProps={{ maxLength: "100" }}
+													disabled={checked}
+													helperText={item.helperText}
+													error={item.error}
+													variant="outlined"
+                        						/>
 											</Grid>
 										);
 										return input;

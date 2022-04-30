@@ -25,6 +25,7 @@ export default function CreateDocumentName() {
 
 	const [documentName, setDocumentName] = useState("");
 	const [temporalityValue, setTemporality] = useState("");
+	const [checked, setChecked] = useState(false);
 
 	const [documentNameHelperText, setdocumentNameHelperText] = useState("");
 	const [documentNameError, setdocumentNameError] = useState(false);
@@ -37,6 +38,11 @@ export default function CreateDocumentName() {
 
 	const handleAlertClose = () => {
 		setOpenAlert(false);
+	};
+
+	const HandleCheckedChange = (event) => {
+		setChecked(event.target.checked);
+		setTemporality("");
 	};
 
 	const connectionError = () => {
@@ -79,7 +85,7 @@ export default function CreateDocumentName() {
 			setdocumentNameHelperText("Nome inválido");
 			return "Erro";
 		}
-		if (temporalityValue === "") {
+		if (temporalityValue === "" && !checked) {
 			settemporalityError(true);
 			settemporalityHelperText("Temporalidade inválida");
 			return "Erro";
@@ -96,7 +102,8 @@ export default function CreateDocumentName() {
 						`document-name/`,
 						{
 							document_name: documentName,
-							temporality: temporalityValue,
+							temporality: checked ? 9999 : temporalityValue,
+							isPerma: checked,
 						},
 						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
 					)
@@ -150,9 +157,11 @@ export default function CreateDocumentName() {
 		title,
 		subtitle,
 		classes,
+		checked,
 		onClick,
 		openAlert,
 		handleAlertClose,
+		HandleCheckedChange,
 		severityAlert,
 		alertHelperText,
 		"Nome do Documento",
