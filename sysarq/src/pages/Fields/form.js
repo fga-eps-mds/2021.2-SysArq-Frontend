@@ -91,7 +91,8 @@ export default function createForm(
 													disabled={checked}
 													helperText={item.helperText}
 													error={item.error}
-                        />
+													variant="outlined"
+                        						/>
 											</Grid>
 										);
 										return input;
