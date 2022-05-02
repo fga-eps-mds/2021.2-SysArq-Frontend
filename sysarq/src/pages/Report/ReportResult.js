@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { PDFDownloadLink, Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
+import { pdf, PDFDownloadLink, Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 import { Table, TableHeader, TableCell, TableBody, DataTableCell } from '@david.kucsai/react-pdf-table';
+import { saveAs } from 'file-saver';
+import { makeStyles } from "@material-ui/core";
 import DataTable from "../components/DataTable";
 import { axiosProfile, axiosArchives } from "../../Api";
 import { axiosProfileError, getPublicWorkers, autocompl, formatDate } from "../../support";
@@ -41,8 +43,63 @@ const styles = StyleSheet.create({
 	}
 });
 
+const useStyles = makeStyles((theme) => ({
+	title: {
+		paddingTop: theme.spacing(4),
+		color: "#5289B5",
+		fontSize: "30px",
+		fontWeight: "bold",
+		fontFamily: ['"Montserrat"', "sans-serif"],
+	},
+	container: {
+		marginTop: theme.spacing(6),
+		alignContents: "center",
+		textAlign: "center",
+		marginBottom: theme.spacing(6),
+	},
+	input: {
+		textAlign: "center",
+		minWidth: "300px",
+		width: "50%",
+	},
+	paper: {
+		display: "flex",
+		flex: 1,
+		flexDirection: "column",
+		alignItems: "center",
+	},
+	sectionTitle: {
+		width: "100%",
+		textAlign: "left",
+		color: "#1f3541",
+		fontWeight: "bold",
+		fontFamily: ['"Montserrat"', "sans-serif"],
+	},
+	button: {
+		marginTop: "25px",
+		marginBottom: "25px",
+		padding: "1rem",
+		border: "0",
+		outline: "0",
+		color: "#F6F6F6",
+		fontWeight: "500",
+		background: "#5289B5",
+		fontSize: "1rem",
+		letterSpacing: "1.25px",
+		borderRadius: "4px",
+		transition: "filter 0.4s",
+		height: "50px",
+
+		"&:hover": {
+			filter: "brightness(0.9)",
+		},
+	},
+}));
+
 export default function ReportResult() {
     const url = localStorage.getItem("url");
+	const classes = useStyles();
+
 	const currentDay = new Date().toLocaleString("pt-BR", { day : '2-digit'});
 	const currentMonth = new Date().toLocaleString("pt-BR", { month : '2-digit'});
 	const currentYear = new Date().getFullYear();
@@ -194,9 +251,17 @@ export default function ReportResult() {
 	return (
 		<>
 		<DataTable title="Relatório" url={url} />
-		<PDFDownloadLink document={<MyDoc />} fileName={`relatorio-${currentDay}-${currentMonth}-${currentYear}.pdf`}>
-      {({ blob, urlpdf, loading, error }) => (loading ? 'Carregando...' : 'Gerar PDF')}
-    </PDFDownloadLink>
+	<button
+	  type="button"
+	  className={classes.button}
+      onClick={async () => {
+      const doc = <MyDoc />;
+      const asPdf = pdf([]); // {} is important, throws without an argument
+      asPdf.updateContainer(doc);
+      const blob = await asPdf.toBlob();
+      saveAs(blob, `relatorio-${currentDay}-${currentMonth}-${currentYear}.pdf`);
+    }}
+ 	>DOWNLOAD PDF</button>
 		</>
 	);
 }
