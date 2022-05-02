@@ -20,6 +20,7 @@
 		// Desabilitar a necessidade de import React em todo arquivo do projeto
 		"react/react-in-jsx-scope": "off",
 		"react/jsx-props-no-spreading": "off",
-		"no-param-reassign": "off"
+		"no-param-reassign": "off",
+		"no-unused-vars": "off"
 	}
 }
