@@ -4,15 +4,16 @@ import { Table, TableHeader, TableCell, TableBody, DataTableCell } from '@david.
 import { saveAs } from 'file-saver';
 import { makeStyles } from "@material-ui/core";
 import DataTable from "../components/DataTable";
+import CardContainer from "../components/Container/CardContainer";
 import { axiosProfile, axiosArchives } from "../../Api";
 import { axiosProfileError, getPublicWorkers, autocompl, formatDate } from "../../support";
 
 const styles = StyleSheet.create({
 	page: {
-	  backgroundColor: 'white'
+		backgroundColor: 'white'
 	},
 	body: {
-	 },
+	},
 	row: {
 		flexDirection: 'row',
 	},
@@ -97,11 +98,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ReportResult() {
-    const url = localStorage.getItem("url");
+	const url = localStorage.getItem("url");
 	const classes = useStyles();
 
-	const currentDay = new Date().toLocaleString("pt-BR", { day : '2-digit'});
-	const currentMonth = new Date().toLocaleString("pt-BR", { month : '2-digit'});
+	const currentDay = new Date().toLocaleString("pt-BR", { day: '2-digit' });
+	const currentMonth = new Date().toLocaleString("pt-BR", { month: '2-digit' });
 	const currentYear = new Date().getFullYear();
 
 	const [reportData, setReportData] = useState(null);
@@ -132,9 +133,9 @@ export default function ReportResult() {
 	};
 
 	const formatDocumentDate = (date) => {
-		const day = date.substring(8,10);
-		const month = date.substring(5,7);
-		const year = date.substring(0,4);
+		const day = date.substring(8, 10);
+		const month = date.substring(5, 7);
+		const year = date.substring(0, 4);
 		return `${day}/${month}/${year}`;
 	}
 
@@ -165,67 +166,67 @@ export default function ReportResult() {
 		}
 		let date = getDocumentDate(data);
 		date = `${data.temporality_date}${date.substring(4)}`;
-		const day = date.substring(8,10);
-		const month = date.substring(5,7);
-		const year = date.substring(0,4);
+		const day = date.substring(8, 10);
+		const month = date.substring(5, 7);
+		const year = date.substring(0, 4);
 		return `${day}/${month}/${year}`;
 	}
 
 	const MyDoc = () => (
 		<Document>
-		  <Page size="A4" style={styles.page}>
-			  <View style={styles.body}>
-				<View style={styles.row}>
-					<View>
-						<Image src="https://i.imgur.com/Pz4BpXQ.png" style={styles.logo1}/>
+			<Page size="A4" style={styles.page}>
+				<View style={styles.body}>
+					<View style={styles.row}>
+						<View>
+							<Image src="https://i.imgur.com/Pz4BpXQ.png" style={styles.logo1} />
+						</View>
+						<View style={styles.header}>
+							<Text style={styles.text}>ESTADO DE GOIÁS</Text>
+							<Text style={styles.text}>DELEGACIA-GERAL DA POLÍCIA CIVIL</Text>
+						</View>
+						<View>
+							<Image src="https://i.imgur.com/4D88yCh.jpg" style={styles.logo2} />
+						</View>
 					</View>
-					<View style={styles.header}>
-						<Text style={styles.text}>ESTADO DE GOIÁS</Text>
-						<Text style={styles.text}>DELEGACIA-GERAL DA POLÍCIA CIVIL</Text>
+					<View style={styles.title}>
+						<Text style={styles.text}>RELATÓRIO DE TEMPORALIDADE DOCUMENTAL</Text>
 					</View>
-					<View>
-						<Image src="https://i.imgur.com/4D88yCh.jpg" style={styles.logo2}/>
+					<View style={styles.table}>
+						<Table
+							data={reportData}
+						>
+							<TableHeader>
+								<TableCell>
+									Nome do Documento
+								</TableCell>
+								<TableCell>
+									Temporalidade
+								</TableCell>
+								<TableCell>
+									Data do Documento
+								</TableCell>
+								<TableCell>
+									Prazo de Guarda
+								</TableCell>
+								<TableCell>
+									Número do Processo
+								</TableCell>
+							</TableHeader>
+							<TableBody>
+								<DataTableCell getContent={(r) => r.document_name ? r.document_name : "-"} />
+								<DataTableCell getContent={(r) => getTemporality(r)} />
+								<DataTableCell getContent={(r) => formatDocumentDate(getDocumentDate(r))} />
+								<DataTableCell getContent={(r) => getTemporalityDate(r)} />
+								<DataTableCell getContent={(r) => r.process_number} />
+							</TableBody>
+						</Table>
 					</View>
 				</View>
-				<View style={styles.title}>
-       				<Text style={styles.text}>RELATÓRIO DE TEMPORALIDADE DOCUMENTAL</Text>
-      			</View>
-				<View style={styles.table}>
-					<Table
-						data={reportData}
-					>
-						<TableHeader>
-            		        <TableCell>
-            		            Nome do Documento
-            		        </TableCell>
-            		        <TableCell>
-            		            Temporalidade
-            		        </TableCell>
-            		        <TableCell>
-            		            Data do Documento
-            		        </TableCell>
-            		        <TableCell>
-            		            Prazo de Guarda
-            		        </TableCell>
-            		        <TableCell>
-            		            Número do Processo
-            		        </TableCell>
-            		    </TableHeader>
-						<TableBody>
-            		        <DataTableCell getContent={(r) => r.document_name ? r.document_name : "-"}/>
-            		        <DataTableCell getContent={(r) => getTemporality(r)}/>
-            		        <DataTableCell getContent={(r) => formatDocumentDate(getDocumentDate(r))}/>
-            		        <DataTableCell getContent={(r) => getTemporalityDate(r)}/>
-            		        <DataTableCell getContent={(r) => r.process_number}/>
-            		    </TableBody>
-					</Table>
-				</View>
-			</View>
-		  </Page>
+			</Page>
 		</Document>
-	  );
+	);
 
-	  useEffect(() => {
+	useEffect(() => {
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -250,18 +251,22 @@ export default function ReportResult() {
 
 	return (
 		<>
-		<DataTable title="Relatório" url={url} />
-	<button
-	  type="button"
-	  className={classes.button}
-      onClick={async () => {
-      const doc = <MyDoc />;
-      const asPdf = pdf([]); // {} is important, throws without an argument
-      asPdf.updateContainer(doc);
-      const blob = await asPdf.toBlob();
-      saveAs(blob, `relatorio-${currentDay}-${currentMonth}-${currentYear}.pdf`);
-    }}
- 	>DOWNLOAD PDF</button>
+			<DataTable title="Relatório" url={url} />
+			<button
+				type="button"
+				className={classes.button}
+				onClick={async () => {
+					const doc = <MyDoc />;
+					const asPdf = pdf([]); // {} is important, throws without an argument
+					asPdf.updateContainer(doc);
+					const blob = await asPdf.toBlob();
+					saveAs(blob, `relatorio-${currentDay}-${currentMonth}-${currentYear}.pdf`);
+				}}
+				style={{
+					marginLeft: 600,
+					marginRight: 600
+				}}
+			>DOWNLOAD PDF</button>
 		</>
 	);
 }
