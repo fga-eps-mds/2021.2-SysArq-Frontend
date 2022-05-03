@@ -449,7 +449,7 @@ const DataTable = ({ url, title }) => {
     const rowsWithFilter = rows.filter(row => {
       for (const [key, value] of Object.entries(row)) { // eslint-disable-line
         try {
-          if (cellContent(row, key).toString().toLowerCase().includes(query.toLowerCase())) {
+          if (cellContent(row, (url === "box-archiving/" && (key === "is_eliminated" || key === "is_filed")) ? "status" : key).toString().toLowerCase().includes(query.toLowerCase())) {
             return true;
           }
         } catch {} // eslint-disable-line
