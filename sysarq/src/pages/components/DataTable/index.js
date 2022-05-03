@@ -17,6 +17,7 @@ import {
 	TableBody,
 	IconButton,
 	TablePagination,
+  TextField
 } from "@material-ui/core";
 
 import MuiLink from "@material-ui/core/Link";
@@ -64,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "14px",
 		color: "#5389b5",
 	},
+
+  filter: {
+    marginLeft: theme.spacing(3),
+  },
 }));
 
 const Link = withStyles({
@@ -167,8 +172,11 @@ const DataTable = ({ url, title }) => {
 		});
 	};
 
+  useEffect(() => console.log("porra", url), [url])
+
 	useEffect(() => {
 		if (updateTable) {
+      console.log("url", url)
 			setHeadCells(tableHeadCells(url));
 
 			axiosProfile
@@ -184,6 +192,7 @@ const DataTable = ({ url, title }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((response) => {
+              console.log('response', response)
 							if (url && url.includes("search")) {
 								const listTable = [];
 
@@ -432,6 +441,38 @@ const DataTable = ({ url, title }) => {
 		handleRequestSort(event, property);
 	};
 
+  const [currentFilter, setCurrentFilter] = useState('')
+  const [filteredRows, setFilteredRows] = useState(rows)
+
+  const filterRows = (query) => { 
+    console.log(query)
+    const rowsWithFilter = rows.filter(row => {
+      for (const [key, value] of Object.entries(row)) { // eslint-disable-line
+        try {
+          if (cellContent(row, key).toString().toLowerCase().includes(query.toLowerCase())) {
+            return true;
+          }
+        } catch {} // eslint-disable-line
+      } 
+      return false;
+    })
+
+    setFilteredRows(rowsWithFilter) 
+  }
+
+  useEffect(() => {
+    console.log(filteredRows)
+  }, [filteredRows])
+
+  useEffect(() => {
+    filterRows(currentFilter)
+  }, [currentFilter])
+
+  useEffect(() => {
+    setFilteredRows(rows);
+    filterRows(currentFilter);
+  }, [rows])
+
 	return (
 		<>
 			<Paper className={classes.paper} elevation={10}>
@@ -440,6 +481,7 @@ const DataTable = ({ url, title }) => {
 						{title}
 					</Typography>
 				</Toolbar>
+        <TextField label="Filtro" value={currentFilter} onChange={e => setCurrentFilter(e.target.value)} variant="outlined" className={classes.filter}/>
 				<TableContainer>
 					<Table>
 						<TableHead>
@@ -481,7 +523,7 @@ const DataTable = ({ url, title }) => {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{stableSort(rows, getComparator(order, orderBy))
+							{stableSort(filteredRows, getComparator(order, orderBy))
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row) => (
 									<TableRow
