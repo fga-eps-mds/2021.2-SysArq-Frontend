@@ -28,11 +28,11 @@ const AutoComplete = ({
 			inputValue={inputValue}
 			options={options.sort((a, b) => {
 				const ca = sortProperty
-					? a[sortProperty].toLowerCase()
-					: a.toLowerCase();
+					? a[sortProperty].toString().toLowerCase()
+					: a.toString().toLowerCase();
 				const cb = sortProperty
-					? b[sortProperty].toLowerCase()
-					: b.toLowerCase();
+					? b[sortProperty].toString().toLowerCase()
+					: b.toString().toLowerCase();
 				if (ca < cb) return -1;
 				if (ca > cb) return 1;
 				return 0;
