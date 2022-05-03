@@ -16,6 +16,8 @@ const styles = StyleSheet.create({
 	},
 	row: {
 		flexDirection: 'row',
+		padding: 50,
+		justifyContent: "space-around"
 	},
 	logo1: {
 		margin: 20,
@@ -28,15 +30,18 @@ const styles = StyleSheet.create({
 		height: 60
 	},
 	header: {
+		justifyContent: 'center',
 		margin: 50
 	},
 	title: {
 		flexDirection: 'row',
-		width: '50%',
+		// paddingLeft: '20%'
+		justifyContent: 'center'
 	},
 	text: {
 		// width: '50%',
 		textAlign: 'center',
+		justifyContent: "center",
 		fontSize: 10,
 	},
 	table: {
@@ -178,31 +183,31 @@ export default function ReportResult() {
 		switch (prefix) {
 			case "report":
 				title = "Relatório de Temporalidade";
-			break;
+				break;
 			case "document-name":
 				title = "Relatório de Assuntos cadastrados";
-			break;
+				break;
 			case "public-worker":
 				title = "Relatório de Servidores cadastrados";
-			break;
+				break;
 			case "unity":
 				title = "Relatório de Unidades cadastradas";
-			break;
+				break;
 			case "box-archiving-report":
 				title = "Relatório de Caixas cadastradas";
-			break;
+				break;
 			case "administrative-process-report":
 				title = "Relatório de Processos Administrativos";
-			break;
+				break;
 			case "frequency-relation-report":
 				title = "Relatório de Relações de Frequência";
-			break;
+				break;
 			case "frequency-sheet-report/":
 				title = "Relatório de Folhas de Frequência";
-			break;
+				break;
 			case "status-report/":
 				title = "Relatório de Status";
-			break;
+				break;
 			default:
 				title = "Relatório";
 		}
@@ -219,8 +224,8 @@ export default function ReportResult() {
 							<Image src="https://i.imgur.com/Pz4BpXQ.png" style={styles.logo1} />
 						</View>
 						<View style={styles.header}>
-							<Text style={styles.text}>ESTADO DE GOIÁS</Text>
-							<Text style={styles.text}>DELEGACIA-GERAL DA POLÍCIA CIVIL</Text>
+							<Text style={styles.text}>ESTADO DE GOIÁS {"\n"}
+								DELEGACIA-GERAL DA POLÍCIA CIVIL</Text>
 						</View>
 						<View>
 							<Image src="https://i.imgur.com/4D88yCh.jpg" style={styles.logo2} />
