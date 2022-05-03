@@ -243,19 +243,19 @@ export default function ReportResult() {
 						>
 							<TableHeader>
 								<TableCell>
-									<b>Nome do {"\n"}Documento</b>
+									Nome do Documento
 								</TableCell>
 								<TableCell>
 									Temporalidade
 								</TableCell>
 								<TableCell>
-									Data do {"\n"}Documento
+									Data do Documento
 								</TableCell>
 								<TableCell>
-									Prazo de {"\n"}Guarda
+									Prazo de Guarda
 								</TableCell>
 								<TableCell>
-									Número do {"\n"}Processo
+									Número do Processo
 								</TableCell>
 							</TableHeader>
 							<TableBody>
