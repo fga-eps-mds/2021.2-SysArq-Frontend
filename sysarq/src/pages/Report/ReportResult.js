@@ -172,6 +172,44 @@ export default function ReportResult() {
 		return `${day}/${month}/${year}`;
 	}
 
+	const getReportTitle = () => {
+		const prefix = url.split("/")[0];
+		let title = "";
+		switch (prefix) {
+			case "report":
+				title = "Relatório de Temporalidade";
+			break;
+			case "document-name":
+				title = "Relatório de Assuntos cadastrados";
+			break;
+			case "public-worker":
+				title = "Relatório de Servidores cadastrados";
+			break;
+			case "unity":
+				title = "Relatório de Unidades cadastradas";
+			break;
+			case "box-archiving-report":
+				title = "Relatório de Caixas cadastradas";
+			break;
+			case "administrative-process-report":
+				title = "Relatório de Processos Administrativos";
+			break;
+			case "frequency-relation-report":
+				title = "Relatório de Relações de Frequência";
+			break;
+			case "frequency-sheet-report/":
+				title = "Relatório de Folhas de Frequência";
+			break;
+			case "status-report/":
+				title = "Relatório de Status";
+			break;
+			default:
+				title = "Relatório";
+		}
+
+		return title;
+	}
+
 	const MyDoc = () => (
 		<Document>
 			<Page size="A4" style={styles.page}>
@@ -251,7 +289,7 @@ export default function ReportResult() {
 
 	return (
 		<>
-			<DataTable title="Relatório" url={url} />
+			<DataTable title={getReportTitle()} url={url} />
 			<button
 				type="button"
 				className={classes.button}
@@ -267,6 +305,7 @@ export default function ReportResult() {
 					marginRight: 600
 				}}
 			>DOWNLOAD PDF</button>
+
 		</>
 	);
 }
