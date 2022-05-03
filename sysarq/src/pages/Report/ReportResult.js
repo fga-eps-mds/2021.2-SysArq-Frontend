@@ -16,7 +16,9 @@ const styles = StyleSheet.create({
 	},
 	row: {
 		flexDirection: 'row',
-		padding: 50,
+		paddingLeft: 50,
+		paddingRight: 50,
+		paddingTop: 20,
 		justifyContent: "space-around"
 	},
 	logo1: {
