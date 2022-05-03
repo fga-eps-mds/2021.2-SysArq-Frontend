@@ -216,8 +216,6 @@ const CreateBoxArchiving = ({ detail }) => {
 		return "added originBox";
 	};
 
-	useEffect(() => console.log(originBox), [originBox]);
-
 	useEffect(() => originBox.filter((b) => b.number === undefined), [originBox]);
 
 	const [currentBox, setCurrentBox] = useState({});

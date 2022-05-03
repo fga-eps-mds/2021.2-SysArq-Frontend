@@ -172,11 +172,8 @@ const DataTable = ({ url, title }) => {
 		});
 	};
 
-  useEffect(() => console.log("porra", url), [url])
-
 	useEffect(() => {
 		if (updateTable) {
-      console.log("url", url)
 			setHeadCells(tableHeadCells(url));
 
 			axiosProfile
@@ -192,7 +189,6 @@ const DataTable = ({ url, title }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((response) => {
-              console.log('response', response)
 							if (url && url.includes("search")) {
 								const listTable = [];
 
@@ -445,7 +441,6 @@ const DataTable = ({ url, title }) => {
   const [filteredRows, setFilteredRows] = useState(rows)
 
   const filterRows = (query) => { 
-    console.log(query)
     const rowsWithFilter = rows.filter(row => {
       for (const [key, value] of Object.entries(row)) { // eslint-disable-line
         try {
@@ -459,10 +454,6 @@ const DataTable = ({ url, title }) => {
 
     setFilteredRows(rowsWithFilter) 
   }
-
-  useEffect(() => {
-    console.log(filteredRows)
-  }, [filteredRows])
 
   useEffect(() => {
     filterRows(currentFilter)

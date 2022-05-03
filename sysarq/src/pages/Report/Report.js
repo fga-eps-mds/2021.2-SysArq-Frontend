@@ -254,8 +254,6 @@ const Report = () => {
 
 	const onlyPermanents = false;
 
-	console.log(publicWorker);
-
 	return (
 		<Container maxWidth="md" className={classes.container}>
 			<Paper elevation={10} className={classes.paper}>
