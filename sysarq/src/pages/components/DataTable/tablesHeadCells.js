@@ -285,6 +285,117 @@ const reportHeadCells = [
 	},
 ];
 
+const statusReportHeadCells = [
+	{
+		id: "status",
+		numeric: false,
+		label: "Status",
+	},
+	{
+		id: "sender_unity_name",
+		numeric: false,
+		label: "Unidade",
+	},
+	{
+		id: "document_date",
+		numeric: false,
+		label: "Data do Documento",
+	},
+	{
+		id: "process_number",
+		numeric: false,
+		label: "Número do Processo",
+	},
+];
+
+const frequencySheetReportHeadCells = [
+	{
+		id: "person_name",
+		numeric: false,
+		label: "Servidor",
+	},
+	{
+		id: "cpf",
+		numeric: false,
+		label: "CPF",
+	},
+	{
+		id: "role",
+		numeric: false,
+		label: "Cargo",
+	},
+	{
+		id: "workplace_name",
+		numeric: false,
+		label: "Lotação",
+	},
+	{
+		id: "reference_period",
+		numeric: false,
+		label: "Período de Frequência",
+	},
+	{
+		id: "process_number",
+		numeric: false,
+		label: "Número do Processo",
+	},
+];
+
+const frequencyRelationReportHeadCells = [
+	{
+		id: "sender_unity_name",
+		numeric: false,
+		label: "Unidade",
+	},
+	{
+		id: "sender_name",
+		numeric: false,
+		label: "Servidor que Encaminhou",
+	},
+	{
+		id: "reference_period",
+		numeric: false,
+		label: "Período das Frequências",
+	},
+	{
+		id: "received_date",
+		numeric: false,
+		label: "Data de Recebimento",
+	},
+	{
+		id: "process_number",
+		numeric: false,
+		label: "Número do Processo",
+	},
+];
+
+const boxArchivingReportHeadCells = [
+	{
+		id: "box_number",
+		numeric: true,
+		label: "Número da Caixa",
+	},
+	{
+		id: "document_name",
+		numeric: false,
+		label: "Nome do Documento",
+	},
+	{
+		id: "temporality_date",
+		numeric: false,
+		label: "Prazo de guarda",
+	},
+	{
+		id: "sender_unity_name",
+		numeric: false,
+		label: "Unidade",
+	},
+	{
+		id: "process_number",
+		numeric: false,
+		label: "Número do Processo",
+	},
+];
 const tableHeadCells = (url) => {
 	let headCells = [];
 	if (url === "unity/") {
@@ -311,6 +422,14 @@ const tableHeadCells = (url) => {
 		headCells = boxArchivingHeadCells;
 	} else if (url && url.includes("search")) {
 		headCells = headCellsSearch();
+	} else if(url && url.includes("box-archiving-report/")) {
+		headCells = boxArchivingReportHeadCells;
+	} else if(url && url.includes("frequency-relation-report/")) {
+		headCells = frequencyRelationReportHeadCells;
+	} else if(url && url.includes("frequency-sheet-report/")) {
+		headCells = frequencySheetReportHeadCells;
+	} else if(url && url.includes("status-report/")) {
+		headCells = statusReportHeadCells;
 	} else if(url && url.includes("report/")) {
 		headCells = reportHeadCells;
 	}
