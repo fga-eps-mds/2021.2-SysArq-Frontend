@@ -334,6 +334,14 @@ const DataTable = ({ url, title }) => {
 			"12": "dez",
 		};
 
+    if (url === "box-archiving/" && id === "status") {
+      // return row.is_eliminated ? "Eliminado" : row.is_filed ? "Arquivado" : "Desarquivado";
+      //
+      if (row.is_eliminated) return "Eliminado";
+      if (row.is_filed) return "Arquivado";
+      return "Desarquivado";
+    }
+
 		if (id === "cpf") {
 			return maskBr.cpf(row[id]);
 		}
