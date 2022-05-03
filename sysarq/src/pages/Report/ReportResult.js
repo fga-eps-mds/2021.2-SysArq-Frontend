@@ -19,21 +19,22 @@ const styles = StyleSheet.create({
 		paddingLeft: 50,
 		paddingRight: 50,
 		paddingTop: 20,
-		justifyContent: "space-around"
+		justifyContent: "space-between"
 	},
 	logo1: {
 		margin: 20,
 		width: 60,
-		height: 70
+		height: 80.3
 	},
 	logo2: {
 		marginTop: 30,
 		width: 60,
-		height: 60
+		height: 72.5
 	},
 	header: {
 		justifyContent: 'center',
-		margin: 50
+		margin: 50,
+		marginLeft: 0
 	},
 	title: {
 		flexDirection: 'row',
