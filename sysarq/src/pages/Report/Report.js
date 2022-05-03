@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 
 import {
@@ -16,6 +17,7 @@ import {
 	Grid,
 	Checkbox,
 	FormControlLabel,
+
 } from "@material-ui/core";
 
 import DateFnsUtils from "@date-io/date-fns";
@@ -28,6 +30,8 @@ import {
 import { useHistory } from "react-router-dom";
 
 import SenderUnitInput from "../components/Inputs/SenderUnitInput";
+
+import CardContainer from "../components/Container/CardContainer";
 
 import ReferencePeriodInput from "../components/Inputs/ReferencePeriodInput";
 
@@ -361,7 +365,7 @@ const Report = () => {
 				<Typography className={classes.title}>Relatório</Typography>
 
 				<FormControl
-					fullwidth
+					fullWidth
 					error={reportTypeError}
 					className={classes.input}
 					margin="normal"
@@ -395,7 +399,7 @@ const Report = () => {
 				</FormControl>
 				{reportType === "Status" ? (
 					<FormControl
-						fullwidth
+						fullWidth
 						error={statusError}
 						className={classes.input}
 						margin="normal"
@@ -419,8 +423,8 @@ const Report = () => {
 					""
 				)}
 				{reportType === "Processos Administrativos" ||
-				reportType === "Relações de Frequências" ||
-				reportType === "Caixas" ? (
+					reportType === "Relações de Frequências" ||
+					reportType === "Caixas" ? (
 					<Grid
 						container
 						style={{
@@ -447,52 +451,52 @@ const Report = () => {
 				)}
 				{reportType === "Processos Administrativos" ? (
 					<>
-						<div style={{ marginRight: "284px", fontWeight: "bold" }}>
-							<Typography className={classes.sectionTitle}>
+						<Grid container spacing={2} justifyContent="center">
+							{/* <Grid item xs={4} sm={9} md={12}>
 								Data de Arquivamento:
-							</Typography>
-						</div>
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							<Grid container spacing={2}>
-								<Grid item xs={6} sm={4}>
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										style={{ width: "69%", marginLeft: "77%" }}
-										id="initial-date-picker-dialog"
-										label=""
-										format="dd/MM/yyyy"
-										value={initialDate}
-										onChange={handleInitialDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change initial date",
-										}}
-										error={initialDateHelperText !== ""}
-										helperText={initialDateHelperText}
-									/>
-								</Grid>
-								<div style={{ marginTop: "25px", marginLeft: "144px" }}>
-									até
-								</div>
-								<Grid item xs={6} sm={4}>
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										style={{ width: "69%", marginRight: "73px" }}
-										id="final-date-picker-dialog"
-										label=""
-										format="dd/MM/yyyy"
-										value={finalDate}
-										onChange={handleFinalDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change final date",
-										}}
-										error={finalDateHelperText !== ""}
-										helperText={finalDateHelperText}
-									/>
-								</Grid>
+							</Grid> */}
+							<Grid item xs={8} sm={9} md={9}>
+								<MuiPickersUtilsProvider utils={DateFnsUtils}>
+									<Grid container spacing={2} justifyContent="center">
+										<Grid item xs={6} sm={4}>
+											<KeyboardDatePicker
+												okLabel="Confirmar"
+												cancelLabel="Cancelar"
+												id="initial-date-picker-dialog"
+												label=""
+												format="dd/MM/yyyy"
+												value={initialDate}
+												onChange={handleInitialDateChange}
+												KeyboardButtonProps={{
+													"aria-label": "change initial date",
+												}}
+												error={initialDateHelperText !== ""}
+												helperText={initialDateHelperText}
+											/>
+										</Grid>
+										{/* <div style={{ marginTop: "25px", marginLeft: "144px" }}>
+										até
+									</div> */}
+										<Grid item xs={6} sm={4}>
+											<KeyboardDatePicker
+												okLabel="Confirmar"
+												cancelLabel="Cancelar"
+												id="final-date-picker-dialog"
+												label=""
+												format="dd/MM/yyyy"
+												value={finalDate}
+												onChange={handleFinalDateChange}
+												KeyboardButtonProps={{
+													"aria-label": "change final date",
+												}}
+												error={finalDateHelperText !== ""}
+												helperText={finalDateHelperText}
+											/>
+										</Grid>
+									</Grid>
+								</MuiPickersUtilsProvider>
 							</Grid>
-						</MuiPickersUtilsProvider>
+						</Grid>
 					</>
 				) : (
 					""
@@ -512,89 +516,104 @@ const Report = () => {
 					""
 				)}
 
-				{reportType === "Temporalidade" ? (
+				{reportType === "Temporalidade" && (
 					<>
-						<FormControl fullWidth error={documentNameHelperText !== ""}>
-							<InputLabel
-								id="select-document_name-label"
-								style={{ marginLeft: "25%" }}
-							>
-								Nome do Documento
-							</InputLabel>
-							<Select
-								style={{ textAlign: "center", width: "50%", marginLeft: "25%" }}
-								labelId="select-document-name-label"
-								id="select-document-name"
-								value={documentName}
-								onChange={handleDocumentNameChange}
-								renderValue={(value) => `${value.document_name}`}
-							>
-								<MenuItem key={0} value="">
-									<em>Nenhum</em>
-								</MenuItem>
-								{documentNames.map((subjectOption) => (
-									<MenuItem key={subjectOption.id} value={subjectOption}>
-										{subjectOption.document_name}
-									</MenuItem>
-								))}
-							</Select>
-							{documentNameHelperText ? (
-								<FormHelperText>{documentNameHelperText}</FormHelperText>
-							) : (
-								""
-							)}
-						</FormControl>
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							<Grid container spacing={2}>
-								<Grid item xs={6} sm={4}>
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										style={{ width: "75%", marginLeft: "77%" }}
-										id="initial-date-picker-dialog"
-										label="Data inicial"
-										format="dd/MM/yyyy"
-										value={initialDate}
-										onChange={handleInitialDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change initial date",
-										}}
-										error={initialDateHelperText !== ""}
-										helperText={initialDateHelperText}
-									/>
-								</Grid>
-								<Grid item xs={6} sm={4}>
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										style={{ width: "75%", marginLeft: "53%" }}
-										id="final-date-picker-dialog"
-										label="Data final"
-										format="dd/MM/yyyy"
-										value={finalDate}
-										onChange={handleFinalDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change final date",
-										}}
-										error={finalDateHelperText !== ""}
-										helperText={finalDateHelperText}
-									/>
-								</Grid>
+						{/* <FormControl fullWidth error={documentNameHelperText !== ""}> */}
+						{/* <CardContainer title="Temporalidade" spacing={1}> */}
+						<Grid container spacing={2} justifyContent="center">
+							{/* <Grid item xs={8} sm={9} md={9}> */}
+							<Grid item xs={12} sm={12} md={12}>
+								<FormControl
+									fullWidth
+									error={reportTypeError}
+									className={classes.input}
+								// margin="normal"
+								>
+									<InputLabel
+										id="report-type-label"
+									>
+										Nome do Documento
+									</InputLabel>
+
+									<Select
+										fullWidth
+										labelId="select-document-name-label"
+										id="select-document-name"
+										value={documentName}
+										onChange={handleDocumentNameChange}
+										renderValue={(value) => `${value.document_name}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+										{documentNames.map((subjectOption) => (
+											<MenuItem key={subjectOption.id} value={subjectOption}>
+												{subjectOption.document_name}
+											</MenuItem>
+										))}
+									</Select>
+									{documentNameHelperText ? (
+										<FormHelperText>{documentNameHelperText}</FormHelperText>
+									) : (
+										""
+									)}
+								</FormControl>
 							</Grid>
-						</MuiPickersUtilsProvider>
-						<FormControlLabel
-							label="Mostrar apenas com temporalidade permanente"
-							control={
-								<Checkbox
-									checked={onlyPermanents}
-									onChange={handleOnlyPermanentsChange}
+							<Grid item xs={8} sm={9} md={9}>
+								<MuiPickersUtilsProvider utils={DateFnsUtils}>
+									<Grid container spacing={2} justifyContent="center">
+										<Grid item xs={6} sm={4}>
+											<KeyboardDatePicker
+												okLabel="Confirmar"
+												cancelLabel="Cancelar"
+												id="initial-date-picker-dialog"
+												label="Data inicial"
+												format="dd/MM/yyyy"
+												value={initialDate}
+												onChange={handleInitialDateChange}
+												KeyboardButtonProps={{
+													"aria-label": "change initial date",
+												}}
+												error={initialDateHelperText !== ""}
+												helperText={initialDateHelperText}
+											/>
+										</Grid>
+										<Grid item xs={6} sm={4}>
+											<KeyboardDatePicker
+												okLabel="Confirmar"
+												cancelLabel="Cancelar"
+												id="final-date-picker-dialog"
+												label="Data final"
+												format="dd/MM/yyyy"
+												value={finalDate}
+												onChange={handleFinalDateChange}
+												KeyboardButtonProps={{
+													"aria-label": "change final date",
+												}}
+												error={finalDateHelperText !== ""}
+												helperText={finalDateHelperText}
+											/>
+										</Grid>
+									</Grid>
+								</MuiPickersUtilsProvider>
+							</Grid>
+							{/* </Grid> */}
+							<Grid item xs={12} sm={12} md={12}>
+								<FormControlLabel
+									label="Mostrar apenas com temporalidade permanente"
+									control={
+										<Checkbox
+											checked={onlyPermanents}
+											onChange={handleOnlyPermanentsChange}
+										/>
+									}
 								/>
-							}
-						/>
-					</>
-				) : (
-					""
-				)}
+							</Grid>
+						</Grid>
+						{/* </CardContainer> */}
+						{/* </FormControl> */}
+					</>)}
+
 				{reportType === "Folha de Frequências" ? (
 					<Grid container style={{ display: "flex", justifyContent: "center" }}>
 						<Grid item xs={12} sm={6}>
@@ -628,7 +647,8 @@ const Report = () => {
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-		</Container>
+
+		</Container >
 	);
 };
 
