@@ -241,29 +241,29 @@ export default function ReportResult() {
 						<Table
 							data={reportData}
 						>
-							<TableHeader>
-								<TableCell>
-									Nome do Documento
+							<TableHeader style={{ fontWeight: "bold" }}>
+								<TableCell style={{ textAlign: "center" }}>
+									<Text><b>Nome do{"\n"}Documento</b></Text>
 								</TableCell>
-								<TableCell>
-									Temporalidade
+								<TableCell style={{ textAlign: "center" }}>
+									<Text>Temporalidade </Text>
 								</TableCell>
-								<TableCell>
-									Data do Documento
+								<TableCell style={{ textAlign: "center" }}>
+									<Text>Data do{"\n"}Documento </Text>
 								</TableCell>
-								<TableCell>
-									Prazo de Guarda
+								<TableCell style={{ textAlign: "center" }}>
+									<Text>Prazo de{"\n"}Guarda </Text>
 								</TableCell>
-								<TableCell>
-									Número do Processo
+								<TableCell style={{ textAlign: "center" }}>
+									<Text>Número do{"\n"}Processo </Text>
 								</TableCell>
 							</TableHeader>
 							<TableBody>
-								<DataTableCell getContent={(r) => r.document_name ? r.document_name : "-"} />
-								<DataTableCell getContent={(r) => getTemporality(r)} />
-								<DataTableCell getContent={(r) => formatDocumentDate(getDocumentDate(r))} />
-								<DataTableCell getContent={(r) => getTemporalityDate(r)} />
-								<DataTableCell getContent={(r) => r.process_number} />
+								<DataTableCell style={{ textAlign: "center" }} getContent={(r) => r.document_name ? r.document_name : "-"} />
+								<DataTableCell style={{ textAlign: "center" }} getContent={(r) => getTemporality(r)} />
+								<DataTableCell style={{ textAlign: "center" }} getContent={(r) => formatDocumentDate(getDocumentDate(r))} />
+								<DataTableCell style={{ textAlign: "center" }} getContent={(r) => getTemporalityDate(r)} />
+								<DataTableCell style={{ textAlign: "center" }} getContent={(r) => r.process_number} />
 							</TableBody>
 						</Table>
 					</View>
