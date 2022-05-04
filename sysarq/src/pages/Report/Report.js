@@ -430,7 +430,7 @@ const Report = () => {
 						style={{
 							display: "flex",
 							justifyContent: "center",
-							marginTop: "-5px",
+							marginTop: "3px",
 							marginBottom: "15px",
 						}}
 					>
@@ -452,11 +452,11 @@ const Report = () => {
 				{reportType === "Processos Administrativos" ? (
 					<>
 						<Grid container spacing={2} justifyContent="center">
-							<div style={{ marginRight: "284px", fontWeight: "bold" }}>
-								<Typography className={classes.sectionTitle}>
+							<Grid container justifyContent="center">
+								<Grid style={{ textAlign: "left", fontWeight: "bold" }} item xs={8} sm={6} md={6}>
 									Data de Arquivamento:
-								</Typography>
-							</div>
+								</Grid>
+							</Grid>
 						</Grid>
 					</>
 				) : (
@@ -481,14 +481,13 @@ const Report = () => {
 					<>
 						{/* <FormControl fullWidth error={documentNameHelperText !== ""}> */}
 						{/* <CardContainer title="Temporalidade" spacing={1}> */}
-						<Grid container spacing={2} justifyContent="center">
+						<Grid container spacing={3} justifyContent="center">
 							{/* <Grid item xs={8} sm={9} md={9}> */}
 							<Grid item xs={12} sm={12} md={12}>
 								<FormControl
 									fullWidth
 									error={reportTypeError}
 									className={classes.input}
-								// margin="normal"
 								>
 									<InputLabel
 										id="report-type-label"
@@ -520,70 +519,77 @@ const Report = () => {
 									)}
 								</FormControl>
 							</Grid>
-							<div style={{ marginRight: "284px", fontWeight: "bold" }}>
+							{/* <div style={{ marginRight: "284px", fontWeight: "bold" }}>
 								<Typography className={classes.sectionTitle}>
 									Prazo de guarda:
 								</Typography>
-							</div>		
+							</div> */}
+							<Grid container justifyContent="center">
+								<Grid style={{ textAlign: "left", fontWeight: "bold" }} item xs={8} sm={6} md={6}>
+									Prazo de guarda:
+								</Grid>
+							</Grid>
 							{/* </Grid> */}
 						</Grid>
 						{/* </CardContainer> */}
 						{/* </FormControl> */}
 					</>)}
 				{reportType === "Temporalidade" || reportType == "Processos Administrativos" ? (
-				<>
-					<Grid item xs={8} sm={9} md={9}>
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							<Grid container spacing={2} justifyContent="center">
-								<Grid item xs={6} sm={4}>
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										id="initial-date-picker-dialog"
-										label="Data inicial"
-										format="dd/MM/yyyy"
-										value={initialDate}
-										onChange={handleInitialDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change initial date",
-										}}
-										error={initialDateHelperText !== ""}
-										helperText={initialDateHelperText}
-									/>
-								</Grid>
-								<Grid item xs={6} sm={4}>
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										id="final-date-picker-dialog"
-										label="Data final"
-										format="dd/MM/yyyy"
-										value={finalDate}
-										onChange={handleFinalDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change final date",
-										}}
-										error={finalDateHelperText !== ""}
-										helperText={finalDateHelperText}
-									/>
-								</Grid>
+					<>
+						<Grid container justifyContent="center">
+							<Grid item xs={8} sm={10} md={9}>
+								<MuiPickersUtilsProvider utils={DateFnsUtils}>
+									<Grid container spacing={2} justifyContent="center">
+										<Grid item xs={6} sm={4}>
+											<KeyboardDatePicker
+												okLabel="Confirmar"
+												cancelLabel="Cancelar"
+												id="initial-date-picker-dialog"
+												label="Data inicial"
+												format="dd/MM/yyyy"
+												value={initialDate}
+												onChange={handleInitialDateChange}
+												KeyboardButtonProps={{
+													"aria-label": "change initial date",
+												}}
+												error={initialDateHelperText !== ""}
+												helperText={initialDateHelperText}
+											/>
+										</Grid>
+										<Grid item xs={6} sm={4}>
+											<KeyboardDatePicker
+												okLabel="Confirmar"
+												cancelLabel="Cancelar"
+												id="final-date-picker-dialog"
+												label="Data final"
+												format="dd/MM/yyyy"
+												value={finalDate}
+												onChange={handleFinalDateChange}
+												KeyboardButtonProps={{
+													"aria-label": "change final date",
+												}}
+												error={finalDateHelperText !== ""}
+												helperText={finalDateHelperText}
+											/>
+										</Grid>
+									</Grid>
+								</MuiPickersUtilsProvider>
 							</Grid>
-						</MuiPickersUtilsProvider>
-					</Grid>
-				</>) : ("")}
+						</Grid>
+					</>) : ("")}
 				{reportType === "Temporalidade" || reportType == "Processos Administrativos" ? (
-				<>
-					<Grid item xs={12} sm={12} md={12}>
-						<FormControlLabel
-							label="Mostrar apenas com temporalidade permanente"
-							control={
-								<Checkbox
-									checked={onlyPermanents}
-									onChange={handleOnlyPermanentsChange}
-								/>
-							}
-						/>
-					</Grid>
+					<>
+						<Grid item xs={12} sm={12} md={12}>
+							<FormControlLabel
+								label="Mostrar apenas com temporalidade permanente"
+								control={
+									<Checkbox
+										checked={onlyPermanents}
+										onChange={handleOnlyPermanentsChange}
+									/>
+								}
+							/>
+						</Grid>
 					</>) : ("")}
 
 				{reportType === "Folha de Frequências" ? (
