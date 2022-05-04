@@ -616,7 +616,7 @@ const Report = () => {
 
 				{reportType === "Folha de Frequências" ? (
 					<Grid container style={{ display: "flex", justifyContent: "center" }}>
-						<Grid item xs={12} sm={6}>
+						<Grid item xs={8} sm={6} md={6}>
 							{autocompl(
 								publicWorkers,
 								publicWorkerInput,
