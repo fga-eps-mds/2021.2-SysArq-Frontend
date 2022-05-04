@@ -17,6 +17,7 @@ import {
 	TableBody,
 	IconButton,
 	TablePagination,
+  TextField
 } from "@material-ui/core";
 
 import MuiLink from "@material-ui/core/Link";
@@ -64,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "14px",
 		color: "#5389b5",
 	},
+
+  filter: {
+    marginLeft: theme.spacing(3),
+  },
 }));
 
 const Link = withStyles({
@@ -334,6 +339,14 @@ const DataTable = ({ url, title }) => {
 			"12": "dez",
 		};
 
+    if (url === "box-archiving/" && id === "status") {
+      // return row.is_eliminated ? "Eliminado" : row.is_filed ? "Arquivado" : "Desarquivado";
+      //
+      if (row.is_eliminated) return "Eliminado";
+      if (row.is_filed) return "Arquivado";
+      return "Desarquivado";
+    }
+
 		if (id === "cpf") {
 			return maskBr.cpf(row[id]);
 		}
@@ -469,6 +482,33 @@ const DataTable = ({ url, title }) => {
 		handleRequestSort(event, property);
 	};
 
+  const [currentFilter, setCurrentFilter] = useState('')
+  const [filteredRows, setFilteredRows] = useState(rows)
+
+  const filterRows = (query) => { 
+    const rowsWithFilter = rows.filter(row => {
+      for (const [key, value] of Object.entries(row)) { // eslint-disable-line
+        try {
+          if (key !== "id" && cellContent(row, (url === "box-archiving/" && (key === "is_eliminated" || key === "is_filed")) ? "status" : key).toString().toLowerCase().includes(query.toLowerCase())) {
+            return true;
+          }
+        } catch {} // eslint-disable-line
+      } 
+      return false;
+    })
+
+    setFilteredRows(rowsWithFilter) 
+  }
+
+  useEffect(() => {
+    filterRows(currentFilter)
+  }, [currentFilter])
+
+  useEffect(() => {
+    setFilteredRows(rows);
+    filterRows(currentFilter);
+  }, [rows])
+
 	return (
 		<>
 			<Paper className={classes.paper} elevation={10}>
@@ -477,6 +517,7 @@ const DataTable = ({ url, title }) => {
 						{title}
 					</Typography>
 				</Toolbar>
+        <TextField label="Filtro" value={currentFilter} onChange={e => setCurrentFilter(e.target.value)} variant="outlined" className={classes.filter}/>
 				<TableContainer>
 					<Table>
 						<TableHead>
@@ -518,7 +559,7 @@ const DataTable = ({ url, title }) => {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{stableSort(rows, getComparator(order, orderBy))
+							{stableSort(filteredRows, getComparator(order, orderBy))
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row) => (
 									<TableRow

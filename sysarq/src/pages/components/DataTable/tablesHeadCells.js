@@ -250,9 +250,9 @@ const boxArchivingHeadCells = [
 		label: "Unidade que Encaminhou",
 	},
 	{
-		id: "document_name_name",
+		id: "status",
 		numeric: false,
-		label: "Nome do Documento",
+		label: "Status",
 	},
 ];
 
