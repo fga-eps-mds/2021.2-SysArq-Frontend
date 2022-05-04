@@ -17,7 +17,7 @@ import {
 	TableBody,
 	IconButton,
 	TablePagination,
-  TextField
+	TextField,
 } from "@material-ui/core";
 
 import MuiLink from "@material-ui/core/Link";
@@ -66,9 +66,9 @@ const useStyles = makeStyles((theme) => ({
 		color: "#5389b5",
 	},
 
-  filter: {
-    marginLeft: theme.spacing(3),
-  },
+	filter: {
+		marginLeft: theme.spacing(3),
+	},
 }));
 
 const Link = withStyles({
@@ -94,9 +94,9 @@ function stableSort(array, comparator) {
 function descendingComparator(a, b, orderBy) {
 	return b[orderBy] && a[orderBy]
 		? b[orderBy].toString().localeCompare(a[orderBy].toString(), undefined, {
-			numeric: true,
-			sensitivity: "base",
-		})
+				numeric: true,
+				sensitivity: "base",
+		  })
 		: null;
 }
 
@@ -106,7 +106,7 @@ function getComparator(order, orderBy) {
 		: (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-const DataTable = ({ url, title }) => {
+const DataTable = ({ url, title, isReport }) => {
 	const classes = useStyles();
 
 	const fieldUrls = [
@@ -276,7 +276,7 @@ const DataTable = ({ url, title }) => {
 			return row.received_date;
 		}
 		return row.reference_period;
-	}
+	};
 
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -334,18 +334,18 @@ const DataTable = ({ url, title }) => {
 			"07": "jul",
 			"08": "ago",
 			"09": "set",
-			"10": "out",
-			"11": "nov",
-			"12": "dez",
+			10: "out",
+			11: "nov",
+			12: "dez",
 		};
 
-    if (url === "box-archiving/" && id === "status") {
-      // return row.is_eliminated ? "Eliminado" : row.is_filed ? "Arquivado" : "Desarquivado";
-      //
-      if (row.is_eliminated) return "Eliminado";
-      if (row.is_filed) return "Arquivado";
-      return "Desarquivado";
-    }
+		if (url === "box-archiving/" && id === "status") {
+			// return row.is_eliminated ? "Eliminado" : row.is_filed ? "Arquivado" : "Desarquivado";
+			//
+			if (row.is_eliminated) return "Eliminado";
+			if (row.is_filed) return "Arquivado";
+			return "Desarquivado";
+		}
 
 		if (id === "cpf") {
 			return maskBr.cpf(row[id]);
@@ -366,7 +366,7 @@ const DataTable = ({ url, title }) => {
 
 		if (id === "document_name") {
 			if (row.document_name_name) {
-				return row.document_name_name
+				return row.document_name_name;
 			}
 			return row[id];
 		}
@@ -385,7 +385,11 @@ const DataTable = ({ url, title }) => {
 			return "Arquivado";
 		}
 
-		if (id === "notice_date" || id === "received_date" || id === "document_date") {
+		if (
+			id === "notice_date" ||
+			id === "received_date" ||
+			id === "document_date"
+		) {
 			const date = id === "document_date" ? getDocumentDate(row) : row[id];
 			const day = date.substring(8, 10);
 			const month = date.substring(5, 7);
@@ -396,11 +400,11 @@ const DataTable = ({ url, title }) => {
 		if (id === "reference_period") {
 			let formated = "";
 			if (Array.isArray(row[id])) {
-				Object.values (row[id]).forEach((e) => {
+				Object.values(row[id]).forEach((e) => {
 					const month = e.substring(5);
 					const year = e.substring(0, 4);
 					formated += `${month}/${year} `;
-				})
+				});
 
 				return formated;
 			}
@@ -428,9 +432,9 @@ const DataTable = ({ url, title }) => {
 
 			let date = getDocumentDate(row);
 			date = `${row[id]}${date.substring(4)}`;
-			const day = date.substring(8,10);
-			const month = date.substring(5,7);
-			const year = date.substring(0,4);
+			const day = date.substring(8, 10);
+			const month = date.substring(5, 7);
+			const year = date.substring(0, 4);
 			return `${day}/${month}/${year}`;
 		}
 
@@ -438,12 +442,12 @@ const DataTable = ({ url, title }) => {
 			if (!row.temporality_date) {
 				return "Indefinida";
 			}
-			const date = getDocumentDate(row)
+			const date = getDocumentDate(row);
 			let temporality = parseInt(row.temporality_date, 10);
 			if (temporality >= 9999) {
 				return "Permanente";
 			}
-			const year = parseInt(date.substring(0,4), 10);
+			const year = parseInt(date.substring(0, 4), 10);
 			temporality -= year;
 			return temporality;
 		}
@@ -482,32 +486,45 @@ const DataTable = ({ url, title }) => {
 		handleRequestSort(event, property);
 	};
 
-  const [currentFilter, setCurrentFilter] = useState('')
-  const [filteredRows, setFilteredRows] = useState(rows)
+	const [currentFilter, setCurrentFilter] = useState("");
+	const [filteredRows, setFilteredRows] = useState(rows);
 
-  const filterRows = (query) => { 
-    const rowsWithFilter = rows.filter(row => {
-      for (const [key, value] of Object.entries(row)) { // eslint-disable-line
-        try {
-          if (key !== "id" && cellContent(row, (url === "box-archiving/" && (key === "is_eliminated" || key === "is_filed")) ? "status" : key).toString().toLowerCase().includes(query.toLowerCase())) {
-            return true;
-          }
-        } catch {} // eslint-disable-line
-      } 
-      return false;
-    })
+	const filterRows = (query) => {
+		const rowsWithFilter = rows.filter((row) => {
+			for (const [key, value] of Object.entries(row)) {
+				// eslint-disable-line
+				try {
+					if (
+						key !== "id" &&
+						cellContent(
+							row,
+							url === "box-archiving/" &&
+								(key === "is_eliminated" || key === "is_filed")
+								? "status"
+								: key
+						)
+							.toString()
+							.toLowerCase()
+							.includes(query.toLowerCase())
+					) {
+						return true;
+					}
+				} catch {} // eslint-disable-line
+			}
+			return false;
+		});
 
-    setFilteredRows(rowsWithFilter) 
-  }
+		setFilteredRows(rowsWithFilter);
+	};
 
-  useEffect(() => {
-    filterRows(currentFilter)
-  }, [currentFilter])
+	useEffect(() => {
+		filterRows(currentFilter);
+	}, [currentFilter]);
 
-  useEffect(() => {
-    setFilteredRows(rows);
-    filterRows(currentFilter);
-  }, [rows])
+	useEffect(() => {
+		setFilteredRows(rows);
+		filterRows(currentFilter);
+	}, [rows]);
 
 	return (
 		<>
@@ -517,7 +534,15 @@ const DataTable = ({ url, title }) => {
 						{title}
 					</Typography>
 				</Toolbar>
-        <TextField label="Filtro" value={currentFilter} onChange={e => setCurrentFilter(e.target.value)} variant="outlined" className={classes.filter}/>
+				{isReport === false && (
+					<TextField
+						label="Filtro"
+						value={currentFilter}
+						onChange={(e) => setCurrentFilter(e.target.value)}
+						variant="outlined"
+						className={classes.filter}
+					/>
+				)}
 				<TableContainer>
 					<Table>
 						<TableHead>
@@ -549,8 +574,8 @@ const DataTable = ({ url, title }) => {
 										</TableCell>
 
 										{headCells.indexOf(headCell) === headCells.length - 1 &&
-											fieldUrls.indexOf(url) !== -1 ? (
-											<TableCell aling="right">{ }</TableCell>
+										fieldUrls.indexOf(url) !== -1 ? (
+											<TableCell aling="right">{}</TableCell>
 										) : (
 											""
 										)}
@@ -593,7 +618,8 @@ const DataTable = ({ url, title }) => {
 													</TableCell>
 
 													{headCellIndex === headCells.length - 1 &&
-														fieldUrls.indexOf(url) !== -1 && (
+														fieldUrls.indexOf(url) !== -1 &&
+														isReport === false && (
 															<TableCell align="right">
 																<IconButton
 																	style={{ color: "#fe0000" }}
@@ -666,6 +692,11 @@ const DataTable = ({ url, title }) => {
 DataTable.propTypes = {
 	url: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
+	isReport: PropTypes.bool,
+};
+
+DataTable.defaultProps = {
+	isReport: false,
 };
 
 export default DataTable;
