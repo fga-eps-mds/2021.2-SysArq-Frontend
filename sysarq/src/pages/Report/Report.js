@@ -434,7 +434,7 @@ const Report = () => {
 							marginBottom: "15px",
 						}}
 					>
-						<Grid item xs={12} sm={6}>
+						<Grid item xs={8} sm={6}>
 							<SenderUnitInput
 								isDetailPage={false}
 								senderUnitDetail={null}
@@ -474,9 +474,9 @@ const Report = () => {
 												helperText={initialDateHelperText}
 											/>
 										</Grid>
-										{/* <div style={{ marginTop: "25px", marginLeft: "144px" }}>
-										até
-									</div> */}
+										{/* <Grid item xs={8} sm={9} md={9}>
+											até
+										</Grid> */}
 										<Grid item xs={6} sm={4}>
 											<KeyboardDatePicker
 												okLabel="Confirmar"
