@@ -17,6 +17,7 @@ import {
 	TableBody,
 	IconButton,
 	TablePagination,
+	TextField,
 } from "@material-ui/core";
 
 import MuiLink from "@material-ui/core/Link";
@@ -64,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "14px",
 		color: "#5389b5",
 	},
+
+	filter: {
+		marginLeft: theme.spacing(3),
+	},
 }));
 
 const Link = withStyles({
@@ -101,7 +106,7 @@ function getComparator(order, orderBy) {
 		: (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-const DataTable = ({ url, title }) => {
+const DataTable = ({ url, title, isReport }) => {
 	const classes = useStyles();
 
 	const fieldUrls = [
@@ -271,7 +276,7 @@ const DataTable = ({ url, title }) => {
 			return row.received_date;
 		}
 		return row.reference_period;
-	}
+	};
 
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -334,6 +339,14 @@ const DataTable = ({ url, title }) => {
 			12: "dez",
 		};
 
+		if (url === "box-archiving/" && id === "status") {
+			// return row.is_eliminated ? "Eliminado" : row.is_filed ? "Arquivado" : "Desarquivado";
+			//
+			if (row.is_eliminated) return "Eliminado";
+			if (row.is_filed) return "Arquivado";
+			return "Desarquivado";
+		}
+
 		if (id === "cpf") {
 			return maskBr.cpf(row[id]);
 		}
@@ -351,33 +364,90 @@ const DataTable = ({ url, title }) => {
 			return "Não";
 		}
 
-		if (id === "notice_date" || id === "received_date" || id === "document_date") {
+		if (id === "document_name") {
+			if (row.document_name_name) {
+				return row.document_name_name;
+			}
+			return row[id];
+		}
+
+		if (id === "box_number") {
+			return row.origin_box.number;
+		}
+
+		if (id === "status") {
+			if (cellContent(row, "is_eliminated") === "Sim") {
+				return "Eliminado";
+			}
+			if (cellContent(row, "is_filed") === "Não") {
+				return "Desarquivado";
+			}
+			return "Arquivado";
+		}
+
+		if (
+			id === "notice_date" ||
+			id === "received_date" ||
+			id === "document_date"
+		) {
 			const date = id === "document_date" ? getDocumentDate(row) : row[id];
-			const day = date.substring(8,10);
-			const month = date.substring(5,7);
-			const year = date.substring(0,4);
+			const day = date.substring(8, 10);
+			const month = date.substring(5, 7);
+			const year = date.substring(0, 4);
 			return `${day}/${month}/${year}`;
 		}
 
 		if (id === "reference_period") {
+			let formated = "";
+			if (Array.isArray(row[id])) {
+				Object.values(row[id]).forEach((e) => {
+					const month = e.substring(5);
+					const year = e.substring(0, 4);
+					formated += `${month}/${year} `;
+				});
+
+				return formated;
+			}
 			const month = row[id].substring(5, 7);
 			const year = row[id].substring(0, 4);
 			return `${monthMap[month]}/${year}`;
 		}
 
+		if (id === "temporality") {
+			if (row[id] === 9999) {
+				return "Permanente";
+			}
+
+			return row[id];
+		}
+
 		if (id === "temporality_date") {
+			if (row[id] >= 9999) {
+				return "Permanente";
+			}
+
+			if (!row[id]) {
+				return "Indefinido";
+			}
+
 			let date = getDocumentDate(row);
 			date = `${row[id]}${date.substring(4)}`;
-			const day = date.substring(8,10);
-			const month = date.substring(5,7);
-			const year = date.substring(0,4);
+			const day = date.substring(8, 10);
+			const month = date.substring(5, 7);
+			const year = date.substring(0, 4);
 			return `${day}/${month}/${year}`;
 		}
 
 		if (id === "temporality_year") {
-			const date = getDocumentDate(row)
+			if (!row.temporality_date) {
+				return "Indefinida";
+			}
+			const date = getDocumentDate(row);
 			let temporality = parseInt(row.temporality_date, 10);
-			const year = parseInt(date.substring(0,4), 10);
+			if (temporality >= 9999) {
+				return "Permanente";
+			}
+			const year = parseInt(date.substring(0, 4), 10);
 			temporality -= year;
 			return temporality;
 		}
@@ -416,6 +486,46 @@ const DataTable = ({ url, title }) => {
 		handleRequestSort(event, property);
 	};
 
+	const [currentFilter, setCurrentFilter] = useState("");
+	const [filteredRows, setFilteredRows] = useState(rows);
+
+	const filterRows = (query) => {
+		const rowsWithFilter = rows.filter((row) => {
+            // eslint-disable-next-line
+			for (const [key, value] of Object.entries(row)) {
+				try {
+					if (
+						key !== "id" &&
+						cellContent(
+							row,
+							url === "box-archiving/" &&
+								(key === "is_eliminated" || key === "is_filed")
+								? "status"
+								: key
+						)
+							.toString()
+							.toLowerCase()
+							.includes(query.toLowerCase())
+					) {
+						return true;
+					}
+				} catch {} // eslint-disable-line
+			}
+			return false;
+		});
+
+		setFilteredRows(rowsWithFilter);
+	};
+
+	useEffect(() => {
+		filterRows(currentFilter);
+	}, [currentFilter]);
+
+	useEffect(() => {
+		setFilteredRows(rows);
+		filterRows(currentFilter);
+	}, [rows]);
+
 	return (
 		<>
 			<Paper className={classes.paper} elevation={10}>
@@ -424,6 +534,15 @@ const DataTable = ({ url, title }) => {
 						{title}
 					</Typography>
 				</Toolbar>
+				{isReport === false && (
+					<TextField
+						label="Filtro"
+						value={currentFilter}
+						onChange={(e) => setCurrentFilter(e.target.value)}
+						variant="outlined"
+						className={classes.filter}
+					/>
+				)}
 				<TableContainer>
 					<Table>
 						<TableHead>
@@ -465,7 +584,7 @@ const DataTable = ({ url, title }) => {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{stableSort(rows, getComparator(order, orderBy))
+							{stableSort(filteredRows, getComparator(order, orderBy))
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((row) => (
 									<TableRow
@@ -499,7 +618,8 @@ const DataTable = ({ url, title }) => {
 													</TableCell>
 
 													{headCellIndex === headCells.length - 1 &&
-														fieldUrls.indexOf(url) !== -1 && (
+														fieldUrls.indexOf(url) !== -1 &&
+														isReport === false && (
 															<TableCell align="right">
 																<IconButton
 																	style={{ color: "#fe0000" }}
@@ -572,6 +692,11 @@ const DataTable = ({ url, title }) => {
 DataTable.propTypes = {
 	url: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
+	isReport: PropTypes.bool,
+};
+
+DataTable.defaultProps = {
+	isReport: false,
 };
 
 export default DataTable;
