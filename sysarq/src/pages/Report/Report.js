@@ -452,50 +452,11 @@ const Report = () => {
 				{reportType === "Processos Administrativos" ? (
 					<>
 						<Grid container spacing={2} justifyContent="center">
-							{/* <Grid item xs={4} sm={9} md={12}>
-								Data de Arquivamento:
-							</Grid> */}
-							<Grid item xs={8} sm={9} md={9}>
-								<MuiPickersUtilsProvider utils={DateFnsUtils}>
-									<Grid container spacing={2} justifyContent="center">
-										<Grid item xs={6} sm={4}>
-											<KeyboardDatePicker
-												okLabel="Confirmar"
-												cancelLabel="Cancelar"
-												id="initial-date-picker-dialog"
-												label=""
-												format="dd/MM/yyyy"
-												value={initialDate}
-												onChange={handleInitialDateChange}
-												KeyboardButtonProps={{
-													"aria-label": "change initial date",
-												}}
-												error={initialDateHelperText !== ""}
-												helperText={initialDateHelperText}
-											/>
-										</Grid>
-										{/* <Grid item xs={8} sm={9} md={9}>
-											até
-										</Grid> */}
-										<Grid item xs={6} sm={4}>
-											<KeyboardDatePicker
-												okLabel="Confirmar"
-												cancelLabel="Cancelar"
-												id="final-date-picker-dialog"
-												label=""
-												format="dd/MM/yyyy"
-												value={finalDate}
-												onChange={handleFinalDateChange}
-												KeyboardButtonProps={{
-													"aria-label": "change final date",
-												}}
-												error={finalDateHelperText !== ""}
-												helperText={finalDateHelperText}
-											/>
-										</Grid>
-									</Grid>
-								</MuiPickersUtilsProvider>
-							</Grid>
+							<div style={{ marginRight: "284px", fontWeight: "bold" }}>
+								<Typography className={classes.sectionTitle}>
+									Data de Arquivamento:
+								</Typography>
+							</div>
 						</Grid>
 					</>
 				) : (
@@ -559,60 +520,71 @@ const Report = () => {
 									)}
 								</FormControl>
 							</Grid>
-							<Grid item xs={8} sm={9} md={9}>
-								<MuiPickersUtilsProvider utils={DateFnsUtils}>
-									<Grid container spacing={2} justifyContent="center">
-										<Grid item xs={6} sm={4}>
-											<KeyboardDatePicker
-												okLabel="Confirmar"
-												cancelLabel="Cancelar"
-												id="initial-date-picker-dialog"
-												label="Data inicial"
-												format="dd/MM/yyyy"
-												value={initialDate}
-												onChange={handleInitialDateChange}
-												KeyboardButtonProps={{
-													"aria-label": "change initial date",
-												}}
-												error={initialDateHelperText !== ""}
-												helperText={initialDateHelperText}
-											/>
-										</Grid>
-										<Grid item xs={6} sm={4}>
-											<KeyboardDatePicker
-												okLabel="Confirmar"
-												cancelLabel="Cancelar"
-												id="final-date-picker-dialog"
-												label="Data final"
-												format="dd/MM/yyyy"
-												value={finalDate}
-												onChange={handleFinalDateChange}
-												KeyboardButtonProps={{
-													"aria-label": "change final date",
-												}}
-												error={finalDateHelperText !== ""}
-												helperText={finalDateHelperText}
-											/>
-										</Grid>
-									</Grid>
-								</MuiPickersUtilsProvider>
-							</Grid>
+							<div style={{ marginRight: "284px", fontWeight: "bold" }}>
+								<Typography className={classes.sectionTitle}>
+									Prazo de guarda:
+								</Typography>
+							</div>		
 							{/* </Grid> */}
-							<Grid item xs={12} sm={12} md={12}>
-								<FormControlLabel
-									label="Mostrar apenas com temporalidade permanente"
-									control={
-										<Checkbox
-											checked={onlyPermanents}
-											onChange={handleOnlyPermanentsChange}
-										/>
-									}
-								/>
-							</Grid>
 						</Grid>
 						{/* </CardContainer> */}
 						{/* </FormControl> */}
 					</>)}
+				{reportType === "Temporalidade" || reportType == "Processos Administrativos" ? (
+				<>
+					<Grid item xs={8} sm={9} md={9}>
+						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+							<Grid container spacing={2} justifyContent="center">
+								<Grid item xs={6} sm={4}>
+									<KeyboardDatePicker
+										okLabel="Confirmar"
+										cancelLabel="Cancelar"
+										id="initial-date-picker-dialog"
+										label="Data inicial"
+										format="dd/MM/yyyy"
+										value={initialDate}
+										onChange={handleInitialDateChange}
+										KeyboardButtonProps={{
+											"aria-label": "change initial date",
+										}}
+										error={initialDateHelperText !== ""}
+										helperText={initialDateHelperText}
+									/>
+								</Grid>
+								<Grid item xs={6} sm={4}>
+									<KeyboardDatePicker
+										okLabel="Confirmar"
+										cancelLabel="Cancelar"
+										id="final-date-picker-dialog"
+										label="Data final"
+										format="dd/MM/yyyy"
+										value={finalDate}
+										onChange={handleFinalDateChange}
+										KeyboardButtonProps={{
+											"aria-label": "change final date",
+										}}
+										error={finalDateHelperText !== ""}
+										helperText={finalDateHelperText}
+									/>
+								</Grid>
+							</Grid>
+						</MuiPickersUtilsProvider>
+					</Grid>
+				</>) : ("")}
+				{reportType === "Temporalidade" || reportType == "Processos Administrativos" ? (
+				<>
+					<Grid item xs={12} sm={12} md={12}>
+						<FormControlLabel
+							label="Mostrar apenas com temporalidade permanente"
+							control={
+								<Checkbox
+									checked={onlyPermanents}
+									onChange={handleOnlyPermanentsChange}
+								/>
+							}
+						/>
+					</Grid>
+					</>) : ("")}
 
 				{reportType === "Folha de Frequências" ? (
 					<Grid container style={{ display: "flex", justifyContent: "center" }}>
