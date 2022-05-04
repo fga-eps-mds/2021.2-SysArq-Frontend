@@ -3,10 +3,12 @@ import { pdf, PDFDownloadLink, Page, Text, View, Document, StyleSheet, Image } f
 import { Table, TableHeader, TableCell, TableBody, DataTableCell } from '@david.kucsai/react-pdf-table';
 import { saveAs } from 'file-saver';
 import { makeStyles } from "@material-ui/core";
+import { maskBr } from "js-brasil";
 import DataTable from "../components/DataTable";
+import tableHeadCells from "../components/DataTable/tablesHeadCells";
 import CardContainer from "../components/Container/CardContainer";
 import { axiosProfile, axiosArchives } from "../../Api";
-import { axiosProfileError, getPublicWorkers, autocompl, formatDate } from "../../support";
+import { axiosProfileError, getPublicWorkers, autocompl, formatDate, getUniqueFieldValues } from "../../support";
 
 const styles = StyleSheet.create({
 	page: {
@@ -218,6 +220,164 @@ export default function ReportResult() {
 		return title;
 	}
 
+	const cellContent = (row, id) => {
+		const monthMap = {
+			"01": "jan",
+			"02": "fev",
+			"03": "mar",
+			"04": "abr",
+			"05": "mai",
+			"06": "jun",
+			"07": "jul",
+			"08": "ago",
+			"09": "set",
+			"10": "out",
+			"11": "nov",
+			"12": "dez",
+		};
+
+		if (id === "cpf") {
+			return maskBr.cpf(row[id]);
+		}
+
+		if (id === "is_filed") {
+			if (row[id] === true) {
+				return "Sim";
+			}
+			return "Não";
+		}
+		if (id === "is_eliminated") {
+			if (row[id] === true) {
+				return "Sim";
+			}
+			return "Não";
+		}
+
+		if (id === "document_name") {
+			if (row.document_name_name) {
+				return row.document_name_name
+			}
+			return row[id];
+		}
+
+		if (id === "box_number") {
+			return row.origin_box.number;
+		}
+
+		if (id === "status") {
+			if (cellContent(row, "is_eliminated") === "Sim") {
+				return "Eliminado";
+			}
+			if (cellContent(row, "is_filed") === "Não") {
+				return "Desarquivado";
+			}
+			return "Arquivado";
+		}
+
+		if (id === "notice_date" || id === "received_date" || id === "document_date") {
+			const date = id === "document_date" ? getDocumentDate(row) : row[id];
+			const day = date.substring(8, 10);
+			const month = date.substring(5, 7);
+			const year = date.substring(0, 4);
+			return `${day}/${month}/${year}`;
+		}
+
+		if (id === "reference_period") {
+			let formated = "";
+			if (Array.isArray(row[id])) {
+				Object.values (row[id]).forEach((e) => {
+					const month = e.substring(5);
+					const year = e.substring(0, 4);
+					formated += `${month}/${year} `;
+				})
+
+				return formated;
+			}
+			const month = row[id].substring(5, 7);
+			const year = row[id].substring(0, 4);
+			return `${monthMap[month]}/${year}`;
+		}
+
+		if (id === "temporality") {
+			if (row[id] === 9999) {
+				return "Permanente";
+			}
+
+			return row[id];
+		}
+
+		if (id === "temporality_date") {
+			if (row[id] >= 9999) {
+				return "Permanente";
+			}
+
+			if (!row[id]) {
+				return "Indefinido";
+			}
+
+			let date = getDocumentDate(row);
+			date = `${row[id]}${date.substring(4)}`;
+			const day = date.substring(8,10);
+			const month = date.substring(5,7);
+			const year = date.substring(0,4);
+			return `${day}/${month}/${year}`;
+		}
+
+		if (id === "temporality_year") {
+			if (!row.temporality_date) {
+				return "Indefinida";
+			}
+			const date = getDocumentDate(row)
+			let temporality = parseInt(row.temporality_date, 10);
+			if (temporality >= 9999) {
+				return "Permanente";
+			}
+			const year = parseInt(date.substring(0,4), 10);
+			temporality -= year;
+			return temporality;
+		}
+
+		if (id === "temporality_date" || id === "document_type_name") {
+			if (typeof row[id] === "undefined") return "-";
+			if (typeof row[id] !== "object") return row[id];
+			const obj = row[id];
+			for (let i = 0; i < obj.length; i += 1) {
+				if (i < obj.length - 1) {
+					obj[i] = `${obj[i]} `;
+				}
+			}
+			return obj;
+		}
+
+		if (typeof row[id] === "undefined" || row[id] === null || row[id] === "")
+			return "-";
+
+		return row[id];
+	};
+
+	const genTable = () => {
+		const labels = tableHeadCells(url);
+		
+		return <View style={styles.table}>
+			<Table
+				data={reportData}
+			>
+				<TableHeader>
+					{labels.map((row, i) => (
+						<TableCell style={{ textAlign: "center" }}>
+							<Text style={{fontSize: 12}}> {row.label.split(" ").join("\n")} </Text>
+						</TableCell>
+					))}
+				</TableHeader>
+				<TableBody>
+				{labels.map((row, i) => (
+					<DataTableCell style={{ textAlign: "center" }} getContent={(r) => cellContent(r, row.id)} />
+					
+				))}
+				</TableBody>
+			</Table>
+		</View>
+	}
 	const MyDoc = () => (
 		<Document>
 			<Page size="A4" style={styles.page}>
@@ -235,38 +395,9 @@ export default function ReportResult() {
 						</View>
 					</View>
 					<View style={styles.title}>
-						<Text style={styles.text}>RELATÓRIO DE TEMPORALIDADE DOCUMENTAL</Text>
+						<Text style={styles.text}>{getReportTitle().toUpperCase()}</Text>
 					</View>
-					<View style={styles.table}>
-						<Table
-							data={reportData}
-						>
-							<TableHeader style={{ fontWeight: "bold" }}>
-								<TableCell style={{ textAlign: "center" }}>
-									<Text><b>Nome do{"\n"}Documento</b></Text>
-								</TableCell>
-								<TableCell style={{ textAlign: "center" }}>
-									<Text>Temporalidade </Text>
-								</TableCell>
-								<TableCell style={{ textAlign: "center" }}>
-									<Text>Data do{"\n"}Documento </Text>
-								</TableCell>
-								<TableCell style={{ textAlign: "center" }}>
-									<Text>Prazo de{"\n"}Guarda </Text>
-								</TableCell>
-								<TableCell style={{ textAlign: "center" }}>
-									<Text>Número do{"\n"}Processo </Text>
-								</TableCell>
-							</TableHeader>
-							<TableBody>
-								<DataTableCell style={{ textAlign: "center" }} getContent={(r) => r.document_name ? r.document_name : "-"} />
-								<DataTableCell style={{ textAlign: "center" }} getContent={(r) => getTemporality(r)} />
-								<DataTableCell style={{ textAlign: "center" }} getContent={(r) => formatDocumentDate(getDocumentDate(r))} />
-								<DataTableCell style={{ textAlign: "center" }} getContent={(r) => getTemporalityDate(r)} />
-								<DataTableCell style={{ textAlign: "center" }} getContent={(r) => r.process_number} />
-							</TableBody>
-						</Table>
-					</View>
+					{genTable()}
 				</View>
 			</Page>
 		</Document>
