@@ -1,66 +1,86 @@
 import React, { useState, useEffect } from "react";
-import { pdf, PDFDownloadLink, Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
-import { Table, TableHeader, TableCell, TableBody, DataTableCell } from '@david.kucsai/react-pdf-table';
-import { saveAs } from 'file-saver';
+import {
+	pdf,
+	PDFDownloadLink,
+	Page,
+	Text,
+	View,
+	Document,
+	StyleSheet,
+	Image,
+} from "@react-pdf/renderer";
+import {
+	Table,
+	TableHeader,
+	TableCell,
+	TableBody,
+	DataTableCell,
+} from "@david.kucsai/react-pdf-table";
+import { saveAs } from "file-saver";
 import { makeStyles } from "@material-ui/core";
 import { maskBr } from "js-brasil";
 import DataTable from "../components/DataTable";
 import tableHeadCells from "../components/DataTable/tablesHeadCells";
 import CardContainer from "../components/Container/CardContainer";
 import { axiosProfile, axiosArchives } from "../../Api";
-import { axiosProfileError, getPublicWorkers, autocompl, formatDate, getUniqueFieldValues } from "../../support";
+import {
+	axiosProfileError,
+	getPublicWorkers,
+	autocompl,
+	formatDate,
+	getUniqueFieldValues,
+} from "../../support";
 
 const styles = StyleSheet.create({
 	page: {
-		backgroundColor: 'white'
+		backgroundColor: "white",
 	},
-	body: {
-	},
+	body: {},
 	row: {
-		flexDirection: 'row',
+		flexDirection: "row",
 		paddingLeft: 50,
 		paddingRight: 50,
 		paddingTop: 20,
-		justifyContent: "space-between"
+		justifyContent: "space-between",
 	},
 	logo1: {
 		margin: 20,
 		width: 60,
-		height: 80.3
+		height: 80.3,
 	},
 	logo2: {
 		marginTop: 30,
 		width: 60,
-		height: 72.5
+		height: 72.5,
 	},
 	header: {
-		justifyContent: 'center',
+		justifyContent: "center",
 		margin: 50,
-		marginLeft: 0
+		marginLeft: 0,
 	},
 	title: {
-		flexDirection: 'row',
+		flexDirection: "row",
 		// paddingLeft: '20%'
-		justifyContent: 'center'
+		justifyContent: "center",
 	},
 	text: {
 		// width: '50%',
-		textAlign: 'center',
+		textAlign: "center",
 		justifyContent: "center",
 		fontSize: 10,
 	},
 	table: {
-		margin: 30
+		margin: 30,
 	},
 	rodape: {
-		position: 'absolute',
+		position: "absolute",
 		fontSize: 10,
 		bottom: 30,
 		left: 0,
 		right: 0,
-		textAlign: 'center',
-		color: 'grey',
-	}
+		textAlign: "center",
+		color: "grey",
+	},
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -120,8 +140,8 @@ export default function ReportResult() {
 	const url = localStorage.getItem("url");
 	const classes = useStyles();
 
-	const currentDay = new Date().toLocaleString("pt-BR", { day: '2-digit' });
-	const currentMonth = new Date().toLocaleString("pt-BR", { month: '2-digit' });
+	const currentDay = new Date().toLocaleString("pt-BR", { day: "2-digit" });
+	const currentMonth = new Date().toLocaleString("pt-BR", { month: "2-digit" });
 	const currentYear = new Date().getFullYear();
 
 	const [reportData, setReportData] = useState(null);
@@ -156,7 +176,7 @@ export default function ReportResult() {
 		const month = date.substring(5, 7);
 		const year = date.substring(0, 4);
 		return `${day}/${month}/${year}`;
-	}
+	};
 
 	const getDocumentDate = (data) => {
 		if (data.archiving_date) {
@@ -166,17 +186,16 @@ export default function ReportResult() {
 			return data.received_date;
 		}
 		return data.reference_period;
-	}
+	};
 
 	const getTemporality = (data) => {
 		if (data.temporality_date >= 9999) {
 			return "Permanente";
 		}
 		return data.temporality_date ? data.temporality_date : "-";
-	}
+	};
 
 	const getTemporalityDate = (data) => {
-
 		if (data.temporality_date >= 9999) {
 			return "Permanente";
 		}
@@ -189,7 +208,7 @@ export default function ReportResult() {
 		const month = date.substring(5, 7);
 		const year = date.substring(0, 4);
 		return `${day}/${month}/${year}`;
-	}
+	};
 
 	const getReportTitle = () => {
 		const prefix = url.split("/")[0];
@@ -227,7 +246,7 @@ export default function ReportResult() {
 		}
 
 		return title;
-	}
+	};
 
 	const cellContent = (row, id) => {
 		const monthMap = {
@@ -240,9 +259,9 @@ export default function ReportResult() {
 			"07": "jul",
 			"08": "ago",
 			"09": "set",
-			"10": "out",
-			"11": "nov",
-			"12": "dez",
+			10: "out",
+			11: "nov",
+			12: "dez",
 		};
 
 		if (id === "cpf") {
@@ -264,7 +283,7 @@ export default function ReportResult() {
 
 		if (id === "document_name") {
 			if (row.document_name_name) {
-				return row.document_name_name
+				return row.document_name_name;
 			}
 			return row[id];
 		}
@@ -283,7 +302,11 @@ export default function ReportResult() {
 			return "Arquivado";
 		}
 
-		if (id === "notice_date" || id === "received_date" || id === "document_date") {
+		if (
+			id === "notice_date" ||
+			id === "received_date" ||
+			id === "document_date"
+		) {
 			const date = id === "document_date" ? getDocumentDate(row) : row[id];
 			const day = date.substring(8, 10);
 			const month = date.substring(5, 7);
@@ -298,7 +321,7 @@ export default function ReportResult() {
 					const month = e.substring(5);
 					const year = e.substring(0, 4);
 					formated += `${month}/${year} `;
-				})
+				});
 
 				return formated;
 			}
@@ -336,7 +359,7 @@ export default function ReportResult() {
 			if (!row.temporality_date) {
 				return "Indefinida";
 			}
-			const date = getDocumentDate(row)
+			const date = getDocumentDate(row);
 			let temporality = parseInt(row.temporality_date, 10);
 			if (temporality >= 9999) {
 				return "Permanente";
@@ -367,40 +390,53 @@ export default function ReportResult() {
 	const genTable = () => {
 		const labels = tableHeadCells(url);
 
-		return <View style={styles.table}>
-			<Table
-				data={reportData}
-			>
-				<TableHeader>
-					{labels.map((row, i) => (
-						<TableCell style={{ textAlign: "center" }}>
-							<Text style={{ fontSize: 12 }}> {row.label.split(" ").join("\n")} </Text>
-						</TableCell>
-					))}
-				</TableHeader>
-				<TableBody>
-					{labels.map((row, i) => (
-						<DataTableCell style={{ textAlign: "center" }} getContent={(r) => cellContent(r, row.id)} />
-
-					))}
-				</TableBody>
-			</Table>
-		</View>
-	}
+		return (
+			<View style={styles.table}>
+				<Table data={reportData}>
+					<TableHeader>
+						{labels.map((row, i) => (
+							<TableCell style={{ textAlign: "center" }}>
+								<Text style={{ fontSize: 12 }}>
+									{" "}
+									{row.label.split(" ").join("\n")}{" "}
+								</Text>
+							</TableCell>
+						))}
+					</TableHeader>
+					<TableBody>
+						{labels.map((row, i) => (
+							<DataTableCell
+								style={{ textAlign: "center" }}
+								getContent={(r) => cellContent(r, row.id)}
+							/>
+						))}
+					</TableBody>
+				</Table>
+			</View>
+		);
+	};
 	const MyDoc = () => (
 		<Document>
 			<Page size="A4" style={styles.page}>
 				<View style={styles.body}>
 					<View style={styles.row}>
 						<View>
-							<Image src="https://i.imgur.com/Pz4BpXQ.png" style={styles.logo1} />
+							<Image
+								src="https://i.imgur.com/Pz4BpXQ.png"
+								style={styles.logo1}
+							/>
 						</View>
 						<View style={styles.header}>
-							<Text style={styles.text}>ESTADO DE GOIÁS {"\n"}
-								DELEGACIA-GERAL DA POLÍCIA CIVIL</Text>
+							<Text style={styles.text}>
+								ESTADO DE GOIÁS {"\n"}
+								DELEGACIA-GERAL DA POLÍCIA CIVIL
+							</Text>
 						</View>
 						<View>
-							<Image src="https://i.imgur.com/4D88yCh.jpg" style={styles.logo2} />
+							<Image
+								src="https://i.imgur.com/4D88yCh.jpg"
+								style={styles.logo2}
+							/>
 						</View>
 					</View>
 					<View style={styles.title}>
@@ -410,8 +446,8 @@ export default function ReportResult() {
 				</View>
 				<Text style={styles.rodape} fixed>
 					SEÇÃO DO ARQUIVO-GERAL{"\n"}
-					RUA 70, Nº 338, SETOR CENTRAL - GOIANIA - GO - CEP 74055-120 - (62)3201-2721
-
+					RUA 70, Nº 338, SETOR CENTRAL - GOIANIA - GO - CEP 74055-120 -
+					(62)3201-2721
 				</Text>
 			</Page>
 		</Document>
@@ -439,10 +475,9 @@ export default function ReportResult() {
 			.catch((error) => axiosProfileError(error, connectionError));
 	}, []);
 
-
 	return (
 		<>
-			<DataTable title={getReportTitle()} url={url} />
+			<DataTable title={getReportTitle()} url={url} isReport />
 			<button
 				type="button"
 				className={classes.button}
@@ -451,15 +486,19 @@ export default function ReportResult() {
 					const asPdf = pdf([]); // {} is important, throws without an argument
 					asPdf.updateContainer(doc);
 					const blob = await asPdf.toBlob();
-					saveAs(blob, `relatorio-${currentDay}-${currentMonth}-${currentYear}.pdf`);
+					saveAs(
+						blob,
+						`relatorio-${currentDay}-${currentMonth}-${currentYear}.pdf`
+					);
 				}}
 				style={{
 					marginLeft: "40%",
 					marginRight: "40%",
-					width: 200
+					width: 200,
 				}}
-			>DOWNLOAD PDF</button>
-
+			>
+				DOWNLOAD PDF
+			</button>
 		</>
 	);
 }
