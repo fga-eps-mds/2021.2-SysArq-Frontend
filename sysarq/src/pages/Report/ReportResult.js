@@ -51,6 +51,15 @@ const styles = StyleSheet.create({
 	},
 	table: {
 		margin: 30
+	},
+	rodape: {
+		position: 'absolute',
+		fontSize: 10,
+		bottom: 30,
+		left: 0,
+		right: 0,
+		textAlign: 'center',
+		color: 'grey',
 	}
 });
 
@@ -285,7 +294,7 @@ export default function ReportResult() {
 		if (id === "reference_period") {
 			let formated = "";
 			if (Array.isArray(row[id])) {
-				Object.values (row[id]).forEach((e) => {
+				Object.values(row[id]).forEach((e) => {
 					const month = e.substring(5);
 					const year = e.substring(0, 4);
 					formated += `${month}/${year} `;
@@ -317,9 +326,9 @@ export default function ReportResult() {
 
 			let date = getDocumentDate(row);
 			date = `${row[id]}${date.substring(4)}`;
-			const day = date.substring(8,10);
-			const month = date.substring(5,7);
-			const year = date.substring(0,4);
+			const day = date.substring(8, 10);
+			const month = date.substring(5, 7);
+			const year = date.substring(0, 4);
 			return `${day}/${month}/${year}`;
 		}
 
@@ -332,7 +341,7 @@ export default function ReportResult() {
 			if (temporality >= 9999) {
 				return "Permanente";
 			}
-			const year = parseInt(date.substring(0,4), 10);
+			const year = parseInt(date.substring(0, 4), 10);
 			temporality -= year;
 			return temporality;
 		}
@@ -357,7 +366,7 @@ export default function ReportResult() {
 
 	const genTable = () => {
 		const labels = tableHeadCells(url);
-		
+
 		return <View style={styles.table}>
 			<Table
 				data={reportData}
@@ -365,15 +374,15 @@ export default function ReportResult() {
 				<TableHeader>
 					{labels.map((row, i) => (
 						<TableCell style={{ textAlign: "center" }}>
-							<Text style={{fontSize: 12}}> {row.label.split(" ").join("\n")} </Text>
+							<Text style={{ fontSize: 12 }}> {row.label.split(" ").join("\n")} </Text>
 						</TableCell>
 					))}
 				</TableHeader>
 				<TableBody>
-				{labels.map((row, i) => (
-					<DataTableCell style={{ textAlign: "center" }} getContent={(r) => cellContent(r, row.id)} />
-					
-				))}
+					{labels.map((row, i) => (
+						<DataTableCell style={{ textAlign: "center" }} getContent={(r) => cellContent(r, row.id)} />
+
+					))}
 				</TableBody>
 			</Table>
 		</View>
@@ -399,6 +408,11 @@ export default function ReportResult() {
 					</View>
 					{genTable()}
 				</View>
+				<Text style={styles.rodape} fixed>
+					SEÇÃO DO ARQUIVO-GERAL{"\n"}
+					RUA 70, Nº 338, SETOR CENTRAL - GOIANIA - GO - CEP 74055-120 - (62)3201-2721
+
+				</Text>
 			</Page>
 		</Document>
 	);
@@ -440,8 +454,8 @@ export default function ReportResult() {
 					saveAs(blob, `relatorio-${currentDay}-${currentMonth}-${currentYear}.pdf`);
 				}}
 				style={{
-					marginLeft: 600,
-					marginRight: 600
+					marginLeft: "40%",
+					marginRight: "40%"
 				}}
 			>DOWNLOAD PDF</button>
 
