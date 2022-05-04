@@ -542,6 +542,7 @@ const Report = () => {
 									<Grid container spacing={2} justifyContent="center">
 										<Grid item xs={6} sm={4}>
 											<KeyboardDatePicker
+												style={{ marginTop: "13px" }}
 												okLabel="Confirmar"
 												cancelLabel="Cancelar"
 												id="initial-date-picker-dialog"
@@ -558,6 +559,7 @@ const Report = () => {
 										</Grid>
 										<Grid item xs={6} sm={4}>
 											<KeyboardDatePicker
+												style={{ marginTop: "13px" }}
 												okLabel="Confirmar"
 												cancelLabel="Cancelar"
 												id="final-date-picker-dialog"
