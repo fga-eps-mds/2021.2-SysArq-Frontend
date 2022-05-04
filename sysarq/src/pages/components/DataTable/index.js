@@ -491,8 +491,8 @@ const DataTable = ({ url, title, isReport }) => {
 
 	const filterRows = (query) => {
 		const rowsWithFilter = rows.filter((row) => {
+            // eslint-disable-next-line
 			for (const [key, value] of Object.entries(row)) {
-				// eslint-disable-line
 				try {
 					if (
 						key !== "id" &&
