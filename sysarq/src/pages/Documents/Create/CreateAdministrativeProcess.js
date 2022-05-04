@@ -344,10 +344,10 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							process_number: processNumber,
 							interested: interestedPerson,
 							document_name_id: subject.id,
-							file_location_id: fileLocation.id,
-							shelf_id: shelf.id,
-							rack_id: rack.id,
-							box_abbreviation_id: boxAbbreviation.id,
+							file_location_id: fileLocation ? fileLocation.id : "",
+							shelf_id: shelf ? shelf.id : "",
+							rack_id: rack ? rack.id : "",
+							box_abbreviation_id: boxAbbreviation ? boxAbbreviation.id : "",
 							box_number: boxNumber,
 							box_year: parseInt(boxYear, 10),
 							sender_unity: senderUnit.id,
@@ -376,11 +376,13 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							axiosProfileError(err);
 							return false;
 						}
+						console.log("teste1");
 						connectionError(err.response.status);
 						return false;
 					});
 			})
 			.catch((error) => {
+				console.log(error);
 				axiosProfileError(error, connectionError);
 			});
 
@@ -1036,7 +1038,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									optionsLabel={(option) => `${option.abbreviation}`}
 									propertyCheck="abbreviation"
 									sortProperty="abbreviation"
-									label="Sigla da Caixa*"
+									label="Sigla da Caixa"
 									helperText={boxAbbreviationHelperText}
 								/>
 							)}
@@ -1046,7 +1048,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							<TextField
 								fullWidth
 								variant="outlined"
-								label="Número da Caixa*"
+								label="Número da Caixa"
 								value={boxNumber}
 								onChange={(event) => {
 									setBoxNumber(event.target.value);
@@ -1063,7 +1065,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							<TextField
 								fullWidth
 								variant="outlined"
-								label="Ano da Caixa*"
+								label="Ano da Caixa"
 								value={boxYear}
 								onChange={(event) => {
 									setBoxYear(event.target.value);
@@ -1101,7 +1103,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									optionsLabel={(option) => `${option.number}`}
 									propertyCheck="number"
 									sortProperty="number"
-									label="Estante*"
+									label="Estante"
 									helperText={shelfHelperText}
 								/>
 							)}
@@ -1125,7 +1127,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									optionsLabel={(option) => `${option.number}`}
 									propertyCheck="number"
 									sortProperty="number"
-									label="Prateleira*"
+									label="Prateleira"
 									helperText={rackHelperText}
 								/>
 							)}
@@ -1149,7 +1151,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									optionsLabel={(option) => `${option.file}`}
 									propertyCheck="file"
 									sortProperty="file"
-									label="Localidade*"
+									label="Localidade"
 									helperText={fileLocationHelperText}
 								/>
 							)}

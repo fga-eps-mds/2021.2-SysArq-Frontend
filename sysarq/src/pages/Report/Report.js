@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 
 import {
@@ -16,6 +17,7 @@ import {
 	Grid,
 	Checkbox,
 	FormControlLabel,
+
 } from "@material-ui/core";
 
 import DateFnsUtils from "@date-io/date-fns";
@@ -29,13 +31,16 @@ import { useHistory } from "react-router-dom";
 
 import SenderUnitInput from "../components/Inputs/SenderUnitInput";
 
+import CardContainer from "../components/Container/CardContainer";
+
 import ReferencePeriodInput from "../components/Inputs/ReferencePeriodInput";
 
 import PopUpAlert from "../components/PopUpAlert";
 
 import { axiosProfile, axiosArchives } from "../../Api";
 
-import { axiosProfileError, getPublicWorkers, autocompl } from "../../support";
+import { axiosProfileError, getPublicWorkers, autocompl, formatDate } from "../../support";
+import ptBR from "date-fns/locale/pt-BR";
 // import DataTable from "../components/DataTable";
 
 const useStyles = makeStyles((theme) => ({
@@ -122,7 +127,7 @@ const Report = () => {
 	};
 
 	const [units, setUnits] = useState([]);
-	const [senderUnit, setSenderUnit] = useState("");
+	const [senderUnit, setSenderUnit] = useState(null);
 	const [senderUnitHelperText, setSenderUnitHelperText] = useState("");
 
 	const [initialDate, setInitialDate] = useState(null);
@@ -152,8 +157,8 @@ const Report = () => {
 	const [documentNames, setDocumentNames] = useState([]);
 	const [documentName, setDocumentName] = useState("");
 	const [documentNameHelperText, setDocumentNameHelperText] = useState("");
-	const handleDocumentNameChange = (name) => {
-		setDocumentName(name);
+	const handleDocumentNameChange = (event) => {
+		setDocumentName(event.target.value);
 		setDocumentNameHelperText("");
 	};
 
@@ -190,9 +195,14 @@ const Report = () => {
 		};
 	});
 
+	const [onlyPermanents, setOnlyPermanents] = useState(false);
+	const handleOnlyPermanentsChange = (event) => {
+		setOnlyPermanents(event.target.checked);
+	};
+
 	const clear = () => {
 		setPublicWorkerHelperText("");
-		setSenderUnit("");
+		setSenderUnit(null);
 		setSenderUnitHelperText("");
 		setInitialDate(null);
 		setInitialDateHelperText("");
@@ -218,7 +228,102 @@ const Report = () => {
 	};
 
 	const onClick = () => {
-		localStorage.setItem("url", "report/");
+		let url;
+		let char = "?";
+		let docNameParam = "";
+		let initialDateParam = "";
+		let finalDateParam = "";
+		let onlyPermanentsParam = "";
+		let senderUnitParam = "";
+		let publicWorkerParam = "";
+		let referencePeriodParam = "";
+		let statusParam = "";
+
+		switch (reportType) {
+			case "Temporalidade":
+
+				if (documentName) {
+					docNameParam = `${char}document_name_id=${documentName.id}`
+					char = char === "?" ? "&" : char;
+				}
+
+				if (initialDate) {
+					initialDateParam = `${char}initial_date=${formatDate(initialDate)}`;
+					char = char === "?" ? "&" : char;
+				}
+
+				if (finalDate) {
+					finalDateParam = `${char}final_date=${formatDate(finalDate)}`;
+					char = char === "?" ? "&" : char;
+				}
+
+				if (onlyPermanents) {
+					onlyPermanentsParam = `${char}only_permanents=${onlyPermanents}`;
+				}
+
+				url = `report/${docNameParam}${initialDateParam}${finalDateParam}${onlyPermanentsParam}`;
+				break;
+			case "Assuntos":
+				url = "document-name/"
+				break;
+			case "Servidores":
+				url = "public-worker/";
+				break;
+			case "Unidades":
+				url = "unity/";
+				break;
+			case "Caixas":
+				if (senderUnit) {
+					senderUnitParam = `${char}sender_unity=${senderUnit.id}`;
+				}
+				url = `box-archiving-report/${senderUnitParam}`;
+				break;
+			case "Processos Administrativos":
+				if (senderUnit) {
+					senderUnitParam = `${char}sender_unity=${senderUnit.id}`;
+					char = char === "?" ? "&" : char;
+				}
+
+				if (initialDate) {
+					initialDateParam = `${char}initial_date=${formatDate(initialDate)}`;
+					char = char === "?" ? "&" : char;
+				}
+
+				if (finalDate) {
+					finalDateParam = `${char}final_date=${formatDate(finalDate)}`;
+				}
+
+				url = `administrative-process-report/${senderUnitParam}${initialDateParam}${finalDateParam}`;
+				break;
+			case "Relações de Frequências":
+				if (senderUnit) {
+					senderUnitParam = `${char}sender_unity=${senderUnit.id}`;
+					char = char === "?" ? "&" : char;
+				}
+
+				if (referencePeriod.length) {
+					referencePeriodParam = `${char}reference_period=${referencePeriod}`;
+				}
+
+				url = `frequency-relation-report/${senderUnitParam}${referencePeriodParam}`;
+				break;
+			case "Folha de Frequências":
+				if (publicWorker) {
+					publicWorkerParam = `${char}public_worker=${publicWorker.cpf}`;
+				}
+				url = `frequency-sheet-report/${publicWorkerParam}`;
+				break;
+			case "Status":
+				if (status) {
+					statusParam = `${char}status=${status}`;
+				}
+				url = `status-report/${statusParam}`;
+				break;
+			default:
+				url = `report/`;
+
+		}
+		localStorage.setItem("url", url);
 		return history.push("/report/result");
 	};
 
@@ -252,21 +357,21 @@ const Report = () => {
 			.catch((error) => axiosProfileError(error, connectionError));
 	}, []);
 
-	const onlyPermanents = false;
-
 	return (
 		<Container maxWidth="md" className={classes.container}>
 			<Paper elevation={10} className={classes.paper}>
 				<Typography className={classes.title}>Relatório</Typography>
 
 				<FormControl
-					fullwidth
+					fullWidth
 					error={reportTypeError}
 					className={classes.input}
 					margin="normal"
+					variant="outlined"
 				>
 					<InputLabel id="report-type-label">Tipo de relatório</InputLabel>
 					<Select
+						label="Tipo de relatório"
 						labelId="report-type-label"
 						id="report-type"
 						value={reportType}
@@ -276,7 +381,6 @@ const Report = () => {
 						<MenuItem value="Assuntos">Assuntos cadastrados</MenuItem>
 						<MenuItem value="Servidores">Servidores cadastrados</MenuItem>
 						<MenuItem value="Unidades">Unidades cadastradas</MenuItem>
-						<MenuItem value="Assuntos">Assuntos cadastradas</MenuItem>
 						<MenuItem value="Caixas">Caixas cadastradas</MenuItem>
 						<MenuItem value="Processos Administrativos">
 							Processos Administrativos
@@ -295,21 +399,24 @@ const Report = () => {
 				</FormControl>
 				{reportType === "Status" ? (
 					<FormControl
-						fullwidth
+						fullWidth
 						error={statusError}
 						className={classes.input}
 						margin="normal"
+						variant="outlined"
 					>
 						<InputLabel id="status-label">Status</InputLabel>
 						<Select
+							label="Status"
 							labelId="status-label"
 							id="status"
 							value={status}
 							onChange={handleStatusChange}
 						>
-							<MenuItem value="AD">Arquivado</MenuItem>
-							<MenuItem value="AL">Desarquivado</MenuItem>
-							<MenuItem value="VI">Eliminado</MenuItem>
+							<MenuItem key={0} value=""><em>Nenhum</em></MenuItem>
+							<MenuItem value="arquivado">Arquivado</MenuItem>
+							<MenuItem value="desarquivado">Desarquivado</MenuItem>
+							<MenuItem value="eliminado">Eliminado</MenuItem>
 						</Select>
 						{statusHelperText && (
 							<FormHelperText>Defina o o status dos documentos</FormHelperText>
@@ -319,17 +426,18 @@ const Report = () => {
 					""
 				)}
 				{reportType === "Processos Administrativos" ||
-				reportType === "Relações de Frequências" ? (
+					reportType === "Relações de Frequências" ||
+					reportType === "Caixas" ? (
 					<Grid
 						container
 						style={{
 							display: "flex",
 							justifyContent: "center",
-							marginTop: "-5px",
+							marginTop: "3px",
 							marginBottom: "15px",
 						}}
 					>
-						<Grid item xs={12} sm={6}>
+						<Grid item xs={8} sm={6}>
 							<SenderUnitInput
 								isDetailPage={false}
 								senderUnitDetail={null}
@@ -346,52 +454,15 @@ const Report = () => {
 				)}
 				{reportType === "Processos Administrativos" ? (
 					<>
-						<div style={{ marginRight: "284px", fontWeight: "bold" }}>
-							<Typography className={classes.sectionTitle}>
-								Data de Arquivamento:
-							</Typography>
-						</div>
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							<Grid container spacing={2}>
-								<Grid item xs={6} sm={4}>
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										style={{ width: "69%", marginLeft: "77%" }}
-										id="initial-date-picker-dialog"
-										label=""
-										format="dd/MM/yyyy"
-										value={initialDate}
-										onChange={handleInitialDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change initial date",
-										}}
-										error={initialDateHelperText !== ""}
-										helperText={initialDateHelperText}
-									/>
-								</Grid>
-								<div style={{ marginTop: "25px", marginLeft: "144px" }}>
-									até
-								</div>
-								<Grid item xs={6} sm={4}>
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										style={{ width: "69%", marginRight: "73px" }}
-										id="final-date-picker-dialog"
-										label=""
-										format="dd/MM/yyyy"
-										value={finalDate}
-										onChange={handleFinalDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change final date",
-										}}
-										error={finalDateHelperText !== ""}
-										helperText={finalDateHelperText}
-									/>
+						<Grid container spacing={2} justifyContent="center">
+							<Grid container justifyContent="center">
+								<Grid style={{ textAlign: "left", fontWeight: "bold" }} item xs={8} sm={6} md={6}>
+									<Typography className={classes.sectionTitle}>
+										Data de Arquivamento:
+									</Typography>
 								</Grid>
 							</Grid>
-						</MuiPickersUtilsProvider>
+						</Grid>
 					</>
 				) : (
 					""
@@ -411,88 +482,132 @@ const Report = () => {
 					""
 				)}
 
-				{reportType === "Temporalidade" ? (
+				{reportType === "Temporalidade" && (
 					<>
-						<FormControl fullWidth error={documentNameHelperText !== ""}>
-							<InputLabel
-								id="select-document_name-label"
-								style={{ marginLeft: "25%" }}
-							>
-								Nome do Documento
-							</InputLabel>
-							<Select
-								style={{ textAlign: "center", width: "50%", marginLeft: "25%" }}
-								labelId="select-document-name-label"
-								id="select-document-name"
-								value={documentName}
-								onChange={handleDocumentNameChange}
-								renderValue={(value) => `${value.document_name}`}
-							>
-								<MenuItem key={0} value="">
-									<em>Nenhum</em>
-								</MenuItem>
-								{documentNames.map((subjectOption) => (
-									<MenuItem key={subjectOption.id} value={subjectOption}>
-										{subjectOption.document_name}
-									</MenuItem>
-								))}
-							</Select>
-							{documentNameHelperText ? (
-								<FormHelperText>{documentNameHelperText}</FormHelperText>
-							) : (
-								""
-							)}
-						</FormControl>
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							<Grid container spacing={2}>
-								<Grid item xs={6} sm={4}>
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										style={{ width: "75%", marginLeft: "77%" }}
-										id="initial-date-picker-dialog"
-										label="Data inicial"
-										format="dd/MM/yyyy"
-										value={initialDate}
-										onChange={handleInitialDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change initial date",
-										}}
-										error={initialDateHelperText !== ""}
-										helperText={initialDateHelperText}
-									/>
-								</Grid>
-								<Grid item xs={6} sm={4}>
-									<KeyboardDatePicker
-										okLabel="Confirmar"
-										cancelLabel="Cancelar"
-										style={{ width: "75%", marginLeft: "53%" }}
-										id="final-date-picker-dialog"
-										label="Data final"
-										format="dd/MM/yyyy"
-										value={finalDate}
-										onChange={handleFinalDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change final date",
-										}}
-										error={finalDateHelperText !== ""}
-										helperText={finalDateHelperText}
-									/>
+						{/* <FormControl fullWidth error={documentNameHelperText !== ""}> */}
+						{/* <CardContainer title="Temporalidade" spacing={1}> */}
+						<Grid container spacing={3} justifyContent="center">
+							{/* <Grid item xs={8} sm={9} md={9}> */}
+							<Grid item xs={12} sm={12} md={12}>
+								<FormControl
+									fullWidth
+									error={reportTypeError}
+									className={classes.input}
+									variant="outlined"
+								>
+									<InputLabel
+										id="report-type-label"
+									>
+										Nome do Documento
+									</InputLabel>
+
+									<Select
+										label="Nome do Documento"
+										fullWidth
+										labelId="select-document-name-label"
+										id="select-document-name"
+										value={documentName}
+										onChange={handleDocumentNameChange}
+										renderValue={(value) => `${value.document_name}`}
+									>
+										<MenuItem key={0} value="">
+											<em>Nenhum</em>
+										</MenuItem>
+										{documentNames.map((subjectOption) => (
+											<MenuItem key={subjectOption.id} value={subjectOption}>
+												{subjectOption.document_name}
+											</MenuItem>
+										))}
+									</Select>
+									{documentNameHelperText ? (
+										<FormHelperText>{documentNameHelperText}</FormHelperText>
+									) : (
+										""
+									)}
+								</FormControl>
+							</Grid>
+							{/* <div style={{ marginRight: "284px", fontWeight: "bold" }}>
+								<Typography className={classes.sectionTitle}>
+									Prazo de guarda:
+								</Typography>
+							</div> */}
+							<Grid container justifyContent="center">
+								<Grid style={{ textAlign: "left", fontWeight: "bold" }} item xs={8} sm={6} md={6}>
+									<Typography className={classes.sectionTitle}>
+										Prazo de guarda:
+									</Typography>
 								</Grid>
 							</Grid>
-						</MuiPickersUtilsProvider>
-						<FormControlLabel
-							style={{ marginTop: "2%" }}
-							control={<Checkbox {...onlyPermanents} />}
-							label="Mostrar apenas com temporalidade permanente"
-						/>
-					</>
-				) : (
-					""
-				)}
+							{/* </Grid> */}
+						</Grid>
+						{/* </CardContainer> */}
+						{/* </FormControl> */}
+					</>)}
+				{reportType === "Temporalidade" || reportType == "Processos Administrativos" ? (
+					<>
+						<Grid container justifyContent="center">
+							<Grid item xs={8} sm={10} md={9}>
+								<MuiPickersUtilsProvider locale={ptBR} utils={DateFnsUtils}>
+									<Grid container spacing={2} justifyContent="center">
+										<Grid item xs={6} sm={4}>
+											<KeyboardDatePicker
+												style={{ marginTop: "13px" }}
+												okLabel="Confirmar"
+												cancelLabel="Cancelar"
+												id="initial-date-picker-dialog"
+												label="Data inicial"
+												format="dd/MM/yyyy"
+												value={initialDate}
+												onChange={handleInitialDateChange}
+												KeyboardButtonProps={{
+													"aria-label": "change initial date",
+												}}
+												error={initialDateHelperText !== ""}
+												helperText={initialDateHelperText}
+												inputVariant="outlined"
+											/>
+										</Grid>
+										<Grid item xs={6} sm={4}>
+											<KeyboardDatePicker
+												style={{ marginTop: "13px" }}
+												okLabel="Confirmar"
+												cancelLabel="Cancelar"
+												id="final-date-picker-dialog"
+												label="Data final"
+												format="dd/MM/yyyy"
+												value={finalDate}
+												onChange={handleFinalDateChange}
+												KeyboardButtonProps={{
+													"aria-label": "change final date",
+												}}
+												error={finalDateHelperText !== ""}
+												helperText={finalDateHelperText}
+												inputVariant="outlined"
+											/>
+										</Grid>
+									</Grid>
+								</MuiPickersUtilsProvider>
+							</Grid>
+						</Grid>
+					</>) : ("")}
+				{reportType === "Temporalidade" || reportType == "Processos Administrativos" ? (
+					<>
+						<Grid item xs={12} sm={12} md={12}>
+							<FormControlLabel
+								label="Mostrar apenas com temporalidade permanente"
+								control={
+									<Checkbox
+										checked={onlyPermanents}
+										onChange={handleOnlyPermanentsChange}
+									/>
+								}
+							/>
+						</Grid>
+					</>) : ("")}
+
 				{reportType === "Folha de Frequências" ? (
 					<Grid container style={{ display: "flex", justifyContent: "center" }}>
-						<Grid item xs={12} sm={6}>
+						<Grid item xs={8} sm={6} md={6}>
 							{autocompl(
 								publicWorkers,
 								publicWorkerInput,
@@ -523,7 +638,8 @@ const Report = () => {
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-		</Container>
+
+		</Container >
 	);
 };
 

@@ -364,6 +364,27 @@ const DataTable = ({ url, title }) => {
 			return "Não";
 		}
 
+		if (id === "document_name") {
+			if (row.document_name_name) {
+				return row.document_name_name
+			}
+			return row[id];
+		}
+
+		if (id === "box_number") {
+			return row.origin_box.number;
+		}
+
+		if (id === "status") {
+			if (cellContent(row, "is_eliminated") === "Sim") {
+				return "Eliminado";
+			}
+			if (cellContent(row, "is_filed") === "Não") {
+				return "Desarquivado";
+			}
+			return "Arquivado";
+		}
+
 		if (id === "notice_date" || id === "received_date" || id === "document_date") {
 			const date = id === "document_date" ? getDocumentDate(row) : row[id];
 			const day = date.substring(8, 10);
@@ -373,6 +394,16 @@ const DataTable = ({ url, title }) => {
 		}
 
 		if (id === "reference_period") {
+			let formated = "";
+			if (Array.isArray(row[id])) {
+				Object.values (row[id]).forEach((e) => {
+					const month = e.substring(5);
+					const year = e.substring(0, 4);
+					formated += `${month}/${year} `;
+				})
+
+				return formated;
+			}
 			const month = row[id].substring(5, 7);
 			const year = row[id].substring(0, 4);
 			return `${monthMap[month]}/${year}`;
@@ -387,6 +418,14 @@ const DataTable = ({ url, title }) => {
 		}
 
 		if (id === "temporality_date") {
+			if (row[id] >= 9999) {
+				return "Permanente";
+			}
+
+			if (!row[id]) {
+				return "Indefinido";
+			}
+
 			let date = getDocumentDate(row);
 			date = `${row[id]}${date.substring(4)}`;
 			const day = date.substring(8,10);
@@ -396,8 +435,14 @@ const DataTable = ({ url, title }) => {
 		}
 
 		if (id === "temporality_year") {
+			if (!row.temporality_date) {
+				return "Indefinida";
+			}
 			const date = getDocumentDate(row)
 			let temporality = parseInt(row.temporality_date, 10);
+			if (temporality >= 9999) {
+				return "Permanente";
+			}
 			const year = parseInt(date.substring(0,4), 10);
 			temporality -= year;
 			return temporality;
