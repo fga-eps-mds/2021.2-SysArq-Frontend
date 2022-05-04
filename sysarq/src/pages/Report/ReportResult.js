@@ -455,7 +455,8 @@ export default function ReportResult() {
 				}}
 				style={{
 					marginLeft: "40%",
-					marginRight: "40%"
+					marginRight: "40%",
+					width: 200
 				}}
 			>DOWNLOAD PDF</button>
 

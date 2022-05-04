@@ -40,6 +40,7 @@ import PopUpAlert from "../components/PopUpAlert";
 import { axiosProfile, axiosArchives } from "../../Api";
 
 import { axiosProfileError, getPublicWorkers, autocompl, formatDate } from "../../support";
+import ptBR from "date-fns/locale/pt-BR";
 // import DataTable from "../components/DataTable";
 
 const useStyles = makeStyles((theme) => ({
@@ -369,9 +370,11 @@ const Report = () => {
 					error={reportTypeError}
 					className={classes.input}
 					margin="normal"
+					variant="outlined"
 				>
 					<InputLabel id="report-type-label">Tipo de relatório</InputLabel>
 					<Select
+						label="Tipo de relatório"
 						labelId="report-type-label"
 						id="report-type"
 						value={reportType}
@@ -403,14 +406,17 @@ const Report = () => {
 						error={statusError}
 						className={classes.input}
 						margin="normal"
+						variant="outlined"
 					>
 						<InputLabel id="status-label">Status</InputLabel>
 						<Select
+							label="Status"
 							labelId="status-label"
 							id="status"
 							value={status}
 							onChange={handleStatusChange}
 						>
+							<MenuItem key={0} value=""><em>Nenhum</em></MenuItem>
 							<MenuItem value="arquivado">Arquivado</MenuItem>
 							<MenuItem value="desarquivado">Desarquivado</MenuItem>
 							<MenuItem value="eliminado">Eliminado</MenuItem>
@@ -454,7 +460,9 @@ const Report = () => {
 						<Grid container spacing={2} justifyContent="center">
 							<Grid container justifyContent="center">
 								<Grid style={{ textAlign: "left", fontWeight: "bold" }} item xs={8} sm={6} md={6}>
-									Data de Arquivamento:
+									<Typography className={classes.sectionTitle}>
+										Data de Arquivamento:
+									</Typography>
 								</Grid>
 							</Grid>
 						</Grid>
@@ -488,6 +496,7 @@ const Report = () => {
 									fullWidth
 									error={reportTypeError}
 									className={classes.input}
+									variant="outlined"
 								>
 									<InputLabel
 										id="report-type-label"
@@ -496,6 +505,7 @@ const Report = () => {
 									</InputLabel>
 
 									<Select
+										label="Nome do Documento"
 										fullWidth
 										labelId="select-document-name-label"
 										id="select-document-name"
@@ -526,7 +536,9 @@ const Report = () => {
 							</div> */}
 							<Grid container justifyContent="center">
 								<Grid style={{ textAlign: "left", fontWeight: "bold" }} item xs={8} sm={6} md={6}>
-									Prazo de guarda:
+									<Typography className={classes.sectionTitle}>
+										Prazo de guarda:
+									</Typography>
 								</Grid>
 							</Grid>
 							{/* </Grid> */}
@@ -538,7 +550,7 @@ const Report = () => {
 					<>
 						<Grid container justifyContent="center">
 							<Grid item xs={8} sm={10} md={9}>
-								<MuiPickersUtilsProvider utils={DateFnsUtils}>
+								<MuiPickersUtilsProvider locale={ptBR} utils={DateFnsUtils}>
 									<Grid container spacing={2} justifyContent="center">
 										<Grid item xs={6} sm={4}>
 											<KeyboardDatePicker
@@ -555,6 +567,7 @@ const Report = () => {
 												}}
 												error={initialDateHelperText !== ""}
 												helperText={initialDateHelperText}
+												inputVariant="outlined"
 											/>
 										</Grid>
 										<Grid item xs={6} sm={4}>
@@ -572,6 +585,7 @@ const Report = () => {
 												}}
 												error={finalDateHelperText !== ""}
 												helperText={finalDateHelperText}
+												inputVariant="outlined"
 											/>
 										</Grid>
 									</Grid>
