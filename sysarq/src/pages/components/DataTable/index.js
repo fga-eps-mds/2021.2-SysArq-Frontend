@@ -491,7 +491,7 @@ const DataTable = ({ url, title, isReport }) => {
 
 	const filterRows = (query) => {
 		const rowsWithFilter = rows.filter((row) => {
-            // eslint-disable-next-line
+			// eslint-disable-next-line
 			for (const [key, value] of Object.entries(row)) {
 				try {
 					if (
@@ -592,7 +592,7 @@ const DataTable = ({ url, title, isReport }) => {
 										tabIndex={-1}
 										key={row.id}
 										onClick={
-											fieldUrls.indexOf(url) !== -1
+											fieldUrls.indexOf(url) !== -1 || isReport
 												? null
 												: () => {
 														window.open(
