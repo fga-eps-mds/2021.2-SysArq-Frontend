@@ -54,7 +54,7 @@ const RackInput = ({
 					variant="outlined"
 					id="rack"
 					label="Prateleira"
-					value={rackDetail}
+					value={rackDetail?.number ?? "-"}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (

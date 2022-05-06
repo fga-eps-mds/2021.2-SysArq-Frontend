@@ -216,7 +216,9 @@ const CreateBoxArchiving = ({ detail }) => {
 		return "added originBox";
 	};
 
-	useEffect(() => { originBox.filter((b) => b.id === undefined); console.log(originBox) }, [originBox]);
+	useEffect(() => {
+		originBox.filter((b) => b.id === undefined);
+	}, [originBox]);
 
 	const [currentBox, setCurrentBox] = useState({});
 
@@ -331,7 +333,6 @@ const CreateBoxArchiving = ({ detail }) => {
 
 		const newOriginBox = originBox;
 		const formattedDate = formatDate(newOriginBoxSubjectDate);
-
 
 		// console.log('box')
 		// console.log(box)
@@ -618,9 +619,50 @@ const CreateBoxArchiving = ({ detail }) => {
 									: "-"
 							);
 
-              // const responseOriginBoxes = responseBoxArchiving.data.origin_boxes;
-              // setOriginBox(responseBoxArchiving.data.origin_boxes);
-              setOriginBox(responseBoxArchiving.data.origin_boxes.map(b => ({...b, id: getNextId(), subjects_list: b.subject_list.map(s => ({...s, dates: s.year.map(y => y.toString())}))})))
+							// const responseOriginBoxes = responseBoxArchiving.data.origin_boxes;
+							// setOriginBox(responseBoxArchiving.data.origin_boxes);
+							setOriginBox(
+								responseBoxArchiving.data.origin_boxes.map((b) => ({
+									...b,
+									id: getNextId(),
+									subjects_list: b.subject_list.map((s) => ({
+										...s,
+										dates: s.year.map((y) => y.toString()),
+										document_name_id: { document_name: s.document_name },
+									})),
+								}))
+							);
+
+							setOriginBox((prev) =>
+								prev.map((b) => {
+									axiosArchives
+										.get(`/shelf/${b.shelf_id}/`, {
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										})
+										.then((res) => (b.shelf = res.data))
+										.catch(connectionError);
+									axiosArchives
+										.get(`/rack/${b.rack_id}/`, {
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										})
+										.then((res) => (b.rack = res.data))
+										.catch(connectionError);
+									axiosArchives
+										.get(`/file-location/${b.file_location_id}/`, {
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										})
+										.then((res) => (b.file_location = res.data))
+										.catch(connectionError);
+
+									return b;
+								})
+							);
 
 							// setBoxNotes(
 							// 	responseBoxArchiving.data.box_notes
@@ -629,27 +671,6 @@ const CreateBoxArchiving = ({ detail }) => {
 							// );
 
 							// TO-DO: Coesão nos nomes de variáveis da caixa de origem
-
-							if (responseBoxArchiving.data.origin_box_id) {
-								const subjectsListDetail = [];
-
-								responseBoxArchiving.data.origin_box.subject_list.map(
-									(subject) =>
-										subjectsListDetail.push({
-											name: subject.document_name_id,
-											dates: subject.date,
-										})
-								);
-
-								const originBoxDetail = {
-									id: getNextId(),
-									number: responseBoxArchiving.data.origin_box.number,
-									year: responseBoxArchiving.data.origin_box.year,
-									subjects_list: subjectsListDetail,
-								};
-
-								setOriginBox((prev) => [...prev, originBoxDetail]);
-							}
 
 							if (
 								!responseBoxArchiving.data.is_eliminated &&
@@ -794,7 +815,10 @@ const CreateBoxArchiving = ({ detail }) => {
 																				{subject.dates.map((addedDate) => (
 																					<Chip
 																						icon={<TimelapseIcon />}
-																						label={`${addedDate.substring(0, 4)}`}
+																						label={`${addedDate.substring(
+																							0,
+																							4
+																						)}`}
 																						color="secondary"
 																						deleteIcon={
 																							<CancelIcon data-testid="delete" />
@@ -923,7 +947,7 @@ const CreateBoxArchiving = ({ detail }) => {
 												}
 												connectionError={connectionError}
 												isDetailPage={detail}
-												fileLocationDetail={fileLocationDetail}
+												fileLocationDetail={box.file_location}
 												fileLocation={box.file_location}
 											/>
 
@@ -937,7 +961,7 @@ const CreateBoxArchiving = ({ detail }) => {
 												}
 												connectionError={connectionError}
 												isDetailPage={detail}
-												shelfDetail={shelfDetail}
+												shelfDetail={box.shelf}
 												shelf={box.shelf}
 											/>
 
@@ -951,7 +975,7 @@ const CreateBoxArchiving = ({ detail }) => {
 												}
 												connectionError={connectionError}
 												isDetailPage={detail}
-												rackDetail={rackDetail}
+												rackDetail={box.rack}
 												rack={box.rack}
 											/>
 										</div>
@@ -972,7 +996,7 @@ const CreateBoxArchiving = ({ detail }) => {
 														)
 													)
 												}
-												notes={box.box_notes}
+												boxnotes={box?.box_notes ?? "-"}
 												isDetailPage={detail}
 											/>
 										</div>
@@ -980,9 +1004,7 @@ const CreateBoxArchiving = ({ detail }) => {
 								))}
 
 							<ChipsContainer justifyContent="left" marginTop="0%">
-								{detail ? (
-									<Chip label="Não cadastrada" />
-								) : (
+								{!detail && (
 									<AddChip
 										label="Adicionar Caixa para Arquivamento"
 										onClick={handleOpenNewOriginBoxDialog}
@@ -1299,10 +1321,12 @@ const CreateBoxArchiving = ({ detail }) => {
 			</CardContainer>
 
 			{!detail ? (
-			<div style={{ marginBottom: "100px" }}>
-				<DataTable title="Arquivamento de Caixas" url="box-archiving/" />
-			</div>
-			) : ("")}
+				<div style={{ marginBottom: "100px" }}>
+					<DataTable title="Arquivamento de Caixas" url="box-archiving/" />
+				</div>
+			) : (
+				""
+			)}
 		</>
 	);
 };
