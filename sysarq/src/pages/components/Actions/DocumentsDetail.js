@@ -1,5 +1,5 @@
 import React from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 import { makeStyles, Box, Button } from "@material-ui/core";
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const DocumentsDetail = () => {
+const DocumentsDetail = ({ onDelete, onUpdate }) => {
 	const classes = useStyles();
 
 	return (
@@ -28,6 +28,7 @@ const DocumentsDetail = () => {
 				variant="outlined"
 				color="inherit"
 				size="small"
+				onClick={onDelete}
 			>
 				Excluir
 			</Button>
@@ -36,6 +37,7 @@ const DocumentsDetail = () => {
 				variant="outlined"
 				color="secondary"
 				size="small"
+				onClick={onUpdate}
 			>
 				Editar
 			</Button>
@@ -43,6 +45,14 @@ const DocumentsDetail = () => {
 	);
 };
 
-DocumentsDetail.propTypes = {};
+DocumentsDetail.propTypes = {
+	onUpdate: PropTypes.func,
+	onDelete: PropTypes.func
+};
+
+DocumentsDetail.defaultProps = {
+	onUpdate: f => f,
+	onDelete: f => f
+};
 
 export default DocumentsDetail;
