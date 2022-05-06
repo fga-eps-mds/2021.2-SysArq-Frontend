@@ -98,9 +98,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [publicWorker, setPublicWorker] = useState("");
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 
-	const [noticeDate, setNoticeDate] = useState(detail ? "" : null);
-	const [archivingDate, setArchivingDate] = useState(detail ? "" : null);
-	const [reference, setReference] = useState(detail ? "" : null);
+	const [noticeDate, setNoticeDate] = useState(null);
+	const [archivingDate, setArchivingDate] = useState(null);
+	const [reference, setReference] = useState(null);
 	const [processNumber, setProcessNumber] = useState("");
 	const [interestedPerson, setInterested] = useState("");
 	const [subject, setSubject] = useState(null);
@@ -114,7 +114,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
-	const [unarchiveDate, setUnarchiveDate] = useState(detail ? "" : null);
+	const [unarchiveDate, setUnarchiveDate] = useState(null);
 	const [notesLocal, setNotes] = useState("");
 
 	const [noticeDateHelperText, setNoticeDateHelperText] = useState("");
@@ -139,6 +139,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
+	const [editId, setEditId] = useState(null);
 
 	const [loading, setLoading] = useState(detail);
 
@@ -260,6 +261,28 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		window.location.reload();
 	};
 
+	const onDelete = () => {
+		axiosProfile
+		.post(`api/token/refresh/`, {
+			refresh: localStorage.getItem("tkr"),
+		})
+		.then((res) => {
+			localStorage.setItem("tk", res.data.access);
+			localStorage.setItem("tkr", res.data.refresh);
+
+			axiosArchives
+				.delete(`administrative-process/${editId}/`, {
+					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+				})
+				.then(() => {
+					window.close();
+				})
+		})
+		.catch((error) => {
+			axiosProfileError(error, connectionError);
+		});
+	}
+
 	const onSubmit = () => {
 		setLoading(true);
 
@@ -268,9 +291,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			setLoading(false);
 			return "processNumber error";
 		}
-
 		if (
-			isDateNotValid(noticeDate, setNoticeDateHelperText, "date", "required")
+			isDateNotValid(new Date(noticeDate), setNoticeDateHelperText, "date", "required")
 		) {
 			setLoading(false);
 			return "noticeDate error";
@@ -290,7 +312,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 		if (
 			isDateNotValid(
-				archivingDate,
+				new Date(archivingDate),
 				setArchivingDateHelperText,
 				"date",
 				"required"
@@ -300,7 +322,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "archivingDate error";
 		}
 
-		if (isDateNotValid(reference, setReferenceHelperText)) {
+		if (isDateNotValid(new Date(reference), setReferenceHelperText)) {
 			setLoading(false);
 			return "reference error";
 		}
@@ -319,12 +341,12 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 		if (
 			status === "Desarquivado" &&
-			isDateNotValid(unarchiveDate, setUnarchiveDateHelperText, "date")
+			isDateNotValid(new Date(unarchiveDate), setUnarchiveDateHelperText, "date")
 		) {
 			setLoading(false);
 			return "unarchiveDate error";
 		}
-
+		const verb = editId ? axiosArchives.put : axiosArchives.post;
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -332,10 +354,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
-
-				axiosArchives
-					.post(
-						"administrative-process/",
+					verb(
+						`administrative-process/${editId ? `${editId}/` : ''}`,
 						{
 							notice_date: formatDate(noticeDate),
 							archiving_date: formatDate(archivingDate),
@@ -366,9 +386,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							filer_user: "filer_user",
 							temporality_date:
 								parseInt(subject.temporality, 10) +
-								parseInt(archivingDate.getFullYear(), 10),
+								parseInt((new Date(archivingDate))?.getFullYear(), 10),
 						},
-						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						...(editId && {  "Content-Type": "application/json" }) 
+					}
 					)
 					.then(() => onSuccess())
 					.catch((err) => {
@@ -376,13 +398,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							axiosProfileError(err);
 							return false;
 						}
-						console.log("teste1");
 						connectionError(err.response.status);
 						return false;
 					});
 			})
 			.catch((error) => {
-				console.log(error);
 				axiosProfileError(error, connectionError);
 			});
 
@@ -408,6 +428,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							},
 						})
 						.then((responseAdministrative) => {
+							setEditId(responseAdministrative.data.id);
 							axiosArchives
 								.get(
 									`document-name/${responseAdministrative.data.document_name_id}/`,
@@ -665,7 +686,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	return (
 		<>
 			<CardContainer title="Processo Administrativo" spacing={1}>
-				{detail ? <DocumentsDetail /> : ""}
+				{detail ? <DocumentsDetail onDelete={onDelete} onUpdate={onSubmit} /> : ""}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />
@@ -682,23 +703,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						</Grid>
 
 						<Grid item xs={12} sm={6} md={6}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="noticeDate"
-									label="Data de Autuação"
-									value={
-										noticeDate
-											? `${noticeDate.substring(8, 10)}/${noticeDate.substring(
-													5,
-													7
-											  )}/${noticeDate.substring(0, 4)}`
-											: ""
-									}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
 								<KeyboardDatePicker
 									inputVariant="outlined"
 									okLabel="Confirmar"
@@ -715,19 +719,10 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									error={noticeDateHelperText !== ""}
 									helperText={noticeDateHelperText}
 								/>
-							)}
+
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									label="Interessado"
-									value={interestedPerson}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
 								<AutoComplete
 									value={interestedPerson}
 									handleValueChange={handleInterestedChange}
@@ -737,20 +732,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									helperText={interestedHelperText}
 									freeField
 								/>
-							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="subject"
-									label="Nome do Documento"
-									value={subjectDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
 								<AutoComplete
 									value={subject}
 									handleValueChange={handleSubjectChange}
@@ -761,12 +745,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									label="Nome do Documento*"
 									helperText={subjectHelperText}
 								/>
-							)}
 						</Grid>
 
 						<SenderUnitInput
-							isDetailPage={detail}
-							senderUnitDetail={senderUnitDetail}
 							setHelperText={setSenderUnitHelperText}
 							set={setSenderUnit}
 							senderUnit={senderUnit}
@@ -775,26 +756,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						/>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="archivingDate"
-									label="Data de Arquivamento"
-									value={
-										archivingDate
-											? `${archivingDate.substring(
-													8,
-													10
-											  )}/${archivingDate.substring(
-													5,
-													7
-											  )}/${archivingDate.substring(0, 4)}`
-											: ""
-									}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
 								<KeyboardDatePicker
 									inputVariant="outlined"
 									okLabel="Confirmar"
@@ -811,49 +772,20 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									error={archivingDateHelperText !== ""}
 									helperText={archivingDateHelperText}
 								/>
-							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="publicWorker"
-									label="Servidor"
-									value={publicWorkerDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								senderWorker(
+							{senderWorker(
 									publicWorkers,
 									publicWorkerInput,
 									handlePublicWorkerChange,
 									setPublicWorkerInput,
 									publicWorkerOptions,
 									publicWorkerHelperText
-								)
-							)}
+								)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									variant="outlined"
-									fullWidth
-									id="referenceDate"
-									label="Referência (AC4)"
-									value={
-										reference !== "-"
-											? `${reference.substring(5, 7)}/${reference.substring(
-													0,
-													4
-											  )}`
-											: reference
-									}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
 								<KeyboardDatePicker
 									inputVariant="outlined"
 									okLabel="Confirmar"
@@ -869,20 +801,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									error={referenceHelperText !== ""}
 									helperText={referenceHelperText}
 								/>
-							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={8}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="status"
-									label="Status"
-									value={status}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
 								<FormControl
 									fullWidth
 									variant="outlined"
@@ -911,22 +832,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 										""
 									)}
 								</FormControl>
-							)}
 						</Grid>
 
 						{status === "Desarquivado" ? (
 							<>
 								<Grid item xs={12} sm={12} md={12}>
-									{detail ? (
-										<TextField
-											fullWidth
-											variant="outlined"
-											id="unarchiveDestinationUnit"
-											label="Unid. Destino do Desarquivamento"
-											value={unarchiveDestinationUnitDetail}
-											inputProps={{ readOnly: true }}
-										/>
-									) : (
 										<FormControl fullWidth variant="outlined">
 											<InputLabel id="select-unarchiveDestinationUnit-label">
 												Unid. Destino do Desarquivamento
@@ -954,7 +864,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 												))}
 											</Select>
 										</FormControl>
-									)}
 								</Grid>
 
 								<Grid item xs={12} sm={12} md={6}>
@@ -965,31 +874,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 										label="Nº do Processo do Desarquivamento"
 										value={unarchiveProcessNumber}
 										onChange={handleUnarchiveProcessNumberChange}
-										inputProps={{ maxLength: 15, readOnly: detail }}
+										inputProps={{ maxLength: 15 }}
 									/>
 								</Grid>
 
 								<Grid item xs={12} sm={12} md={6}>
-									{detail ? (
-										<TextField
-											fullWidth
-											variant="outlined"
-											id="unarchiveDate"
-											label="Data de Desarquivamento"
-											value={
-												unarchiveDate !== "-"
-													? `${unarchiveDate.substring(
-															8,
-															10
-													  )}/${unarchiveDate.substring(
-															5,
-															7
-													  )}/${unarchiveDate.substring(0, 4)}`
-													: unarchiveDate
-											}
-											inputProps={{ readOnly: true }}
-										/>
-									) : (
 										<KeyboardDatePicker
 											inputVariant="outlined"
 											okLabel="Confirmar"
@@ -1006,7 +895,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 											error={unarchiveDateHelperText !== ""}
 											helperText={unarchiveDateHelperText}
 										/>
-									)}
 								</Grid>
 							</>
 						) : (
@@ -1020,14 +908,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						</Grid>
 
 						<Grid className={classes.boxAB} item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									label="Sigla da Caixa"
-									value={boxAbbreviationDetail}
-								/>
-							) : (
+
 								<AutoComplete
 									value={boxAbbreviation}
 									handleValueChange={(event, newValue) => {
@@ -1041,7 +922,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									label="Sigla da Caixa"
 									helperText={boxAbbreviationHelperText}
 								/>
-							)}
+
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
@@ -1057,7 +938,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								type="number"
 								error={boxNumberHelperText !== ""}
 								helperText={boxNumberHelperText}
-								inputProps={{ readOnly: detail }}
 							/>
 						</Grid>
 
@@ -1074,7 +954,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								type="number"
 								error={boxYearHelperText !== ""}
 								helperText={boxYearHelperText}
-								inputProps={{ readOnly: detail }}
 							/>
 						</Grid>
 
@@ -1085,17 +964,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="shelf"
-									label="Estante"
-									value={shelfDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-                
 								<AutoComplete
 									value={shelf}
 									handleValueChange={handleShelfChange}
@@ -1106,20 +974,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									label="Estante"
 									helperText={shelfHelperText}
 								/>
-							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="rack"
-									label="Prateleira"
-									value={rackDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
 								<AutoComplete
 									value={rack}
 									handleValueChange={handleRackChange}
@@ -1130,20 +987,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									label="Prateleira"
 									helperText={rackHelperText}
 								/>
-							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="file-location"
-									label="Localidade"
-									value={fileLocationDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
 								<AutoComplete
 									value={fileLocation}
 									handleValueChange={handleFileLocationChange}
@@ -1154,13 +1000,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									label="Localidade"
 									helperText={fileLocationHelperText}
 								/>
-							)}
 						</Grid>
 
 						<NotesInput
 							set={setNotes}
 							notes={notesLocal}
-							isDetailPage={detail}
 						/>
 					</>
 				)}
