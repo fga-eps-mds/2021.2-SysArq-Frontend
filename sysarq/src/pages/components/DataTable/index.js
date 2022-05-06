@@ -666,7 +666,11 @@ const DataTable = ({ url, title, isReport }) => {
 															id="outlined-basic" 
 															size="small" 
 															type={headCells[headCellIndex].inputType}
-															defaultValue={cellContent(row, headCells[headCellIndex].id)} 
+															defaultValue={
+																headCells[headCellIndex].id === 'cpf' ? cellContent(row, headCells[headCellIndex].id).replace(/[^\w\s]/gi, '') 
+																	:
+																	cellContent(row, headCells[headCellIndex].id)
+															} 
 															variant="outlined"
 															onBlur={e => e.target.value && updateItem(row.id, { [headCells[headCellIndex].id]: e.target.value})}
 															 />

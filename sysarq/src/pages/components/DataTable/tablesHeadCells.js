@@ -140,7 +140,6 @@ const fileLocationHeadCells = [
 	{
 		id: "file",
 		numeric: false,
-		inputType: 'number',
 		label: "Localidade do Arquivo",
 	},
 ];
@@ -155,6 +154,7 @@ const publicWorkerHeadCells = [
 	{
 		id: "cpf",
 		numeric: false,
+		inputType:'number',
 		label: "CPF",
 	},
 ];

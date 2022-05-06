@@ -32,9 +32,11 @@ export const formatDateName = (date) =>
 	`${date.getFullYear()}-${arrayMes[date.getMonth()]}`;
 
 export const formatDate = (date) =>
-	`${date.getFullYear()}-${formatDateNumber(
-		date.getMonth() + 1
-	)}-${formatDateNumber(date.getDate())}`;
+{	
+	const newDate = new Date(date);
+	return `${newDate.getFullYear()}-${formatDateNumber(
+		newDate.getMonth() + 1
+	)}-${formatDateNumber(newDate.getDate())}`;}
 
 export const isInt = (number) => /^\d+$/.test(number);
 
@@ -117,7 +119,7 @@ export function getPublicWorkers(setPublicWorkers, connectionError) {
 }
 
 export function autocompl(
-	publicWorker,
+	publicWorkers,
 	publicWorkerInput,
 	handlePublicWorkerChange,
 	setPublicWorkerInput,
@@ -130,7 +132,7 @@ export function autocompl(
 			variant="outlined"
 			id="workerName"
 			data-testid="autocomplete"
-			value={publicWorker}
+			value={publicWorkers.name}
 			onChange={(event, newValue) => {
 				handlePublicWorkerChange(newValue);
 			}}
@@ -143,7 +145,7 @@ export function autocompl(
 			)}
 			groupBy={(option) => option.firstLetter}
 			getOptionLabel={(option) => `${option.name}, ${maskBr.cpf(option.cpf)}`}
-			getOptionSelected={(option, value) => option.cpf === value.cpf}
+			getOptionSelected={(option, value) => option.name === value.name}
 			autoHighlight
 			renderInput={(params) => (
 				<TextField
