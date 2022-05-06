@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { maskBr } from "js-brasil";
+/* eslint-disable */
+import React, { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 
 import { useParams } from "react-router-dom";
@@ -34,10 +34,6 @@ import AutoComplete from "../../components/AutoComplete";
 
 const CreateFrequencySheet = ({ detail }) => {
 	const params = detail ? useParams() : "";
-
-	const [publicWorkerDetail, setPublicWorkerDetail] = useState("");
-	const [typeDetail, setTypeDetail] = useState("");
-	const [workplaceWorkerDetail, setWorkplaceWorkerDetail] = useState("");
 
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
@@ -75,23 +71,9 @@ const CreateFrequencySheet = ({ detail }) => {
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
+	const [editId, setEditId] = useState(null);
 
 	const [loading, setLoading] = useState(detail);
-
-	const monthMap = {
-		"01": "jan",
-		"02": "fev",
-		"03": "mar",
-		"04": "abr",
-		"05": "mai",
-		"06": "jun",
-		"07": "jul",
-		"08": "ago",
-		"09": "set",
-		10: "out",
-		11: "nov",
-		12: "dez",
-	};
 
 	const handleSenderProcessNumberChange = (event) =>
 		setSenderProcessNumber(event.target.value);
@@ -163,7 +145,45 @@ const CreateFrequencySheet = ({ detail }) => {
 		window.location.reload();
 	};
 
+	const onDelete = () => {
+		axiosProfile
+		.post(`api/token/refresh/`, {
+			refresh: localStorage.getItem("tkr"),
+		})
+		.then((res) => {
+			localStorage.setItem("tk", res.data.access);
+			localStorage.setItem("tkr", res.data.refresh);
+
+			axiosArchives
+				.delete(`frequency-sheet/${editId}/`, {
+					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+				})
+				.then(() => {
+					window.close();
+				})
+		})
+		.catch((error) => {
+			axiosProfileError(error, connectionError);
+		});
+	}
+
 	const onSubmit = () => {
+
+		console.log({
+			person_id: publicWorker,
+			cpf: publicWorker,
+			role: roleWorker,
+			category: workerClass,
+			workplace: workplaceWorker.id,
+			municipal_area: district,
+			reference_period: new Date(referencePeriod),
+			notes: notesLocal,
+			process_number: senderProcessNumber,
+			document_name_id: type.id,
+			temporality_date:
+				parseInt(type.temporality, 10)
+		})
+
 		setLoading(true);
 		if (!publicWorker) {
 			setPublicWorkerHelperText("Selecione um nome");
@@ -185,7 +205,7 @@ const CreateFrequencySheet = ({ detail }) => {
 
 		if (
 			isDateNotValid(
-				referencePeriod,
+				new Date(referencePeriod),
 				setReferencePeriodHelperText,
 				"period",
 				"required"
@@ -207,6 +227,9 @@ const CreateFrequencySheet = ({ detail }) => {
 			return "type error";
 		}
 
+		const verb = editId ? axiosArchives.put : axiosArchives.post;
+		console.log('editId :>> ', editId);
+
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -214,9 +237,8 @@ const CreateFrequencySheet = ({ detail }) => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
-				axiosArchives
-					.post(
-						"frequency-sheet/",
+				verb(
+						`frequency-sheet/${editId ? `${editId}/` : ''}`,
 						{
 							person_id: publicWorker.id,
 							cpf: publicWorker.cpf,
@@ -224,15 +246,17 @@ const CreateFrequencySheet = ({ detail }) => {
 							category: workerClass,
 							workplace: workplaceWorker.id,
 							municipal_area: district,
-							reference_period: formatDate(referencePeriod),
+							reference_period: formatDate(new Date(referencePeriod)),
 							notes: notesLocal,
 							process_number: senderProcessNumber,
 							document_name_id: type.id,
 							temporality_date:
 								parseInt(type.temporality, 10) +
-								parseInt(referencePeriod.getFullYear(), 10),
+								parseInt(new Date(referencePeriod).getFullYear(), 10),
 						},
-						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						...(editId && {  "Content-Type": "application/json" }) 
+					}
 					)
 					.then(() => onSuccess())
 					.catch(() => connectionError());
@@ -263,50 +287,56 @@ const CreateFrequencySheet = ({ detail }) => {
 
 				getPublicWorkers(setPublicWorkers, connectionError);
 
-				if (detail) {
-					setLoading(true);
+				axiosArchives
+					.get("unity/", {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then((response) => {
+						setWorkplaceWorkers(response.data);
+						if (detail) {
+							setLoading(true);
+		
+							axiosArchives
+								.get(`frequency-sheet/${params.id}/`, {
+									headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+								})
+								.then((responseFrequencySheet) => {
+									setEditId(responseFrequencySheet.data.id);
+									setType(responseFrequencySheet.data.document_name_name);
+									
+									const newPublicWorker = publicWorkers.find(p => p.cpf === responseFrequencySheet.data.cpf);
+									if(newPublicWorker) setPublicWorker(newPublicWorker);
+		
+									setRole(responseFrequencySheet.data.role);
+									setDistrict(responseFrequencySheet.data.municipal_area);
+									setReferencePeriod(responseFrequencySheet.data.reference_period);
+									setWorkerClass(
+										responseFrequencySheet.data.category
+											? responseFrequencySheet.data.category
+											: "-"
+									);
 
-					axiosArchives
-						.get(`frequency-sheet/${params.id}/`, {
-							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-						})
-						.then((responseFrequencySheet) => {
-							setTypeDetail(responseFrequencySheet.data.document_name_name);
-
-							setPublicWorkerDetail(
-								`${responseFrequencySheet.data.person_name}, ${maskBr.cpf(
-									responseFrequencySheet.data.cpf
-								)}`
-							);
-
-							setRole(responseFrequencySheet.data.role);
-							setDistrict(responseFrequencySheet.data.municipal_area);
-							setReferencePeriod(responseFrequencySheet.data.reference_period);
-							setWorkplaceWorkerDetail(
-								responseFrequencySheet.data.workplace_name
-							);
-							setWorkerClass(
-								responseFrequencySheet.data.category
-									? responseFrequencySheet.data.category
-									: "-"
-							);
-
-							setSenderProcessNumber(
-								responseFrequencySheet.data.process_number
-									? responseFrequencySheet.data.process_number
-									: "-"
-							);
-
-							setNotes(
-								responseFrequencySheet.data.notes
-									? responseFrequencySheet.data.notes
-									: "-"
-							);
-
-							setLoading(false);
-						})
-						.catch(() => connectionError());
-				}
+								const newWorkPlace = response.data.find(w => responseFrequencySheet.data.workplace_name === w.unity_name);
+								if(newWorkPlace) setWorkplaceWorker(newWorkPlace);
+		
+									setSenderProcessNumber(
+										responseFrequencySheet.data.process_number
+											? responseFrequencySheet.data.process_number
+											: "-"
+									);
+		
+									setNotes(
+										responseFrequencySheet.data.notes
+											? responseFrequencySheet.data.notes
+											: "-"
+									);
+		
+									setLoading(false);
+								})
+								.catch(() => connectionError());
+						}
+					})
+					.catch(() => connectionError());
 
 				axiosArchives
 					.get("frequency-sheet/", {
@@ -318,13 +348,6 @@ const CreateFrequencySheet = ({ detail }) => {
 						getUniqueFieldValues(response.data, "municipal_area", setDistricts);
 					})
 					.catch(() => connectionError());
-
-				axiosArchives
-					.get("unity/", {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
-					.then((response) => setWorkplaceWorkers(response.data))
-					.catch(() => connectionError());
 			})
 			.catch((error) => {
 				axiosProfileError(error, connectionError);
@@ -333,48 +356,28 @@ const CreateFrequencySheet = ({ detail }) => {
 		getUnits(setWorkplaceWorkers, connectionError);
 	}, []);
 
+
 	return (
 		<>
 			<CardContainer title="Folha de Frequências" spacing={1}>
-				{detail ? <DocumentsDetail /> : ""}
+				{detail ? <DocumentsDetail onDelete={onDelete} onUpdate={onSubmit} /> : ""}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />
 				) : (
 					<>
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="publicWorker"
-									label="Servidor"
-									value={publicWorkerDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								autocompl(
-									publicWorkers,
-									publicWorkerInput,
-									handlePublicWorkerChange,
-									setPublicWorkerInput,
-									publicWorkerOptions,
-									publicWorkerHelperText
-								)
+							{autocompl(
+								publicWorkers,
+								publicWorkerInput,
+								handlePublicWorkerChange,
+								setPublicWorkerInput,
+								publicWorkerOptions,
+								publicWorkerHelperText
 							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									label="Cargo"
-									value={roleWorker}
-									inputProps={{ maxLength: 100, readOnly: true }}
-									multiline
-								/>
-							) : (
 								<AutoComplete
 									value={roleWorker}
 									handleValueChange={handleRoleChange}
@@ -384,21 +387,9 @@ const CreateFrequencySheet = ({ detail }) => {
 									helperText={roleHelperText}
 									freeField
 								/>
-							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="workerClass"
-									label="Classe"
-									value={workerClass}
-									inputProps={{ maxLength: 100, readOnly: true }}
-									multiline
-								/>
-							) : (
 								<AutoComplete
 									value={workerClass}
 									handleValueChange={handleWorkerClassChange}
@@ -408,20 +399,8 @@ const CreateFrequencySheet = ({ detail }) => {
 									helperText=""
 									freeField
 								/>
-							)}
 						</Grid>
-
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="workplaceWorker"
-									label="Lotação*"
-									value={workplaceWorkerDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
 								<AutoComplete
 									value={workplaceWorker}
 									handleValueChange={handleWorkplaceWorkerChange}
@@ -432,21 +411,9 @@ const CreateFrequencySheet = ({ detail }) => {
 									label="Lotação*"
 									helperText={workplaceWorkerHelperText}
 								/>
-							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="district"
-									label="Município"
-									value={district}
-									inputProps={{ maxLength: 100, readOnly: true }}
-									multiline
-								/>
-							) : (
 								<AutoComplete
 									value={district}
 									handleValueChange={handleDistrictChange}
@@ -456,26 +423,9 @@ const CreateFrequencySheet = ({ detail }) => {
 									helperText={districtHelperText}
 									freeField
 								/>
-							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={6}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="referencePeriodDate"
-									label="Período de Frequência"
-									value={
-										referencePeriod
-											? `${
-													monthMap[referencePeriod.substring(5, 7)]
-											  }/${referencePeriod.substring(0, 4)}`
-											: ""
-									}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
 								<KeyboardDatePicker
 									inputVariant="outlined"
 									style={{ width: "100%" }}
@@ -491,7 +441,6 @@ const CreateFrequencySheet = ({ detail }) => {
 									error={referencePeriodHelperText !== ""}
 									helperText={referencePeriodHelperText}
 								/>
-							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={6}>
@@ -502,13 +451,11 @@ const CreateFrequencySheet = ({ detail }) => {
 								label="Número do Processo Encaminhador"
 								value={senderProcessNumber}
 								onChange={handleSenderProcessNumberChange}
-								inputProps={{ maxLength: 20, readOnly: detail }}
+								inputProps={{ maxLength: 20 }}
 							/>
 						</Grid>
 
 						<DocumentTypeInput
-							isDetailPage={detail}
-							documentTypeDetail={typeDetail}
 							setHelperText={setTypeHelperText}
 							set={setType}
 							connectionError={connectionError}
@@ -517,7 +464,6 @@ const CreateFrequencySheet = ({ detail }) => {
 						/>
 
 						<NotesInput
-							isDetailPage={detail}
 							set={setNotes}
 							notes={notesLocal}
 						/>
