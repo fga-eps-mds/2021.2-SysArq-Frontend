@@ -117,19 +117,20 @@ export function getPublicWorkers(setPublicWorkers, connectionError) {
 }
 
 export function autocompl(
-	publicWorkers,
+	publicWorker,
 	publicWorkerInput,
 	handlePublicWorkerChange,
 	setPublicWorkerInput,
 	publicWorkerOptions,
 	publicWorkerHelperText
 ) {
+	
 	return (
 		<Autocomplete
 			variant="outlined"
 			id="workerName"
 			data-testid="autocomplete"
-			value={publicWorkers.name}
+			value={publicWorker}
 			onChange={(event, newValue) => {
 				handlePublicWorkerChange(newValue);
 			}}
@@ -142,7 +143,7 @@ export function autocompl(
 			)}
 			groupBy={(option) => option.firstLetter}
 			getOptionLabel={(option) => `${option.name}, ${maskBr.cpf(option.cpf)}`}
-			getOptionSelected={(option, value) => option.name === value.name}
+			getOptionSelected={(option, value) => option.cpf === value.cpf}
 			autoHighlight
 			renderInput={(params) => (
 				<TextField

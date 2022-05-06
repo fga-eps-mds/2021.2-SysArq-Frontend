@@ -79,6 +79,7 @@ const unityHeadCells = [
 	{
 		id: "telephone_number",
 		numeric: true,
+		inputType: 'number',
 		label: "Telefone",
 	},
 
@@ -112,6 +113,7 @@ const documentNameHeadCells = [
 	{
 		id: "temporality",
 		numeric: false,
+		inputType: 'number',
 		label: "Temporalidade",
 	},
 ];
@@ -120,6 +122,7 @@ const shelfHeadCells = [
 	{
 		id: "number",
 		numeric: true,
+		inputType: 'number',
 		label: "Número de Estante",
 	},
 ];
@@ -128,6 +131,7 @@ const rackHeadCells = [
 	{
 		id: "number",
 		numeric: true,
+		inputType: 'number',
 		label: "Número de Prateleira",
 	},
 ];
@@ -136,6 +140,7 @@ const fileLocationHeadCells = [
 	{
 		id: "file",
 		numeric: false,
+		inputType: 'number',
 		label: "Localidade do Arquivo",
 	},
 ];
