@@ -216,7 +216,7 @@ const CreateBoxArchiving = ({ detail }) => {
 		return "added originBox";
 	};
 
-	useEffect(() => originBox.filter((b) => b.number === undefined), [originBox]);
+	useEffect(() => { originBox.filter((b) => b.id === undefined); console.log(originBox) }, [originBox]);
 
 	const [currentBox, setCurrentBox] = useState({});
 
@@ -617,6 +617,10 @@ const CreateBoxArchiving = ({ detail }) => {
 									? responseBoxArchiving.data.notes
 									: "-"
 							);
+
+              // const responseOriginBoxes = responseBoxArchiving.data.origin_boxes;
+              // setOriginBox(responseBoxArchiving.data.origin_boxes);
+              setOriginBox(responseBoxArchiving.data.origin_boxes.map(b => ({...b, id: getNextId(), subjects_list: b.subject_list.map(s => ({...s, dates: s.year.map(y => y.toString())}))})))
 
 							// setBoxNotes(
 							// 	responseBoxArchiving.data.box_notes
