@@ -98,9 +98,9 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [publicWorker, setPublicWorker] = useState("");
 	const [publicWorkerInput, setPublicWorkerInput] = useState("");
 
-	const [noticeDate, setNoticeDate] = useState(detail ? "" : null);
-	const [archivingDate, setArchivingDate] = useState(detail ? "" : null);
-	const [reference, setReference] = useState(detail ? "" : null);
+	const [noticeDate, setNoticeDate] = useState(null);
+	const [archivingDate, setArchivingDate] = useState(null);
+	const [reference, setReference] = useState(null);
 	const [processNumber, setProcessNumber] = useState("");
 	const [interestedPerson, setInterested] = useState("");
 	const [subject, setSubject] = useState(null);
@@ -114,7 +114,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [status, setStatus] = useState("");
 	const [unarchiveDestinationUnit, setUnarchiveDestinationUnit] = useState("");
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
-	const [unarchiveDate, setUnarchiveDate] = useState(detail ? "" : null);
+	const [unarchiveDate, setUnarchiveDate] = useState(null);
 	const [notesLocal, setNotes] = useState("");
 
 	const [noticeDateHelperText, setNoticeDateHelperText] = useState("");
@@ -139,8 +139,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
+	const [editId, setEditId] = useState(null);
 
 	const [loading, setLoading] = useState(detail);
+
+	const [senderId, setSenderId] = useState(0);
 
 	const handlePublicWorkerChange = (value) => {
 		setPublicWorkerHelperText("");
@@ -260,6 +263,28 @@ const CreateAdministrativeProcess = ({ detail }) => {
 		window.location.reload();
 	};
 
+	const onDelete = () => {
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+
+				axiosArchives
+					.delete(`administrative-process/${editId}/`, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then(() => {
+						window.close();
+					});
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+	};
+
 	const onSubmit = () => {
 		setLoading(true);
 
@@ -268,9 +293,13 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			setLoading(false);
 			return "processNumber error";
 		}
-
 		if (
-			isDateNotValid(noticeDate, setNoticeDateHelperText, "date", "required")
+			isDateNotValid(
+				new Date(noticeDate),
+				setNoticeDateHelperText,
+				"date",
+				"required"
+			)
 		) {
 			setLoading(false);
 			return "noticeDate error";
@@ -290,7 +319,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 		if (
 			isDateNotValid(
-				archivingDate,
+				new Date(archivingDate),
 				setArchivingDateHelperText,
 				"date",
 				"required"
@@ -300,7 +329,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "archivingDate error";
 		}
 
-		if (isDateNotValid(reference, setReferenceHelperText)) {
+		if (isDateNotValid(new Date(reference), setReferenceHelperText)) {
 			setLoading(false);
 			return "reference error";
 		}
@@ -319,12 +348,16 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 		if (
 			status === "Desarquivado" &&
-			isDateNotValid(unarchiveDate, setUnarchiveDateHelperText, "date")
+			isDateNotValid(
+				new Date(unarchiveDate),
+				setUnarchiveDateHelperText,
+				"date"
+			)
 		) {
 			setLoading(false);
 			return "unarchiveDate error";
 		}
-
+		const verb = editId ? axiosArchives.put : axiosArchives.post;
 		axiosProfile
 			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
@@ -332,57 +365,56 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
-
-				axiosArchives
-					.post(
-						"administrative-process/",
-						{
-							notice_date: formatDate(noticeDate),
-							archiving_date: formatDate(archivingDate),
-							reference_month_year:
-								reference !== null ? formatDate(reference) : null,
-							process_number: processNumber,
-							interested: interestedPerson,
-							document_name_id: subject.id,
-							file_location_id: fileLocation ? fileLocation.id : "",
-							shelf_id: shelf ? shelf.id : "",
-							rack_id: rack ? rack.id : "",
-							box_abbreviation_id: boxAbbreviation ? boxAbbreviation.id : "",
-							box_number: boxNumber,
-							box_year: parseInt(boxYear, 10),
-							sender_unity: senderUnit.id,
-							sender_user: publicWorker !== undefined ? publicWorker.id : null,
-							is_filed: isStatusFiled(status),
-							is_eliminated: status === "Eliminado",
-							unity_id:
-								status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
-							send_date:
-								unarchiveDate !== null && status === "Desarquivado"
-									? formatDate(unarchiveDate)
-									: null,
-							administrative_process_number:
-								status === "Desarquivado" ? unarchiveProcessNumber : "",
-							notes: notesLocal,
-							filer_user: "filer_user",
-							temporality_date:
-								parseInt(subject.temporality, 10) +
-								parseInt(archivingDate.getFullYear(), 10),
-						},
-						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
-					)
+				verb(
+					`administrative-process/${editId ? `${editId}/` : ""}`,
+					{
+						notice_date: formatDate(noticeDate),
+						archiving_date: formatDate(archivingDate),
+						reference_month_year:
+							reference !== null ? formatDate(reference) : null,
+						process_number: processNumber,
+						interested: interestedPerson,
+						document_name_id: subject.id,
+						file_location_id: fileLocation ? fileLocation.id : "",
+						shelf_id: shelf ? shelf.id : "",
+						rack_id: rack ? rack.id : "",
+						box_abbreviation_id: boxAbbreviation ? boxAbbreviation.id : "",
+						box_number: boxNumber,
+						box_year: parseInt(boxYear, 10),
+						sender_unity: senderUnit.id,
+						sender_user: publicWorker !== undefined ? publicWorker.id : null,
+						is_filed: isStatusFiled(status),
+						is_eliminated: status === "Eliminado",
+						unity_id:
+							status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
+						send_date:
+							unarchiveDate !== null && status === "Desarquivado"
+								? formatDate(unarchiveDate)
+								: null,
+						administrative_process_number:
+							status === "Desarquivado" ? unarchiveProcessNumber : "",
+						notes: notesLocal,
+						filer_user: "filer_user",
+						temporality_date:
+							parseInt(subject.temporality, 10) +
+							parseInt(new Date(archivingDate)?.getFullYear(), 10),
+					},
+					{
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						...(editId && { "Content-Type": "application/json" }),
+					}
+				)
 					.then(() => onSuccess())
 					.catch((err) => {
 						if (err.response.status === 401) {
 							axiosProfileError(err);
 							return false;
 						}
-						console.log("teste1");
 						connectionError(err.response.status);
 						return false;
 					});
 			})
 			.catch((error) => {
-				console.log(error);
 				axiosProfileError(error, connectionError);
 			});
 
@@ -408,6 +440,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 							},
 						})
 						.then((responseAdministrative) => {
+							setEditId(responseAdministrative.data.id);
 							axiosArchives
 								.get(
 									`document-name/${responseAdministrative.data.document_name_id}/`,
@@ -423,7 +456,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								})
 								.catch(() => connectionError());
 
-
 							axiosArchives
 								.get(`unity/${responseAdministrative.data.sender_unity}/`, {
 									headers: {
@@ -435,7 +467,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									setSenderUnitDetail(response.data.unity_name);
 								})
 								.catch(() => connectionError());
-							
+
 							if (responseAdministrative.data.shelf_id) {
 								axiosArchives
 									.get(`shelf/${responseAdministrative.data.shelf_id}/`, {
@@ -523,6 +555,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								})
 								.catch(() => connectionError());
 
+							setSenderId(responseAdministrative.data.sender_user);
+
 							if (
 								!responseAdministrative.data.is_eliminated &&
 								!responseAdministrative.data.is_filed &&
@@ -568,7 +602,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									? responseAdministrative.data.reference_month_year
 									: "-"
 							);
-
 
 							setProcessNumber(responseAdministrative.data.process_number);
 							setNoticeDate(responseAdministrative.data.notice_date);
@@ -665,7 +698,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	return (
 		<>
 			<CardContainer title="Processo Administrativo" spacing={1}>
-				{detail ? <DocumentsDetail /> : ""}
+				{detail ? (
+					<DocumentsDetail onDelete={onDelete} onUpdate={onSubmit} />
+				) : (
+					""
+				)}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />
@@ -682,91 +719,50 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						</Grid>
 
 						<Grid item xs={12} sm={6} md={6}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="noticeDate"
-									label="Data de Autuação"
-									value={
-										noticeDate
-											? `${noticeDate.substring(8, 10)}/${noticeDate.substring(
-													5,
-													7
-											  )}/${noticeDate.substring(0, 4)}`
-											: ""
-									}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<KeyboardDatePicker
-									inputVariant="outlined"
-									okLabel="Confirmar"
-									cancelLabel="Cancelar"
-									style={{ width: "100%" }}
-									id="notice-date-picker-dialog"
-									label="Data de Autuação*"
-									format="dd/MM/yyyy"
-									value={noticeDate}
-									onChange={handleNoticeDateChange}
-									KeyboardButtonProps={{
-										"aria-label": "change notice date",
-									}}
-									error={noticeDateHelperText !== ""}
-									helperText={noticeDateHelperText}
-								/>
-							)}
+							<KeyboardDatePicker
+								inputVariant="outlined"
+								okLabel="Confirmar"
+								cancelLabel="Cancelar"
+								style={{ width: "100%" }}
+								id="notice-date-picker-dialog"
+								label="Data de Autuação*"
+								format="dd/MM/yyyy"
+								value={noticeDate}
+								onChange={handleNoticeDateChange}
+								KeyboardButtonProps={{
+									"aria-label": "change notice date",
+								}}
+								error={noticeDateHelperText !== ""}
+								helperText={noticeDateHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									label="Interessado"
-									value={interestedPerson}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<AutoComplete
-									value={interestedPerson}
-									handleValueChange={handleInterestedChange}
-									options={interestedPersonOptions}
-									optionsLabel={(option) => option}
-									label="Interessado*"
-									helperText={interestedHelperText}
-									freeField
-								/>
-							)}
+							<AutoComplete
+								value={interestedPerson}
+								handleValueChange={handleInterestedChange}
+								options={interestedPersonOptions}
+								optionsLabel={(option) => option}
+								label="Interessado*"
+								helperText={interestedHelperText}
+								freeField
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="subject"
-									label="Nome do Documento"
-									value={subjectDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<AutoComplete
-									value={subject}
-									handleValueChange={handleSubjectChange}
-									options={subjects}
-									optionsLabel={(option) => `${option.document_name}`}
-									propertyCheck="document_name"
-									sortProperty="document_name"
-									label="Nome do Documento*"
-									helperText={subjectHelperText}
-								/>
-							)}
+							<AutoComplete
+								value={subject}
+								handleValueChange={handleSubjectChange}
+								options={subjects}
+								optionsLabel={(option) => `${option.document_name}`}
+								propertyCheck="document_name"
+								sortProperty="document_name"
+								label="Nome do Documento*"
+								helperText={subjectHelperText}
+							/>
 						</Grid>
 
 						<SenderUnitInput
-							isDetailPage={detail}
-							senderUnitDetail={senderUnitDetail}
 							setHelperText={setSenderUnitHelperText}
 							set={setSenderUnit}
 							senderUnit={senderUnit}
@@ -775,186 +771,114 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						/>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="archivingDate"
-									label="Data de Arquivamento"
-									value={
-										archivingDate
-											? `${archivingDate.substring(
-													8,
-													10
-											  )}/${archivingDate.substring(
-													5,
-													7
-											  )}/${archivingDate.substring(0, 4)}`
-											: ""
-									}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<KeyboardDatePicker
-									inputVariant="outlined"
-									okLabel="Confirmar"
-									cancelLabel="Cancelar"
-									style={{ width: "100%" }}
-									id="archiving-date-picker-dialog"
-									label="Data de Arquivamento*"
-									format="dd/MM/yyyy"
-									value={archivingDate}
-									onChange={handleArchivingDateChange}
-									KeyboardButtonProps={{
-										"aria-label": "change archiving date",
-									}}
-									error={archivingDateHelperText !== ""}
-									helperText={archivingDateHelperText}
-								/>
-							)}
+							<KeyboardDatePicker
+								inputVariant="outlined"
+								okLabel="Confirmar"
+								cancelLabel="Cancelar"
+								style={{ width: "100%" }}
+								id="archiving-date-picker-dialog"
+								label="Data de Arquivamento*"
+								format="dd/MM/yyyy"
+								value={archivingDate}
+								onChange={handleArchivingDateChange}
+								KeyboardButtonProps={{
+									"aria-label": "change archiving date",
+								}}
+								error={archivingDateHelperText !== ""}
+								helperText={archivingDateHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="publicWorker"
-									label="Servidor"
-									value={publicWorkerDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								senderWorker(
-									publicWorkers,
-									publicWorkerInput,
-									handlePublicWorkerChange,
-									setPublicWorkerInput,
-									publicWorkerOptions,
-									publicWorkerHelperText
-								)
+							{senderWorker(
+								publicWorkers.find((el) => el.id === senderId),
+								publicWorkerInput,
+								handlePublicWorkerChange,
+								setPublicWorkerInput,
+								publicWorkerOptions,
+								publicWorkerHelperText
 							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									variant="outlined"
-									fullWidth
-									id="referenceDate"
-									label="Referência (AC4)"
-									value={
-										reference !== "-"
-											? `${reference.substring(5, 7)}/${reference.substring(
-													0,
-													4
-											  )}`
-											: reference
-									}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<KeyboardDatePicker
-									inputVariant="outlined"
-									okLabel="Confirmar"
-									cancelLabel="Cancelar"
-									style={{ width: "100%" }}
-									id="reference-date-picker-dialog"
-									openTo="year"
-									views={["year", "month"]}
-									label="Referência (AC4)"
-									format="MM/yyyy"
-									value={reference}
-									onChange={handleReferenceChange}
-									error={referenceHelperText !== ""}
-									helperText={referenceHelperText}
-								/>
-							)}
+							<KeyboardDatePicker
+								inputVariant="outlined"
+								okLabel="Confirmar"
+								cancelLabel="Cancelar"
+								style={{ width: "100%" }}
+								id="reference-date-picker-dialog"
+								openTo="year"
+								views={["year", "month"]}
+								label="Referência (AC4)"
+								format="MM/yyyy"
+								value={reference}
+								onChange={handleReferenceChange}
+								error={referenceHelperText !== ""}
+								helperText={referenceHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={8}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="status"
-									label="Status"
+							<FormControl
+								fullWidth
+								variant="outlined"
+								error={statusHelperText !== ""}
+							>
+								<InputLabel id="select-status-label">Status*</InputLabel>
+								<Select
+									style={{ textAlign: "left" }}
+									labelId="select-status-label"
+									label="Status*"
+									id="select-status"
 									value={status}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<FormControl
-									fullWidth
-									variant="outlined"
-									error={statusHelperText !== ""}
+									onChange={handleStatusChange}
+									renderValue={(value) => `${value}`}
 								>
-									<InputLabel id="select-status-label">Status*</InputLabel>
-									<Select
-										style={{ textAlign: "left" }}
-										labelId="select-status-label"
-										label="Status*"
-										id="select-status"
-										value={status}
-										onChange={handleStatusChange}
-										renderValue={(value) => `${value}`}
-									>
-										<MenuItem value="">
-											<em>Nenhum</em>
-										</MenuItem>
-										<MenuItem value="Arquivado">Arquivado</MenuItem>
-										<MenuItem value="Eliminado">Eliminado</MenuItem>
-										<MenuItem value="Desarquivado">Desarquivado</MenuItem>
-									</Select>
-									{statusHelperText ? (
-										<FormHelperText>{statusHelperText}</FormHelperText>
-									) : (
-										""
-									)}
-								</FormControl>
-							)}
+									<MenuItem value="">
+										<em>Nenhum</em>
+									</MenuItem>
+									<MenuItem value="Arquivado">Arquivado</MenuItem>
+									<MenuItem value="Eliminado">Eliminado</MenuItem>
+									<MenuItem value="Desarquivado">Desarquivado</MenuItem>
+								</Select>
+								{statusHelperText ? (
+									<FormHelperText>{statusHelperText}</FormHelperText>
+								) : (
+									""
+								)}
+							</FormControl>
 						</Grid>
 
 						{status === "Desarquivado" ? (
 							<>
 								<Grid item xs={12} sm={12} md={12}>
-									{detail ? (
-										<TextField
-											fullWidth
-											variant="outlined"
-											id="unarchiveDestinationUnit"
+									<FormControl fullWidth variant="outlined">
+										<InputLabel id="select-unarchiveDestinationUnit-label">
+											Unid. Destino do Desarquivamento
+										</InputLabel>
+										<Select
+											style={{ textAlign: "left" }}
+											labelId="select-unarchiveDestinationUnit-label"
 											label="Unid. Destino do Desarquivamento"
-											value={unarchiveDestinationUnitDetail}
-											inputProps={{ readOnly: true }}
-										/>
-									) : (
-										<FormControl fullWidth variant="outlined">
-											<InputLabel id="select-unarchiveDestinationUnit-label">
-												Unid. Destino do Desarquivamento
-											</InputLabel>
-											<Select
-												style={{ textAlign: "left" }}
-												labelId="select-unarchiveDestinationUnit-label"
-												label="Unid. Destino do Desarquivamento"
-												id="select-unarchiveDestinationUnit"
-												value={unarchiveDestinationUnit}
-												onChange={handleUnarchiveDestinationUnit}
-												renderValue={(value) => `${value.unity_name}`}
-											>
-												<MenuItem key={0} value="">
-													<em>Nenhuma</em>
-												</MenuItem>
+											id="select-unarchiveDestinationUnit"
+											value={unarchiveDestinationUnit}
+											onChange={handleUnarchiveDestinationUnit}
+											renderValue={(value) => `${value.unity_name}`}
+										>
+											<MenuItem key={0} value="">
+												<em>Nenhuma</em>
+											</MenuItem>
 
-												{units.map((unarchiveDestinationUnitOption) => (
-													<MenuItem
-														id={unarchiveDestinationUnitOption.id}
-														value={unarchiveDestinationUnitOption}
-													>
-														{unarchiveDestinationUnitOption.unity_name}
-													</MenuItem>
-												))}
-											</Select>
-										</FormControl>
-									)}
+											{units.map((unarchiveDestinationUnitOption) => (
+												<MenuItem
+													id={unarchiveDestinationUnitOption.id}
+													value={unarchiveDestinationUnitOption}
+												>
+													{unarchiveDestinationUnitOption.unity_name}
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
 								</Grid>
 
 								<Grid item xs={12} sm={12} md={6}>
@@ -965,83 +889,53 @@ const CreateAdministrativeProcess = ({ detail }) => {
 										label="Nº do Processo do Desarquivamento"
 										value={unarchiveProcessNumber}
 										onChange={handleUnarchiveProcessNumberChange}
-										inputProps={{ maxLength: 15, readOnly: detail }}
+										inputProps={{ maxLength: 15 }}
 									/>
 								</Grid>
 
 								<Grid item xs={12} sm={12} md={6}>
-									{detail ? (
-										<TextField
-											fullWidth
-											variant="outlined"
-											id="unarchiveDate"
-											label="Data de Desarquivamento"
-											value={
-												unarchiveDate !== "-"
-													? `${unarchiveDate.substring(
-															8,
-															10
-													  )}/${unarchiveDate.substring(
-															5,
-															7
-													  )}/${unarchiveDate.substring(0, 4)}`
-													: unarchiveDate
-											}
-											inputProps={{ readOnly: true }}
-										/>
-									) : (
-										<KeyboardDatePicker
-											inputVariant="outlined"
-											okLabel="Confirmar"
-											cancelLabel="Cancelar"
-											style={{ width: "100%" }}
-											id="unarchive-date-picker-dialog"
-											label="Data de Desarquivamento"
-											format="dd/MM/yyyy"
-											value={unarchiveDate}
-											onChange={handleUnarchiveDateChange}
-											KeyboardButtonProps={{
-												"aria-label": "change unarchive date",
-											}}
-											error={unarchiveDateHelperText !== ""}
-											helperText={unarchiveDateHelperText}
-										/>
-									)}
+									<KeyboardDatePicker
+										inputVariant="outlined"
+										okLabel="Confirmar"
+										cancelLabel="Cancelar"
+										style={{ width: "100%" }}
+										id="unarchive-date-picker-dialog"
+										label="Data de Desarquivamento"
+										format="dd/MM/yyyy"
+										value={unarchiveDate}
+										onChange={handleUnarchiveDateChange}
+										KeyboardButtonProps={{
+											"aria-label": "change unarchive date",
+										}}
+										error={unarchiveDateHelperText !== ""}
+										helperText={unarchiveDateHelperText}
+									/>
 								</Grid>
 							</>
 						) : (
 							""
 						)}
-            
-            <Grid item xs={12} sm={12} md={12}>
+
+						<Grid item xs={12} sm={12} md={12}>
 							<Typography className={classes.sectionTitle}>
 								Caixa de Arquivamento:
 							</Typography>
 						</Grid>
 
 						<Grid className={classes.boxAB} item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									label="Sigla da Caixa"
-									value={boxAbbreviationDetail}
-								/>
-							) : (
-								<AutoComplete
-									value={boxAbbreviation}
-									handleValueChange={(event, newValue) => {
-										setBoxAbbreviationHelperText("");
-										setBoxAbbreviation(newValue);
-									}}
-									options={boxAbbreviations}
-									optionsLabel={(option) => `${option.abbreviation}`}
-									propertyCheck="abbreviation"
-									sortProperty="abbreviation"
-									label="Sigla da Caixa"
-									helperText={boxAbbreviationHelperText}
-								/>
-							)}
+							<AutoComplete
+								value={boxAbbreviation}
+								handleValueChange={(event, newValue) => {
+									setBoxAbbreviationHelperText("");
+									setBoxAbbreviation(newValue);
+								}}
+								options={boxAbbreviations}
+								optionsLabel={(option) => `${option.abbreviation}`}
+								propertyCheck="abbreviation"
+								sortProperty="abbreviation"
+								label="Sigla da Caixa"
+								helperText={boxAbbreviationHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
@@ -1057,7 +951,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								type="number"
 								error={boxNumberHelperText !== ""}
 								helperText={boxNumberHelperText}
-								inputProps={{ readOnly: detail }}
 							/>
 						</Grid>
 
@@ -1074,7 +967,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								type="number"
 								error={boxYearHelperText !== ""}
 								helperText={boxYearHelperText}
-								inputProps={{ readOnly: detail }}
 							/>
 						</Grid>
 
@@ -1085,83 +977,45 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="shelf"
-									label="Estante"
-									value={shelfDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-                
-								<AutoComplete
-									value={shelf}
-									handleValueChange={handleShelfChange}
-									options={shelfs}
-									optionsLabel={(option) => `${option.number}`}
-									propertyCheck="number"
-									sortProperty="number"
-									label="Estante"
-									helperText={shelfHelperText}
-								/>
-							)}
+							<AutoComplete
+								value={shelf}
+								handleValueChange={handleShelfChange}
+								options={shelfs}
+								optionsLabel={(option) => `${option.number}`}
+								propertyCheck="number"
+								sortProperty="number"
+								label="Estante"
+								helperText={shelfHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="rack"
-									label="Prateleira"
-									value={rackDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<AutoComplete
-									value={rack}
-									handleValueChange={handleRackChange}
-									options={racks}
-									optionsLabel={(option) => `${option.number}`}
-									propertyCheck="number"
-									sortProperty="number"
-									label="Prateleira"
-									helperText={rackHelperText}
-								/>
-							)}
+							<AutoComplete
+								value={rack}
+								handleValueChange={handleRackChange}
+								options={racks}
+								optionsLabel={(option) => `${option.number}`}
+								propertyCheck="number"
+								sortProperty="number"
+								label="Prateleira"
+								helperText={rackHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="file-location"
-									label="Localidade"
-									value={fileLocationDetail}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<AutoComplete
-									value={fileLocation}
-									handleValueChange={handleFileLocationChange}
-									options={fileLocations}
-									optionsLabel={(option) => `${option.file}`}
-									propertyCheck="file"
-									sortProperty="file"
-									label="Localidade"
-									helperText={fileLocationHelperText}
-								/>
-							)}
+							<AutoComplete
+								value={fileLocation}
+								handleValueChange={handleFileLocationChange}
+								options={fileLocations}
+								optionsLabel={(option) => `${option.file}`}
+								propertyCheck="file"
+								sortProperty="file"
+								label="Localidade"
+								helperText={fileLocationHelperText}
+							/>
 						</Grid>
 
-						<NotesInput
-							set={setNotes}
-							notes={notesLocal}
-							isDetailPage={detail}
-						/>
+						<NotesInput set={setNotes} notes={notesLocal} />
 					</>
 				)}
 
@@ -1181,13 +1035,15 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			</CardContainer>
 
 			{!detail ? (
-			<div style={{ marginBottom: "100px" }}>
-				<DataTable
-					title="Processo Administrativo"
-					url="administrative-process/"
-				/>
-			</div>
-			) : ("")}
+				<div style={{ marginBottom: "100px" }}>
+					<DataTable
+						title="Processo Administrativo"
+						url="administrative-process/"
+					/>
+				</div>
+			) : (
+				""
+			)}
 		</>
 	);
 };

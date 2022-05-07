@@ -25,7 +25,7 @@ const NumberProcessInput = ({
 			onChange={handleChange}
 			error={helperText !== ""}
 			helperText={helperText}
-			inputProps={{ maxLength: 20, readOnly: isDetailPage }}
+			inputProps={{ maxLength: 20 }}
 		/>
 	);
 };

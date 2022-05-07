@@ -15,7 +15,7 @@ export default function Search() {
 				<img id="logo" src={imgBox} alt="Logo" />
 				<h1 id="search_title">Arquivo Geral da Polícia Civil de Goiás</h1>
 
-        <h2 id="pesquisar">Pesquisar</h2>
+				<h2 id="pesquisar">Pesquisar</h2>
 
 				<CardContainer title="Documentos" spacing={2}>
 					<MenuCard

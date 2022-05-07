@@ -17,7 +17,7 @@ function Header() {
 
 	return (
 		<div className="header">
-      <img src={imgFolders} alt="Logo" height="40" width="40" />
+			<img src={imgFolders} alt="Logo" height="40" width="40" />
 
 			<input type="checkbox" id="bt_menu" />
 			<label htmlFor="bt_menu">&#9776;</label>
@@ -51,9 +51,9 @@ function Header() {
 							<a href="/settings">Configurações</a>
 						</li>
 					)}
-          <li>
-            <a href="/manual">Manual</a>
-          </li>
+					<li>
+						<a href="/manual">Manual</a>
+					</li>
 					<li>
 						<a onClick={logout} href="/login">
 							Sair

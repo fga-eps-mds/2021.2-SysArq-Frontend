@@ -31,10 +31,12 @@ export const arrayMes = [
 export const formatDateName = (date) =>
 	`${date.getFullYear()}-${arrayMes[date.getMonth()]}`;
 
-export const formatDate = (date) =>
-	`${date.getFullYear()}-${formatDateNumber(
-		date.getMonth() + 1
-	)}-${formatDateNumber(date.getDate())}`;
+export const formatDate = (date) => {
+	const newDate = new Date(date);
+	return `${newDate.getFullYear()}-${formatDateNumber(
+		newDate.getMonth() + 1
+	)}-${formatDateNumber(newDate.getDate())}`;
+};
 
 export const isInt = (number) => /^\d+$/.test(number);
 
@@ -129,7 +131,7 @@ export function autocompl(
 			variant="outlined"
 			id="workerName"
 			data-testid="autocomplete"
-			value={publicWorkers.name}
+			value={publicWorkers}
 			onChange={(event, newValue) => {
 				handlePublicWorkerChange(newValue);
 			}}
@@ -184,7 +186,7 @@ export function senderWorker(
 			variant="oulined"
 			id="workerName"
 			data-testid="autocomplete"
-			value={senderPublicWorkers.name}
+			value={senderPublicWorkers}
 			onChange={(event, newValue) => {
 				handleSenderPublicWorkerChange(newValue);
 			}}
@@ -227,7 +229,7 @@ export function receiverWorker(
 			variant="outlined"
 			id="workerName"
 			data-testid="autocomplete"
-			value={receiverPublicWorkers.name}
+			value={receiverPublicWorkers}
 			onChange={(event, newValue) => {
 				handleReceiverPublicWorkerChange(newValue);
 			}}

@@ -24,6 +24,10 @@ import MuiLink from "@material-ui/core/Link";
 
 import DeleteIcon from "@material-ui/icons/Delete";
 
+import EditIcon from "@material-ui/icons/Edit";
+
+import CloseIcon from "@material-ui/icons/Close";
+
 import tableHeadCells from "./tablesHeadCells";
 
 import { axiosProfile, axiosArchives } from "../../../Api";
@@ -132,7 +136,7 @@ const DataTable = ({ url, title, isReport }) => {
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
-
+	const [isEditing, setIsEditing] = useState(null);
 	const [updateTable, setUpdateTable] = useState(true);
 
 	const connectionError = () => {
@@ -491,7 +495,7 @@ const DataTable = ({ url, title, isReport }) => {
 
 	const filterRows = (query) => {
 		const rowsWithFilter = rows.filter((row) => {
-            // eslint-disable-next-line
+			// eslint-disable-next-line
 			for (const [key, value] of Object.entries(row)) {
 				try {
 					if (
@@ -525,6 +529,52 @@ const DataTable = ({ url, title, isReport }) => {
 		setFilteredRows(rows);
 		filterRows(currentFilter);
 	}, [rows]);
+
+	const updateItem = (id, values) => {
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+
+				axiosArchives
+					.put(`${url}${id}/`, values, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						"Content-Type": "application/json",
+					})
+					.then(() => {
+						setOpenAlert(true);
+						setSeverityAlert("success");
+						setAlertHelperText("Campo atualizado com sucesso!");
+						setUpdateTable(true);
+					})
+					.catch((error) => {
+						setOpenAlert(true);
+						setSeverityAlert("error");
+						try {
+							if (
+								error?.response?.data &&
+								error.response.data?.indexOf("Cannot") !== -1
+							) {
+								setAlertHelperText(
+									"Campo em uso! Atualize os documentos que utilizam esse campo."
+								);
+							} else {
+								setAlertHelperText(
+									"Verifique sua conexão com a internet e recarregue a página."
+								);
+							}
+						} catch {
+							setAlertHelperText("Campo com erro.");
+						}
+					});
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+	};
 
 	return (
 		<>
@@ -592,7 +642,7 @@ const DataTable = ({ url, title, isReport }) => {
 										tabIndex={-1}
 										key={row.id}
 										onClick={
-											fieldUrls.indexOf(url) !== -1
+											fieldUrls.indexOf(url) !== -1 || isReport
 												? null
 												: () => {
 														window.open(
@@ -614,13 +664,56 @@ const DataTable = ({ url, title, isReport }) => {
 														key={row[headCells[headCellIndex].id]}
 														align={headCellIndex === 0 ? "left" : "right"}
 													>
-														{cellContent(row, headCells[headCellIndex].id)}
+														{isEditing === row.id ? (
+															<TextField
+																width="50px"
+																id="outlined-basic"
+																size="small"
+																type={headCells[headCellIndex].inputType}
+																defaultValue={
+																	headCells[headCellIndex].id === "cpf"
+																		? cellContent(
+																				row,
+																				headCells[headCellIndex].id
+																		  ).replace(/[^\w\s]/gi, "")
+																		: cellContent(
+																				row,
+																				headCells[headCellIndex].id
+																		  )
+																}
+																variant="outlined"
+																onBlur={(e) =>
+																	e.target.value &&
+																	updateItem(row.id, {
+																		[headCells[headCellIndex].id]:
+																			e.target.value,
+																	})
+																}
+															/>
+														) : (
+															cellContent(row, headCells[headCellIndex].id)
+														)}
 													</TableCell>
-
 													{headCellIndex === headCells.length - 1 &&
 														fieldUrls.indexOf(url) !== -1 &&
 														isReport === false && (
 															<TableCell align="right">
+																{!headCells[headCellIndex].disable &&
+																	(isEditing === row.id ? (
+																		<IconButton color="inherit" size="small">
+																			<CloseIcon
+																				data-testid="edit-field"
+																				onClick={() => setIsEditing(null)}
+																			/>
+																		</IconButton>
+																	) : (
+																		<IconButton color="inherit" size="small">
+																			<EditIcon
+																				data-testid="edit-field"
+																				onClick={() => setIsEditing(row.id)}
+																			/>
+																		</IconButton>
+																	))}
 																<IconButton
 																	style={{ color: "#fe0000" }}
 																	color="inherit"

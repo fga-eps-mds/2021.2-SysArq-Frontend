@@ -107,20 +107,8 @@ const CreateBoxArchiving = ({ detail }) => {
 	const [unarchiveProcessNumber, setUnarchiveProcessNumber] = useState("");
 	const [receivedDate, setReceivedDate] = useState(detail ? "" : null);
 	const [senderUnit, setSenderUnit] = useState(null);
-	// const [box, setBox] = useState("");
-	// const [shelf, setShelf] = useState("");
-	// const [rack, setRack] = useState("");
-	// const [fileLocation, setFileLocation] = useState("");
 	const [notes, setNotes] = useState("");
-	// const [boxnotes, setBoxNotes] = useState("");
 	const [originBox, setOriginBox] = useState([{}]);
-
-	/*
-	 *  originbox: {
-	 *   shelf: ...,
-	 *   rack: ...
-	 *  }
-	 * */
 
 	const [processNumberHelperText, setProcessNumberHelperText] = useState("");
 	const [receivedDateHelperText, setReceivedDateHelperText] = useState("");
@@ -169,6 +157,10 @@ const CreateBoxArchiving = ({ detail }) => {
 
 	const handleCloseNewOriginBoxDialog = () => setOpenNewOriginBoxDialog(false);
 
+	useEffect(() => console.log(originBox), [originBox]);
+
+	const [editId, setEditId] = useState(null);
+
 	const handleNewOriginBoxNumberChange = (event) => {
 		setNewOriginBoxNumberHelperText("");
 		setNewOriginBoxNumber(event.target.value);
@@ -216,7 +208,9 @@ const CreateBoxArchiving = ({ detail }) => {
 		return "added originBox";
 	};
 
-	useEffect(() => originBox.filter((b) => b.number === undefined), [originBox]);
+	useEffect(() => {
+		originBox.filter((b) => b.id === undefined);
+	}, [originBox]);
 
 	const [currentBox, setCurrentBox] = useState({});
 
@@ -233,21 +227,13 @@ const CreateBoxArchiving = ({ detail }) => {
 		setNewOriginBoxSubject(event.target.value);
 	};
 
+	const [senderUnitId, setSenderUnitId] = useState(0);
+
 	const handleAddNewOriginBoxSubject = (b) => {
 		if (newOriginBoxSubject === "") {
 			setNewOriginBoxSubjectHelperText("Insira um assunto");
 			return "newOriginBoxSubject error";
 		}
-
-		// b {}
-		// originBox [{}]
-
-		// const newOriginBox = b;
-
-		// b.subjects_list.push({
-		// 	name: newOriginBoxSubject,
-		// 	dates: [],
-		// });
 
 		setOriginBox((prev) =>
 			prev.map((box) =>
@@ -262,21 +248,12 @@ const CreateBoxArchiving = ({ detail }) => {
 					: box
 			)
 		);
-		// setOriginBox(prev => prev.map((box, index) => index === boxIndex ? {...box, subjects_list: [...box.subjects_list ?? [], {name: newOriginBoxSubject, dates: []}]} : box))
 		setOpenNewOriginBoxSubjectDialog(false);
 
 		return "added originBoxSubject";
 	};
 
 	const handleDeleteOriginBoxSubject = (box, originBoxSubjectIndex) => {
-		// originBox.subjects_list.splice(originBoxSubjectIndex, 1);
-		//
-		// const newOriginBox = {
-		// 	number: originBox.number,
-		// 	year: originBox.year,
-		// 	subjects_list: originBox.subjects_list,
-		// };
-
 		const newBox = {
 			...box,
 			subjects_list: box.subjects_list.filter(
@@ -284,10 +261,6 @@ const CreateBoxArchiving = ({ detail }) => {
 			),
 		};
 		setOriginBox((prev) => prev.map((b) => (b.id === box.id ? newBox : b)));
-
-		// setOriginBox(prev => prev.filter((_, index) => index != originBoxSubjectIndex))
-		// setOriginBox(prev => prev.map((b) => box.id === b.id && b.subjects_list.filter((_, index) => index !== originBoxSubjectIndex)))
-		// setOriginBox(newOriginBox);
 	};
 
 	const handleOpenNewOriginBoxSubjectDateDialog = (
@@ -320,7 +293,7 @@ const CreateBoxArchiving = ({ detail }) => {
 	const handleAddNewOriginBoxSubjectDate = (box, subjectIndex) => {
 		if (
 			isDateNotValid(
-				newOriginBoxSubjectDate,
+				new Date(newOriginBoxSubjectDate),
 				setNewOriginBoxSubjectDateHelperText,
 				"date",
 				"required"
@@ -329,13 +302,7 @@ const CreateBoxArchiving = ({ detail }) => {
 			return "newOriginBoxSubjectDate error";
 		}
 
-		const newOriginBox = originBox;
-		const formattedDate = formatDate(newOriginBoxSubjectDate);
-
-
-		// console.log('box')
-		// console.log(box)
-		// console.log(box.subjects_list.document_name_id.document_name)
+		const formattedDate = formatDate(new Date(newOriginBoxSubjectDate));
 
 		if (
 			box.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(
@@ -356,21 +323,6 @@ const CreateBoxArchiving = ({ detail }) => {
 		};
 		setOriginBox((prev) => prev.map((b) => (b.id === box.id ? newBox : b)));
 
-		// if (
-		// 	newOriginBox.subjects_list[selectedOriginBoxSubjectIndex].dates.indexOf(
-		// 		formattedDate
-		// 	) !== -1
-		// ) {
-		// 	setNewOriginBoxSubjectDateHelperText("Data já adicionada");
-		// 	return "newOriginBoxSubjectDate already added error";
-		// }
-		//
-		// newOriginBox.subjects_list[selectedOriginBoxSubjectIndex].dates.push(
-		// 	formattedDate
-		// );
-		//
-		// setOriginBox(newOriginBox);
-
 		setOpenNewOriginBoxSubjectDateDialog(false);
 
 		return "added newOriginBoxSubjectDate";
@@ -381,23 +333,6 @@ const CreateBoxArchiving = ({ detail }) => {
 		originBoxSubjectIndex,
 		deletedOriginBoxSubjectDate
 	) => {
-		// const originBoxSubjectDates =
-		// 	originBox.subjects_list[originBoxSubjectIndex].dates;
-		//
-		// originBox.subjects_list[originBoxSubjectIndex].dates =
-		// 	originBoxSubjectDates.filter(
-		// 		(item) => item !== deletedOriginBoxSubjectDate
-		// 	);
-		//
-		// // Changes the reference for the screen to be updated
-		// const newOriginBox = {
-		// 	number: originBox.number,
-		// 	year: originBox.year,
-		// 	subjects_list: originBox.subjects_list,
-		// };
-		//
-		// s etOriginBox(newOriginBox);
-
 		const newDates = box.subjects_list[originBoxSubjectIndex].dates.filter(
 			(date) => date !== deletedOriginBoxSubjectDate
 		);
@@ -452,6 +387,28 @@ const CreateBoxArchiving = ({ detail }) => {
 		window.location.reload();
 	};
 
+	const onDelete = () => {
+		axiosProfile
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
+
+				axiosArchives
+					.delete(`box-archiving/${editId}`, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then(() => {
+						window.close();
+					});
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+	};
+
 	const onSubmit = () => {
 		setLoading(true);
 
@@ -463,7 +420,7 @@ const CreateBoxArchiving = ({ detail }) => {
 
 		if (
 			isDateNotValid(
-				receivedDate,
+				new Date(receivedDate),
 				setReceivedDateHelperText,
 				"date",
 				"required"
@@ -487,7 +444,11 @@ const CreateBoxArchiving = ({ detail }) => {
 
 		if (
 			status === "Desarquivado" &&
-			isDateNotValid(unarchiveDate, setUnarchiveDateHelperText, "date")
+			isDateNotValid(
+				new Date(unarchiveDate),
+				setUnarchiveDateHelperText,
+				"date"
+			)
 		) {
 			setLoading(false);
 			return "unarchiveDate error";
@@ -515,7 +476,7 @@ const CreateBoxArchiving = ({ detail }) => {
 			process_number: processNumber,
 			sender_unity: senderUnit.id,
 			notes: notes,
-			received_date: formatDate(receivedDate),
+			received_date: formatDate(new Date(receivedDate)),
 			document_url: "",
 			cover_sheet: "",
 			filer_user: "",
@@ -525,11 +486,13 @@ const CreateBoxArchiving = ({ detail }) => {
 			unity_id: status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
 			send_date:
 				unarchiveDate !== null && status === "Desarquivado"
-					? formatDate(unarchiveDate)
+					? formatDate(new Date(unarchiveDate))
 					: null,
 			box_process_number:
 				status === "Desarquivado" ? unarchiveProcessNumber : "",
 		};
+
+		const verb = editId ? axiosArchives.put : axiosArchives.post;
 
 		axiosProfile
 			.post(`api/token/refresh/`, {
@@ -539,10 +502,9 @@ const CreateBoxArchiving = ({ detail }) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				// TO-DO
-				axiosArchives
-					.post("box-archiving/", payload, {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
+				verb(`box-archiving/${editId ?? ""}`, payload, {
+					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+				})
 					.then(() => onSuccess())
 					.catch((err) => {
 						if (err.response.status === 401) {
@@ -584,6 +546,8 @@ const CreateBoxArchiving = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseBoxArchiving) => {
+							setEditId(responseBoxArchiving.data.id);
+
 							setSenderUnitDetail(responseBoxArchiving.data.sender_unity_name);
 
 							setShelfDetail(
@@ -618,34 +582,66 @@ const CreateBoxArchiving = ({ detail }) => {
 									: "-"
 							);
 
-							// setBoxNotes(
-							// 	responseBoxArchiving.data.box_notes
-							// 		? responseBoxArchiving.data.box_notes
-							// 		: "-"
-							// );
+							setSenderUnitId(responseBoxArchiving.data.sender_unity);
 
-							// TO-DO: Coesão nos nomes de variáveis da caixa de origem
-
-							if (responseBoxArchiving.data.origin_box_id) {
-								const subjectsListDetail = [];
-
-								responseBoxArchiving.data.origin_box.subject_list.map(
-									(subject) =>
-										subjectsListDetail.push({
-											name: subject.document_name_id,
-											dates: subject.date,
-										})
-								);
-
-								const originBoxDetail = {
+							setOriginBox(
+								responseBoxArchiving.data.origin_boxes.map((b) => ({
+									...b,
 									id: getNextId(),
-									number: responseBoxArchiving.data.origin_box.number,
-									year: responseBoxArchiving.data.origin_box.year,
-									subjects_list: subjectsListDetail,
-								};
+									subjects_list: b.subject_list.map((s) => ({
+										...s,
+										dates: s.year.map((y) => y.toString()),
+										document_name_id: { document_name: s.document_name },
+									})),
+								}))
+							);
 
-								setOriginBox((prev) => [...prev, originBoxDetail]);
-							}
+							setOriginBox((prev) =>
+								prev.map((b) => {
+									if (b.shelf_id) {
+										axiosArchives
+											.get(`/shelf/${b.shelf_id}/`, {
+												headers: {
+													Authorization: `JWT ${localStorage.getItem("tk")}`,
+												},
+											})
+											.then((res) => (b.shelf = res.data))
+											.catch(connectionError);
+									}
+
+									if (b.rack_id) {
+										axiosArchives
+											.get(`/rack/${b.rack_id}/`, {
+												headers: {
+													Authorization: `JWT ${localStorage.getItem("tk")}`,
+												},
+											})
+											.then((res) => (b.rack = res.data))
+											.catch(connectionError);
+									}
+
+									if (b.file_location_id) {
+									axiosArchives
+										.get(`/file-location/${b.file_location_id}/`, {
+											headers: {
+												Authorization: `JWT ${localStorage.getItem("tk")}`,
+											},
+										})
+										.then((res) => (b.file_location = res.data))
+										.catch(connectionError);
+									}
+
+									return b;
+								})
+							);
+
+							axiosArchives
+								.get(`unity/${responseBoxArchiving.data.sender_unity}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => setSenderUnit(response.data));
 
 							if (
 								!responseBoxArchiving.data.is_eliminated &&
@@ -708,10 +704,14 @@ const CreateBoxArchiving = ({ detail }) => {
 		getUnits(setUnits, connectionError);
 	}, []);
 
+	useEffect(() => {
+		console.log(senderUnit);
+	}, [senderUnit]);
+
 	return (
 		<>
 			<CardContainer title="Arquivamento de Caixas" spacing={1}>
-				{detail ? <DocumentsDetail /> : ""}
+				{detail ? <DocumentsDetail onDelete={onDelete} /> : ""}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />
@@ -790,7 +790,10 @@ const CreateBoxArchiving = ({ detail }) => {
 																				{subject.dates.map((addedDate) => (
 																					<Chip
 																						icon={<TimelapseIcon />}
-																						label={`${addedDate.substring(0, 4)}`}
+																						label={`${addedDate.substring(
+																							0,
+																							4
+																						)}`}
 																						color="secondary"
 																						deleteIcon={
 																							<CancelIcon data-testid="delete" />
@@ -919,7 +922,7 @@ const CreateBoxArchiving = ({ detail }) => {
 												}
 												connectionError={connectionError}
 												isDetailPage={detail}
-												fileLocationDetail={fileLocationDetail}
+												fileLocationDetail={box.file_location}
 												fileLocation={box.file_location}
 											/>
 
@@ -933,7 +936,7 @@ const CreateBoxArchiving = ({ detail }) => {
 												}
 												connectionError={connectionError}
 												isDetailPage={detail}
-												shelfDetail={shelfDetail}
+												shelfDetail={box.shelf}
 												shelf={box.shelf}
 											/>
 
@@ -947,7 +950,7 @@ const CreateBoxArchiving = ({ detail }) => {
 												}
 												connectionError={connectionError}
 												isDetailPage={detail}
-												rackDetail={rackDetail}
+												rackDetail={box.rack}
 												rack={box.rack}
 											/>
 										</div>
@@ -968,7 +971,7 @@ const CreateBoxArchiving = ({ detail }) => {
 														)
 													)
 												}
-												notes={box.box_notes}
+												boxnotes={box?.box_notes ?? "-"}
 												isDetailPage={detail}
 											/>
 										</div>
@@ -976,9 +979,7 @@ const CreateBoxArchiving = ({ detail }) => {
 								))}
 
 							<ChipsContainer justifyContent="left" marginTop="0%">
-								{detail ? (
-									<Chip label="Não cadastrada" />
-								) : (
+								{!detail && (
 									<AddChip
 										label="Adicionar Caixa para Arquivamento"
 										onClick={handleOpenNewOriginBoxDialog}
@@ -1037,11 +1038,12 @@ const CreateBoxArchiving = ({ detail }) => {
 											fullWidth
 											id="unarchiveDestinationUnit"
 											label="Unid. Destino do Desarquivamento"
+											variant="outlined"
 											value={unarchiveDestinationUnitDetail}
 											inputProps={{ readOnly: true }}
 										/>
 									) : (
-										<FormControl fullWidth>
+										<FormControl fullWidth variant="outlined">
 											<InputLabel id="select-unarchiveDestinationUnit-label">
 												Unid. Destino do Desarquivamento
 											</InputLabel>
@@ -1049,6 +1051,7 @@ const CreateBoxArchiving = ({ detail }) => {
 												style={{ textAlign: "left" }}
 												labelId="select-unarchiveDestinationUnit-label"
 												id="select-unarchiveDestinationUnit"
+												label="Unid. Destino do Desarquivamento"
 												value={unarchiveDestinationUnit}
 												onChange={handleUnarchiveDestinationUnit}
 												renderValue={(value) => `${value.unity_name}`}
@@ -1074,6 +1077,7 @@ const CreateBoxArchiving = ({ detail }) => {
 									<TextField
 										fullWidth
 										id="unarchiveProcessNumber"
+										variant="outlined"
 										label="Nº do Processo do Desarquivamento"
 										value={unarchiveProcessNumber}
 										onChange={handleUnarchiveProcessNumberChange}
@@ -1086,6 +1090,7 @@ const CreateBoxArchiving = ({ detail }) => {
 										<TextField
 											fullWidth
 											id="unarchiveDate"
+											variant="outlined"
 											label="Data de Desarquivamento"
 											value={
 												unarchiveDate !== "-"
@@ -1108,6 +1113,7 @@ const CreateBoxArchiving = ({ detail }) => {
 											id="unarchive-date-picker-dialog"
 											label="Data de Desarquivamento"
 											format="dd/MM/yyyy"
+											inputVariant="outlined"
 											value={unarchiveDate}
 											onChange={handleUnarchiveDateChange}
 											KeyboardButtonProps={{
@@ -1256,29 +1262,6 @@ const CreateBoxArchiving = ({ detail }) => {
 					</DialogActions>
 				</Dialog>
 
-				{/* <DropzoneDialog
-				// <Button onClick={() => setOpen(true)}>Abrir</Button>
-				dropzoneClass={{ color: "#fff" }}
-				dropzoneParagraphClass={{ text: { color: "#fff" } }}
-				filesLimit={1}
-				dialogTitle="Anexar Documento Externo"
-				cancelButtonText="CANCELAR"
-				submitButtonText="CONFIRMAR"
-				showFileNamesInPreview
-				dropzoneText="Arraste e Solte seu Arquivo ou Clique"
-				// open={open}
-				// onSave={() => setOpen(false)}
-				acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
-				showPreviews={false}
-				maxFileSize={5000000}
-				// onClose={() => setOpen(false)}
-				// onChange={() => setOpen(false)}
-				getFileLimitExceedMessage={() => "Alo"}
-				getFileAddedMessage={(rejected) => `${rejected}Alo`}
-				getFileRemovedMessage
-				getDropRejectMessage
-			/> */}
-
 				<DocumentsCreate
 					isDetailPage={detail}
 					loading={loading}
@@ -1295,10 +1278,12 @@ const CreateBoxArchiving = ({ detail }) => {
 			</CardContainer>
 
 			{!detail ? (
-			<div style={{ marginBottom: "100px" }}>
-				<DataTable title="Arquivamento de Caixas" url="box-archiving/" />
-			</div>
-			) : ("")}
+				<div style={{ marginBottom: "100px" }}>
+					<DataTable title="Arquivamento de Caixas" url="box-archiving/" />
+				</div>
+			) : (
+				""
+			)}
 		</>
 	);
 };
