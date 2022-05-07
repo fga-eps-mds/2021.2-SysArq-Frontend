@@ -32,6 +32,9 @@ import DataTable from "../../components/DataTable";
 const CreateFrequencyRelation = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
+  const [senderId, setSenderId] = useState(0)
+  const [receiverId, setReceiverId] = useState(0)
+
 	const [documentTypeDetail, setDocumentTypeDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 	const [senderPublicWorkerDetail, setSenderPublicWorkerDetail] = useState("");
@@ -61,7 +64,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [documentType, setDocumentType] = useState(null);
 	const [senderUnit, setSenderUnit] = useState(null);
 	const [notesLocal, setNotes] = useState("");
-	const [referencePeriod, setReferencePeriod] = useState(detail ? [] : []);
+	const [referencePeriod, setReferencePeriod] = useState([]);
 
 	const [senderPublicWorkerHelperText, setSenderPublicWorkerHelperText] =
 		useState("");
@@ -77,6 +80,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 	const [openAlert, setOpenAlert] = useState(false);
 	const [severityAlert, setSeverityAlert] = useState("error");
 	const [alertHelperText, setAlertHelperText] = useState("");
+	const [editId, setEditId] = useState(null);
 
 	const [loading, setLoading] = useState(detail);
 
@@ -137,6 +141,28 @@ const CreateFrequencyRelation = ({ detail }) => {
 		window.location.reload();
 	};
 
+	const onDelete = () => {
+		axiosProfile
+		.post(`api/token/refresh/`, {
+			refresh: localStorage.getItem("tkr"),
+		})
+		.then((res) => {
+			localStorage.setItem("tk", res.data.access);
+			localStorage.setItem("tkr", res.data.refresh);
+
+			axiosArchives
+				.delete(`frequency-relation/${editId}/`, {
+					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+				})
+				.then(() => {
+					window.close();
+				})
+		})
+		.catch((error) => {
+			axiosProfileError(error, connectionError);
+		});
+	}
+
 	const onSubmit = () => {
 		setLoading(true);
 
@@ -157,7 +183,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 		}
 		if (
 			isDateNotValid(
-				receivedDate,
+				new Date(receivedDate),
 				setReceivedDateHelperText,
 				"date",
 				"required"
@@ -186,6 +212,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 			setLoading(false);
 			return "referencePeriod error";
 		}
+	const verb = editId ? axiosArchives.put : axiosArchives.post;
 
 		axiosProfile
 			.post(`api/token/refresh/`, {
@@ -194,9 +221,8 @@ const CreateFrequencyRelation = ({ detail }) => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
-				axiosArchives
-					.post(
-						"frequency-relation/",
+				verb(
+						`frequency-relation/${editId ? `${editId}/` : ''}`,
 						{
 							process_number: processNumber,
 							notes: notesLocal,
@@ -211,9 +237,11 @@ const CreateFrequencyRelation = ({ detail }) => {
 							document_name_id: documentType.id,
 							temporality_date:
 								parseInt(documentType.temporality, 10) +
-								parseInt(receivedDate.getFullYear(), 10),
+								parseInt(new Date(receivedDate).getFullYear(), 10),
 						},
-						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` } }
+						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						...(editId && {  "Content-Type": "application/json" }) 
+					}
 					)
 					.then(() => onSuccess())
 					.catch((err) => {
@@ -265,9 +293,38 @@ const CreateFrequencyRelation = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseFrequencyRelation) => {
+							setEditId(responseFrequencyRelation.data.id);
 							setDocumentTypeDetail(
 								responseFrequencyRelation.data.document_name_name
 							);
+
+							axiosArchives
+								.get(
+									`document-name/${responseFrequencyRelation.data.document_name_id}/`,
+									{
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
+									}
+								)
+								.then((response) => {
+									setDocumentType(
+										response.data
+									);
+								})
+								.catch(() => connectionError());
+
+							axiosArchives
+								.get(`unity/${responseFrequencyRelation.data.sender_unity}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setSenderUnit(response.data);
+								})
+								.catch(() => connectionError());
+
 							setSenderUnitDetail(
 								responseFrequencyRelation.data.sender_unity_name
 							);
@@ -295,6 +352,9 @@ const CreateFrequencyRelation = ({ detail }) => {
 								responseFrequencyRelation.data.reference_period
 							);
 
+              setSenderId(responseFrequencyRelation.data.sender_id);
+              setReceiverId(responseFrequencyRelation.data.receiver_id);
+
 							setLoading(false);
 						})
 						.catch(() => connectionError());
@@ -312,7 +372,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 	return (
 		<>
 			<CardContainer title="Relação de Frequências" spacing={1}>
-				{detail ? <DocumentsDetail /> : ""}
+				{detail ? <DocumentsDetail onDelete={onDelete} onUpdate={onSubmit} /> : ""}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />
@@ -329,7 +389,6 @@ const CreateFrequencyRelation = ({ detail }) => {
 						</Grid>
 
 						<CommonSet
-							isDetailPage={detail}
 							setReceivedDateHelperText={setReceivedDateHelperText}
 							setReceivedDate={setReceivedDate}
 							receivedDate={receivedDate}
@@ -346,14 +405,14 @@ const CreateFrequencyRelation = ({ detail }) => {
 							senderUnit={senderUnit}
 							units={units}
 							senderUnitHelperText={senderUnitHelperText}
-							senderPublicWorkers={senderPublicWorkers}
+							senderPublicWorkers={senderPublicWorkers?.find(e => e.id === senderId)}
 							senderPublicWorkerInput={senderPublicWorkerInput}
 							handleSenderPublicWorkerChange={handleSenderPublicWorkerChange}
 							setSenderPublicWorkerInput={setSenderPublicWorkerInput}
 							senderPublicWorkerOptions={senderPublicWorkerOptions}
 							senderPublicWorkerHelperText={senderPublicWorkerHelperText}
 							senderPublicWorkerDetail={senderPublicWorkerDetail}
-							receiverPublicWorkers={receiverPublicWorkers}
+							receiverPublicWorkers={senderPublicWorkers?.find(e => e.id === receiverId)}
 							receiverPublicWorkerInput={receiverPublicWorkerInput}
 							handleReceiverPublicWorkerChange={
 								handleReceiverPublicWorkerChange

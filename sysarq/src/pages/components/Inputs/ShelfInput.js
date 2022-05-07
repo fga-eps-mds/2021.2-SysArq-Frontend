@@ -54,7 +54,7 @@ const ShelfInput = ({
 					variant="outlined"
 					id="shelf"
 					label="Estante"
-					value={shelfDetail}
+					value={shelfDetail?.number ?? "-"}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (

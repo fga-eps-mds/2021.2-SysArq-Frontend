@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { Grid, TextField } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 import AutoComplete from "../AutoComplete";
 import { axiosArchives, axiosProfile } from "../../../Api";
 import { logout } from "../../../support";
 
 const DocumentTypeInput = ({
-	isDetailPage,
-	documentTypeDetail,
 	setHelperText,
 	set,
 	connectionError,
@@ -38,6 +36,10 @@ const DocumentTypeInput = ({
 					})
 					.then((response) => {
 						setDocumentTypes(response.data);
+						if(typeof documentType === 'string'){
+							const newType = response.data.find(t => t?.document_name === documentType)
+							if(newType) set(newType);
+						}
 					})
 					.catch(() => connectionError());
 			})
@@ -47,19 +49,9 @@ const DocumentTypeInput = ({
 				} else connectionError();
 			});
 	}, [documentType]);
-
+	
 	return (
 		<Grid item xs={12} sm={12} md={12}>
-			{isDetailPage ? (
-				<TextField
-					fullWidth
-					variant="outlined"
-					id="documentType"
-					label="Nome do Documento"
-					value={documentTypeDetail}
-					inputProps={{ readOnly: true }}
-				/>
-			) : (
 				<AutoComplete
 					value={documentType}
 					handleValueChange={handleChange}
@@ -70,14 +62,11 @@ const DocumentTypeInput = ({
 					label="Nome do Documento*"
 					helperText={documentTypeHelperText}
 				/>
-			)}
 		</Grid>
 	);
 };
 
 DocumentTypeInput.propTypes = {
-	isDetailPage: PropTypes.bool.isRequired,
-	documentTypeDetail: PropTypes.string.isRequired,
 	setHelperText: PropTypes.func.isRequired,
 	set: PropTypes.func.isRequired,
 	connectionError: PropTypes.func.isRequired,

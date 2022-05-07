@@ -17,7 +17,7 @@ const FileLocationInput = ({
 	set,
 	connectionError,
 	isDetailPage,
-	FileLocationDetail,
+	fileLocationDetail,
 	FileLocation,
 }) => {
 	const [FileLocations, setFileLocations] = useState([]);
@@ -53,8 +53,8 @@ const FileLocationInput = ({
 					fullWidth
 					variant="outlined"
 					id="FileLocation"
-					label="Prateleira"
-					value={FileLocationDetail}
+					label="Localização do Arquivo"
+					value={fileLocationDetail?.file ?? "-"}
 					inputProps={{ readOnly: true }}
 				/>
 			) : (
@@ -91,7 +91,7 @@ FileLocationInput.propTypes = {
 	set: PropTypes.func.isRequired,
 	connectionError: PropTypes.func.isRequired,
 	isDetailPage: PropTypes.bool.isRequired,
-	FileLocationDetail: PropTypes.string.isRequired,
+	fileLocationDetail: PropTypes.string.isRequired,
 	FileLocation: PropTypes.string.isRequired,
 };
 

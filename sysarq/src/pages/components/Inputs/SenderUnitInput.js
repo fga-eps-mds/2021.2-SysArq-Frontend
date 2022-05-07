@@ -1,13 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Grid, TextField } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 import AutoComplete from "../AutoComplete";
 
 const SenderUnitInput = ({
-	isDetailPage,
-	senderUnitDetail,
 	setHelperText,
 	set,
 	senderUnit,
@@ -21,16 +19,6 @@ const SenderUnitInput = ({
 
 	return (
 		<Grid item xs={12} sm={12} md={12}>
-			{isDetailPage ? (
-				<TextField
-					fullWidth
-					variant="outlined"
-					id="senderUnit"
-					label="Unidade que Encaminhou"
-					value={senderUnitDetail}
-					inputProps={{ readOnly: true }}
-				/>
-			) : (
 				<AutoComplete
 					value={senderUnit}
 					handleValueChange={handleChange}
@@ -41,14 +29,11 @@ const SenderUnitInput = ({
 					label="Unidade que Encaminhou*"
 					helperText={senderUnitHelperText}
 				/>
-			)}
 		</Grid>
 	);
 };
 
 SenderUnitInput.propTypes = {
-	isDetailPage: PropTypes.bool.isRequired,
-	senderUnitDetail: PropTypes.string.isRequired,
 	setHelperText: PropTypes.func.isRequired,
 	set: PropTypes.func.isRequired,
 	senderUnit: PropTypes.string.isRequired,
