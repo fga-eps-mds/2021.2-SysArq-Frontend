@@ -621,14 +621,14 @@ const CreateBoxArchiving = ({ detail }) => {
 									}
 
 									if (b.file_location_id) {
-									axiosArchives
-										.get(`/file-location/${b.file_location_id}/`, {
-											headers: {
-												Authorization: `JWT ${localStorage.getItem("tk")}`,
-											},
-										})
-										.then((res) => (b.file_location = res.data))
-										.catch(connectionError);
+										axiosArchives
+											.get(`/file-location/${b.file_location_id}/`, {
+												headers: {
+													Authorization: `JWT ${localStorage.getItem("tk")}`,
+												},
+											})
+											.then((res) => (b.file_location = res.data))
+											.catch(connectionError);
 									}
 
 									return b;
