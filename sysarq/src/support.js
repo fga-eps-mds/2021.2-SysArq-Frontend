@@ -31,12 +31,12 @@ export const arrayMes = [
 export const formatDateName = (date) =>
 	`${date.getFullYear()}-${arrayMes[date.getMonth()]}`;
 
-export const formatDate = (date) =>
-{	
+export const formatDate = (date) => {
 	const newDate = new Date(date);
 	return `${newDate.getFullYear()}-${formatDateNumber(
 		newDate.getMonth() + 1
-	)}-${formatDateNumber(newDate.getDate())}`;}
+	)}-${formatDateNumber(newDate.getDate())}`;
+};
 
 export const isInt = (number) => /^\d+$/.test(number);
 
@@ -126,7 +126,6 @@ export function autocompl(
 	publicWorkerOptions,
 	publicWorkerHelperText
 ) {
-	
 	return (
 		<Autocomplete
 			variant="outlined"

@@ -47,12 +47,12 @@ const DocumentsDetail = ({ onDelete, onUpdate }) => {
 
 DocumentsDetail.propTypes = {
 	onUpdate: PropTypes.func,
-	onDelete: PropTypes.func
+	onDelete: PropTypes.func,
 };
 
 DocumentsDetail.defaultProps = {
-	onUpdate: f => f,
-	onDelete: f => f
+	onUpdate: (f) => f,
+	onDelete: (f) => f,
 };
 
 export default DocumentsDetail;

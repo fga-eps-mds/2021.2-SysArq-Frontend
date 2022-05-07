@@ -36,9 +36,11 @@ const DocumentTypeInput = ({
 					})
 					.then((response) => {
 						setDocumentTypes(response.data);
-						if(typeof documentType === 'string'){
-							const newType = response.data.find(t => t?.document_name === documentType)
-							if(newType) set(newType);
+						if (typeof documentType === "string") {
+							const newType = response.data.find(
+								(t) => t?.document_name === documentType
+							);
+							if (newType) set(newType);
 						}
 					})
 					.catch(() => connectionError());
@@ -49,19 +51,19 @@ const DocumentTypeInput = ({
 				} else connectionError();
 			});
 	}, [documentType]);
-	
+
 	return (
 		<Grid item xs={12} sm={12} md={12}>
-				<AutoComplete
-					value={documentType}
-					handleValueChange={handleChange}
-					options={documentTypes}
-					optionsLabel={(option) => `${option.document_name}`}
-					propertyCheck="document_name"
-					sortProperty="document_name"
-					label="Nome do Documento*"
-					helperText={documentTypeHelperText}
-				/>
+			<AutoComplete
+				value={documentType}
+				handleValueChange={handleChange}
+				options={documentTypes}
+				optionsLabel={(option) => `${option.document_name}`}
+				propertyCheck="document_name"
+				sortProperty="document_name"
+				label="Nome do Documento*"
+				helperText={documentTypeHelperText}
+			/>
 		</Grid>
 	);
 };

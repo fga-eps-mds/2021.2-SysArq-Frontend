@@ -24,7 +24,7 @@ const NotesInput = ({ set, notes }) => {
 
 NotesInput.propTypes = {
 	set: PropTypes.func.isRequired,
-	notes: PropTypes.string.isRequired
+	notes: PropTypes.string.isRequired,
 };
 
 export default NotesInput;

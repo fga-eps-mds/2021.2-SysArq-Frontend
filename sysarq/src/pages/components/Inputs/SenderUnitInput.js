@@ -19,16 +19,16 @@ const SenderUnitInput = ({
 
 	return (
 		<Grid item xs={12} sm={12} md={12}>
-				<AutoComplete
-					value={senderUnit}
-					handleValueChange={handleChange}
-					options={units}
-					optionsLabel={(option) => `${option.unity_name}`}
-					propertyCheck="unity_name"
-					sortProperty="unity_name"
-					label="Unidade que Encaminhou*"
-					helperText={senderUnitHelperText}
-				/>
+			<AutoComplete
+				value={senderUnit}
+				handleValueChange={handleChange}
+				options={units}
+				optionsLabel={(option) => `${option.unity_name}`}
+				propertyCheck="unity_name"
+				sortProperty="unity_name"
+				label="Unidade que Encaminhou*"
+				helperText={senderUnitHelperText}
+			/>
 		</Grid>
 	);
 };

@@ -157,9 +157,9 @@ const CreateBoxArchiving = ({ detail }) => {
 
 	const handleCloseNewOriginBoxDialog = () => setOpenNewOriginBoxDialog(false);
 
-  useEffect(() => console.log(originBox), [originBox]);
+	useEffect(() => console.log(originBox), [originBox]);
 
-  const [editId, setEditId] = useState(null);
+	const [editId, setEditId] = useState(null);
 
 	const handleNewOriginBoxNumberChange = (event) => {
 		setNewOriginBoxNumberHelperText("");
@@ -227,7 +227,7 @@ const CreateBoxArchiving = ({ detail }) => {
 		setNewOriginBoxSubject(event.target.value);
 	};
 
-  const [senderUnitId, setSenderUnitId] = useState(0);
+	const [senderUnitId, setSenderUnitId] = useState(0);
 
 	const handleAddNewOriginBoxSubject = (b) => {
 		if (newOriginBoxSubject === "") {
@@ -261,7 +261,6 @@ const CreateBoxArchiving = ({ detail }) => {
 			),
 		};
 		setOriginBox((prev) => prev.map((b) => (b.id === box.id ? newBox : b)));
-
 	};
 
 	const handleOpenNewOriginBoxSubjectDateDialog = (
@@ -390,25 +389,25 @@ const CreateBoxArchiving = ({ detail }) => {
 
 	const onDelete = () => {
 		axiosProfile
-		.post(`api/token/refresh/`, {
-			refresh: localStorage.getItem("tkr"),
-		})
-		.then((res) => {
-			localStorage.setItem("tk", res.data.access);
-			localStorage.setItem("tkr", res.data.refresh);
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
 
-			axiosArchives
-				.delete(`box-archiving/${editId}`, {
-					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-				})
-				.then(() => {
-					window.close();
-				})
-		})
-		.catch((error) => {
-			axiosProfileError(error, connectionError);
-		});
-	}
+				axiosArchives
+					.delete(`box-archiving/${editId}`, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then(() => {
+						window.close();
+					});
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+	};
 
 	const onSubmit = () => {
 		setLoading(true);
@@ -445,7 +444,11 @@ const CreateBoxArchiving = ({ detail }) => {
 
 		if (
 			status === "Desarquivado" &&
-			isDateNotValid(new Date(unarchiveDate), setUnarchiveDateHelperText, "date")
+			isDateNotValid(
+				new Date(unarchiveDate),
+				setUnarchiveDateHelperText,
+				"date"
+			)
 		) {
 			setLoading(false);
 			return "unarchiveDate error";
@@ -489,18 +492,19 @@ const CreateBoxArchiving = ({ detail }) => {
 				status === "Desarquivado" ? unarchiveProcessNumber : "",
 		};
 
-    const verb = editId ? axiosArchives.put : axiosArchives.post;
+		const verb = editId ? axiosArchives.put : axiosArchives.post;
 
-			axiosProfile.post(`api/token/refresh/`, {
+		axiosProfile
+			.post(`api/token/refresh/`, {
 				refresh: localStorage.getItem("tkr"),
 			})
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				// TO-DO
-			  verb(`box-archiving/${editId ?? ""}`, payload, {
-						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-					})
+				verb(`box-archiving/${editId ?? ""}`, payload, {
+					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+				})
 					.then(() => onSuccess())
 					.catch((err) => {
 						if (err.response.status === 401) {
@@ -542,7 +546,7 @@ const CreateBoxArchiving = ({ detail }) => {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
 						.then((responseBoxArchiving) => {
-              setEditId(responseBoxArchiving.data.id);
+							setEditId(responseBoxArchiving.data.id);
 
 							setSenderUnitDetail(responseBoxArchiving.data.sender_unity_name);
 
@@ -578,7 +582,7 @@ const CreateBoxArchiving = ({ detail }) => {
 									: "-"
 							);
 
-              setSenderUnitId(responseBoxArchiving.data.sender_unity);
+							setSenderUnitId(responseBoxArchiving.data.sender_unity);
 
 							setOriginBox(
 								responseBoxArchiving.data.origin_boxes.map((b) => ({
@@ -623,7 +627,13 @@ const CreateBoxArchiving = ({ detail }) => {
 								})
 							);
 
-              axiosArchives.get(`unity/${responseBoxArchiving.data.sender_unity}/`, {headers: {Authorization: `JWT ${localStorage.getItem("tk")}`}}).then(response => setSenderUnit(response.data))
+							axiosArchives
+								.get(`unity/${responseBoxArchiving.data.sender_unity}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => setSenderUnit(response.data));
 
 							if (
 								!responseBoxArchiving.data.is_eliminated &&
@@ -686,14 +696,14 @@ const CreateBoxArchiving = ({ detail }) => {
 		getUnits(setUnits, connectionError);
 	}, []);
 
-  useEffect(() => {
-    console.log(senderUnit);
-  }, [senderUnit])
+	useEffect(() => {
+		console.log(senderUnit);
+	}, [senderUnit]);
 
 	return (
 		<>
 			<CardContainer title="Arquivamento de Caixas" spacing={1}>
-				{detail ? <DocumentsDetail onDelete={onDelete}/> : ""}
+				{detail ? <DocumentsDetail onDelete={onDelete} /> : ""}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />
@@ -1020,7 +1030,7 @@ const CreateBoxArchiving = ({ detail }) => {
 											fullWidth
 											id="unarchiveDestinationUnit"
 											label="Unid. Destino do Desarquivamento"
-                      variant="outlined"
+											variant="outlined"
 											value={unarchiveDestinationUnitDetail}
 											inputProps={{ readOnly: true }}
 										/>
@@ -1033,7 +1043,7 @@ const CreateBoxArchiving = ({ detail }) => {
 												style={{ textAlign: "left" }}
 												labelId="select-unarchiveDestinationUnit-label"
 												id="select-unarchiveDestinationUnit"
-                        label="Unid. Destino do Desarquivamento"
+												label="Unid. Destino do Desarquivamento"
 												value={unarchiveDestinationUnit}
 												onChange={handleUnarchiveDestinationUnit}
 												renderValue={(value) => `${value.unity_name}`}
@@ -1059,7 +1069,7 @@ const CreateBoxArchiving = ({ detail }) => {
 									<TextField
 										fullWidth
 										id="unarchiveProcessNumber"
-                    variant="outlined"
+										variant="outlined"
 										label="Nº do Processo do Desarquivamento"
 										value={unarchiveProcessNumber}
 										onChange={handleUnarchiveProcessNumberChange}
@@ -1072,7 +1082,7 @@ const CreateBoxArchiving = ({ detail }) => {
 										<TextField
 											fullWidth
 											id="unarchiveDate"
-                      variant="outlined"
+											variant="outlined"
 											label="Data de Desarquivamento"
 											value={
 												unarchiveDate !== "-"
@@ -1095,7 +1105,7 @@ const CreateBoxArchiving = ({ detail }) => {
 											id="unarchive-date-picker-dialog"
 											label="Data de Desarquivamento"
 											format="dd/MM/yyyy"
-                      inputVariant="outlined"
+											inputVariant="outlined"
 											value={unarchiveDate}
 											onChange={handleUnarchiveDateChange}
 											KeyboardButtonProps={{
