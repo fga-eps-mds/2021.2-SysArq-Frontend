@@ -584,32 +584,19 @@ const CreateBoxArchiving = ({ detail }) => {
 						.get(`box-archiving/${params.id}`, {
 							headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
 						})
-						.then((responseBoxArchiving) => {
-							setSenderUnitDetail(responseBoxArchiving.data.sender_unity_name);
+						.then((responseBoxArchiving) => {	
 
-							setShelfDetail(
-								responseBoxArchiving.data.shelf_number
-									? responseBoxArchiving.data.shelf_number
-									: "-"
-							);
-							setRackDetail(
-								responseBoxArchiving.data.rack_number
-									? responseBoxArchiving.data.rack_number
-									: "-"
-							);
-
-							setFileLocationDetail(
-								responseBoxArchiving.data.file_location_file
-									? responseBoxArchiving.data.file_location_file
-									: "-"
-							);
-
-							setDocumentDetail(
-								responseBoxArchiving.data.document_name
-									? responseBoxArchiving.data.document_name
-									: "-"
-							);
-
+							axiosArchives
+								.get(`unity/${responseBoxArchiving.data.sender_unity}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setSenderUnit(response.data);
+								})
+								.catch(() => connectionError());
+							
 							setProcessNumber(responseBoxArchiving.data.process_number);
 							setReceivedDate(responseBoxArchiving.data.received_date);
 
@@ -635,30 +622,39 @@ const CreateBoxArchiving = ({ detail }) => {
 
 							setOriginBox((prev) =>
 								prev.map((b) => {
-									axiosArchives
-										.get(`/shelf/${b.shelf_id}/`, {
-											headers: {
-												Authorization: `JWT ${localStorage.getItem("tk")}`,
-											},
-										})
-										.then((res) => (b.shelf = res.data))
-										.catch(connectionError);
-									axiosArchives
-										.get(`/rack/${b.rack_id}/`, {
-											headers: {
-												Authorization: `JWT ${localStorage.getItem("tk")}`,
-											},
-										})
-										.then((res) => (b.rack = res.data))
-										.catch(connectionError);
-									axiosArchives
-										.get(`/file-location/${b.file_location_id}/`, {
-											headers: {
-												Authorization: `JWT ${localStorage.getItem("tk")}`,
-											},
-										})
-										.then((res) => (b.file_location = res.data))
-										.catch(connectionError);
+
+									if (b.shelf_id) {
+										axiosArchives
+											.get(`/shelf/${b.shelf_id}/`, {
+												headers: {
+													Authorization: `JWT ${localStorage.getItem("tk")}`,
+												},
+											})
+											.then((res) => (b.shelf = res.data))
+											.catch(connectionError);
+									}
+
+									if (b.rack_id) {
+										axiosArchives
+											.get(`/rack/${b.rack_id}/`, {
+												headers: {
+													Authorization: `JWT ${localStorage.getItem("tk")}`,
+												},
+											})
+											.then((res) => (b.rack = res.data))
+											.catch(connectionError);
+									}
+
+									if (b.file_location_id) {
+										axiosArchives
+											.get(`/file-location/${b.file_location_id}/`, {
+												headers: {
+													Authorization: `JWT ${localStorage.getItem("tk")}`,
+												},
+											})
+											.then((res) => (b.file_location = res.data))
+											.catch(connectionError);
+									}
 
 									return b;
 								})
@@ -754,7 +750,7 @@ const CreateBoxArchiving = ({ detail }) => {
 
 						<Grid item xs={12} sm={6} md={6}>
 							<ReceivedDateInput
-								isDetailPage={detail}
+								isDetailPage={false}
 								setHelperText={setReceivedDateHelperText}
 								set={setReceivedDate}
 								receivedDate={receivedDate}
@@ -836,10 +832,7 @@ const CreateBoxArchiving = ({ detail }) => {
 																					/>
 																				))}
 
-																				{detail ? (
-																					""
-																				) : (
-																					<AddChip
+																				<AddChip
 																						label="Adicionar Data"
 																						onClick={() =>
 																							handleOpenNewOriginBoxSubjectDateDialog(
@@ -848,13 +841,9 @@ const CreateBoxArchiving = ({ detail }) => {
 																							)
 																						}
 																					/>
-																				)}
 																			</ChipsContainer>
 																		</TableCell>
-																		{detail ? (
-																			""
-																		) : (
-																			<TableCell>
+																		<TableCell>
 																				<ChipsContainer
 																					justifyContent="right"
 																					marginTop="0%"
@@ -874,7 +863,6 @@ const CreateBoxArchiving = ({ detail }) => {
 																					/>
 																				</ChipsContainer>
 																			</TableCell>
-																		)}
 																	</TableRow>
 																)
 															)}
@@ -882,10 +870,7 @@ const CreateBoxArchiving = ({ detail }) => {
 													</Table>
 												</TableContainer>
 
-												{detail ? (
-													""
-												) : (
-													<div
+												<div
 														style={{
 															display: "flex",
 															justifyContent: "space-between",
@@ -923,7 +908,6 @@ const CreateBoxArchiving = ({ detail }) => {
 															/>
 														</ChipsContainer>
 													</div>
-												)}
 											</div>
 										</AccordionDetails>
 										<div
@@ -1004,27 +988,15 @@ const CreateBoxArchiving = ({ detail }) => {
 								))}
 
 							<ChipsContainer justifyContent="left" marginTop="0%">
-								{!detail && (
 									<AddChip
 										label="Adicionar Caixa para Arquivamento"
 										onClick={handleOpenNewOriginBoxDialog}
 									/>
-								)}
 							</ChipsContainer>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-							{detail ? (
-								<TextField
-									fullWidth
-									variant="outlined"
-									id="status"
-									label="Status"
-									value={status}
-									inputProps={{ readOnly: true }}
-								/>
-							) : (
-								<FormControl
+							<FormControl
 									fullWidth
 									variant="outlined"
 									error={statusHelperText !== ""}
@@ -1052,22 +1024,12 @@ const CreateBoxArchiving = ({ detail }) => {
 										""
 									)}
 								</FormControl>
-							)}
 						</Grid>
 
 						{status === "Desarquivado" ? (
 							<>
 								<Grid item xs={12} sm={12} md={12}>
-									{detail ? (
-										<TextField
-											fullWidth
-											id="unarchiveDestinationUnit"
-											label="Unid. Destino do Desarquivamento"
-											value={unarchiveDestinationUnitDetail}
-											inputProps={{ readOnly: true }}
-										/>
-									) : (
-										<FormControl fullWidth>
+									<FormControl fullWidth>
 											<InputLabel id="select-unarchiveDestinationUnit-label">
 												Unid. Destino do Desarquivamento
 											</InputLabel>
@@ -1093,7 +1055,6 @@ const CreateBoxArchiving = ({ detail }) => {
 												))}
 											</Select>
 										</FormControl>
-									)}
 								</Grid>
 
 								<Grid item xs={12} sm={12} md={6}>
@@ -1108,26 +1069,7 @@ const CreateBoxArchiving = ({ detail }) => {
 								</Grid>
 
 								<Grid item xs={12} sm={12} md={6}>
-									{detail ? (
-										<TextField
-											fullWidth
-											id="unarchiveDate"
-											label="Data de Desarquivamento"
-											value={
-												unarchiveDate !== "-"
-													? `${unarchiveDate.substring(
-															8,
-															10
-													  )}/${unarchiveDate.substring(
-															5,
-															7
-													  )}/${unarchiveDate.substring(0, 4)}`
-													: unarchiveDate
-											}
-											inputProps={{ readOnly: true }}
-										/>
-									) : (
-										<KeyboardDatePicker
+									<KeyboardDatePicker
 											okLabel="Confirmar"
 											cancelLabel="Cancelar"
 											style={{ width: "100%" }}
@@ -1142,7 +1084,6 @@ const CreateBoxArchiving = ({ detail }) => {
 											error={unarchiveDateHelperText !== ""}
 											helperText={unarchiveDateHelperText}
 										/>
-									)}
 								</Grid>
 							</>
 						) : (
