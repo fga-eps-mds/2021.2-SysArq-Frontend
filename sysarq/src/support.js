@@ -132,7 +132,7 @@ export function autocompl(
 			variant="outlined"
 			id="workerName"
 			data-testid="autocomplete"
-			value={publicWorkers.name}
+			value={publicWorkers}
 			onChange={(event, newValue) => {
 				handlePublicWorkerChange(newValue);
 			}}

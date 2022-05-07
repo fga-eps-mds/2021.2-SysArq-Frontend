@@ -35,6 +35,8 @@ import AutoComplete from "../../components/AutoComplete";
 const CreateFrequencySheet = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
+  const [personId, setPersonId] = useState(0);
+
 	const [publicWorkers, setPublicWorkers] = useState([
 		{ id: 1, name: "inexiste", cpf: "55555555555" },
 	]);
@@ -303,6 +305,8 @@ const CreateFrequencySheet = ({ detail }) => {
 								.then((responseFrequencySheet) => {
 									setEditId(responseFrequencySheet.data.id);
 									setType(responseFrequencySheet.data.document_name_name);
+
+                  setPersonId(responseFrequencySheet.data.person_id);
 									
 									const newPublicWorker = publicWorkers.find(p => p.cpf === responseFrequencySheet.data.cpf);
 									if(newPublicWorker) setPublicWorker(newPublicWorker);
@@ -368,7 +372,7 @@ const CreateFrequencySheet = ({ detail }) => {
 					<>
 						<Grid item xs={12} sm={12} md={12}>
 							{autocompl(
-								publicWorkers,
+								publicWorkers.find(e => e.id === personId),
 								publicWorkerInput,
 								handlePublicWorkerChange,
 								setPublicWorkerInput,
