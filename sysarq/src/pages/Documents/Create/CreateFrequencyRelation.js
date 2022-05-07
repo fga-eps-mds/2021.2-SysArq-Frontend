@@ -297,6 +297,34 @@ const CreateFrequencyRelation = ({ detail }) => {
 							setDocumentTypeDetail(
 								responseFrequencyRelation.data.document_name_name
 							);
+
+							axiosArchives
+								.get(
+									`document-name/${responseFrequencyRelation.data.document_name_id}/`,
+									{
+										headers: {
+											Authorization: `JWT ${localStorage.getItem("tk")}`,
+										},
+									}
+								)
+								.then((response) => {
+									setDocumentType(
+										response.data
+									);
+								})
+								.catch(() => connectionError());
+
+							axiosArchives
+								.get(`unity/${responseFrequencyRelation.data.sender_unity}/`, {
+									headers: {
+										Authorization: `JWT ${localStorage.getItem("tk")}`,
+									},
+								})
+								.then((response) => {
+									setSenderUnit(response.data);
+								})
+								.catch(() => connectionError());
+
 							setSenderUnitDetail(
 								responseFrequencyRelation.data.sender_unity_name
 							);
