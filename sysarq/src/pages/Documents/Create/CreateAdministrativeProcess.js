@@ -143,6 +143,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 	const [loading, setLoading] = useState(detail);
 
+  const [senderId, setSenderId] = useState(0);
+
 	const handlePublicWorkerChange = (value) => {
 		setPublicWorkerHelperText("");
 		if (!value) {
@@ -544,6 +546,8 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								})
 								.catch(() => connectionError());
 
+              setSenderId(responseAdministrative.data.sender_user)
+
 							if (
 								!responseAdministrative.data.is_eliminated &&
 								!responseAdministrative.data.is_filed &&
@@ -776,7 +780,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 						<Grid item xs={12} sm={12} md={12}>
 							{senderWorker(
-									publicWorkers,
+									publicWorkers.find(el => el.id === senderId),
 									publicWorkerInput,
 									handlePublicWorkerChange,
 									setPublicWorkerInput,
