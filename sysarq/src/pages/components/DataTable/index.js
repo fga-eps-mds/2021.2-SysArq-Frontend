@@ -553,18 +553,21 @@ const DataTable = ({ url, title, isReport }) => {
 				.catch((error) => {
 					setOpenAlert(true);
 					setSeverityAlert("error");
-					if (
-						error?.response?.data &&
-						error.response.data?.indexOf("Cannot") !== -1
-					) {
-						setAlertHelperText(
-							"Campo em uso! Atualize os documentos que utilizam esse campo."
-						);
-					} else {
-						setAlertHelperText(
-							"Verifique sua conexão com a internet e recarregue a página."
-						);
-					}
+          try {
+            if ( error?.response?.data &&
+              error.response.data?.indexOf("Cannot") !== -1
+            ) {
+              setAlertHelperText(
+                "Campo em uso! Atualize os documentos que utilizam esse campo."
+              );
+            } else {
+              setAlertHelperText(
+                "Verifique sua conexão com a internet e recarregue a página."
+              );
+            }
+          } catch {
+            setAlertHelperText("Campo com erro.");
+          }
 				});
 		})
 		.catch((error) => {
