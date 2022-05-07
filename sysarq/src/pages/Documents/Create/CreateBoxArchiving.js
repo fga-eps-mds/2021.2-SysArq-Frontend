@@ -598,22 +598,29 @@ const CreateBoxArchiving = ({ detail }) => {
 
 							setOriginBox((prev) =>
 								prev.map((b) => {
-									axiosArchives
-										.get(`/shelf/${b.shelf_id}/`, {
-											headers: {
-												Authorization: `JWT ${localStorage.getItem("tk")}`,
-											},
-										})
-										.then((res) => (b.shelf = res.data))
-										.catch(connectionError);
-									axiosArchives
-										.get(`/rack/${b.rack_id}/`, {
-											headers: {
-												Authorization: `JWT ${localStorage.getItem("tk")}`,
-											},
-										})
-										.then((res) => (b.rack = res.data))
-										.catch(connectionError);
+									if (b.shelf_id) {
+										axiosArchives
+											.get(`/shelf/${b.shelf_id}/`, {
+												headers: {
+													Authorization: `JWT ${localStorage.getItem("tk")}`,
+												},
+											})
+											.then((res) => (b.shelf = res.data))
+											.catch(connectionError);
+									}
+
+									if (b.rack_id) {
+										axiosArchives
+											.get(`/rack/${b.rack_id}/`, {
+												headers: {
+													Authorization: `JWT ${localStorage.getItem("tk")}`,
+												},
+											})
+											.then((res) => (b.rack = res.data))
+											.catch(connectionError);
+									}
+
+									if (b.file_location_id) {
 									axiosArchives
 										.get(`/file-location/${b.file_location_id}/`, {
 											headers: {
@@ -622,6 +629,7 @@ const CreateBoxArchiving = ({ detail }) => {
 										})
 										.then((res) => (b.file_location = res.data))
 										.catch(connectionError);
+									}
 
 									return b;
 								})
