@@ -32,6 +32,9 @@ import DataTable from "../../components/DataTable";
 const CreateFrequencyRelation = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
+  const [senderId, setSenderId] = useState(0)
+  const [receiverId, setReceiverId] = useState(0)
+
 	const [documentTypeDetail, setDocumentTypeDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
 	const [senderPublicWorkerDetail, setSenderPublicWorkerDetail] = useState("");
@@ -321,6 +324,9 @@ const CreateFrequencyRelation = ({ detail }) => {
 								responseFrequencyRelation.data.reference_period
 							);
 
+              setSenderId(responseFrequencyRelation.data.sender_id);
+              setReceiverId(responseFrequencyRelation.data.receiver_id);
+
 							setLoading(false);
 						})
 						.catch(() => connectionError());
@@ -371,14 +377,14 @@ const CreateFrequencyRelation = ({ detail }) => {
 							senderUnit={senderUnit}
 							units={units}
 							senderUnitHelperText={senderUnitHelperText}
-							senderPublicWorkers={senderPublicWorkers}
+							senderPublicWorkers={senderPublicWorkers?.find(e => e.id === senderId)}
 							senderPublicWorkerInput={senderPublicWorkerInput}
 							handleSenderPublicWorkerChange={handleSenderPublicWorkerChange}
 							setSenderPublicWorkerInput={setSenderPublicWorkerInput}
 							senderPublicWorkerOptions={senderPublicWorkerOptions}
 							senderPublicWorkerHelperText={senderPublicWorkerHelperText}
 							senderPublicWorkerDetail={senderPublicWorkerDetail}
-							receiverPublicWorkers={receiverPublicWorkers}
+							receiverPublicWorkers={senderPublicWorkers?.find(e => e.id === receiverId)}
 							receiverPublicWorkerInput={receiverPublicWorkerInput}
 							handleReceiverPublicWorkerChange={
 								handleReceiverPublicWorkerChange

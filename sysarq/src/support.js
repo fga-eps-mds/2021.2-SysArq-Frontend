@@ -187,7 +187,7 @@ export function senderWorker(
 			variant="oulined"
 			id="workerName"
 			data-testid="autocomplete"
-			value={senderPublicWorkers.name}
+			value={senderPublicWorkers}
 			onChange={(event, newValue) => {
 				handleSenderPublicWorkerChange(newValue);
 			}}
@@ -230,7 +230,7 @@ export function receiverWorker(
 			variant="outlined"
 			id="workerName"
 			data-testid="autocomplete"
-			value={receiverPublicWorkers.name}
+			value={receiverPublicWorkers}
 			onChange={(event, newValue) => {
 				handleReceiverPublicWorkerChange(newValue);
 			}}
