@@ -79,7 +79,7 @@ const unityHeadCells = [
 	{
 		id: "telephone_number",
 		numeric: true,
-		inputType: 'number',
+		inputType: "number",
 		label: "Telefone",
 	},
 
@@ -113,7 +113,7 @@ const documentNameHeadCells = [
 	{
 		id: "temporality",
 		numeric: false,
-		inputType: 'number',
+		inputType: "number",
 		label: "Temporalidade",
 	},
 ];
@@ -122,7 +122,7 @@ const shelfHeadCells = [
 	{
 		id: "number",
 		numeric: true,
-		inputType: 'number',
+		inputType: "number",
 		label: "Número de Estante",
 	},
 ];
@@ -131,7 +131,7 @@ const rackHeadCells = [
 	{
 		id: "number",
 		numeric: true,
-		inputType: 'number',
+		inputType: "number",
 		label: "Número de Prateleira",
 	},
 ];
@@ -154,7 +154,7 @@ const publicWorkerHeadCells = [
 	{
 		id: "cpf",
 		numeric: false,
-		inputType:'number',
+		inputType: "number",
 		label: "CPF",
 	},
 ];
@@ -260,7 +260,6 @@ const boxArchivingHeadCells = [
 		label: "Status",
 	},
 ];
-
 
 const reportHeadCells = [
 	{
@@ -427,15 +426,15 @@ const tableHeadCells = (url) => {
 		headCells = boxArchivingHeadCells;
 	} else if (url && url.includes("search")) {
 		headCells = headCellsSearch();
-	} else if(url && url.includes("box-archiving-report/")) {
+	} else if (url && url.includes("box-archiving-report/")) {
 		headCells = boxArchivingReportHeadCells;
-	} else if(url && url.includes("frequency-relation-report/")) {
+	} else if (url && url.includes("frequency-relation-report/")) {
 		headCells = frequencyRelationReportHeadCells;
-	} else if(url && url.includes("frequency-sheet-report/")) {
+	} else if (url && url.includes("frequency-sheet-report/")) {
 		headCells = frequencySheetReportHeadCells;
-	} else if(url && url.includes("status-report/")) {
+	} else if (url && url.includes("status-report/")) {
 		headCells = statusReportHeadCells;
-	} else if(url && url.includes("report/")) {
+	} else if (url && url.includes("report/")) {
 		headCells = reportHeadCells;
 	}
 

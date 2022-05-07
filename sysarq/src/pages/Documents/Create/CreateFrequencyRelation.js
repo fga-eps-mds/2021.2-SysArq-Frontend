@@ -32,8 +32,8 @@ import DataTable from "../../components/DataTable";
 const CreateFrequencyRelation = ({ detail }) => {
 	const params = detail ? useParams() : "";
 
-  const [senderId, setSenderId] = useState(0)
-  const [receiverId, setReceiverId] = useState(0)
+	const [senderId, setSenderId] = useState(0);
+	const [receiverId, setReceiverId] = useState(0);
 
 	const [documentTypeDetail, setDocumentTypeDetail] = useState("");
 	const [senderUnitDetail, setSenderUnitDetail] = useState("");
@@ -143,25 +143,25 @@ const CreateFrequencyRelation = ({ detail }) => {
 
 	const onDelete = () => {
 		axiosProfile
-		.post(`api/token/refresh/`, {
-			refresh: localStorage.getItem("tkr"),
-		})
-		.then((res) => {
-			localStorage.setItem("tk", res.data.access);
-			localStorage.setItem("tkr", res.data.refresh);
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
 
-			axiosArchives
-				.delete(`frequency-relation/${editId}/`, {
-					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-				})
-				.then(() => {
-					window.close();
-				})
-		})
-		.catch((error) => {
-			axiosProfileError(error, connectionError);
-		});
-	}
+				axiosArchives
+					.delete(`frequency-relation/${editId}/`, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then(() => {
+						window.close();
+					});
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+	};
 
 	const onSubmit = () => {
 		setLoading(true);
@@ -212,7 +212,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 			setLoading(false);
 			return "referencePeriod error";
 		}
-	const verb = editId ? axiosArchives.put : axiosArchives.post;
+		const verb = editId ? axiosArchives.put : axiosArchives.post;
 
 		axiosProfile
 			.post(`api/token/refresh/`, {
@@ -222,27 +222,28 @@ const CreateFrequencyRelation = ({ detail }) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
 				verb(
-						`frequency-relation/${editId ? `${editId}/` : ''}`,
-						{
-							process_number: processNumber,
-							notes: notesLocal,
-							filer_user: "filer_user",
-							received_date: formatDate(receivedDate),
-							reference_period: referencePeriod,
-							sender_unity: senderUnit.id,
-							sender_id: senderPublicWorker.id,
-							sender_cpf: senderPublicWorker.cpf,
-							receiver_id: receiverPublicWorker.id,
-							receiver_cpf: receiverPublicWorker.cpf,
-							document_name_id: documentType.id,
-							temporality_date:
-								parseInt(documentType.temporality, 10) +
-								parseInt(new Date(receivedDate).getFullYear(), 10),
-						},
-						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-						...(editId && {  "Content-Type": "application/json" }) 
+					`frequency-relation/${editId ? `${editId}/` : ""}`,
+					{
+						process_number: processNumber,
+						notes: notesLocal,
+						filer_user: "filer_user",
+						received_date: formatDate(receivedDate),
+						reference_period: referencePeriod,
+						sender_unity: senderUnit.id,
+						sender_id: senderPublicWorker.id,
+						sender_cpf: senderPublicWorker.cpf,
+						receiver_id: receiverPublicWorker.id,
+						receiver_cpf: receiverPublicWorker.cpf,
+						document_name_id: documentType.id,
+						temporality_date:
+							parseInt(documentType.temporality, 10) +
+							parseInt(new Date(receivedDate).getFullYear(), 10),
+					},
+					{
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						...(editId && { "Content-Type": "application/json" }),
 					}
-					)
+				)
 					.then(() => onSuccess())
 					.catch((err) => {
 						if (err.response.status === 401) {
@@ -308,9 +309,7 @@ const CreateFrequencyRelation = ({ detail }) => {
 									}
 								)
 								.then((response) => {
-									setDocumentType(
-										response.data
-									);
+									setDocumentType(response.data);
 								})
 								.catch(() => connectionError());
 
@@ -352,8 +351,8 @@ const CreateFrequencyRelation = ({ detail }) => {
 								responseFrequencyRelation.data.reference_period
 							);
 
-              setSenderId(responseFrequencyRelation.data.sender_id);
-              setReceiverId(responseFrequencyRelation.data.receiver_id);
+							setSenderId(responseFrequencyRelation.data.sender_id);
+							setReceiverId(responseFrequencyRelation.data.receiver_id);
 
 							setLoading(false);
 						})
@@ -372,7 +371,11 @@ const CreateFrequencyRelation = ({ detail }) => {
 	return (
 		<>
 			<CardContainer title="Relação de Frequências" spacing={1}>
-				{detail ? <DocumentsDetail onDelete={onDelete} onUpdate={onSubmit} /> : ""}
+				{detail ? (
+					<DocumentsDetail onDelete={onDelete} onUpdate={onSubmit} />
+				) : (
+					""
+				)}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />
@@ -405,14 +408,18 @@ const CreateFrequencyRelation = ({ detail }) => {
 							senderUnit={senderUnit}
 							units={units}
 							senderUnitHelperText={senderUnitHelperText}
-							senderPublicWorkers={senderPublicWorkers?.find(e => e.id === senderId)}
+							senderPublicWorkers={senderPublicWorkers?.find(
+								(e) => e.id === senderId
+							)}
 							senderPublicWorkerInput={senderPublicWorkerInput}
 							handleSenderPublicWorkerChange={handleSenderPublicWorkerChange}
 							setSenderPublicWorkerInput={setSenderPublicWorkerInput}
 							senderPublicWorkerOptions={senderPublicWorkerOptions}
 							senderPublicWorkerHelperText={senderPublicWorkerHelperText}
 							senderPublicWorkerDetail={senderPublicWorkerDetail}
-							receiverPublicWorkers={senderPublicWorkers?.find(e => e.id === receiverId)}
+							receiverPublicWorkers={senderPublicWorkers?.find(
+								(e) => e.id === receiverId
+							)}
 							receiverPublicWorkerInput={receiverPublicWorkerInput}
 							handleReceiverPublicWorkerChange={
 								handleReceiverPublicWorkerChange
@@ -451,10 +458,12 @@ const CreateFrequencyRelation = ({ detail }) => {
 			</CardContainer>
 
 			{!detail ? (
-			<div style={{ marginBottom: "100px" }}>
-				<DataTable title="Relação de Frequências" url="frequency-relation/" />
-			</div>
-			) : ("")}
+				<div style={{ marginBottom: "100px" }}>
+					<DataTable title="Relação de Frequências" url="frequency-relation/" />
+				</div>
+			) : (
+				""
+			)}
 		</>
 	);
 };

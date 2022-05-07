@@ -104,11 +104,7 @@ const ReferencePeriodInput = ({
 						/>
 					))}
 
-						<AddChip
-							label="Adicionar"
-							onClick={handleOpenNewPeriodDialog}
-						/>
-
+					<AddChip label="Adicionar" onClick={handleOpenNewPeriodDialog} />
 				</ChipsContainer>
 			</Grid>
 

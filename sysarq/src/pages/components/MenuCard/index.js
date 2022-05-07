@@ -65,7 +65,7 @@ const Icon = ({ iconName }) => {
 	return icon;
 };
 
-const MenuCard = ({ icon, title, url, lg}) => (
+const MenuCard = ({ icon, title, url, lg }) => (
 	<Grid item xs={12} sm={12} md={6} lg={lg}>
 		<Card id="card">
 			<CardActionArea id="card-action" href={url}>

@@ -17,7 +17,6 @@ import {
 	Grid,
 	Checkbox,
 	FormControlLabel,
-
 } from "@material-ui/core";
 
 import DateFnsUtils from "@date-io/date-fns";
@@ -39,7 +38,12 @@ import PopUpAlert from "../components/PopUpAlert";
 
 import { axiosProfile, axiosArchives } from "../../Api";
 
-import { axiosProfileError, getPublicWorkers, autocompl, formatDate } from "../../support";
+import {
+	axiosProfileError,
+	getPublicWorkers,
+	autocompl,
+	formatDate,
+} from "../../support";
 import ptBR from "date-fns/locale/pt-BR";
 // import DataTable from "../components/DataTable";
 
@@ -241,9 +245,8 @@ const Report = () => {
 
 		switch (reportType) {
 			case "Temporalidade":
-
 				if (documentName) {
-					docNameParam = `${char}document_name_id=${documentName.id}`
+					docNameParam = `${char}document_name_id=${documentName.id}`;
 					char = char === "?" ? "&" : char;
 				}
 
@@ -264,7 +267,7 @@ const Report = () => {
 				url = `report/${docNameParam}${initialDateParam}${finalDateParam}${onlyPermanentsParam}`;
 				break;
 			case "Assuntos":
-				url = "document-name/"
+				url = "document-name/";
 				break;
 			case "Servidores":
 				url = "public-worker/";
@@ -321,7 +324,6 @@ const Report = () => {
 				break;
 			default:
 				url = `report/`;
-
 		}
 		localStorage.setItem("url", url);
 		return history.push("/report/result");
@@ -413,7 +415,9 @@ const Report = () => {
 							value={status}
 							onChange={handleStatusChange}
 						>
-							<MenuItem key={0} value=""><em>Nenhum</em></MenuItem>
+							<MenuItem key={0} value="">
+								<em>Nenhum</em>
+							</MenuItem>
 							<MenuItem value="arquivado">Arquivado</MenuItem>
 							<MenuItem value="desarquivado">Desarquivado</MenuItem>
 							<MenuItem value="eliminado">Eliminado</MenuItem>
@@ -426,8 +430,8 @@ const Report = () => {
 					""
 				)}
 				{reportType === "Processos Administrativos" ||
-					reportType === "Relações de Frequências" ||
-					reportType === "Caixas" ? (
+				reportType === "Relações de Frequências" ||
+				reportType === "Caixas" ? (
 					<Grid
 						container
 						style={{
@@ -456,7 +460,13 @@ const Report = () => {
 					<>
 						<Grid container spacing={2} justifyContent="center">
 							<Grid container justifyContent="center">
-								<Grid style={{ textAlign: "left", fontWeight: "bold" }} item xs={8} sm={6} md={6}>
+								<Grid
+									style={{ textAlign: "left", fontWeight: "bold" }}
+									item
+									xs={8}
+									sm={6}
+									md={6}
+								>
 									<Typography className={classes.sectionTitle}>
 										Data de Arquivamento:
 									</Typography>
@@ -495,9 +505,7 @@ const Report = () => {
 									className={classes.input}
 									variant="outlined"
 								>
-									<InputLabel
-										id="report-type-label"
-									>
+									<InputLabel id="report-type-label">
 										Nome do Documento
 									</InputLabel>
 
@@ -532,7 +540,13 @@ const Report = () => {
 								</Typography>
 							</div> */}
 							<Grid container justifyContent="center">
-								<Grid style={{ textAlign: "left", fontWeight: "bold" }} item xs={8} sm={6} md={6}>
+								<Grid
+									style={{ textAlign: "left", fontWeight: "bold" }}
+									item
+									xs={8}
+									sm={6}
+									md={6}
+								>
 									<Typography className={classes.sectionTitle}>
 										Prazo de guarda:
 									</Typography>
@@ -542,8 +556,10 @@ const Report = () => {
 						</Grid>
 						{/* </CardContainer> */}
 						{/* </FormControl> */}
-					</>)}
-				{reportType === "Temporalidade" || reportType == "Processos Administrativos" ? (
+					</>
+				)}
+				{reportType === "Temporalidade" ||
+				reportType == "Processos Administrativos" ? (
 					<>
 						<Grid container justifyContent="center">
 							<Grid item xs={8} sm={10} md={9}>
@@ -589,8 +605,12 @@ const Report = () => {
 								</MuiPickersUtilsProvider>
 							</Grid>
 						</Grid>
-					</>) : ("")}
-				{reportType === "Temporalidade" || reportType == "Processos Administrativos" ? (
+					</>
+				) : (
+					""
+				)}
+				{reportType === "Temporalidade" ||
+				reportType == "Processos Administrativos" ? (
 					<>
 						<Grid item xs={12} sm={12} md={12}>
 							<FormControlLabel
@@ -603,7 +623,10 @@ const Report = () => {
 								}
 							/>
 						</Grid>
-					</>) : ("")}
+					</>
+				) : (
+					""
+				)}
 
 				{reportType === "Folha de Frequências" ? (
 					<Grid container style={{ display: "flex", justifyContent: "center" }}>
@@ -638,8 +661,7 @@ const Report = () => {
 				severity={severityAlert}
 				helperText={alertHelperText}
 			/>
-
-		</Container >
+		</Container>
 	);
 };
 

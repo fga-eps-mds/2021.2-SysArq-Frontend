@@ -13,7 +13,7 @@ import {
 	TableRow,
 	TableCell,
 	TableBody,
-	InputLabel
+	InputLabel,
 } from "@material-ui/core";
 import InputMask from "react-input-mask";
 import { validateBr } from "js-brasil";
@@ -171,7 +171,7 @@ const UserRow = ({ user, onSuccess, onError, removeUserFromState }) => {
 						},
 					})
 					.then(() => {
-            removeUserFromState(user);
+						removeUserFromState(user);
 						onSuccess();
 					})
 					.catch(() => {
@@ -259,7 +259,7 @@ UserRow.propTypes = {
 	}).isRequired,
 	onSuccess: PropTypes.func.isRequired,
 	onError: PropTypes.func.isRequired,
-  removeUserFromState: PropTypes.func.isRequired,
+	removeUserFromState: PropTypes.func.isRequired,
 };
 
 const UserTable = ({ users, onSuccess, onError }) => {
@@ -284,8 +284,8 @@ const UserTable = ({ users, onSuccess, onError }) => {
 
 	useEffect(() => setFilteredUsers([...users]), [users]);
 
-  const removeUserFromState = ({ id }) =>
-    setFilteredUsers(prev => prev.filter(u => u.id !== id))
+	const removeUserFromState = ({ id }) =>
+		setFilteredUsers((prev) => prev.filter((u) => u.id !== id));
 
 	useEffect(() => {
 		setFilteredUsers(
@@ -321,7 +321,7 @@ const UserTable = ({ users, onSuccess, onError }) => {
 									onChange={handleChange}
 									label="Usuário"
 									variant="outlined"
-									inputProps={{ maxLength: 50}}
+									inputProps={{ maxLength: 50 }}
 								/>
 							</div>
 						</TableCell>
@@ -362,14 +362,13 @@ const UserTable = ({ users, onSuccess, onError }) => {
 							<div>
 								<InputLabel id="select-user-type-label">
 									Tipo de usuário
-									</InputLabel>
+								</InputLabel>
 								<Select
 									defaultValue={state.userTypeFilter}
 									displayEmpty
 									name="userTypeFilter"
 									onChange={handleChange}
 									labelId="select-user-type-label"
-									
 								>
 									<MenuItem value="">Todos</MenuItem>
 									<MenuItem value="AD">Administrador</MenuItem>
@@ -388,7 +387,7 @@ const UserTable = ({ users, onSuccess, onError }) => {
 							user={u}
 							onSuccess={onSuccess}
 							onError={onError}
-              removeUserFromState={removeUserFromState}
+							removeUserFromState={removeUserFromState}
 						/>
 					))}
 				</TableBody>

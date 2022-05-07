@@ -143,7 +143,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 	const [loading, setLoading] = useState(detail);
 
-  const [senderId, setSenderId] = useState(0);
+	const [senderId, setSenderId] = useState(0);
 
 	const handlePublicWorkerChange = (value) => {
 		setPublicWorkerHelperText("");
@@ -265,25 +265,25 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 	const onDelete = () => {
 		axiosProfile
-		.post(`api/token/refresh/`, {
-			refresh: localStorage.getItem("tkr"),
-		})
-		.then((res) => {
-			localStorage.setItem("tk", res.data.access);
-			localStorage.setItem("tkr", res.data.refresh);
+			.post(`api/token/refresh/`, {
+				refresh: localStorage.getItem("tkr"),
+			})
+			.then((res) => {
+				localStorage.setItem("tk", res.data.access);
+				localStorage.setItem("tkr", res.data.refresh);
 
-			axiosArchives
-				.delete(`administrative-process/${editId}/`, {
-					headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-				})
-				.then(() => {
-					window.close();
-				})
-		})
-		.catch((error) => {
-			axiosProfileError(error, connectionError);
-		});
-	}
+				axiosArchives
+					.delete(`administrative-process/${editId}/`, {
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+					})
+					.then(() => {
+						window.close();
+					});
+			})
+			.catch((error) => {
+				axiosProfileError(error, connectionError);
+			});
+	};
 
 	const onSubmit = () => {
 		setLoading(true);
@@ -294,7 +294,12 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			return "processNumber error";
 		}
 		if (
-			isDateNotValid(new Date(noticeDate), setNoticeDateHelperText, "date", "required")
+			isDateNotValid(
+				new Date(noticeDate),
+				setNoticeDateHelperText,
+				"date",
+				"required"
+			)
 		) {
 			setLoading(false);
 			return "noticeDate error";
@@ -343,7 +348,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 
 		if (
 			status === "Desarquivado" &&
-			isDateNotValid(new Date(unarchiveDate), setUnarchiveDateHelperText, "date")
+			isDateNotValid(
+				new Date(unarchiveDate),
+				setUnarchiveDateHelperText,
+				"date"
+			)
 		) {
 			setLoading(false);
 			return "unarchiveDate error";
@@ -356,44 +365,45 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			.then((res) => {
 				localStorage.setItem("tk", res.data.access);
 				localStorage.setItem("tkr", res.data.refresh);
-					verb(
-						`administrative-process/${editId ? `${editId}/` : ''}`,
-						{
-							notice_date: formatDate(noticeDate),
-							archiving_date: formatDate(archivingDate),
-							reference_month_year:
-								reference !== null ? formatDate(reference) : null,
-							process_number: processNumber,
-							interested: interestedPerson,
-							document_name_id: subject.id,
-							file_location_id: fileLocation ? fileLocation.id : "",
-							shelf_id: shelf ? shelf.id : "",
-							rack_id: rack ? rack.id : "",
-							box_abbreviation_id: boxAbbreviation ? boxAbbreviation.id : "",
-							box_number: boxNumber,
-							box_year: parseInt(boxYear, 10),
-							sender_unity: senderUnit.id,
-							sender_user: publicWorker !== undefined ? publicWorker.id : null,
-							is_filed: isStatusFiled(status),
-							is_eliminated: status === "Eliminado",
-							unity_id:
-								status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
-							send_date:
-								unarchiveDate !== null && status === "Desarquivado"
-									? formatDate(unarchiveDate)
-									: null,
-							administrative_process_number:
-								status === "Desarquivado" ? unarchiveProcessNumber : "",
-							notes: notesLocal,
-							filer_user: "filer_user",
-							temporality_date:
-								parseInt(subject.temporality, 10) +
-								parseInt((new Date(archivingDate))?.getFullYear(), 10),
-						},
-						{ headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
-						...(editId && {  "Content-Type": "application/json" }) 
+				verb(
+					`administrative-process/${editId ? `${editId}/` : ""}`,
+					{
+						notice_date: formatDate(noticeDate),
+						archiving_date: formatDate(archivingDate),
+						reference_month_year:
+							reference !== null ? formatDate(reference) : null,
+						process_number: processNumber,
+						interested: interestedPerson,
+						document_name_id: subject.id,
+						file_location_id: fileLocation ? fileLocation.id : "",
+						shelf_id: shelf ? shelf.id : "",
+						rack_id: rack ? rack.id : "",
+						box_abbreviation_id: boxAbbreviation ? boxAbbreviation.id : "",
+						box_number: boxNumber,
+						box_year: parseInt(boxYear, 10),
+						sender_unity: senderUnit.id,
+						sender_user: publicWorker !== undefined ? publicWorker.id : null,
+						is_filed: isStatusFiled(status),
+						is_eliminated: status === "Eliminado",
+						unity_id:
+							status === "Desarquivado" ? unarchiveDestinationUnit.id : "",
+						send_date:
+							unarchiveDate !== null && status === "Desarquivado"
+								? formatDate(unarchiveDate)
+								: null,
+						administrative_process_number:
+							status === "Desarquivado" ? unarchiveProcessNumber : "",
+						notes: notesLocal,
+						filer_user: "filer_user",
+						temporality_date:
+							parseInt(subject.temporality, 10) +
+							parseInt(new Date(archivingDate)?.getFullYear(), 10),
+					},
+					{
+						headers: { Authorization: `JWT ${localStorage.getItem("tk")}` },
+						...(editId && { "Content-Type": "application/json" }),
 					}
-					)
+				)
 					.then(() => onSuccess())
 					.catch((err) => {
 						if (err.response.status === 401) {
@@ -446,7 +456,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								})
 								.catch(() => connectionError());
 
-
 							axiosArchives
 								.get(`unity/${responseAdministrative.data.sender_unity}/`, {
 									headers: {
@@ -458,7 +467,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									setSenderUnitDetail(response.data.unity_name);
 								})
 								.catch(() => connectionError());
-							
+
 							if (responseAdministrative.data.shelf_id) {
 								axiosArchives
 									.get(`shelf/${responseAdministrative.data.shelf_id}/`, {
@@ -546,7 +555,7 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								})
 								.catch(() => connectionError());
 
-              setSenderId(responseAdministrative.data.sender_user)
+							setSenderId(responseAdministrative.data.sender_user);
 
 							if (
 								!responseAdministrative.data.is_eliminated &&
@@ -593,7 +602,6 @@ const CreateAdministrativeProcess = ({ detail }) => {
 									? responseAdministrative.data.reference_month_year
 									: "-"
 							);
-
 
 							setProcessNumber(responseAdministrative.data.process_number);
 							setNoticeDate(responseAdministrative.data.notice_date);
@@ -690,7 +698,11 @@ const CreateAdministrativeProcess = ({ detail }) => {
 	return (
 		<>
 			<CardContainer title="Processo Administrativo" spacing={1}>
-				{detail ? <DocumentsDetail onDelete={onDelete} onUpdate={onSubmit} /> : ""}
+				{detail ? (
+					<DocumentsDetail onDelete={onDelete} onUpdate={onSubmit} />
+				) : (
+					""
+				)}
 
 				{detail && loading ? (
 					<CircularProgress style={{ margin: "auto" }} />
@@ -707,48 +719,47 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						</Grid>
 
 						<Grid item xs={12} sm={6} md={6}>
-								<KeyboardDatePicker
-									inputVariant="outlined"
-									okLabel="Confirmar"
-									cancelLabel="Cancelar"
-									style={{ width: "100%" }}
-									id="notice-date-picker-dialog"
-									label="Data de Autuação*"
-									format="dd/MM/yyyy"
-									value={noticeDate}
-									onChange={handleNoticeDateChange}
-									KeyboardButtonProps={{
-										"aria-label": "change notice date",
-									}}
-									error={noticeDateHelperText !== ""}
-									helperText={noticeDateHelperText}
-								/>
-
+							<KeyboardDatePicker
+								inputVariant="outlined"
+								okLabel="Confirmar"
+								cancelLabel="Cancelar"
+								style={{ width: "100%" }}
+								id="notice-date-picker-dialog"
+								label="Data de Autuação*"
+								format="dd/MM/yyyy"
+								value={noticeDate}
+								onChange={handleNoticeDateChange}
+								KeyboardButtonProps={{
+									"aria-label": "change notice date",
+								}}
+								error={noticeDateHelperText !== ""}
+								helperText={noticeDateHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-								<AutoComplete
-									value={interestedPerson}
-									handleValueChange={handleInterestedChange}
-									options={interestedPersonOptions}
-									optionsLabel={(option) => option}
-									label="Interessado*"
-									helperText={interestedHelperText}
-									freeField
-								/>
+							<AutoComplete
+								value={interestedPerson}
+								handleValueChange={handleInterestedChange}
+								options={interestedPersonOptions}
+								optionsLabel={(option) => option}
+								label="Interessado*"
+								helperText={interestedHelperText}
+								freeField
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
-								<AutoComplete
-									value={subject}
-									handleValueChange={handleSubjectChange}
-									options={subjects}
-									optionsLabel={(option) => `${option.document_name}`}
-									propertyCheck="document_name"
-									sortProperty="document_name"
-									label="Nome do Documento*"
-									helperText={subjectHelperText}
-								/>
+							<AutoComplete
+								value={subject}
+								handleValueChange={handleSubjectChange}
+								options={subjects}
+								optionsLabel={(option) => `${option.document_name}`}
+								propertyCheck="document_name"
+								sortProperty="document_name"
+								label="Nome do Documento*"
+								helperText={subjectHelperText}
+							/>
 						</Grid>
 
 						<SenderUnitInput
@@ -760,114 +771,114 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						/>
 
 						<Grid item xs={12} sm={12} md={12}>
-								<KeyboardDatePicker
-									inputVariant="outlined"
-									okLabel="Confirmar"
-									cancelLabel="Cancelar"
-									style={{ width: "100%" }}
-									id="archiving-date-picker-dialog"
-									label="Data de Arquivamento*"
-									format="dd/MM/yyyy"
-									value={archivingDate}
-									onChange={handleArchivingDateChange}
-									KeyboardButtonProps={{
-										"aria-label": "change archiving date",
-									}}
-									error={archivingDateHelperText !== ""}
-									helperText={archivingDateHelperText}
-								/>
+							<KeyboardDatePicker
+								inputVariant="outlined"
+								okLabel="Confirmar"
+								cancelLabel="Cancelar"
+								style={{ width: "100%" }}
+								id="archiving-date-picker-dialog"
+								label="Data de Arquivamento*"
+								format="dd/MM/yyyy"
+								value={archivingDate}
+								onChange={handleArchivingDateChange}
+								KeyboardButtonProps={{
+									"aria-label": "change archiving date",
+								}}
+								error={archivingDateHelperText !== ""}
+								helperText={archivingDateHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={12}>
 							{senderWorker(
-									publicWorkers.find(el => el.id === senderId),
-									publicWorkerInput,
-									handlePublicWorkerChange,
-									setPublicWorkerInput,
-									publicWorkerOptions,
-									publicWorkerHelperText
-								)}
+								publicWorkers.find((el) => el.id === senderId),
+								publicWorkerInput,
+								handlePublicWorkerChange,
+								setPublicWorkerInput,
+								publicWorkerOptions,
+								publicWorkerHelperText
+							)}
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-								<KeyboardDatePicker
-									inputVariant="outlined"
-									okLabel="Confirmar"
-									cancelLabel="Cancelar"
-									style={{ width: "100%" }}
-									id="reference-date-picker-dialog"
-									openTo="year"
-									views={["year", "month"]}
-									label="Referência (AC4)"
-									format="MM/yyyy"
-									value={reference}
-									onChange={handleReferenceChange}
-									error={referenceHelperText !== ""}
-									helperText={referenceHelperText}
-								/>
+							<KeyboardDatePicker
+								inputVariant="outlined"
+								okLabel="Confirmar"
+								cancelLabel="Cancelar"
+								style={{ width: "100%" }}
+								id="reference-date-picker-dialog"
+								openTo="year"
+								views={["year", "month"]}
+								label="Referência (AC4)"
+								format="MM/yyyy"
+								value={reference}
+								onChange={handleReferenceChange}
+								error={referenceHelperText !== ""}
+								helperText={referenceHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={8}>
-								<FormControl
-									fullWidth
-									variant="outlined"
-									error={statusHelperText !== ""}
+							<FormControl
+								fullWidth
+								variant="outlined"
+								error={statusHelperText !== ""}
+							>
+								<InputLabel id="select-status-label">Status*</InputLabel>
+								<Select
+									style={{ textAlign: "left" }}
+									labelId="select-status-label"
+									label="Status*"
+									id="select-status"
+									value={status}
+									onChange={handleStatusChange}
+									renderValue={(value) => `${value}`}
 								>
-									<InputLabel id="select-status-label">Status*</InputLabel>
-									<Select
-										style={{ textAlign: "left" }}
-										labelId="select-status-label"
-										label="Status*"
-										id="select-status"
-										value={status}
-										onChange={handleStatusChange}
-										renderValue={(value) => `${value}`}
-									>
-										<MenuItem value="">
-											<em>Nenhum</em>
-										</MenuItem>
-										<MenuItem value="Arquivado">Arquivado</MenuItem>
-										<MenuItem value="Eliminado">Eliminado</MenuItem>
-										<MenuItem value="Desarquivado">Desarquivado</MenuItem>
-									</Select>
-									{statusHelperText ? (
-										<FormHelperText>{statusHelperText}</FormHelperText>
-									) : (
-										""
-									)}
-								</FormControl>
+									<MenuItem value="">
+										<em>Nenhum</em>
+									</MenuItem>
+									<MenuItem value="Arquivado">Arquivado</MenuItem>
+									<MenuItem value="Eliminado">Eliminado</MenuItem>
+									<MenuItem value="Desarquivado">Desarquivado</MenuItem>
+								</Select>
+								{statusHelperText ? (
+									<FormHelperText>{statusHelperText}</FormHelperText>
+								) : (
+									""
+								)}
+							</FormControl>
 						</Grid>
 
 						{status === "Desarquivado" ? (
 							<>
 								<Grid item xs={12} sm={12} md={12}>
-										<FormControl fullWidth variant="outlined">
-											<InputLabel id="select-unarchiveDestinationUnit-label">
-												Unid. Destino do Desarquivamento
-											</InputLabel>
-											<Select
-												style={{ textAlign: "left" }}
-												labelId="select-unarchiveDestinationUnit-label"
-												label="Unid. Destino do Desarquivamento"
-												id="select-unarchiveDestinationUnit"
-												value={unarchiveDestinationUnit}
-												onChange={handleUnarchiveDestinationUnit}
-												renderValue={(value) => `${value.unity_name}`}
-											>
-												<MenuItem key={0} value="">
-													<em>Nenhuma</em>
-												</MenuItem>
+									<FormControl fullWidth variant="outlined">
+										<InputLabel id="select-unarchiveDestinationUnit-label">
+											Unid. Destino do Desarquivamento
+										</InputLabel>
+										<Select
+											style={{ textAlign: "left" }}
+											labelId="select-unarchiveDestinationUnit-label"
+											label="Unid. Destino do Desarquivamento"
+											id="select-unarchiveDestinationUnit"
+											value={unarchiveDestinationUnit}
+											onChange={handleUnarchiveDestinationUnit}
+											renderValue={(value) => `${value.unity_name}`}
+										>
+											<MenuItem key={0} value="">
+												<em>Nenhuma</em>
+											</MenuItem>
 
-												{units.map((unarchiveDestinationUnitOption) => (
-													<MenuItem
-														id={unarchiveDestinationUnitOption.id}
-														value={unarchiveDestinationUnitOption}
-													>
-														{unarchiveDestinationUnitOption.unity_name}
-													</MenuItem>
-												))}
-											</Select>
-										</FormControl>
+											{units.map((unarchiveDestinationUnitOption) => (
+												<MenuItem
+													id={unarchiveDestinationUnitOption.id}
+													value={unarchiveDestinationUnitOption}
+												>
+													{unarchiveDestinationUnitOption.unity_name}
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
 								</Grid>
 
 								<Grid item xs={12} sm={12} md={6}>
@@ -883,50 +894,48 @@ const CreateAdministrativeProcess = ({ detail }) => {
 								</Grid>
 
 								<Grid item xs={12} sm={12} md={6}>
-										<KeyboardDatePicker
-											inputVariant="outlined"
-											okLabel="Confirmar"
-											cancelLabel="Cancelar"
-											style={{ width: "100%" }}
-											id="unarchive-date-picker-dialog"
-											label="Data de Desarquivamento"
-											format="dd/MM/yyyy"
-											value={unarchiveDate}
-											onChange={handleUnarchiveDateChange}
-											KeyboardButtonProps={{
-												"aria-label": "change unarchive date",
-											}}
-											error={unarchiveDateHelperText !== ""}
-											helperText={unarchiveDateHelperText}
-										/>
+									<KeyboardDatePicker
+										inputVariant="outlined"
+										okLabel="Confirmar"
+										cancelLabel="Cancelar"
+										style={{ width: "100%" }}
+										id="unarchive-date-picker-dialog"
+										label="Data de Desarquivamento"
+										format="dd/MM/yyyy"
+										value={unarchiveDate}
+										onChange={handleUnarchiveDateChange}
+										KeyboardButtonProps={{
+											"aria-label": "change unarchive date",
+										}}
+										error={unarchiveDateHelperText !== ""}
+										helperText={unarchiveDateHelperText}
+									/>
 								</Grid>
 							</>
 						) : (
 							""
 						)}
-            
-            <Grid item xs={12} sm={12} md={12}>
+
+						<Grid item xs={12} sm={12} md={12}>
 							<Typography className={classes.sectionTitle}>
 								Caixa de Arquivamento:
 							</Typography>
 						</Grid>
 
 						<Grid className={classes.boxAB} item xs={12} sm={12} md={4}>
-
-								<AutoComplete
-									value={boxAbbreviation}
-									handleValueChange={(event, newValue) => {
-										setBoxAbbreviationHelperText("");
-										setBoxAbbreviation(newValue);
-									}}
-									options={boxAbbreviations}
-									optionsLabel={(option) => `${option.abbreviation}`}
-									propertyCheck="abbreviation"
-									sortProperty="abbreviation"
-									label="Sigla da Caixa"
-									helperText={boxAbbreviationHelperText}
-								/>
-
+							<AutoComplete
+								value={boxAbbreviation}
+								handleValueChange={(event, newValue) => {
+									setBoxAbbreviationHelperText("");
+									setBoxAbbreviation(newValue);
+								}}
+								options={boxAbbreviations}
+								optionsLabel={(option) => `${option.abbreviation}`}
+								propertyCheck="abbreviation"
+								sortProperty="abbreviation"
+								label="Sigla da Caixa"
+								helperText={boxAbbreviationHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
@@ -968,48 +977,45 @@ const CreateAdministrativeProcess = ({ detail }) => {
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-								<AutoComplete
-									value={shelf}
-									handleValueChange={handleShelfChange}
-									options={shelfs}
-									optionsLabel={(option) => `${option.number}`}
-									propertyCheck="number"
-									sortProperty="number"
-									label="Estante"
-									helperText={shelfHelperText}
-								/>
+							<AutoComplete
+								value={shelf}
+								handleValueChange={handleShelfChange}
+								options={shelfs}
+								optionsLabel={(option) => `${option.number}`}
+								propertyCheck="number"
+								sortProperty="number"
+								label="Estante"
+								helperText={shelfHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-								<AutoComplete
-									value={rack}
-									handleValueChange={handleRackChange}
-									options={racks}
-									optionsLabel={(option) => `${option.number}`}
-									propertyCheck="number"
-									sortProperty="number"
-									label="Prateleira"
-									helperText={rackHelperText}
-								/>
+							<AutoComplete
+								value={rack}
+								handleValueChange={handleRackChange}
+								options={racks}
+								optionsLabel={(option) => `${option.number}`}
+								propertyCheck="number"
+								sortProperty="number"
+								label="Prateleira"
+								helperText={rackHelperText}
+							/>
 						</Grid>
 
 						<Grid item xs={12} sm={12} md={4}>
-								<AutoComplete
-									value={fileLocation}
-									handleValueChange={handleFileLocationChange}
-									options={fileLocations}
-									optionsLabel={(option) => `${option.file}`}
-									propertyCheck="file"
-									sortProperty="file"
-									label="Localidade"
-									helperText={fileLocationHelperText}
-								/>
+							<AutoComplete
+								value={fileLocation}
+								handleValueChange={handleFileLocationChange}
+								options={fileLocations}
+								optionsLabel={(option) => `${option.file}`}
+								propertyCheck="file"
+								sortProperty="file"
+								label="Localidade"
+								helperText={fileLocationHelperText}
+							/>
 						</Grid>
 
-						<NotesInput
-							set={setNotes}
-							notes={notesLocal}
-						/>
+						<NotesInput set={setNotes} notes={notesLocal} />
 					</>
 				)}
 
@@ -1029,13 +1035,15 @@ const CreateAdministrativeProcess = ({ detail }) => {
 			</CardContainer>
 
 			{!detail ? (
-			<div style={{ marginBottom: "100px" }}>
-				<DataTable
-					title="Processo Administrativo"
-					url="administrative-process/"
-				/>
-			</div>
-			) : ("")}
+				<div style={{ marginBottom: "100px" }}>
+					<DataTable
+						title="Processo Administrativo"
+						url="administrative-process/"
+					/>
+				</div>
+			) : (
+				""
+			)}
 		</>
 	);
 };
